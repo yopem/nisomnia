@@ -18,7 +18,6 @@ export const ButtonCopyLinkMedia: React.FunctionComponent<
   return (
     <IconButton
       aria-label="Copy Media Link"
-      variant="outline"
       size={null}
       className="absolute z-20 ml-8 h-[30px] w-[30px] rounded-full"
       onClick={(e: React.MouseEvent<HTMLElement>) => {
