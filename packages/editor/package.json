@@ -1,0 +1,77 @@
+{
+  "name": "@nisomnia/editor",
+  "private": true,
+  "version": "0.0.1",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  },
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint .",
+    "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
+    "format:fix": "prettier --write \"**/*.{mjs,ts,md,json}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@nisomnia/eslint-config": "workspace:*",
+    "@nisomnia/prettier-config": "workspace:*",
+    "@nisomnia/tsconfig": "workspace:*",
+    "eslint": "^8.52.0",
+    "react": "18.2.0",
+    "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@nisomnia/eslint-config/base",
+      "@nisomnia/eslint-config/react"
+    ]
+  },
+  "prettier": "@nisomnia/prettier-config",
+  "dependencies": {
+    "@tiptap/core": "2.1.12",
+    "@tiptap/extension-blockquote": "2.1.12",
+    "@tiptap/extension-bold": "2.1.12",
+    "@tiptap/extension-bullet-list": "2.1.12",
+    "@tiptap/extension-character-count": "2.1.12",
+    "@tiptap/extension-code": "2.1.12",
+    "@tiptap/extension-code-block-lowlight": "2.1.12",
+    "@tiptap/extension-color": "2.1.12",
+    "@tiptap/extension-document": "2.1.12",
+    "@tiptap/extension-dropcursor": "2.1.12",
+    "@tiptap/extension-gapcursor": "2.1.12",
+    "@tiptap/extension-hard-break": "2.1.12",
+    "@tiptap/extension-heading": "2.1.12",
+    "@tiptap/extension-history": "2.1.12",
+    "@tiptap/extension-horizontal-rule": "2.1.12",
+    "@tiptap/extension-image": "2.1.12",
+    "@tiptap/extension-italic": "2.1.12",
+    "@tiptap/extension-link": "2.1.12",
+    "@tiptap/extension-list-item": "2.1.12",
+    "@tiptap/extension-ordered-list": "2.1.12",
+    "@tiptap/extension-paragraph": "2.1.12",
+    "@tiptap/extension-placeholder": "2.1.12",
+    "@tiptap/extension-strike": "2.1.12",
+    "@tiptap/extension-text": "2.1.12",
+    "@tiptap/extension-text-align": "2.1.12",
+    "@tiptap/extension-text-style": "2.1.12",
+    "@tiptap/extension-underline": "2.1.12",
+    "@tiptap/extension-youtube": "2.1.12",
+    "@tiptap/react": "^2.1.12",
+    "@tiptap/suggestion": "^2.1.12",
+    "@nisomnia/ui": "workspace:*",
+    "highlight.js": "^11.9.0",
+    "lowlight": "^3.1.0",
+    "tippy.js": "^6.3.7"
+  }
+}

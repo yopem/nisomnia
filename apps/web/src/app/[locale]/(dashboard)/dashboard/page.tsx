@@ -1,0 +1,58 @@
+import * as React from "react"
+import env from "env"
+
+import { Icon } from "@nisomnia/ui/next"
+
+import { DashboardBox } from "@/components/Dashboard"
+import { api } from "@/lib/trpc/server"
+
+export const revalidate = 60
+
+export const metadata = {
+  title: "Dashboard",
+  description: "Dashboard",
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/`,
+  },
+}
+
+export default async function DashboardPage() {
+  const totalArticles = await api.article.count.query()
+  const totalTopics = await api.topic.count.query()
+  const totalAds = await api.ad.count.query()
+  const totalMedias = await api.media.count.query()
+  const totalUsers = await api.user.count.query()
+
+  return (
+    <div className="my-8">
+      <h2 className="text-3xl">Statistics</h2>
+      <div className="my-8 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <DashboardBox
+          icon={<Icon.Article className="h-5 w-5" />}
+          count={totalArticles}
+          text="articles"
+        />
+        <DashboardBox
+          icon={<Icon.Topic className="h-5 w-5" />}
+          count={totalTopics}
+          text="topics"
+        />
+        <DashboardBox
+          icon={<Icon.Ads className="h-5 w-5" />}
+          count={totalAds}
+          text="ads"
+        />
+        <DashboardBox
+          icon={<Icon.Media className="h-5 w-5" />}
+          count={totalMedias}
+          text="medias"
+        />
+        <DashboardBox
+          icon={<Icon.Users className="h-5 w-5" />}
+          count={totalUsers}
+          text="users"
+        />
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,86 @@
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  extends: [
+    "turbo",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "prettier",
+  ],
+  env: {
+    es2022: true,
+    node: true,
+  },
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: true,
+    ecmaVersion: 6,
+  },
+  plugins: ["@typescript-eslint", "import"],
+  rules: {
+    "ban-ts-comment": "off",
+    "no-unsafe-optional-chaining": "off",
+    "import/consistent-type-specifier-style": "off",
+    "turbo/no-undeclared-env-vars": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    "padding-line-between-statements": [
+      "error",
+      { blankLine: "always", prev: "*", next: "function" },
+      { blankLine: "always", prev: "*", next: "class" },
+      { blankLine: "always", prev: "function", next: "*" },
+      { blankLine: "always", prev: "class", next: "*" },
+    ],
+    "@typescript-eslint/padding-line-between-statements": [
+      "error",
+      { blankLine: "always", prev: "*", next: "function" },
+      { blankLine: "always", prev: "*", next: "class" },
+      { blankLine: "always", prev: "*", next: "type" },
+      { blankLine: "always", prev: "*", next: "interface" },
+      { blankLine: "always", prev: "function", next: "*" },
+      { blankLine: "always", prev: "class", next: "*" },
+      { blankLine: "always", prev: "type", next: "*" },
+      { blankLine: "always", prev: "interface", next: "*" },
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      { prefer: "type-imports", fixStyle: "separate-type-imports" },
+    ],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-redundant-type-constituents": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
+  },
+  ignorePatterns: [
+    "**/.eslintrc.cjs",
+    "**/*.config.js",
+    "**/*.config.cjs",
+    ".next",
+    "dist",
+    "pnpm-lock.yaml",
+  ],
+  reportUnusedDisableDirectives: true,
+}
+
+module.exports = config

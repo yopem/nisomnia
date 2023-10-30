@@ -1,0 +1,123 @@
+import * as React from "react"
+import type { Metadata } from "next"
+import NextLink from "next/link"
+import env from "env"
+import { BreadcrumbJsonLd } from "next-seo"
+
+import type { LanguageType } from "@nisomnia/db"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Icon,
+} from "@nisomnia/ui/next"
+
+import {
+  InfiniteScrollArticle,
+  type InfinteScrollArticleDataProps,
+} from "@/components/Article/client"
+import { api } from "@/lib/trpc/server"
+
+export const revalidate = 0
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: LanguageType; username: string }
+}): Promise<Metadata> {
+  const { locale, username } = params
+
+  const user = await api.user.byUsername.query({
+    username: username,
+    language: locale,
+  })
+
+  return {
+    title: `${user?.name} Articles`,
+    description: user?.about ?? `${user?.name} Articles`,
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${user?.username}`,
+    },
+  }
+}
+
+interface UserArticlesPageProps {
+  params: {
+    username: string
+    locale: LanguageType
+  }
+}
+
+export default async function UserArticlesPage({
+  params,
+}: UserArticlesPageProps) {
+  const { username, locale } = params
+
+  const userArticles = await api.user.articlesByUserUsername.query({
+    username: username,
+    language: locale,
+    page: 1,
+    per_page: 10,
+  })
+
+  const totalPage = Math.ceil(userArticles?._count?.article_authors! / 10)
+
+  return (
+    <>
+      <BreadcrumbJsonLd
+        useAppDir
+        itemListElements={[
+          {
+            position: 1,
+            name: env.NEXT_PUBLIC_DOMAIN,
+            item: env.NEXT_PUBLIC_SITE_URL,
+          },
+          {
+            position: 2,
+            name: "Article",
+            item: `${env.NEXT_PUBLIC_SITE_URL}/article`,
+          },
+          {
+            position: 2,
+            name: userArticles?.name,
+            item: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${userArticles?.username}`,
+          },
+        ]}
+      />
+      <section>
+        <Breadcrumb separator={<Icon.ChevronRight />}>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={NextLink} href="/" aria-label="Home">
+              <Icon.Home />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={NextLink} href="/article">
+              Article
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem currentPage>
+            <BreadcrumbLink currentPage>
+              {userArticles?.username}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <div className="my-8">
+          <h1 className="text-center text-4xl">
+            Articles By {`${userArticles?.name}`}
+          </h1>
+        </div>
+        <div className="flex w-full flex-col">
+          <InfiniteScrollArticle
+            articles={
+              userArticles?.article_authors as InfinteScrollArticleDataProps[]
+            }
+            locale={locale}
+            index={2}
+            totalPage={totalPage}
+          />
+        </div>
+      </section>
+    </>
+  )
+}

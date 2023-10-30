@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .scrollbar-hide.scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  .scrollbar-hide.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #555;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .scrollbar::-webkit-scrollbar-track:hover {
+    background: transparent;
+  }
+
+  div.search-scroller::-webkit-scrollbar {
+    @apply hidden;
+  }
+
+  div.search-scroller::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  div.search-scroller::-webkit-scrollbar-thumb {
+    @apply rounded bg-muted;
+  }
+
+  div.search-scroller {
+    scrollbar-color: white gray;
+
+    scrollbar-width: thin;
+  }
+
+  .search-result[aria-expanded="false"] {
+    @apply hidden h-0 w-0 opacity-0;
+  }
+
+  .search-result[aria-expanded="true"] {
+    animation-name: animationSearchResult;
+    animation-duration: 400ms;
+  }
+}
+
+/* Editor */
+.ProseMirror {
+  @apply min-h-screen min-w-0 items-center space-y-2 px-3 py-2 text-base text-foreground outline-none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  @apply pointer-events-none float-left h-0 text-foreground;
+  content: attr(data-placeholder);
+}
+
+/* Article */
+.article-container {
+  @apply space-y-2;
+}
+
+.article-container a,
+.ProseMirror a {
+  @apply text-primary/80 no-underline duration-200 hover:text-primary/90 hover:underline;
+}
+
+.article-container ul li,
+.ProseMirror ul li {
+  @apply ml-12 list-disc;
+}
+
+.article-container ol li,
+.ProseMirror ol li {
+  @apply ml-12 list-decimal;
+}
+
+.article-container blockquote,
+.ProseMirror blockquote {
+  @apply my-4 rounded-sm border-l-4 border-border p-4 italic;
+}
+
+.article-container img,
+.ProseMirror img {
+  @apply rounded-md;
+}
+
+.article-container pre,
+.ProseMirror pre {
+  @apply rounded-lg bg-black px-3 py-2 font-mono text-white;
+}
+
+.article-container code,
+.ProseMirror code {
+  @apply bg-[none] p-0 text-xs text-[inherit];
+}
+
+iframe {
+  @apply aspect-video h-auto w-full rounded-lg shadow-lg;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #616161;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-name,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #f98181;
+}
+
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  color: #fbbc88;
+}
+
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  color: #b9f18d;
+}
+
+.hljs-title,
+.hljs-section {
+  color: #faf594;
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #70cff8;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.tippybox {
+  @apply !max-w-5xl;
+}

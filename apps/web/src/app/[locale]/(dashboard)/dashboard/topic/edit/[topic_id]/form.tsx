@@ -1,0 +1,337 @@
+"use client"
+
+import * as React from "react"
+import dynamic from "next/dynamic"
+import { useRouter } from "next/navigation"
+import { Controller, useForm } from "react-hook-form"
+
+import type {
+  LanguageType,
+  Media as MediaProps,
+  Topic as TopicProps,
+  TopicType,
+} from "@nisomnia/db"
+import { Button, Textarea } from "@nisomnia/ui/next"
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  RequiredIndicator,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+  toast,
+} from "@nisomnia/ui/next-client"
+
+import { Image } from "@/components/Image"
+import { api } from "@/lib/trpc/react"
+
+const SelectMediaModal = dynamic(() =>
+  import("@/components/Media/client").then((mod) => mod.SelectMediaModal),
+)
+
+interface FormValues {
+  id: string
+  title: string
+  slug: string
+  description?: string
+  meta_title?: string
+  meta_description?: string
+  language: LanguageType
+  type: TopicType
+  topic_translation_primary_id: string
+}
+
+interface EditTopicFormProps {
+  topic: Pick<
+    TopicProps,
+    | "id"
+    | "title"
+    | "slug"
+    | "description"
+    | "meta_title"
+    | "meta_description"
+    | "language"
+    | "type"
+    | "topic_translation_primary_id"
+  > & {
+    featured_image?: Pick<MediaProps, "id" | "url"> | null
+  }
+}
+
+export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
+  props,
+) => {
+  const { topic } = props
+
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [selectFeaturedImageId, setSelectFeaturedImageId] =
+    React.useState<string>("")
+  const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
+    React.useState<string>("")
+  const [topicTranslationPrimaryId, setTopicTranslationPrimaryId] =
+    React.useState<string>("")
+
+  const router = useRouter()
+
+  const handleUpdateMedia = (data: {
+    id: React.SetStateAction<string>
+    url: React.SetStateAction<string>
+  }) => {
+    setSelectFeaturedImageId(data.id as string)
+    setSelectedFeaturedImageUrl(data.url as string)
+    setOpenModal(false)
+  }
+
+  const { mutate: updateTopic } = api.topic.update.useMutation({
+    onSuccess: () => {
+      setSelectFeaturedImageId("")
+      setSelectedFeaturedImageUrl("")
+      reset()
+      toast({ variant: "success", description: "Update Topic successfully" })
+      router.push("/dashboard/topic")
+    },
+    onError: (err) => {
+      setLoading(false)
+      toast({ variant: "danger", description: err.message })
+    },
+  })
+
+  const {
+    register,
+    formState: { errors },
+    control,
+    reset,
+    handleSubmit,
+  } = useForm<FormValues>({
+    defaultValues: {
+      id: topic?.id,
+      title: topic?.title || "",
+      slug: topic?.slug || "",
+      description: topic?.description ?? "",
+      meta_title: topic?.meta_title ?? "",
+      meta_description: topic?.meta_description ?? "",
+      language: topic?.language || "id",
+      type: topic?.type || "all",
+      topic_translation_primary_id: topic?.topic_translation_primary_id || "",
+    },
+  })
+
+  React.useEffect(() => {
+    setSelectFeaturedImageId(topic?.featured_image?.id!)
+    setSelectedFeaturedImageUrl(topic?.featured_image?.url!)
+  }, [topic?.featured_image?.id, topic?.featured_image?.url])
+
+  const { data: topicTranslationPrimary } =
+    api.topic.topicTranslationPrimaryById.useQuery(topicTranslationPrimaryId)
+
+  const onSubmit = (values: FormValues) => {
+    const mergedValues = {
+      ...values,
+      featured_image_id: selectFeaturedImageId,
+    }
+
+    setTopicTranslationPrimaryId(values.topic_translation_primary_id)
+
+    if (topicTranslationPrimary) {
+      const otherLangTopic = topicTranslationPrimary?.topics.find(
+        (topicData) => topicData.id !== topic.id,
+      )
+
+      if (otherLangTopic?.language !== values.language) {
+        setLoading(true)
+        updateTopic(selectFeaturedImageId ? mergedValues : values)
+        setLoading(false)
+        router.push("/dashboard/topic")
+      }
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <FormControl invalid={Boolean(errors.title)}>
+        <FormLabel>
+          Title
+          <RequiredIndicator />
+        </FormLabel>
+        <Input
+          type="text"
+          {...register("title", {
+            required: "Title is Required",
+          })}
+          className="max-w-xl"
+          placeholder="Enter Title"
+        />
+        {errors?.title && (
+          <FormErrorMessage>{errors.title.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <FormControl invalid={Boolean(errors.slug)}>
+        <FormLabel>
+          Slug
+          <RequiredIndicator />
+        </FormLabel>
+        <Input
+          type="text"
+          {...register("slug", {
+            required: "Slug is Required",
+          })}
+          className="max-w-xl"
+          placeholder="Enter Slug"
+        />
+        {errors?.slug && (
+          <FormErrorMessage>{errors.slug.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          Language
+          <RequiredIndicator />
+        </FormLabel>
+        <Controller
+          control={control}
+          name="language"
+          render={({ field }) => (
+            <Select
+              defaultValue={field.value}
+              value={field.value}
+              onValueChange={(value: LanguageType) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Language</SelectLabel>
+                  <SelectItem value={topic.language}>
+                    {topic.language === "id"
+                      ? "Indonesia"
+                      : topic.language === "en" && "English"}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+        {errors?.language && (
+          <FormErrorMessage>{errors.language.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          Type
+          <RequiredIndicator />
+        </FormLabel>
+        <Controller
+          control={control}
+          name="type"
+          render={({ field }) => (
+            <Select
+              defaultValue={field.value}
+              value={field.value}
+              onValueChange={(value: TopicType) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Type</SelectLabel>
+                  <SelectItem value="all">all</SelectItem>
+                  <SelectItem value="article">article</SelectItem>
+                  <SelectItem value="review">review</SelectItem>
+                  <SelectItem value="tutorial">tutorial</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+        {errors?.type && (
+          <FormErrorMessage>{errors.type.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <FormControl invalid={Boolean(errors.description)}>
+        <FormLabel>Description</FormLabel>
+        <Textarea
+          {...register("description")}
+          className="max-w-xl"
+          placeholder="Enter Description (Optional)"
+        />
+        {errors?.description && (
+          <FormErrorMessage>{errors.description.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      {selectedFeaturedImageUrl ? (
+        <>
+          <FormLabel>Featured Image</FormLabel>
+          <SelectMediaModal
+            handleSelectUpdateMedia={handleUpdateMedia}
+            open={openModal}
+            setOpen={setOpenModal}
+            triggerContent={
+              <div className="relative mt-2 aspect-video h-[150px] cursor-pointer rounded-sm border-2 border-muted/30">
+                <Image
+                  src={selectedFeaturedImageUrl}
+                  className="object-cover"
+                  fill
+                  alt="Featured Image"
+                  onClick={() => setOpenModal(true)}
+                  sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 33vw"
+                />
+              </div>
+            }
+          />
+        </>
+      ) : (
+        <SelectMediaModal
+          handleSelectUpdateMedia={handleUpdateMedia}
+          open={openModal}
+          setOpen={setOpenModal}
+          triggerContent={
+            <>
+              <FormLabel>Featured Image</FormLabel>
+              <div
+                onClick={() => setOpenModal(true)}
+                className="relative mr-auto flex aspect-video h-[150px] items-center justify-center bg-muted text-success"
+              >
+                <p>Select Featured Image</p>
+              </div>
+            </>
+          }
+        />
+      )}
+      <FormControl invalid={Boolean(errors.meta_title)}>
+        <FormLabel>Meta Title</FormLabel>
+        <Input
+          type="text"
+          {...register("meta_title")}
+          className="max-w-xl"
+          placeholder="Enter Meta Title (Optional)"
+        />
+        {errors?.meta_title && (
+          <FormErrorMessage>{errors.meta_title.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <FormControl invalid={Boolean(errors.meta_description)}>
+        <FormLabel>Meta Description</FormLabel>
+        <Textarea
+          {...register("meta_description")}
+          className="max-w-xl"
+          placeholder="Enter Meta Description (Optional)"
+        />
+        {errors?.meta_description && (
+          <FormErrorMessage>{errors.meta_description.message}</FormErrorMessage>
+        )}
+      </FormControl>
+      <Button aria-label="Submit" type="submit" loading={loading}>
+        Submit
+      </Button>
+    </form>
+  )
+}

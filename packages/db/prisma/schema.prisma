@@ -1,0 +1,256 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  binaryTargets   = ["native", "linux-arm64-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  type              String
+  provider          String
+  providerAccountId String  @map(name: "provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  userId String @map(name: "user_id")
+  user   User   @relation(name: "user_accounts", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@unique([provider, providerAccountId])
+  @@map(name: "account")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique @map(name: "session_token")
+  expires      DateTime
+
+  userId String @map(name: "user_id")
+  user   User   @relation(name: "user_sessions", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "session")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  username      String    @unique
+  email         String?   @unique
+  emailVerified DateTime? @map(name: "email_verified")
+  image         String?
+  phone_number  String?
+  about         String?
+  role          UserRole  @default(user)
+
+  accounts         Account[]        @relation(name: "user_accounts")
+  sessions         Session[]        @relation(name: "user_sessions")
+  article_authors  Article[]        @relation(name: "article_authors")
+  article_editors  Article[]        @relation(name: "article_editors")
+  medias           Media[]          @relation(name: "media_authors")
+  article_comments ArticleComment[] @relation(name: "article_comment_authors")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map(name: "verification_token")
+}
+
+model ArticleTranslationPrimary {
+  id       String    @id @unique @default(uuid())
+  articles Article[] @relation(name: "article_translations")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "article_translation_primary")
+}
+
+model Article {
+  id               String       @id @unique @default(uuid())
+  language         LanguageType @default(id)
+  title            String
+  slug             String       @unique
+  content          String
+  excerpt          String
+  meta_title       String?
+  meta_description String?
+  views            Int          @default(0)
+
+  featured_image_id              String
+  featured_image                 Media                     @relation(name: "article_featured_images", fields: [featured_image_id], references: [id])
+  article_translation_primary_id String
+  article_translation_primary    ArticleTranslationPrimary @relation(name: "article_translations", fields: [article_translation_primary_id], references: [id])
+
+  topics   Topic[]          @relation(name: "article_topics")
+  authors  User[]           @relation(name: "article_authors")
+  editors  User[]           @relation(name: "article_editors")
+  comments ArticleComment[] @relation(name: "article_comments")
+  status   PostStatus       @default(published)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@unique([id, slug])
+  @@map(name: "article")
+}
+
+model ArticleComment {
+  id      String @id @unique @default(uuid())
+  content String
+
+  article_id String
+  article    Article @relation(name: "article_comments", fields: [article_id], references: [id])
+  author_id  String
+  author     User    @relation(name: "article_comment_authors", fields: [author_id], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "article_comment")
+}
+
+model TopicTranslationPrimary {
+  id     String  @id @unique @default(uuid())
+  topics Topic[] @relation(name: "topic_translations")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "topic_translation_primary")
+}
+
+model Topic {
+  id               String       @id @unique @default(uuid())
+  language         LanguageType @default(id)
+  title            String
+  slug             String       @unique
+  description      String?
+  meta_title       String?
+  meta_description String?
+  type             TopicType    @default(all)
+  views            Int          @default(0)
+
+  topic_translation_primary_id String
+  topic_translation_primary    TopicTranslationPrimary @relation(name: "topic_translations", fields: [topic_translation_primary_id], references: [id])
+  featured_image_id            String?
+  featured_image               Media?                  @relation(name: "topic_featured_images", fields: [featured_image_id], references: [id])
+
+  articles Article[] @relation(name: "article_topics")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@unique([id, slug])
+  @@map(name: "topic")
+}
+
+model Media {
+  id          String  @id @unique @default(uuid())
+  name        String  @unique
+  url         String  @unique
+  type        String
+  description String?
+
+  author_id String
+  author    User   @relation(name: "media_authors", fields: [author_id], references: [id])
+
+  articles Article[] @relation(name: "article_featured_images")
+  topics   Topic[]   @relation(name: "topic_featured_images")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@unique([id, name, url])
+  @@map(name: "media")
+}
+
+model Ad {
+  id       String     @id @unique @default(uuid())
+  title    String     @unique
+  content  String
+  position AdPosition @default(home_below_header)
+  type     AdType     @default(plain_ad)
+  active   Boolean    @default(false)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "ad")
+}
+
+enum UserRole {
+  user
+  pro_user
+  author
+  admin
+
+  @@map(name: "user_role")
+}
+
+enum PostStatus {
+  published
+  draft
+  rejected
+  in_review
+
+  @@map(name: "post_type")
+}
+
+enum TopicType {
+  all
+  article
+  review
+  tutorial
+  movie
+  tv
+  game
+
+  @@map(name: "topic_type")
+}
+
+enum AdType {
+  adsense
+  plain_ad
+
+  @@map(name: "ad_type")
+}
+
+enum AdPosition {
+  home_below_header
+  article_below_header
+  topic_below_header
+  single_article_above_content
+  single_article_middle_content
+  single_article_below_content
+  single_article_pop_up
+
+  @@map(name: "ad_position")
+}
+
+enum LanguageType {
+  id
+  en
+
+  @@map(name: "language_type")
+}
