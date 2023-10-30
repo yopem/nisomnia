@@ -88,7 +88,7 @@ export const DashboardAddTopics: React.FunctionComponent<
     [addTopics, topics],
   )
 
-  const { data: searchResults } = api.topic.searchByType.useQuery({
+  const { data: searchResults, isLoading: searchResultsIsLoading } = api.topic.searchByType.useQuery({
     search_query: searchQuery,
     language: "id",
     type: topicType,
@@ -246,7 +246,7 @@ export const DashboardAddTopics: React.FunctionComponent<
             <FormErrorMessage>{errors.topicTitle.message}</FormErrorMessage>
           )}
         </div>
-        {searchResults !== undefined && searchResults?.length > 0 && (
+        {!searchResultsIsLoading && searchResults !== undefined && searchResults.length > 0 && (
           <ul className="border-t border-muted/30">
             {searchResults.map((searchTopic) => {
               const topicsData = {

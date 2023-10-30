@@ -144,7 +144,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
     { id: string; name: string }[] | []
   >(
     article
-      ? article.authors.map((author) => {
+      ? article.editors.map((author) => {
           return { id: author.id, name: author.name! }
         })
       : [],
