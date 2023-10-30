@@ -3,7 +3,7 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 
-import { Button, Icon } from "@nisomnia/ui/next"
+import { Icon, IconButton } from "@nisomnia/ui/next"
 
 const AlertDelete = dynamic(() =>
   import("@/components/Layout/client").then((mod) => mod.AlertDelete),
@@ -22,14 +22,15 @@ export const ButtonDeleteMedia: React.FunctionComponent<
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   return (
     <div>
-      <Button
+      <IconButton
         aria-label="Delete Media"
         size={null}
-        className="absolute z-20 h-[30px] w-[30px] rounded-full bg-danger/80 p-0 hover:bg-danger/80"
+        className="absolute z-20 h-[30px] w-[30px] rounded-full"
+        variant="danger"
         onClick={() => setOpenModal(true)}
       >
         <Icon.Delete aria-label="Delete Media" />
-      </Button>
+      </IconButton>
       <AlertDelete
         desc={<>{content}</>}
         isOpen={openModal}

@@ -21,6 +21,10 @@ const ButtonDeleteMedia = dynamic(() =>
   import("@/components/Media/client").then((mod) => mod.ButtonDeleteMedia),
 )
 
+const ButtonCopyLinkMedia = dynamic(() =>
+  import("@/components/Media/client").then((mod) => mod.ButtonCopyLinkMedia),
+)
+
 export const MediaLibraryDashboard: React.FunctionComponent = () => {
   const [page, setPage] = React.useState<number>(1)
   const [searchQuery, setSearchQuery] = React.useState<string>("")
@@ -111,6 +115,7 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
                       await handleDelete(media.name)
                     }}
                   />
+                  <ButtonCopyLinkMedia url={media.url} />
                   <NextLink
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}
