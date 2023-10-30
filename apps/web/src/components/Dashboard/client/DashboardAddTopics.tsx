@@ -27,6 +27,7 @@ interface DashboardAddTopicsProps extends React.HTMLAttributes<HTMLDivElement> {
   topicType: TopicType
   locale: LanguageType
   addTopics: React.Dispatch<React.SetStateAction<string[]>>
+  mode?: "create" | "edit"
   selectedTopics: {
     id: string
     title: string
@@ -47,6 +48,7 @@ export const DashboardAddTopics: React.FunctionComponent<
   const {
     topics,
     topicType,
+    mode = "create",
     addTopics,
     selectedTopics,
     addSelectedTopics,
@@ -65,10 +67,12 @@ export const DashboardAddTopics: React.FunctionComponent<
   } = useForm<FormValues>({ mode: "all", reValidateMode: "onChange" })
 
   const handleLocaleChange = React.useCallback(() => {
-    setInputValue("")
-    addTopics([])
-    addSelectedTopics([])
-  }, [addSelectedTopics, addTopics])
+    if (mode === "create") {
+      setInputValue("")
+      addTopics([])
+      addSelectedTopics([])
+    }
+  }, [addSelectedTopics, addTopics, mode])
 
   React.useEffect(() => {
     handleLocaleChange()
@@ -88,11 +92,12 @@ export const DashboardAddTopics: React.FunctionComponent<
     [addTopics, topics],
   )
 
-  const { data: searchResults, isLoading: searchResultsIsLoading } = api.topic.searchByType.useQuery({
-    search_query: searchQuery,
-    language: "id",
-    type: topicType,
-  })
+  const { data: searchResults, isLoading: searchResultsIsLoading } =
+    api.topic.searchByType.useQuery({
+      search_query: searchQuery,
+      language: locale,
+      type: topicType,
+    })
 
   api.topic.topicTranslationPrimaryById.useQuery(topicId, {
     onSuccess: (data) => {
@@ -246,26 +251,28 @@ export const DashboardAddTopics: React.FunctionComponent<
             <FormErrorMessage>{errors.topicTitle.message}</FormErrorMessage>
           )}
         </div>
-        {!searchResultsIsLoading && searchResults !== undefined && searchResults.length > 0 && (
-          <ul className="border-t border-muted/30">
-            {searchResults.map((searchTopic) => {
-              const topicsData = {
-                id: searchTopic.id,
-                title: searchTopic.title,
-              }
-              return (
-                <li key={searchTopic.id} className="p-2 hover:bg-muted/50 ">
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleSelectandAssign(topicsData)}
-                  >
-                    {searchTopic.title}
-                  </Button>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+        {!searchResultsIsLoading &&
+          searchResults !== undefined &&
+          searchResults.length > 0 && (
+            <ul className="border-t border-muted/30">
+              {searchResults.map((searchTopic) => {
+                const topicsData = {
+                  id: searchTopic.id,
+                  title: searchTopic.title,
+                }
+                return (
+                  <li key={searchTopic.id} className="p-2 hover:bg-muted/50 ">
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSelectandAssign(topicsData)}
+                    >
+                      {searchTopic.title}
+                    </Button>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
       </div>
     </div>
   )

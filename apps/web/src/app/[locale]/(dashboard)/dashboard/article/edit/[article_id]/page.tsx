@@ -39,5 +39,5 @@ export default async function CreateArticlesDashboard({
     notFound()
   }
 
-  return <EditArticleForm article={article} />
+  return <EditArticleForm article={article!} />
 }

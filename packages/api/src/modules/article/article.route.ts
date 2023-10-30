@@ -65,14 +65,14 @@ export const articleRouter = createTRPCRouter({
       where: { id: input },
       select: {
         article_translation_primary_id: true,
+        id: true,
         language: true,
+        slug: true,
         content: true,
         excerpt: true,
         title: true,
         meta_title: true,
         meta_description: true,
-        slug: true,
-        id: true,
         status: true,
         featured_image: {
           select: {
