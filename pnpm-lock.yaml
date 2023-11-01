@@ -104,6 +104,9 @@ importers:
       react-hook-form:
         specifier: ^7.47.0
         version: 7.47.0(react@18.2.0)
+      react-image-file-resizer:
+        specifier: ^0.4.8
+        version: 0.4.8
       react-intersection-observer:
         specifier: ^9.5.2
         version: 9.5.2(react@18.2.0)
@@ -9743,6 +9746,10 @@ packages:
       react: '*'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-image-file-resizer@0.4.8:
+    resolution: {integrity: sha512-Ue7CfKnSlsfJ//SKzxNMz8avDgDSpWQDOnTKOp/GNRFJv4dO9L5YGHNEnj40peWkXXAK2OK0eRIoXhOYpUzUTQ==}
     dev: false
 
   /react-intersection-observer@9.5.2(react@18.2.0):

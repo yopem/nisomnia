@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form"
 import { Button, DropZone } from "@nisomnia/ui/next"
 import { FormControl, FormErrorMessage, toast } from "@nisomnia/ui/next-client"
 
+import { resizeImage } from "@/lib/resize-image"
+
 interface FormValues {
   file: Blob[]
 }
@@ -27,7 +29,8 @@ export const UploadMediaForm: React.FunctionComponent = () => {
     const formData = new FormData()
 
     for (const file of Array.from(values.file ?? [])) {
-      formData.append("file", file)
+      const resizedImage = await resizeImage(file)
+      formData.append("file", resizedImage)
     }
 
     try {
@@ -38,7 +41,6 @@ export const UploadMediaForm: React.FunctionComponent = () => {
       })
 
       if (res) {
-        //FIX : toast not showing up
         toast({ variant: "success", description: "Upload Media Successfuly!" })
         reset()
       }

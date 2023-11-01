@@ -1,6 +1,5 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 import env from "env"
-import sharp from "sharp"
 
 export const s3Config = {
   region: env.R2_REGION,
@@ -26,14 +25,10 @@ export async function uploadImageToS3({
   fileName,
   contentType = "image/webp",
 }: UploadImageToS3Props): Promise<string> {
-  const resizedImageBuffer = await sharp(file)
-    .webp({ lossless: true, quality: 80 })
-    .toBuffer()
-
   const params = {
     Bucket: env.R2_BUCKET,
     Key: fileName,
-    Body: resizedImageBuffer,
+    Body: file,
     ContentType: contentType,
   }
 
