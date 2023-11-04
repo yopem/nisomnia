@@ -74,6 +74,7 @@ module.exports = () => {
     reactStrictMode: true,
     experimental: {
       webpackBuildWorker: true,
+      optimizePackageImports: ["@nisomnia/ui", "@nisomnia/editor"],
     },
     images: {
       remotePatterns: [

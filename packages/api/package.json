@@ -26,14 +26,14 @@
     "@nisomnia/eslint-config": "workspace:*",
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@trpc/server": "^10.43.0",
     "@nisomnia/auth": "workspace:*",
     "@nisomnia/db": "workspace:*",
-    "@nisomnia/utils": "workspace:*"
+    "@nisomnia/utils": "workspace:*",
+    "@trpc/server": "^10.43.1"
   },
   "prettier": "@nisomnia/prettier-config",
   "eslintConfig": {
