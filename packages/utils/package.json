@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.10",
-    "nanoid": "^5.0.2"
+    "nanoid": "^5.0.3"
   },
   "devDependencies": {
     "@nisomnia/eslint-config": "workspace:*",
