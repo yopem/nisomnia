@@ -37,30 +37,32 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
-  byId: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.topic.findUnique({
-      where: { id: input },
-      select: {
-        topic_translation_primary_id: true,
-        id: true,
-        title: true,
-        slug: true,
-        language: true,
-        description: true,
-        meta_title: true,
-        meta_description: true,
-        type: true,
-        featured_image: {
-          select: {
-            id: true,
-            url: true,
+  byId: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findUnique({
+        where: { id: input },
+        select: {
+          topic_translation_primary_id: true,
+          id: true,
+          title: true,
+          slug: true,
+          language: true,
+          description: true,
+          meta_title: true,
+          meta_description: true,
+          type: true,
+          featured_image: {
+            select: {
+              id: true,
+              url: true,
+            },
           },
+          createdAt: true,
+          updatedAt: true,
         },
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-  }),
+      })
+    }),
   byLanguage: publicProcedure
     .input(
       z.object({
@@ -69,8 +71,8 @@ export const topicRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: { language: input.language },
         orderBy: {
           createdAt: "desc",
@@ -103,8 +105,8 @@ export const topicRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: { language: input.language },
         orderBy: {
           createdAt: "desc",
@@ -142,8 +144,8 @@ export const topicRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: { language: input.language },
         orderBy: {
           createdAt: "desc",
@@ -165,8 +167,8 @@ export const topicRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: {
           AND: [
             {
@@ -204,8 +206,8 @@ export const topicRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findUnique({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findUnique({
         where: {
           slug: input.slug,
         },
@@ -262,8 +264,8 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
-  bySlug: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.topic.findUnique({
+  bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.topic.findUnique({
       where: { slug: input },
       select: {
         id: true,
@@ -306,8 +308,8 @@ export const topicRouter = createTRPCRouter({
     .input(
       z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: {
           AND: [
             {
@@ -344,8 +346,8 @@ export const topicRouter = createTRPCRouter({
     .input(
       z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: {
           AND: [
             {
@@ -394,8 +396,8 @@ export const topicRouter = createTRPCRouter({
         search_query: z.string(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: {
           AND: [
             {
@@ -433,8 +435,8 @@ export const topicRouter = createTRPCRouter({
     .input(
       z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
         where: {
           AND: [
             {
@@ -475,13 +477,13 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
-  count: publicProcedure.query(({ ctx }) => {
-    return ctx.db.topic.count()
+  count: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.topic.count()
   }),
   countByLanguage: publicProcedure
     .input(z.enum(LANGUAGE_TYPE))
-    .query(({ ctx, input }) => {
-      return ctx.db.topic.count({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.count({
         where: {
           language: input,
         },
@@ -561,6 +563,6 @@ export const topicRouter = createTRPCRouter({
           message: "Topic not found",
         })
       }
-      return ctx.db.topic.delete({ where: { id: input } })
+      return await ctx.db.topic.delete({ where: { id: input } })
     }),
 })

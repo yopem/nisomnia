@@ -17,8 +17,8 @@ import {
 export const userRouter = createTRPCRouter({
   all: adminProtectedProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.user.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.user.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -34,23 +34,25 @@ export const userRouter = createTRPCRouter({
         },
       })
     }),
-  byId: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.user.findUnique({
-      where: { id: input },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        name: true,
-        role: true,
-        createdAt: true,
-      },
-    })
-  }),
+  byId: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.user.findUnique({
+        where: { id: input },
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          name: true,
+          role: true,
+          createdAt: true,
+        },
+      })
+    }),
   byUsername: publicProcedure
     .input(z.object({ username: z.string(), language: z.enum(LANGUAGE_TYPE) }))
-    .query(({ ctx, input }) => {
-      return ctx.db.user.findUnique({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.user.findUnique({
         where: { username: input.username },
         select: {
           id: true,
@@ -80,8 +82,8 @@ export const userRouter = createTRPCRouter({
         },
       })
     }),
-  byEmail: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.user.findUnique({
+  byEmail: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.user.findUnique({
       where: { email: input },
       select: {
         id: true,
@@ -101,8 +103,8 @@ export const userRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.user.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.user.findMany({
         where: { role: input.role },
         orderBy: {
           createdAt: "desc",
@@ -127,8 +129,8 @@ export const userRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.user.findUnique({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.user.findUnique({
         where: { username: input.username },
         select: {
           id: true,
@@ -165,11 +167,11 @@ export const userRouter = createTRPCRouter({
         },
       })
     }),
-  count: adminProtectedProcedure.query(({ ctx }) => {
-    return ctx.db.user.count()
+  count: adminProtectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.count()
   }),
-  search: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.user.findMany({
+  search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.user.findMany({
       where: {
         OR: [
           {
@@ -211,7 +213,7 @@ export const userRouter = createTRPCRouter({
         })
       }
 
-      return ctx.db.user.update({
+      return await ctx.db.user.update({
         where: {
           id: input.id,
         },
@@ -221,7 +223,7 @@ export const userRouter = createTRPCRouter({
   updateByAdmin: adminProtectedProcedure
     .input(updateUserByAdminSchema)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.user.update({
+      return await ctx.db.user.update({
         where: {
           id: input.id,
         },

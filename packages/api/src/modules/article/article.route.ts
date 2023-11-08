@@ -17,8 +17,8 @@ import {
 } from "./article.schema"
 
 export const articleRouter = createTRPCRouter({
-  all: publicProcedure.query(({ ctx }) => {
-    return ctx.db.article.findMany({
+  all: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.article.findMany({
       orderBy: { id: "desc" },
     })
   }),
@@ -60,57 +60,59 @@ export const articleRouter = createTRPCRouter({
         },
       })
     }),
-  byId: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.article.findUnique({
-      where: { id: input },
-      select: {
-        article_translation_primary_id: true,
-        id: true,
-        language: true,
-        slug: true,
-        content: true,
-        excerpt: true,
-        title: true,
-        meta_title: true,
-        meta_description: true,
-        status: true,
-        featured_image: {
-          select: {
-            id: true,
-            name: true,
-            url: true,
+  byId: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.article.findUnique({
+        where: { id: input },
+        select: {
+          article_translation_primary_id: true,
+          id: true,
+          language: true,
+          slug: true,
+          content: true,
+          excerpt: true,
+          title: true,
+          meta_title: true,
+          meta_description: true,
+          status: true,
+          featured_image: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+            },
+          },
+          createdAt: true,
+          updatedAt: true,
+          topics: {
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+            },
+          },
+          authors: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              image: true,
+            },
+          },
+          editors: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              image: true,
+            },
           },
         },
-        createdAt: true,
-        updatedAt: true,
-        topics: {
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-          },
-        },
-        authors: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            image: true,
-          },
-        },
-        editors: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            image: true,
-          },
-        },
-      },
-    })
-  }),
-  bySlug: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.article.findUnique({
+      })
+    }),
+  bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.article.findUnique({
       where: { slug: input },
       select: {
         id: true,
@@ -326,13 +328,13 @@ export const articleRouter = createTRPCRouter({
         },
       })
     }),
-  count: publicProcedure.query(({ ctx }) => {
-    return ctx.db.article.count()
+  count: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.article.count()
   }),
   countByLanguage: publicProcedure
     .input(z.enum(LANGUAGE_TYPE))
     .query(async ({ ctx, input }) => {
-      return ctx.db.article.count({
+      return await ctx.db.article.count({
         where: {
           language: input,
         },
@@ -343,7 +345,7 @@ export const articleRouter = createTRPCRouter({
       z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
     )
     .query(async ({ ctx, input }) => {
-      return ctx.db.article.findMany({
+      return await ctx.db.article.findMany({
         where: {
           AND: [
             {
@@ -381,7 +383,7 @@ export const articleRouter = createTRPCRouter({
       z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
     )
     .query(async ({ ctx, input }) => {
-      return ctx.db.article.findMany({
+      return await ctx.db.article.findMany({
         where: {
           AND: [
             {
@@ -551,7 +553,7 @@ export const articleRouter = createTRPCRouter({
         })
       }
 
-      return ctx.db.article.delete({ where: { id: input } })
+      return await ctx.db.article.delete({ where: { id: input } })
     }),
   deleteByAdmin: protectedProcedure
     .input(z.string())
@@ -566,6 +568,6 @@ export const articleRouter = createTRPCRouter({
           message: "Article not found",
         })
       }
-      return ctx.db.article.delete({ where: { id: input } })
+      return await ctx.db.article.delete({ where: { id: input } })
     }),
 })

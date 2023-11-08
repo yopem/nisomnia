@@ -14,8 +14,8 @@ import {
 export const articleCommentRouter = createTRPCRouter({
   all: adminProtectedProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.articleComment.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.articleComment.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -37,8 +37,8 @@ export const articleCommentRouter = createTRPCRouter({
     }),
   dashboard: adminProtectedProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.articleComment.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.articleComment.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -70,8 +70,8 @@ export const articleCommentRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.articleComment.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.articleComment.findMany({
         where: { article_id: input.article_id },
         orderBy: {
           createdAt: "desc",
@@ -91,8 +91,8 @@ export const articleCommentRouter = createTRPCRouter({
         },
       })
     }),
-  byId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.articleComment.findMany({
+  byId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.articleComment.findMany({
       where: { id: input },
       orderBy: {
         createdAt: "desc",
@@ -111,11 +111,11 @@ export const articleCommentRouter = createTRPCRouter({
       },
     })
   }),
-  count: publicProcedure.query(({ ctx }) => {
-    return ctx.db.articleComment.count()
+  count: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.articleComment.count()
   }),
-  countByArticleId: publicProcedure.query(({ ctx }) => {
-    return ctx.db.articleComment.count()
+  countByArticleId: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.articleComment.count()
   }),
   create: protectedProcedure
     .input(createArticleCommentSchema)

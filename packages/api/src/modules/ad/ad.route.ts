@@ -11,8 +11,8 @@ import { AD_POSITION, createAdSchema, updateAdSchema } from "./ad.schema"
 export const adRouter = createTRPCRouter({
   all: publicProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.ad.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.ad.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -30,25 +30,27 @@ export const adRouter = createTRPCRouter({
         },
       })
     }),
-  byId: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.ad.findUnique({
-      where: { id: input },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        position: true,
-        type: true,
-        active: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-  }),
+  byId: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.ad.findUnique({
+        where: { id: input },
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          position: true,
+          type: true,
+          active: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+    }),
   byPosition: publicProcedure
     .input(z.enum(AD_POSITION))
-    .query(({ ctx, input }) => {
-      return ctx.db.ad.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.ad.findMany({
         where: { position: input },
         select: {
           id: true,
@@ -62,8 +64,8 @@ export const adRouter = createTRPCRouter({
         },
       })
     }),
-  count: adminProtectedProcedure.query(({ ctx }) => {
-    return ctx.db.ad.count()
+  count: adminProtectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.ad.count()
   }),
   create: adminProtectedProcedure
     .input(createAdSchema)
@@ -75,7 +77,7 @@ export const adRouter = createTRPCRouter({
   update: adminProtectedProcedure
     .input(updateAdSchema)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.ad.update({
+      return await ctx.db.ad.update({
         where: {
           id: input.id,
         },

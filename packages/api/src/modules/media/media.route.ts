@@ -11,8 +11,8 @@ import { updateMediaSchema, uploadMediaSchema } from "./media.schema"
 export const mediaRouter = createTRPCRouter({
   all: adminProtectedProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.media.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.media.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -35,8 +35,8 @@ export const mediaRouter = createTRPCRouter({
     }),
   dashboard: adminProtectedProcedure
     .input(z.object({ page: z.number(), per_page: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.media.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.media.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -49,44 +49,48 @@ export const mediaRouter = createTRPCRouter({
         },
       })
     }),
-  byId: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.media.findUnique({
-      where: { id: input },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        url: true,
-        author: {
-          select: {
-            name: true,
-            username: true,
+  byId: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.media.findUnique({
+        where: { id: input },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          url: true,
+          author: {
+            select: {
+              name: true,
+              username: true,
+            },
           },
+          createdAt: true,
+          updatedAt: true,
         },
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-  }),
-  byName: adminProtectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.media.findUnique({
-      where: { name: input },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        url: true,
-        author: {
-          select: {
-            name: true,
-            username: true,
+      })
+    }),
+  byName: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.media.findUnique({
+        where: { name: input },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          url: true,
+          author: {
+            select: {
+              name: true,
+              username: true,
+            },
           },
+          createdAt: true,
+          updatedAt: true,
         },
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-  }),
+      })
+    }),
   byAuthorId: adminProtectedProcedure
     .input(
       z.object({
@@ -95,8 +99,8 @@ export const mediaRouter = createTRPCRouter({
         per_page: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return ctx.db.media.findMany({
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.media.findMany({
         where: { author_id: input.author_id },
         orderBy: {
           createdAt: "desc",
@@ -110,8 +114,8 @@ export const mediaRouter = createTRPCRouter({
         },
       })
     }),
-  search: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.media.findMany({
+  search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return await ctx.db.media.findMany({
       where: {
         OR: [
           {
@@ -134,8 +138,8 @@ export const mediaRouter = createTRPCRouter({
       },
     })
   }),
-  count: publicProcedure.query(({ ctx }) => {
-    return ctx.db.media.count()
+  count: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.media.count()
   }),
   create: protectedProcedure
     .input(uploadMediaSchema)
