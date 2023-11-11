@@ -6,7 +6,11 @@ import { usePathname } from "next-intl/client"
 import NextLink from "next-intl/link"
 
 import { Button, Icon } from "@nisomnia/ui/next"
-import { Popover, PopoverContent, PopoverTrigger } from "@nisomnia/ui/next-client"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nisomnia/ui/next-client"
 
 export const LanguageSwitcherMobile: React.FunctionComponent = () => {
   const params = useParams()

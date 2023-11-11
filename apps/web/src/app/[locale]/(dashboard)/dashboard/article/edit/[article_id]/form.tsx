@@ -100,22 +100,22 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   const [topics, setTopics] = React.useState<string[]>(
     article
       ? article.topics.map((topic) => {
-        return topic.id
-      })
+          return topic.id
+        })
       : [],
   )
   const [authors, setAuthors] = React.useState<string[]>(
     article
       ? article.authors.map((author) => {
-        return author.id
-      })
+          return author.id
+        })
       : [],
   )
   const [editors, setEditors] = React.useState<string[]>(
     article
       ? article.authors.map((author) => {
-        return author.id
-      })
+          return author.id
+        })
       : [],
   )
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
@@ -127,8 +127,8 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   >(
     article
       ? article.topics.map((topic) => {
-        return { id: topic.id, title: topic.title }
-      })
+          return { id: topic.id, title: topic.title }
+        })
       : [],
   )
 
@@ -137,8 +137,8 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   >(
     article
       ? article.authors.map((author) => {
-        return { id: author.id, name: author.name! }
-      })
+          return { id: author.id, name: author.name! }
+        })
       : [],
   )
   const [selectedEditors, setSelectedEditors] = React.useState<
@@ -146,8 +146,8 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   >(
     article
       ? article.editors.map((author) => {
-        return { id: author.id, name: author.name! }
-      })
+          return { id: author.id, name: author.name! }
+        })
       : [],
   )
   const [articleTranslationPrimaryId, setArticleTranslationPrimaryId] =
@@ -296,10 +296,11 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
           </div>
         </div>
         <div
-          className={`${isOpen == false
+          className={`${
+            isOpen == false
               ? "hidden"
               : "pt-15 relative z-20 mt-16 flex flex-row overflow-x-auto bg-background py-4 opacity-100"
-            } `}
+          } `}
         >
           <div className="fixed bottom-0 right-0 top-0 mt-[85px]">
             <ScrollArea className="h-[calc(100vh-80px)] max-w-[300px] rounded border py-4 max-md:min-w-full">

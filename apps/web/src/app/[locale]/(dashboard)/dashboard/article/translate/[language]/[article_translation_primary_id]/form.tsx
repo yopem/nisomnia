@@ -84,11 +84,11 @@ export const TranslateArticleForm: React.FunctionComponent<
   >(
     session
       ? [
-        {
-          id: session?.user?.id!,
-          name: session?.user?.name!,
-        },
-      ]
+          {
+            id: session?.user?.id!,
+            name: session?.user?.name!,
+          },
+        ]
       : [],
   )
   const [selectedEditors, setSelectedEditors] = React.useState<
@@ -96,11 +96,11 @@ export const TranslateArticleForm: React.FunctionComponent<
   >(
     session
       ? [
-        {
-          id: session?.user?.id!,
-          name: session?.user?.name!,
-        },
-      ]
+          {
+            id: session?.user?.id!,
+            name: session?.user?.name!,
+          },
+        ]
       : [],
   )
   const [isClear, setIsClear] = React.useState(false)
@@ -236,10 +236,11 @@ export const TranslateArticleForm: React.FunctionComponent<
           </div>
         </div>
         <div
-          className={`${isOpen == false
+          className={`${
+            isOpen == false
               ? "hidden"
               : "pt-15 relative z-20 mt-16 flex flex-row overflow-x-auto bg-background py-4 opacity-100"
-            } `}
+          } `}
         >
           <div className="fixed bottom-0 right-0 top-0 mt-[85px]">
             <ScrollArea className="h-[calc(100vh-80px)] max-w-[300px] rounded border py-4 max-md:min-w-full">

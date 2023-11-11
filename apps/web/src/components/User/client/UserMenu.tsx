@@ -6,7 +6,11 @@ import NextLink from "next/link"
 
 import type { Session } from "@nisomnia/auth"
 import { Icon, IconButton } from "@nisomnia/ui/next"
-import { Popover, PopoverContent, PopoverTrigger } from "@nisomnia/ui/next-client"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nisomnia/ui/next-client"
 
 import { Image } from "@/components/Image"
 
