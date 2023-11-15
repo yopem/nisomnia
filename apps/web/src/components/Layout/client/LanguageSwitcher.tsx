@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useParams } from "next/navigation"
-import { usePathname } from "next-intl/client"
-import NextLink from "next-intl/link"
+import NextLink from "next/link"
+import { useParams, usePathname } from "next/navigation"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 import {
