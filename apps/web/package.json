@@ -16,7 +16,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.449.0",
+    "@aws-sdk/client-s3": "^3.451.0",
     "@ducanh2912/next-pwa": "^9.7.2",
     "@nisomnia/api": "workspace:*",
     "@nisomnia/auth": "workspace:*",
@@ -29,9 +29,9 @@
     "@trpc/client": "^10.43.3",
     "@trpc/next": "^10.43.3",
     "@trpc/react-query": "^10.43.3",
-    "axios": "^1.6.1",
+    "axios": "^1.6.2",
     "million": "2.6.4",
-    "next-intl": "^2.22.1",
+    "next-intl": "^3.0.1",
     "next-seo": "^6.4.0",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
@@ -64,7 +64,7 @@
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.53.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.1.0",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0"

@@ -21,14 +21,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@commitlint/cli": "^18.4.0",
+    "@commitlint/cli": "^18.4.1",
     "@commitlint/config-conventional": "^18.4.0",
     "@manypkg/cli": "^0.21.0",
     "@nisomnia/prettier-config": "workspace:*",
     "commitizen": "^4.3.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.0.2",
-    "prettier": "^3.0.3",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0",
     "turbo": "^1.10.16",
     "typescript": "^5.2.2"
   },

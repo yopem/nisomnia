@@ -27,7 +27,7 @@
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
     "eslint": "^8.53.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.1.0",
     "react": "18.2.0",
     "typescript": "^5.2.2"
   },
@@ -65,7 +65,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "react-day-picker": "^8.9.1",
-    "react-icons": "^4.11.0",
+    "react-icons": "^4.12.0",
     "tailwind-merge": "^2.0.0"
   }
 }
