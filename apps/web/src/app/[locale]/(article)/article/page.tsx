@@ -12,7 +12,7 @@ import {
 } from "@nisomnia/ui/next"
 
 import { Ad } from "@/components/Ad"
-import { InfiniteScrollArticle } from "@/components/Article/client"
+import { InfiniteScrollArticles } from "@/components/Article/client"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0
@@ -29,17 +29,7 @@ export default async function ArticlePage({
 }) {
   const { locale } = params
 
-  const articles = await api.article.byLanguage.query({
-    language: locale,
-    page: 1,
-    per_page: 10,
-  })
-
-  const articlesCount = await api.article.count.query()
-
   const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
-
-  const totalPage = articlesCount && Math.ceil(articlesCount / 10)
 
   return (
     <>
@@ -72,12 +62,7 @@ export default async function ArticlePage({
           </BreadcrumbItem>
         </Breadcrumb>
         <div className="flex w-full flex-col">
-          <InfiniteScrollArticle
-            articles={articles}
-            locale={locale}
-            index={2}
-            totalPage={totalPage}
-          />
+          <InfiniteScrollArticles locale={locale} />
         </div>
       </section>
     </>

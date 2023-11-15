@@ -52,12 +52,6 @@ export default async function ArticleSlugPage({
     notFound()
   }
 
-  const articles = await api.article.byLanguage.query({
-    language: locale,
-    page: 1,
-    per_page: 10,
-  })
-  const articlesCount = await api.article.count.query()
   const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
   const adsSingleArticleAboveContent = await api.ad.byPosition.query(
     "single_article_above_content",
@@ -123,12 +117,10 @@ export default async function ArticleSlugPage({
       <section>
         <ArticleContent
           article={article}
-          articles={articles}
           adsBelowHeader={adsBelowHeader}
           adsAboveContent={adsSingleArticleAboveContent}
           adsMiddleContent={adsSingleArticleMiddleContent}
           adsBelowContent={adsSingleArticleBelowContent}
-          articlesCount={articlesCount}
           locale={locale}
           firstContent={firstContent as React.ReactNode}
           secondContent={secondContent as React.ReactNode}

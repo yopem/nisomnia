@@ -4,7 +4,7 @@ import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 import type { LanguageType } from "@nisomnia/db"
 
 import { Ad } from "@/components/Ad"
-import { InfiniteScrollArticle } from "@/components/Article/client"
+import { InfiniteScrollArticles } from "@/components/Article/client"
 import { Container, Footer } from "@/components/Layout"
 import { TopNav } from "@/components/Layout/client"
 import { api } from "@/lib/trpc/server"
@@ -16,17 +16,7 @@ export default async function HomePage({
 }) {
   const { locale } = params
 
-  const articles = await api.article.byLanguage.query({
-    language: locale,
-    page: 1,
-    per_page: 10,
-  })
-
-  const articlesCount = await api.article.count.query()
-
   const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
-
-  const totalPage = articlesCount && Math.ceil(articlesCount / 10)
 
   return (
     <>
@@ -59,12 +49,7 @@ export default async function HomePage({
                 return <Ad key={ad.id} ad={ad} />
               })}
             <div className="flex w-full flex-col">
-              <InfiniteScrollArticle
-                articles={articles}
-                locale={locale}
-                index={2}
-                totalPage={totalPage}
-              />
+              <InfiniteScrollArticles locale={locale} />
             </div>
           </section>
         </Container>

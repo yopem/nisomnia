@@ -25,11 +25,10 @@ import {
 import { Ad } from "@/components/Ad"
 import { Image } from "@/components/Image"
 import { readingTime } from "@/lib/reading-time"
-import {
-  InfiniteScrollArticle,
-  type InfinteScrollArticleDataProps,
-} from "./InfiniteScrollArticle"
 
+const InfiniteScrollArticles = dynamic(() =>
+  import("./InfiniteScrollArticles").then((mod) => mod.InfiniteScrollArticles),
+)
 const ArticleMenu = dynamic(() =>
   import("./ArticleMenu").then((mod) => mod.ArticleMenu),
 )
@@ -52,8 +51,6 @@ interface ArticleContentProps {
   adsBelowContent: AdDataProps[]
   adsMiddleContent: AdDataProps[]
   article: ArticleDataProps
-  articles: InfinteScrollArticleDataProps[]
-  articlesCount: number
   firstContent: React.ReactNode
   secondContent: React.ReactNode
   locale: LanguageType
@@ -68,8 +65,6 @@ export const ArticleContent: React.FunctionComponent<ArticleContentProps> = (
     adsBelowContent,
     adsMiddleContent,
     article,
-    articles,
-    articlesCount,
     firstContent,
     secondContent,
     locale,
@@ -174,12 +169,7 @@ export const ArticleContent: React.FunctionComponent<ArticleContentProps> = (
             </div>
             <div className="flex w-full flex-col space-y-4">
               <h3>You may also like</h3>
-              <InfiniteScrollArticle
-                articles={articles}
-                locale={locale}
-                index={2}
-                totalPage={articlesCount}
-              />
+              <InfiniteScrollArticles locale={locale} />
             </div>
           </div>
         </div>

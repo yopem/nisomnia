@@ -13,7 +13,7 @@ import {
 } from "@nisomnia/ui/next"
 
 import { Ad } from "@/components/Ad"
-import { InfiniteScrollTopicArticles } from "@/components/Topic/client"
+import { InfiniteScrollTopicArticles } from "@/components/Article/client"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0
@@ -107,12 +107,7 @@ export default async function TopicArticlePage({
         </div>
         <div className="flex w-full flex-col">
           {topicArticle && totalPage && topicArticle.articles && (
-            <InfiniteScrollTopicArticles
-              index={2}
-              slug={topicArticle.slug}
-              articles={topicArticle.articles}
-              totalPage={totalPage}
-            />
+            <InfiniteScrollTopicArticles slug={topicArticle.slug} />
           )}
         </div>
       </section>

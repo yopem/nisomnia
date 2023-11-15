@@ -3,52 +3,53 @@
 import * as React from "react"
 
 import type { Article as ArticleProps, Media as MediaProps } from "@nisomnia/db"
+import { toast } from "@nisomnia/ui/next-client"
 
 import { ArticleCardHorizontal } from "@/components/Article"
 import { LoadingProgress } from "@/components/Layout"
 import { api } from "@/lib/trpc/react"
 
-type ArticleDataProps = Pick<ArticleProps, "title" | "slug" | "excerpt"> & {
+export type InfinteScrollTopicArticlesDataProps = Pick<
+  ArticleProps,
+  "title" | "slug" | "excerpt"
+> & {
   featured_image: Pick<MediaProps, "url">
 }
 
 interface InfiniteScrollTopicArticlesProps
   extends React.HTMLAttributes<HTMLDivElement> {
   slug: string
-  articles: ArticleDataProps[]
-  index?: number
-  totalPage: number
 }
 
 export const InfiniteScrollTopicArticles: React.FunctionComponent<
   InfiniteScrollTopicArticlesProps
 > = (props) => {
-  const { slug, articles, totalPage, index = 1, ...rest } = props
+  const { slug, ...rest } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
-  const [page, setPage] = React.useState<number>(index)
-  const [list, setList] = React.useState<ArticleDataProps[]>(articles)
 
-  const { data: articlesData } = api.topic.articlesByTopicSlug.useQuery({
-    slug: slug,
-    page: page,
-    per_page: 10,
-  })
+  const { data, hasNextPage, fetchNextPage } =
+    api.topic.articlesByTopicSlugInfinite.useInfiniteQuery(
+      {
+        slug: slug,
+        limit: 10,
+      },
+      {
+        initialCursor: null,
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        onError: (err) => {
+          toast({ variant: "danger", description: err.message })
+        },
+      },
+    )
 
   const handleObserver = React.useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries
-      if (target?.isIntersecting && totalPage >= page) {
-        if (articlesData) {
-          setList((list) => [
-            ...list,
-            ...(articlesData?.articles as ArticleDataProps[]),
-          ])
-          setPage((prev: number) => prev + 1)
-        }
+    ([target]: IntersectionObserverEntry[]) => {
+      if (target?.isIntersecting && hasNextPage) {
+        fetchNextPage()
       }
     },
-    [totalPage, page, articlesData],
+    [fetchNextPage, hasNextPage],
   )
 
   React.useEffect(() => {
@@ -56,19 +57,20 @@ export const InfiniteScrollTopicArticles: React.FunctionComponent<
     const observer = new IntersectionObserver(handleObserver)
 
     if (loadMoreRef.current) observer.observe(loadMoreRef.current)
+
     return () => {
-      if (lmRef) {
-        observer.unobserve(lmRef)
-      }
+      if (lmRef) observer.unobserve(lmRef)
     }
-  }, [handleObserver, articles])
+  }, [handleObserver])
 
   return (
     <div {...rest}>
-      {list.map((article: ArticleDataProps) => {
-        return <ArticleCardHorizontal key={article.slug} article={article} />
+      {data?.pages.map((page) => {
+        return page.topic?.articles.map((article) => {
+          return <ArticleCardHorizontal article={article} key={article.slug} />
+        })
       })}
-      {totalPage >= page && (
+      {hasNextPage && (
         <div ref={loadMoreRef}>
           <div className="text-center">
             <LoadingProgress />

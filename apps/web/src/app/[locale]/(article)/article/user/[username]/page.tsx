@@ -12,10 +12,7 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import {
-  InfiniteScrollArticle,
-  type InfinteScrollArticleDataProps,
-} from "@/components/Article/client"
+import { InfiniteScrollUserArticles } from "@/components/Article/client"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0
@@ -53,14 +50,10 @@ export default async function UserArticlesPage({
 }: UserArticlesPageProps) {
   const { username, locale } = params
 
-  const userArticles = await api.user.articlesByUserUsername.query({
+  const user = await api.user.byUsername.query({
     username: username,
     language: locale,
-    page: 1,
-    per_page: 10,
   })
-
-  const totalPage = Math.ceil(userArticles?._count?.article_authors! / 10)
 
   return (
     <>
@@ -79,8 +72,8 @@ export default async function UserArticlesPage({
           },
           {
             position: 2,
-            name: userArticles?.name,
-            item: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${userArticles?.username}`,
+            name: user?.name,
+            item: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${user?.username}`,
           },
         ]}
       />
@@ -97,25 +90,16 @@ export default async function UserArticlesPage({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem currentPage>
-            <BreadcrumbLink currentPage>
-              {userArticles?.username}
-            </BreadcrumbLink>
+            <BreadcrumbLink currentPage>{user?.username}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <div className="my-8">
           <h1 className="text-center text-4xl">
-            Articles By {`${userArticles?.name}`}
+            Articles By {`${user?.name}`}
           </h1>
         </div>
         <div className="flex w-full flex-col">
-          <InfiniteScrollArticle
-            articles={
-              userArticles?.article_authors as InfinteScrollArticleDataProps[]
-            }
-            locale={locale}
-            index={2}
-            totalPage={totalPage}
-          />
+          <InfiniteScrollUserArticles username={username} locale={locale} />
         </div>
       </section>
     </>
