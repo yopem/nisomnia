@@ -264,6 +264,102 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
+  articlesByTopicSlugInfinite: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            updatedAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const topic = await ctx.db.topic.findUnique({
+        where: {
+          slug: input.slug,
+        },
+        select: {
+          id: true,
+          title: true,
+          language: true,
+          topic_translation_primary_id: true,
+          slug: true,
+          description: true,
+          meta_title: true,
+          meta_description: true,
+          type: true,
+          articles: {
+            where: {
+              AND: [
+                {
+                  status: "published",
+                },
+                cursorCondition,
+              ],
+            },
+            take: limit + 1,
+            orderBy: {
+              updatedAt: "desc",
+            },
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              meta_title: true,
+              meta_description: true,
+              excerpt: true,
+              status: true,
+              content: true,
+              topics: {
+                select: {
+                  title: true,
+                  slug: true,
+                },
+              },
+              featured_image: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+          featured_image: {
+            select: {
+              url: true,
+            },
+          },
+          _count: {
+            select: {
+              articles: true,
+            },
+          },
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (topic && Array.isArray(topic) && topic.length > limit) {
+        const nextItem = topic.pop()
+        if (nextItem.updatedAt) {
+          nextCursor = nextItem.updatedAt.toISOString()
+        }
+      }
+      return {
+        topic,
+        nextCursor,
+      }
+    }),
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return await ctx.db.topic.findUnique({
       where: { slug: input },

@@ -167,6 +167,76 @@ export const userRouter = createTRPCRouter({
         },
       })
     }),
+  articlesByUserUsernameInfinite: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+        language: z.enum(LANGUAGE_TYPE),
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            updatedAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const user = await ctx.db.user.findUnique({
+        where: { username: input.username },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          image: true,
+          about: true,
+          article_authors: {
+            where: {
+              AND: [
+                {
+                  language: input.language,
+                  status: "published",
+                },
+                cursorCondition,
+              ],
+            },
+            take: limit + 1,
+            orderBy: {
+              updatedAt: "desc",
+            },
+            select: {
+              id: true,
+              title: true,
+              excerpt: true,
+              slug: true,
+              featured_image: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (user && Array.isArray(user) && user.length > limit) {
+        const nextItem = user.pop()
+        if (nextItem.updatedAt) {
+          nextCursor = nextItem.updatedAt.toISOString()
+        }
+      }
+      return {
+        user,
+        nextCursor,
+      }
+    }),
   count: adminProtectedProcedure.query(async ({ ctx }) => {
     return await ctx.db.user.count()
   }),
