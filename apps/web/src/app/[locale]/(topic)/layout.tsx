@@ -18,7 +18,7 @@ export default function TopicLayout({ params, children }: TopicLayoutProps) {
   return (
     <>
       <TopNav locale={locale} />
-      <Container className="mt-20 min-h-screen px-2 lg:px-72">
+      <Container className="mt-20 min-h-screen px-2 lg:px-80">
         {children}
       </Container>
       <Footer />
