@@ -22,7 +22,7 @@ export const ArticleCardVertical: React.FunctionComponent<
     <article className="max-w-sm">
       <NextLink href={`/article/${slug}`}>
         <Image
-          className="!relative h-[200px] w-full overflow-hidden rounded-lg object-cover"
+          className="!relative !h-[200px] overflow-hidden rounded-lg object-cover"
           sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 33vw"
           src={featured_image?.url!}
           alt={title}
