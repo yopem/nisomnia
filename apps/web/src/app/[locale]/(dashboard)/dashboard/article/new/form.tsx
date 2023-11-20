@@ -4,7 +4,6 @@
 
 import * as React from "react"
 import dynamic from "next/dynamic"
-import NextImage from "next/image"
 import NextLink from "next/link"
 import { Controller, useForm } from "react-hook-form"
 
@@ -28,6 +27,7 @@ import {
   toast,
 } from "@nisomnia/ui/next-client"
 
+import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const Editor = dynamic(() =>
@@ -322,7 +322,7 @@ export const CreateArticleForm: React.FunctionComponent<
                         triggerContent={
                           <>
                             <div className="relative">
-                              <NextImage
+                              <Image
                                 src={selectedFeaturedImageUrl}
                                 className="!relative mt-2 aspect-video h-[120px] cursor-pointer rounded-sm border-2 border-muted/30 object-cover"
                                 fill

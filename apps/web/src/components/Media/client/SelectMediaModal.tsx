@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import dynamic from "next/dynamic"
-import NextImage from "next/image"
 
 import type { Media as MediaProps } from "@nisomnia/db"
 import { Icon, IconButton } from "@nisomnia/ui/next"
@@ -18,6 +17,7 @@ import {
   ScrollArea,
 } from "@nisomnia/ui/next-client"
 
+import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const UploadMedia = dynamic(() =>
@@ -106,7 +106,7 @@ export const SelectMediaModal: React.FunctionComponent<
                 <div className="mb-4 grid grid-cols-3 gap-3 lg:grid-cols-8">
                   {mediasData.map((media) => {
                     return (
-                      <NextImage
+                      <Image
                         key={media.id}
                         src={media.url}
                         alt={media.name}

@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import NextImage from "next/image"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
@@ -15,6 +14,7 @@ import {
 } from "@nisomnia/ui/next-client"
 import { copyToClipboard } from "@nisomnia/utils"
 
+import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 interface FormValues {
@@ -68,7 +68,7 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
   return (
     <div className="mt-4 flex flex-col space-x-8 md:flex-row md:justify-between">
       <div className="relative aspect-[4/4] h-[200px]">
-        <NextImage
+        <Image
           src={media.url}
           alt={media.name}
           className="relative rounded-sm border-2 border-muted/30 object-cover"

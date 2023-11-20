@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import dynamic from "next/dynamic"
-import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 
@@ -15,6 +14,7 @@ import {
   toast,
 } from "@nisomnia/ui/next-client"
 
+import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const ButtonDeleteMedia = dynamic(() =>
@@ -120,7 +120,7 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}
                   >
-                    <NextImage
+                    <Image
                       key={media.id}
                       src={media.url}
                       alt={media.name}
