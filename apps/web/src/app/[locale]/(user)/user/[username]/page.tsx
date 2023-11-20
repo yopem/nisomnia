@@ -83,7 +83,9 @@ export default async function UserPage({ params }: UserPageProps) {
               <div className="space-y-1">
                 <h2>{user?.name}</h2>
                 <p className="text-sm">@{user?.username}</p>
-                <p className="max-w-sm">{user?.about}</p>
+                <p className="line-clamp-3 max-w-sm break-words lg:max-w-md">
+                  {user?.about}
+                </p>
               </div>
             </div>
           </div>
