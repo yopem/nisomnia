@@ -92,7 +92,7 @@
 
 .article-container img,
 .ProseMirror img {
-  @apply rounded-md;
+  @apply !relative !h-auto !w-auto max-w-full rounded-md;
 }
 
 .article-container pre,

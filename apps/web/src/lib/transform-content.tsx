@@ -36,16 +36,12 @@ export const transformContent = async (html: string, title: string) => {
           if (props.src) {
             return (
               <React.Fragment>
-                {/* <div className="!relative w-full"> */}
                 <Image
                   src={props.src}
                   alt={title}
-                  className={cn(
-                    props.className,
-                    "!relative w-full rounded-md object-cover",
-                  )}
+                  className={cn(props.className)}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
                 />
-                {/* </div> */}
               </React.Fragment>
             )
           }
