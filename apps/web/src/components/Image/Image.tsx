@@ -28,7 +28,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
       src={src}
       placeholder={placeholder}
       blurDataURL={rgbDataURL(218, 218, 218)}
-      quality={60}
+      quality={70}
       sizes={sizes}
       fill={fill}
       {...rest}

@@ -26,7 +26,7 @@
     "@nisomnia/eslint-config": "workspace:*",
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
-    "eslint": "^8.53.0",
+    "eslint": "^8.54.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
@@ -34,7 +34,7 @@
     "@nisomnia/db": "workspace:*",
     "@nisomnia/utils": "workspace:*",
     "@t3-oss/env-nextjs": "^0.7.1",
-    "next": "^14.0.2",
+    "next": "^14.0.3",
     "next-auth": "4.24.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"

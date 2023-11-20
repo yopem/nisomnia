@@ -9,12 +9,6 @@ import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon, IconButton } from "@nisomnia/ui/next"
 import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 
-const LanguageSwitcher = dynamic(() =>
-  import("./LanguageSwitcher").then((mod) => mod.LanguageSwitcher),
-)
-const LanguageSwitcherMobile = dynamic(() =>
-  import("./LanguageSwitcherMobile").then((mod) => mod.LanguageSwitcherMobile),
-)
 const Logo = dynamic(() => import("@/components/Brand").then((mod) => mod.Logo))
 const SearchTopNav = dynamic(() =>
   import("./SearchTopNav").then((mod) => mod.SearchTopNav),
@@ -60,7 +54,6 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
             </DrawerTrigger>
             <DrawerContent position="left" className="w-full md:w-[250px]">
               <div className="flex flex-col items-start">
-                <LanguageSwitcherMobile />
                 <Button asChild variant="ghost">
                   <NextLink href="/">Home</NextLink>
                 </Button>
@@ -86,7 +79,6 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
           </div>
         </div>
         <div className="flex justify-center">
-          <LanguageSwitcher />
           <IconButton
             variant="ghost"
             aria-label="Search"

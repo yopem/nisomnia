@@ -6,6 +6,7 @@ import { cn, Icon, IconButton } from "@nisomnia/ui/next"
 import { Separator } from "@nisomnia/ui/next-client"
 
 import { ThemeSwitcher } from "@/components/Theme/client"
+import { LanguageSwitcher } from "./client"
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -60,6 +61,7 @@ export const Footer: React.FunctionComponent<FooterProps> = (props) => {
           </IconButton>
           <Separator orientation="vertical" className="mx-4 hidden lg:block" />
           <ThemeSwitcher />
+          <LanguageSwitcher />
         </div>
       </div>
     </footer>

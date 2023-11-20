@@ -125,7 +125,7 @@ export const ArticleContent: React.FunctionComponent<ArticleContentProps> = (
             sizes="(max-width: 720px) 100vw, 50vw"
             src={article.featured_image.url}
             alt={article.title}
-            className="aspect-video w-full rounded-md"
+            className="w-full rounded-md object-cover"
           />
         </div>
         <div className="article-container" id="container">

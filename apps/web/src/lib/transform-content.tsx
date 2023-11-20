@@ -36,17 +36,16 @@ export const transformContent = async (html: string, title: string) => {
           if (props.src) {
             return (
               <React.Fragment>
-                {props.className ? (
-                  <Image
-                    className={cn(`${props.className} !relative`)}
-                    src={props.src}
-                    alt={title}
-                  />
-                ) : (
-                  <div className="relative aspect-video w-full">
-                    <Image src={props.src} alt={title} />
-                  </div>
-                )}
+                {/* <div className="!relative w-full"> */}
+                <Image
+                  src={props.src}
+                  alt={title}
+                  className={cn(
+                    props.className,
+                    "!relative w-full rounded-md object-cover",
+                  )}
+                />
+                {/* </div> */}
               </React.Fragment>
             )
           }

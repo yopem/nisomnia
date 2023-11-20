@@ -4,7 +4,9 @@ export default createMiddleware({
   locales: ["id", "en"],
   defaultLocale: "id",
   localePrefix: "never",
-  localeDetection: true,
+  //NOTE: disable this if language switcher work
+  localeDetection: false,
+  alternateLinks: false,
 })
 
 export const config = {

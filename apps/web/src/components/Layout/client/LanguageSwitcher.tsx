@@ -16,7 +16,7 @@ export const LanguageSwitcher: React.FunctionComponent = () => {
   const pathname = usePathname()
 
   return (
-    <div className="hidden md:flex">
+    <div className="flex">
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost">
