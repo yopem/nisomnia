@@ -14,9 +14,6 @@ import {
 
 import { Image } from "@/components/Image"
 
-const AuthModal = dynamic(() =>
-  import("@/components/Auth/client").then((mod) => mod.AuthModal),
-)
 const SignOutButton = dynamic(() =>
   import("@/components/Auth/client").then((mod) => mod.SignOutButton),
 )
@@ -59,7 +56,9 @@ export const UserMenu = ({ session }: { session: Session | null }) => {
           </PopoverContent>
         </Popover>
       ) : (
-        <AuthModal />
+        <NextLink href="/auth/sign-in" className={itemClass}>
+          <Icon.SignIn />
+        </NextLink>
       )}
     </>
   )
