@@ -115,7 +115,7 @@ export default async function ArticleSlugPage({
       />
       <ArticleJsonLd
         useAppDir={true}
-        url={`${env.NEXT_PUBLIC_DOMAIN}/article/${article.slug}`}
+        url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
         title={article.meta_title ?? article.title}
         images={[article.featured_image.url]}
         datePublished={JSON.stringify(article.createdAt)}

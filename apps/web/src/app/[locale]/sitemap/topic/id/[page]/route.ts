@@ -20,7 +20,7 @@ function generateSiteMap(
          ?.map((topic) => {
            return `
        <url>
-           <loc>https://${`${env.NEXT_PUBLIC_DOMAIN}/topic/${topic.slug}`}</loc>
+           <loc>${`${env.NEXT_PUBLIC_SITE_URL}/topic/${topic.slug}`}</loc>
            <lastmod>${topic.updatedAt}</lastmod>
        </url>
      `

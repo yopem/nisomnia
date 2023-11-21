@@ -26,9 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (typeof articlePageCountId === "number") {
     for (let i = 0; i < articlePageCountId; i++) {
       const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/article/id/${
-          i + 1
-        }`}`,
+        url: `${env.NEXT_PUBLIC_SITE_URL}/sitemap/article/id/${i + 1}`,
         lastModified: new Date()
           .toISOString()
           .split("T")[0] as unknown as string,
@@ -41,9 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (typeof articlePageCountEn === "number") {
     for (let i = 0; i < articlePageCountEn; i++) {
       const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/article/en/${
-          i + 1
-        }`}`,
+        url: `${env.NEXT_PUBLIC_SITE_URL}/sitemap/article/en/${i + 1}`,
         lastModified: new Date()
           .toISOString()
           .split("T")[0] as unknown as string,
@@ -56,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (typeof topicPageCountId === "number") {
     for (let i = 0; i < topicPageCountId; i++) {
       const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/topic/id/${i + 1}`}`,
+        url: `${env.NEXT_PUBLIC_SITE_URL}/sitemap/topic/id/${i + 1}`,
         lastModified: new Date()
           .toISOString()
           .split("T")[0] as unknown as string,
@@ -69,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (typeof topicPageCountEn === "number") {
     for (let i = 0; i < topicPageCountEn; i++) {
       const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/topic/en/${i + 1}`}`,
+        url: `${env.NEXT_PUBLIC_SITE_URL}/sitemap/topic/en/${i + 1}`,
         lastModified: new Date()
           .toISOString()
           .split("T")[0] as unknown as string,
@@ -79,7 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   const routes = ["", "/article"].map((route) => ({
-    url: `${env.NEXT_PUBLIC_DOMAIN}${route}`,
+    url: `${env.NEXT_PUBLIC_SITE_URL}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))
 
