@@ -225,7 +225,7 @@ export const articleRouter = createTRPCRouter({
             {
               topics: {
                 some: {
-                  title: "Teknologi" && "Technology",
+                  title: "Teknologi" || "Technology",
                 },
               },
             },
@@ -293,7 +293,7 @@ export const articleRouter = createTRPCRouter({
               status: "published",
               topics: {
                 some: {
-                  title: "Teknologi" && "Technology",
+                  title: "Teknologi" || "Technology",
                 },
               },
             },
