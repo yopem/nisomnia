@@ -8,11 +8,9 @@ export interface ShareButtonProps {
   variant?: "solid" | "outline" | "ghost"
   onClick?: () => void
   className?: string
-  text?: string
   icon?: string | React.ReactElement
   subject?: string | null
   message?: string | null
-  sharetext?: string | null
   mediaSrc?: string | null
   baseUrl?: string | null
   caption?: string | null
@@ -22,13 +20,13 @@ export interface ShareButtonProps {
 export const ShareButton: React.FunctionComponent<ShareButtonProps> = (
   props,
 ) => {
-  const { onClick, text, icon, className, url } = props
+  const { onClick, title, icon, className, url } = props
   return (
     <NextLink
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      title={text}
+      title={title}
       href={url}
       className={cn(
         "flex items-center rounded-lg px-3 py-2 text-base font-normal text-foreground hover:bg-accent",
@@ -36,7 +34,6 @@ export const ShareButton: React.FunctionComponent<ShareButtonProps> = (
       )}
     >
       {icon}
-      <div className="ml-1 flex-1 whitespace-nowrap">{text}</div>
     </NextLink>
   )
 }

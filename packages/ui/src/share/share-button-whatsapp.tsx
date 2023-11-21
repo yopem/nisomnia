@@ -3,20 +3,21 @@ import * as React from "react"
 import { Icon } from "../icon"
 import { ShareButton, type ShareButtonProps } from "./share-button"
 
-export const ShareButtonWhatsApp: React.FunctionComponent<ShareButtonProps> = (
-  props,
-) => {
-  const { url, onClick, text, message, ...rest } = props
+interface ShareButtonWhatsAppProps extends ShareButtonProps {
+  text: string
+}
+
+export const ShareButtonWhatsApp: React.FunctionComponent<
+  ShareButtonWhatsAppProps
+> = (props) => {
+  const { url, onClick, title, text, ...rest } = props
 
   return (
     <ShareButton
       onClick={onClick}
       icon={<Icon.WhatsApp />}
-      message={message}
-      text={text ?? "WhatsApp"}
-      url={
-        "whatsapp://send?text=" + encodeURI(message!) + "%20" + encodeURI(url)
-      }
+      title={title ?? "WhatsApp"}
+      url={"whatsapp://send?text=" + encodeURI(text) + "%20" + encodeURI(url)}
       {...rest}
     />
   )

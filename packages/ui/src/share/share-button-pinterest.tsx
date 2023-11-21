@@ -3,19 +3,23 @@ import * as React from "react"
 import { Icon } from "../icon"
 import { ShareButton, type ShareButtonProps } from "./share-button"
 
-export const ShareButtonPinterest: React.FunctionComponent<ShareButtonProps> = (
-  props,
-) => {
-  const { url, onClick, text, sharetext, mediaSrc, ...rest } = props
+interface ShareButtonPinterestProps extends ShareButtonProps {
+  text: string
+}
+
+export const ShareButtonPinterest: React.FunctionComponent<
+  ShareButtonPinterestProps
+> = (props) => {
+  const { url, onClick, title, text, mediaSrc, ...rest } = props
 
   return (
     <ShareButton
       onClick={onClick}
       icon={<Icon.Pinterest />}
-      text={text ?? "Pinterest"}
+      title={title ?? "Pinterest"}
       url={`https://pinterest.com/pin/create/button/?url=${encodeURI(
         url,
-      )}&media=${encodeURI(mediaSrc!)}&description=${encodeURI(sharetext!)}`}
+      )}&media=${encodeURI(mediaSrc!)}&description=${encodeURI(text)}`}
       {...rest}
     />
   )

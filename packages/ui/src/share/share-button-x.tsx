@@ -3,19 +3,22 @@ import * as React from "react"
 import { Icon } from "../icon"
 import { ShareButton, type ShareButtonProps } from "./share-button"
 
-export const ShareButtonTwitter: React.FunctionComponent<ShareButtonProps> = (
+interface ShareButtonXProps extends ShareButtonProps {
+  text: string
+}
+
+export const ShareButtonX: React.FunctionComponent<ShareButtonXProps> = (
   props,
 ) => {
-  const { url, onClick, text, sharetext, ...rest } = props
+  const { url, onClick, text, title, ...rest } = props
 
   return (
     <ShareButton
       onClick={onClick}
-      icon={<Icon.Twitter />}
-      text={text ?? "Twitter"}
-      sharetext={sharetext}
+      icon={<Icon.X />}
+      title={title ?? "X"}
       url={`https://twitter.com/intent/tweet/?text=${encodeURI(
-        sharetext!,
+        text,
       )}&url=${encodeURI(url)}`}
       {...rest}
     />

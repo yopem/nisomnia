@@ -15,11 +15,9 @@ import {
 } from "@nisomnia/ui/next"
 
 import { Ad } from "@/components/Ad"
-import {
-  ArticleMenu,
-  InfiniteScrollArticles,
-} from "@/components/Article/client"
+import { InfiniteScrollArticles } from "@/components/Article/client"
 import { Image } from "@/components/Image"
+import { Share } from "@/components/Share/client"
 import { parseAndSplitHTMLString } from "@/lib/content"
 import { readingTime } from "@/lib/reading-time"
 import { transformContent } from "@/lib/transform-content"
@@ -194,13 +192,6 @@ export default async function ArticleSlugPage({
                 return <Ad key={ad.id} ad={ad} />
               })}
             {secondContent as React.ReactNode}
-            <ArticleMenu
-              url={`http://${env.NEXT_PUBLIC_DOMAIN}/${locale}/article/${article.slug}`}
-              text={article.title}
-              mediaSrc={article.featured_image.url}
-              className="fixed"
-              article_id={article.id}
-            />
           </div>
           <div className="my-4 space-x-2">
             {article.topics.map((topic) => {
@@ -208,8 +199,8 @@ export default async function ArticleSlugPage({
                 <Button
                   key={topic.slug}
                   size="sm"
-                  variant="ghost"
-                  className="mx-2 rounded-full uppercase"
+                  variant="outline"
+                  className="rounded-full uppercase"
                 >
                   <NextLink href={`/article/topic/${topic.slug}`}>
                     {topic.title}
@@ -217,11 +208,17 @@ export default async function ArticleSlugPage({
                 </Button>
               )
             })}
+          </div>
+          <div className="my-4">
             {adsSingleArticleBelowContent.length > 0 &&
               adsSingleArticleBelowContent.map((ad) => {
                 return <Ad key={ad.id} ad={ad} />
               })}
           </div>
+          <Share
+            url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
+            text={article.title}
+          />
           <div className="flex w-full flex-col space-y-4">
             <h3>You may also like</h3>
             <InfiniteScrollArticles locale={locale} />

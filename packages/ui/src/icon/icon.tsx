@@ -75,6 +75,7 @@ import {
   LuX,
   LuYoutube,
 } from "react-icons/lu"
+import { RiTwitterXLine } from "react-icons/ri"
 
 import { IndonesiaFlag, USAFlag } from "./flag"
 
@@ -169,5 +170,6 @@ export const Icon = {
   Visibility: LuEye,
   VisibilityOff: LuEyeOff,
   WhatsApp: FaWhatsapp,
+  X: RiTwitterXLine,
   Youtube: LuYoutube,
 }
