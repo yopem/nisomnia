@@ -109,7 +109,7 @@ export const topicRouter = createTRPCRouter({
       return await ctx.db.topic.findMany({
         where: { language: input.language },
         orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
         skip: (input.page - 1) * input.per_page,
         take: input.per_page,
