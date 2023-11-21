@@ -15,3 +15,4 @@
 - [ ] fix: dashboard add topic cannot find topic type all
 - [ ] fix: switch language button not working
 - [ ] fix: dashboard theme switch button
+- [ ] feat: add dashboard comment
