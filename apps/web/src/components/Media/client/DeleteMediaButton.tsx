@@ -32,7 +32,7 @@ export const DeleteMediaButton: React.FunctionComponent<
         <Icon.Delete aria-label="Delete Media" />
       </IconButton>
       <AlertDelete
-        desc={<>{description}</>}
+        description={<>{description}</>}
         isOpen={openModal}
         className="max-w-[366px]"
         onDelete={action}

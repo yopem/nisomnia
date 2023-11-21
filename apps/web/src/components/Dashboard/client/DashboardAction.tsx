@@ -84,7 +84,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
             onClick={() => setOpenModal(true)}
           />
           <AlertDelete
-            desc={<>{content}</>}
+            description={<>{content}</>}
             isOpen={openModal}
             className="max-w-[366px]"
             onDelete={onDelete}
