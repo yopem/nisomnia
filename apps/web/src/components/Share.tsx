@@ -1,16 +1,12 @@
-"use client"
-
 import * as React from "react"
 
 import {
-  Icon,
-  IconButton,
   ShareButtonFacebook,
   ShareButtonWhatsApp,
   ShareButtonX,
 } from "@nisomnia/ui/next"
-import { toast } from "@nisomnia/ui/next-client"
-import { copyToClipboard } from "@nisomnia/utils"
+
+import { CopyLinkButon } from "@/components/CopyLinkButton"
 
 interface ShareProps extends React.HTMLAttributes<HTMLDivElement> {
   url: string
@@ -30,20 +26,7 @@ export const Share: React.FunctionComponent<ShareProps> = (props) => {
           <ShareButtonFacebook url={url} />
           <ShareButtonX url={url} text={text} />
           <ShareButtonWhatsApp url={url} text={text} />
-          <IconButton
-            aria-label="Copy Link"
-            variant="ghost"
-            onClick={(e: React.MouseEvent<HTMLElement>) => {
-              e.preventDefault()
-              copyToClipboard(url)
-              toast({
-                variant: "success",
-                description: "Article Link Copied",
-              })
-            }}
-          >
-            <Icon.Copy />
-          </IconButton>
+          <CopyLinkButon url={url} />
         </div>
       </div>
     </div>

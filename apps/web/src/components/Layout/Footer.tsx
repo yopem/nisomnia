@@ -5,8 +5,8 @@ import env from "env"
 import { cn, Icon, IconButton } from "@nisomnia/ui/next"
 import { Separator } from "@nisomnia/ui/next-client"
 
+import { LanguageSwitcher } from "@/components/LanguageSwitcher"
 import { ThemeSwitcher } from "@/components/Theme/client"
-import { LanguageSwitcher } from "./client"
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 

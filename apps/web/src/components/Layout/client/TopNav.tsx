@@ -9,7 +9,8 @@ import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon, IconButton } from "@nisomnia/ui/next"
 import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 
-const Logo = dynamic(() => import("@/components/Brand").then((mod) => mod.Logo))
+import { Logo } from "@/components/Logo"
+
 const SearchTopNav = dynamic(() =>
   import("./SearchTopNav").then((mod) => mod.SearchTopNav),
 )

@@ -21,7 +21,7 @@ import {
   InfiniteScrollArticles,
 } from "@/components/Article/client"
 import { Image } from "@/components/Image"
-import { Share } from "@/components/Share/client"
+import { Share } from "@/components/Share"
 import { parseAndSplitHTMLString } from "@/lib/content"
 import { readingTime } from "@/lib/reading-time"
 import { transformContent } from "@/lib/transform-content"

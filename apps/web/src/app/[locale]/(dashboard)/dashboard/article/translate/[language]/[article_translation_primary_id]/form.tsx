@@ -23,7 +23,7 @@ import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const Editor = dynamic(() =>
-  import("@/components/Editor/client").then((mod) => mod.Editor),
+  import("@/components/Editor").then((mod) => mod.Editor),
 )
 const DashboardAddAuthors = dynamic(() =>
   import("@/components/Dashboard/client").then(

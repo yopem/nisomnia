@@ -6,7 +6,7 @@ import dynamic from "next/dynamic"
 import { Icon, IconButton } from "@nisomnia/ui/next"
 
 const AlertDelete = dynamic(() =>
-  import("@/components/Layout/client").then((mod) => mod.AlertDelete),
+  import("@/components/AlertDelete").then((mod) => mod.AlertDelete),
 )
 
 interface DeleteMediaButtonProps {

@@ -8,7 +8,7 @@ import NextLink from "next/link"
 import { cn, Icon } from "@nisomnia/ui/next"
 
 const AlertDelete = dynamic(() =>
-  import("@/components/Layout/client").then((mod) => mod.AlertDelete),
+  import("@/components/AlertDelete").then((mod) => mod.AlertDelete),
 )
 
 export interface DashboardActionProps

@@ -4,9 +4,9 @@ import NextLink from "next/link"
 import type { Session } from "@nisomnia/auth"
 import { Icon } from "@nisomnia/ui/next"
 
-import { Logo } from "@/components/Brand"
 import { Sidebar, SidebarItem, SidebarToggleItem } from "@/components/Layout"
 import { SidebarToggle } from "@/components/Layout/client"
+import { Logo } from "@/components/Logo"
 import { ThemeSwitcher } from "@/components/Theme/client"
 
 export interface DashboardSidebarProps {
