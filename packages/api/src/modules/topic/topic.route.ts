@@ -465,6 +465,7 @@ export const topicRouter = createTRPCRouter({
         select: {
           topic_translation_primary_id: true,
           id: true,
+          language: true,
           title: true,
           slug: true,
           type: true,

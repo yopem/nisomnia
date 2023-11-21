@@ -4,10 +4,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
-import type {
-  Topic as TopicProps,
-  TopicTranslationPrimary as TopicTranslationPrimaryProps,
-} from "@nisomnia/db"
+import type { Topic as TopicProps } from "@nisomnia/db"
 import {
   Button,
   Icon,
@@ -42,9 +39,20 @@ const DashboardAddLanguageAction = dynamic(() =>
   ),
 )
 
-type TopicDataProps = TopicProps & {
-  topic_translation_primary: TopicTranslationPrimaryProps & {
-    topics: TopicProps[]
+type TopicDataProps = Pick<
+  TopicProps,
+  | "topic_translation_primary_id"
+  | "id"
+  | "language"
+  | "title"
+  | "slug"
+  | "type"
+  | "createdAt"
+  | "updatedAt"
+> & {
+  topic_translation_primary: {
+    id: string
+    topics: Pick<TopicProps, "language" | "title">[]
   }
 }
 
@@ -108,15 +116,15 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
   }
 
   React.useEffect(() => {
-    if (searchQuery) {
-      setTopicsDataLangId(resultTopicsLangId as unknown as TopicDataProps[])
+    if (searchQuery && resultTopicsLangId) {
+      setTopicsDataLangId(resultTopicsLangId)
     } else {
-      setTopicsDataLangId(topicsLangId as unknown as TopicDataProps[])
+      if (topicsLangId) setTopicsDataLangId(topicsLangId)
     }
     if (searchQueryEn) {
-      setTopicsDataLangEn(resultTopicsLangEn as unknown as TopicDataProps[])
+      if (resultTopicsLangEn) setTopicsDataLangEn(resultTopicsLangEn)
     } else {
-      setTopicsDataLangEn(topicsLangEn as unknown as TopicDataProps[])
+      if (topicsLangEn) setTopicsDataLangEn(topicsLangEn)
     }
   }, [
     topicsLangId,
