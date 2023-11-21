@@ -49,6 +49,58 @@ export const mediaRouter = createTRPCRouter({
         },
       })
     }),
+  dashboardInfinite: adminProtectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            updatedAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const medias = await ctx.db.media.findMany({
+        where: {
+          AND: [cursorCondition],
+        },
+        take: limit + 1,
+        orderBy: {
+          updatedAt: "desc",
+        },
+        select: {
+          id: true,
+          name: true,
+          url: true,
+          type: true,
+          description: true,
+          author_id: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (medias.length > limit) {
+        const nextItem = medias.pop()
+        if (nextItem?.updatedAt) {
+          nextCursor = nextItem.updatedAt.toISOString()
+        }
+      }
+
+      return {
+        medias,
+        nextCursor,
+      }
+    }),
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -117,19 +169,10 @@ export const mediaRouter = createTRPCRouter({
   search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return await ctx.db.media.findMany({
       where: {
-        OR: [
-          {
-            name: {
-              search: input.split(" ").join(" & "),
-            },
-            url: {
-              search: input.split(" ").join(" & "),
-            },
-            description: {
-              search: input.split(" ").join(" & "),
-            },
-          },
-        ],
+        name: {
+          contains: input,
+          mode: "insensitive",
+        },
       },
       select: {
         id: true,

@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import dynamic from "next/dynamic"
+import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 
-import type { Media as MediaProps } from "@nisomnia/db"
-import { Button, Icon, IconButton } from "@nisomnia/ui/next"
+import { Button, Icon } from "@nisomnia/ui/next"
 import {
   Input,
   InputGroup,
@@ -14,36 +14,25 @@ import {
   toast,
 } from "@nisomnia/ui/next-client"
 
-import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const DeleteMediaButton = dynamic(() =>
   import("@/components/Media/client").then((mod) => mod.DeleteMediaButton),
 )
-
-const CopyMediaLinkButton = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.CopyMediaLinkButton),
+const InfiniteScrollMedia = dynamic(() =>
+  import("@/components/Media/client").then((mod) => mod.InfiniteScrollMedia),
 )
 
 export const MediaLibraryDashboard: React.FunctionComponent = () => {
-  const [page, setPage] = React.useState<number>(1)
-  const [searchQuery, setSearchQuery] = React.useState<string>("")
-  const [mediasData, setMediasData] = React.useState<MediaProps[]>([])
+  const [searchQuery, setSearchQuery] = React.useState<string | null>(null)
 
-  const { data: mediasCount } = api.media.count.useQuery()
+  const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setSearchQuery(e.target.value)
+  }
 
-  const {
-    data: medias,
-    isLoading,
-    refetch,
-  } = api.media.all.useQuery(
-    { page: page, per_page: 10 },
-    { keepPreviousData: true },
-  )
-
-  const lastPage = mediasCount && Math.ceil(mediasCount / 10)
-
-  const { data: searchResults } = api.media.search.useQuery(searchQuery)
+  const { data: resultsMedias, refetch: updateResultsMedias } =
+    api.media.search.useQuery(searchQuery ?? "")
 
   const handleDelete = async (mediaName: string) => {
     const { data } = await axios.delete(`/api/media/name/${mediaName}`)
@@ -52,31 +41,13 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
         variant: "success",
         description: "Media deleted successfully",
       })
-      refetch()
+      updateResultsMedias()
+      updateResultsMedias()
     }
   }
-
-  const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    setSearchQuery(e.target.value)
-  }
-
-  React.useEffect(() => {
-    if (searchQuery) {
-      setMediasData(searchResults as unknown as MediaProps[])
-    } else {
-      setMediasData(medias as unknown as MediaProps[])
-    }
-  }, [searchQuery, searchResults, medias])
-
-  React.useEffect(() => {
-    if (page !== 1 && page > lastPage!) {
-      setPage((old) => Math.max(old - 1, 0))
-    }
-  }, [lastPage, page])
 
   return (
-    <>
+    <div className="mx-4 flex w-full flex-col">
       <div className="mt-4 flex items-end justify-between">
         <div>
           <NextLink aria-label="Add New Media" href="/dashboard/media/new">
@@ -87,11 +58,7 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}
         >
           <InputGroup>
-            <Input
-              value={searchQuery}
-              onChange={handleSearchOnChange}
-              type="text"
-            />
+            <Input type="text" onChange={handleSearchOnChange} />
             <InputRightElement>
               <Button variant={null}>
                 <Icon.Search />
@@ -100,27 +67,24 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
           </InputGroup>
         </form>
       </div>
-      {!isLoading && mediasData !== undefined && mediasData.length > 0 ? (
+      {searchQuery && resultsMedias && resultsMedias.length > 0 ? (
         <>
           <div className="my-3">
             <div className="mb-4 grid grid-cols-3 gap-3 md:grid-cols-5">
-              {mediasData.map((media: MediaProps) => (
+              {resultsMedias?.map((media) => (
                 <div
                   className="relative overflow-hidden rounded-[18px]"
                   key={media.id}
                 >
                   <DeleteMediaButton
                     description={media.name}
-                    action={async () => {
-                      await handleDelete(media.name)
-                    }}
+                    action={() => handleDelete(media.name)}
                   />
-                  <CopyMediaLinkButton url={media.url} />
                   <NextLink
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}
                   >
-                    <Image
+                    <NextImage
                       key={media.id}
                       src={media.url}
                       alt={media.name}
@@ -134,37 +98,25 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
               ))}
             </div>
           </div>
-          {page && !searchQuery && (
-            <div className="align-center mt-2 flex items-center justify-center space-x-2">
-              {page !== 1 && (
-                <IconButton
-                  variant="ghost"
-                  onClick={() => setPage((old) => Math.max(old - 1, 0))}
-                  disabled={page === 1}
-                  className="rounded-full"
-                >
-                  <Icon.ChevronLeft />
-                </IconButton>
-              )}
-              {page !== lastPage && (
-                <IconButton
-                  variant="ghost"
-                  onClick={() => {
-                    setPage((old) => old + 1)
-                  }}
-                  className="rounded-full"
-                >
-                  <Icon.ChevronRight />
-                </IconButton>
-              )}
-            </div>
-          )}
         </>
       ) : (
-        <div className="my-48 flex items-center justify-center">
-          <h2>Medias Not found</h2>
-        </div>
+        searchQuery && (
+          <div className="my-48 flex items-center justify-center">
+            <h2>Medias Not found</h2>
+          </div>
+        )
       )}
-    </>
+      {!searchQuery ? (
+        <div className="my-3">
+          <InfiniteScrollMedia index={2} isLibrary={true} />
+        </div>
+      ) : (
+        !searchQuery && (
+          <div className="my-48 flex items-center justify-center">
+            <h2 className="text-center font-bold">Medias Not found</h2>
+          </div>
+        )
+      )}
+    </div>
   )
 }

@@ -14,13 +14,13 @@ interface FormValues {
 }
 
 interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
-  addLoadMedias: () => void
+  setToggleUpload: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
   props,
 ) => {
-  const { addLoadMedias, ...rest } = props
+  const { setToggleUpload, ...rest } = props
   const [showUploadForm, setShowUploadForm] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -49,7 +49,7 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
       })
 
       if (res) {
-        addLoadMedias()
+        setToggleUpload((prev) => !prev)
         reset()
         toast({ variant: "success", description: "Upload Media Successfuly!" })
       }
