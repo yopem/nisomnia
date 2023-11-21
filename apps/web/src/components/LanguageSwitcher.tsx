@@ -3,6 +3,7 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { useParams, usePathname } from "next/navigation"
+import env from "env"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 import {
@@ -29,10 +30,10 @@ export const LanguageSwitcher: React.FunctionComponent = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="flex w-[50px] flex-col space-y-4">
-          <NextLink href={pathname} locale="id">
+          <NextLink href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`} locale="id">
             <Icon.IndonesiaFlag className="mr-2 h-5 w-5" />
           </NextLink>
-          <NextLink href={pathname} locale="en">
+          <NextLink href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`} locale="en">
             <Icon.USAFlag className="mr-2 h-5 w-5" />
           </NextLink>
         </PopoverContent>
