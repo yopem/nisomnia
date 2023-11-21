@@ -227,9 +227,15 @@ export const articleCommentRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.articleComment.count()
   }),
-  countByArticleId: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.articleComment.count()
-  }),
+  countByArticleId: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.articleComment.count({
+        where: {
+          AND: [{ article_id: input, reply_to: null }],
+        },
+      })
+    }),
   create: protectedProcedure
     .input(createArticleCommentSchema)
     .mutation(async ({ ctx, input }) => {

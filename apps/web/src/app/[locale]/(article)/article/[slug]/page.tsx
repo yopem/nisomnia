@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import env from "env"
 import { ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
 
+import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 import {
   Breadcrumb,
@@ -15,7 +16,10 @@ import {
 } from "@nisomnia/ui/next"
 
 import { Ad } from "@/components/Ad"
-import { InfiniteScrollArticles } from "@/components/Article/client"
+import {
+  ArticleComment,
+  InfiniteScrollArticles,
+} from "@/components/Article/client"
 import { Image } from "@/components/Image"
 import { Share } from "@/components/Share/client"
 import { parseAndSplitHTMLString } from "@/lib/content"
@@ -58,6 +62,7 @@ export default async function ArticleSlugPage({
 }: ArticleSlugPageProps) {
   const { locale, slug } = params
 
+  const user = await getCurrentUser()
   const article = await api.article.bySlug.query(slug)
 
   if (!article) {
@@ -219,6 +224,7 @@ export default async function ArticleSlugPage({
             url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
             text={article.title}
           />
+          <ArticleComment article_id={article.id} user={user!} />
           <div className="flex w-full flex-col space-y-4">
             <h3>You may also like</h3>
             <InfiniteScrollArticles locale={locale} />
