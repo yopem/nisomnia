@@ -288,7 +288,10 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   updateByAdmin: adminProtectedProcedure
@@ -298,7 +301,10 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   delete: adminProtectedProcedure

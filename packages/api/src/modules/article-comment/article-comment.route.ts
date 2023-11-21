@@ -256,7 +256,10 @@ export const articleCommentRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   // TODO: make users can delete their own comments

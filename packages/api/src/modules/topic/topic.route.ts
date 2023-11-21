@@ -619,7 +619,10 @@ export const topicRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   translate: adminProtectedProcedure

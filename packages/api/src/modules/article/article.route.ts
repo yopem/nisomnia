@@ -671,6 +671,7 @@ export const articleRouter = createTRPCRouter({
           editors: {
             connect: input.editors.map((editorId) => ({ id: editorId })),
           },
+          updatedAt: new Date(),
         },
       })
     }),

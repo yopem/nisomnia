@@ -81,7 +81,10 @@ export const adRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   delete: adminProtectedProcedure

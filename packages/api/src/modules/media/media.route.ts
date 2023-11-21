@@ -161,7 +161,10 @@ export const mediaRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {
+          ...input,
+          updatedAt: new Date(),
+        },
       })
     }),
   deleteById: adminProtectedProcedure
