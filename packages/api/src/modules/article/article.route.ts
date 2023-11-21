@@ -221,6 +221,84 @@ export const articleRouter = createTRPCRouter({
             },
             cursorCondition,
           ],
+          NOT: [
+            {
+              topics: {
+                some: {
+                  title: "Teknologi" && "Technology",
+                },
+              },
+            },
+          ],
+        },
+        take: limit + 1,
+        orderBy: {
+          updatedAt: "desc",
+        },
+        select: {
+          article_translation_primary_id: true,
+          id: true,
+          title: true,
+          language: true,
+          excerpt: true,
+          slug: true,
+          status: true,
+          featured_image: {
+            select: {
+              url: true,
+            },
+          },
+          updatedAt: true,
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (articles.length > limit) {
+        const nextItem = articles.pop()
+        if (nextItem?.updatedAt) {
+          nextCursor = nextItem.updatedAt.toISOString()
+        }
+      }
+
+      return {
+        articles,
+        nextCursor,
+      }
+    }),
+  technoByLanguageInfinite: publicProcedure
+    .input(
+      z.object({
+        language: z.enum(LANGUAGE_TYPE),
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            updatedAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const articles = await ctx.db.article.findMany({
+        where: {
+          AND: [
+            {
+              language: input.language,
+              status: "published",
+              topics: {
+                some: {
+                  title: "Teknologi" && "Technology",
+                },
+              },
+            },
+            cursorCondition,
+          ],
         },
         take: limit + 1,
         orderBy: {
