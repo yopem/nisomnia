@@ -124,6 +124,10 @@ model ArticleComment {
   author_id  String
   author     User    @relation(name: "article_comment_authors", fields: [author_id], references: [id])
 
+  reply_to    ArticleComment?  @relation("article_comment_replies", fields: [reply_to_id], references: [id])
+  reply_to_id String?
+  replies     ArticleComment[] @relation("article_comment_replies")
+
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 

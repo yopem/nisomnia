@@ -67,6 +67,7 @@ export const userRouter = createTRPCRouter({
             where: {
               language: input.language,
             },
+            take: 6,
             select: {
               title: true,
               language: true,

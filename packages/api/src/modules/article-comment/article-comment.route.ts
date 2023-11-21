@@ -72,7 +72,9 @@ export const articleCommentRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.db.articleComment.findMany({
-        where: { article_id: input.article_id },
+        where: {
+          AND: [{ article_id: input.article_id, reply_to: null }],
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -81,6 +83,23 @@ export const articleCommentRouter = createTRPCRouter({
         select: {
           id: true,
           content: true,
+          replies: {
+            select: {
+              id: true,
+              content: true,
+              article_id: true,
+              author_id: true,
+              reply_to_id: true,
+              createdAt: true,
+              updatedAt: true,
+              author: {
+                select: {
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
           author: {
             select: {
               name: true,
@@ -91,6 +110,83 @@ export const articleCommentRouter = createTRPCRouter({
         },
       })
     }),
+  byArticleIdInfinite: publicProcedure
+    .input(
+      z.object({
+        article_id: z.string(),
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            createdAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const articleComments = await ctx.db.articleComment.findMany({
+        where: {
+          AND: [
+            {
+              article_id: input.article_id,
+              reply_to: null,
+            },
+            cursorCondition,
+          ],
+        },
+        take: limit + 1,
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          content: true,
+          author: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+          replies: {
+            select: {
+              id: true,
+              content: true,
+              article_id: true,
+              author_id: true,
+              reply_to_id: true,
+              createdAt: true,
+              updatedAt: true,
+              author: {
+                select: {
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          createdAt: true,
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (articleComments.length > limit) {
+        const nextItem = articleComments.pop()
+        if (nextItem?.createdAt) {
+          nextCursor = nextItem.createdAt.toISOString()
+        }
+      }
+
+      return {
+        articleComments,
+        nextCursor,
+      }
+    }),
   byId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return await ctx.db.articleComment.findMany({
       where: { id: input },
@@ -100,6 +196,23 @@ export const articleCommentRouter = createTRPCRouter({
       select: {
         id: true,
         content: true,
+        replies: {
+          select: {
+            id: true,
+            content: true,
+            article_id: true,
+            author_id: true,
+            reply_to_id: true,
+            createdAt: true,
+            updatedAt: true,
+            author: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
         author: {
           select: {
             name: true,
@@ -124,6 +237,7 @@ export const articleCommentRouter = createTRPCRouter({
         data: {
           article_id: input.article_id,
           content: input.content,
+          reply_to_id: input.reply_to_id,
           author_id: ctx.session.user.id,
         },
       })

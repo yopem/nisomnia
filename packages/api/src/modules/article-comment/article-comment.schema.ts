@@ -12,6 +12,12 @@ const articleCommentInput = {
     required_error: "Article Id is required",
     invalid_type_error: "Article Id must be a string",
   }),
+  reply_to_id: z
+    .string({
+      invalid_type_error: "Article Comment Id must be a string",
+    })
+    .optional()
+    .nullish(),
 }
 
 const updateArticleCommentInput = {
