@@ -69,19 +69,19 @@ export default async function UserPage({ params }: UserPageProps) {
       />
       <div className="space-y-3">
         <div className="rounded border border-border p-4">
-          <div className=" flex justify-between">
-            <div className="flex flex-row space-x-7">
+          <div className="flex justify-between">
+            <div className="flex flex-row space-x-2">
               {user?.image ? (
                 <Image
                   src={user?.image}
                   alt={user?.name!}
-                  className="!relative h-[100px] w-[100px] rounded-full border-2 border-border object-cover shadow"
+                  className="!relative !h-14 !w-14 max-w-full rounded-full border-2 border-border object-cover shadow"
                 />
               ) : (
                 <Icon.User className="bg-muted/61 h-[100px] w-[100px] rounded-full border-2 border-border object-cover p-2 text-foreground/80 shadow" />
               )}
               <div className="space-y-1">
-                <h2>{user?.name}</h2>
+                <h2 className="text-2xl">{user?.name}</h2>
                 <p className="text-sm">@{user?.username}</p>
                 <p className="line-clamp-3 max-w-sm break-words lg:max-w-md">
                   {user?.about}
@@ -90,8 +90,8 @@ export default async function UserPage({ params }: UserPageProps) {
             </div>
           </div>
           <div className="mt-3 flex items-center justify-center text-sm">
-            <Icon.Calendar className="mr0 h-4 w-4" />
-            <p>
+            <Icon.Calendar className="mr-0 h-3 w-3" />
+            <p className="text-xs">
               Member since{" "}
               {formatDate(user?.createdAt as unknown as string, "LL")}
             </p>
