@@ -2,6 +2,7 @@
 
 ## TODO:
 
+- [ ] feat: add sitemap
 - [x] fix: cannot find user, topic, editor when create article
 - [x] fix: delete on dashboard not working
 - [x] replace comment menu with our ui
