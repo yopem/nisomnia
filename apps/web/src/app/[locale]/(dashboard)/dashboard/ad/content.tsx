@@ -126,7 +126,7 @@ export const DashboardAdContent: React.FunctionComponent = () => {
                       <TableCell className="hidden whitespace-nowrap md:table-cell">
                         <div className="flex">
                           <span className="font-medium">
-                            {formatDate(ad.createdAt, "LL")}
+                            {formatDate(ad.updatedAt, "LL")}
                           </span>
                         </div>
                       </TableCell>

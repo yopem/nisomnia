@@ -352,7 +352,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
                 <TableCell className="hidden whitespace-nowrap md:table-cell">
                   <div className="flex">
                     <span className="font-medium">
-                      {formatDate(topic.createdAt, "LL")}
+                      {formatDate(topic.updatedAt, "LL")}
                     </span>
                   </div>
                 </TableCell>
