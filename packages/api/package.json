@@ -27,13 +27,13 @@
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
     "eslint": "^8.54.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   },
   "dependencies": {
     "@nisomnia/auth": "workspace:*",
     "@nisomnia/db": "workspace:*",
     "@nisomnia/utils": "workspace:*",
-    "@trpc/server": "^10.43.6"
+    "@trpc/server": "^10.43.7"
   },
   "prettier": "@nisomnia/prettier-config",
   "eslintConfig": {
