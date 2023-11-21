@@ -9,15 +9,15 @@ const AlertDelete = dynamic(() =>
   import("@/components/Layout/client").then((mod) => mod.AlertDelete),
 )
 
-interface ButtonDeleteMediaProps {
-  content: React.ReactNode
-  deleteMedia: () => void
+interface DeleteMediaButtonProps {
+  description: React.ReactNode
+  action: () => void
 }
 
-export const ButtonDeleteMedia: React.FunctionComponent<
-  ButtonDeleteMediaProps
+export const DeleteMediaButton: React.FunctionComponent<
+  DeleteMediaButtonProps
 > = (props) => {
-  const { content, deleteMedia } = props
+  const { description, action } = props
 
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   return (
@@ -32,10 +32,10 @@ export const ButtonDeleteMedia: React.FunctionComponent<
         <Icon.Delete aria-label="Delete Media" />
       </IconButton>
       <AlertDelete
-        desc={<>{content}</>}
+        desc={<>{description}</>}
         isOpen={openModal}
         className="max-w-[366px]"
-        onDelete={deleteMedia}
+        onDelete={action}
         onClose={() => setOpenModal(false)}
       />
     </div>

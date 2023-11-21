@@ -32,7 +32,7 @@ export const DeleteArticleCommentButton: React.FunctionComponent<
         Delete
       </Button>
       <AlertDelete
-        desc={<>{description}</>}
+        description={<>{description}</>}
         isOpen={openModal}
         className="max-w-[366px]"
         onDelete={action}

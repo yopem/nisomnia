@@ -1,6 +1,6 @@
 "use client"
 
-export * from "./ButtonDeleteMedia"
-export * from "./ButtonCopyLinkMedia"
+export * from "./CopyMediaLinkButton"
+export * from "./DeleteMediaButton"
 export * from "./SelectMediaModal"
 export * from "./UploadMedia"

@@ -6,12 +6,12 @@ import { Icon, IconButton } from "@nisomnia/ui/next"
 import { toast } from "@nisomnia/ui/next-client"
 import { copyToClipboard } from "@nisomnia/utils"
 
-interface ButtonnCopyLinkMediaProps {
+interface CopyMediaLinkButton {
   url: string
 }
 
-export const ButtonCopyLinkMedia: React.FunctionComponent<
-  ButtonnCopyLinkMediaProps
+export const CopyMediaLinkButton: React.FunctionComponent<
+  CopyMediaLinkButton
 > = (props) => {
   const { url } = props
 

@@ -17,12 +17,12 @@ import {
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const ButtonDeleteMedia = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.ButtonDeleteMedia),
+const DeleteMediaButton = dynamic(() =>
+  import("@/components/Media/client").then((mod) => mod.DeleteMediaButton),
 )
 
-const ButtonCopyLinkMedia = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.ButtonCopyLinkMedia),
+const CopyMediaLinkButton = dynamic(() =>
+  import("@/components/Media/client").then((mod) => mod.CopyMediaLinkButton),
 )
 
 export const MediaLibraryDashboard: React.FunctionComponent = () => {
@@ -109,13 +109,13 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
                   className="relative overflow-hidden rounded-[18px]"
                   key={media.id}
                 >
-                  <ButtonDeleteMedia
-                    content={media.name}
-                    deleteMedia={async () => {
+                  <DeleteMediaButton
+                    description={media.name}
+                    action={async () => {
                       await handleDelete(media.name)
                     }}
                   />
-                  <ButtonCopyLinkMedia url={media.url} />
+                  <CopyMediaLinkButton url={media.url} />
                   <NextLink
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}

@@ -15,7 +15,7 @@ import {
 
 interface AlertDeleteProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
-  desc?: React.ReactNode
+  description?: React.ReactNode
   isOpen: boolean
   onClose: () => void
   onDelete: () => void
@@ -24,7 +24,7 @@ interface AlertDeleteProps extends React.HTMLAttributes<HTMLDivElement> {
 export const AlertDelete: React.FunctionComponent<AlertDeleteProps> = (
   props,
 ) => {
-  const { desc, isOpen, onClose, className, onDelete } = props
+  const { description, isOpen, onClose, className, onDelete } = props
 
   function handleDeleteAndClose() {
     onDelete()
@@ -36,9 +36,9 @@ export const AlertDelete: React.FunctionComponent<AlertDeleteProps> = (
       <AlertDialog open={isOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete {desc}</AlertDialogTitle>
+            <AlertDialogTitle>Delete {description}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure to delete {desc}?
+              Are you sure to delete {description}?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
