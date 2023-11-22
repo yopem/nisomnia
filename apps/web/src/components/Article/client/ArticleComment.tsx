@@ -111,7 +111,7 @@ export const ArticleComment: React.FunctionComponent<
 
   return (
     <>
-      <div className={`block w-full bg-background`}>
+      <div id="comment" className="block w-full bg-background">
         <div className="mb-4 flex justify-between">
           <h5
             id="drawer-label"

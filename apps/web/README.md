@@ -7,7 +7,8 @@
 - [x] fix: delete on dashboard not working
 - [x] replace comment menu with our ui
 - [x] fix: cannot submit comment
-- [ ] improve: cannot use space on dashboard search
+- [x] feat: add dashboard comment
+- [ ] improve: cannot use space on dashboard image search
 - [ ] feat: add topic ordered by article count on topnav
 - [ ] feat: add hreflang / alternate link to article page
 - [ ] feat: move article to other version language when switch language
@@ -15,4 +16,3 @@
 - [ ] fix: dashboard add topic cannot find topic type all
 - [ ] fix: switch language button not working
 - [ ] fix: dashboard theme switch button
-- [ ] feat: add dashboard comment

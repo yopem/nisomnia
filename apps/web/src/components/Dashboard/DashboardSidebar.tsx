@@ -38,6 +38,9 @@ export const DashboardSidebar: React.FunctionComponent<
         <SidebarToggleItem href="/dashboard/article">
           All Articles
         </SidebarToggleItem>
+        <SidebarToggleItem href="/dashboard/article/comment">
+          Comments
+        </SidebarToggleItem>
         <SidebarToggleItem href="/dashboard/article/new">
           Add new article
         </SidebarToggleItem>
