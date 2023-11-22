@@ -19,9 +19,10 @@ export const metadata = {
 export default async function DashboardPage() {
   const totalArticles = await api.article.count.query()
   const totalTopics = await api.topic.count.query()
-  const totalAds = await api.ad.count.query()
   const totalMedias = await api.media.count.query()
+  const totalArticleComments = await api.articleComment.count.query()
   const totalUsers = await api.user.count.query()
+  const totalAds = await api.ad.count.query()
 
   return (
     <div className="my-8">
@@ -38,19 +39,25 @@ export default async function DashboardPage() {
           text="topics"
         />
         <DashboardBox
-          icon={<Icon.Ads className="h-5 w-5" />}
-          count={totalAds}
-          text="ads"
-        />
-        <DashboardBox
           icon={<Icon.Media className="h-5 w-5" />}
           count={totalMedias}
           text="medias"
         />
         <DashboardBox
+          icon={<Icon.Comment className="h-5 w-5" />}
+          count={totalArticleComments}
+          text="comments"
+        />
+
+        <DashboardBox
           icon={<Icon.Users className="h-5 w-5" />}
           count={totalUsers}
           text="users"
+        />
+        <DashboardBox
+          icon={<Icon.Ads className="h-5 w-5" />}
+          count={totalAds}
+          text="ads"
         />
       </div>
     </div>
