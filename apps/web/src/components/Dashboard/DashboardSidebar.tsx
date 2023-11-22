@@ -23,7 +23,7 @@ export const DashboardSidebar: React.FunctionComponent<
       <div className="flex items-center gap-2">
         <NextLink
           href="/"
-          className="my-0 flex items-center justify-center p-5"
+          className="my-0 flex items-center justify-center py-5"
         >
           <Logo />
         </NextLink>

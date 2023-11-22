@@ -8,6 +8,7 @@
 - [x] replace comment menu with our ui
 - [x] fix: cannot submit comment
 - [x] feat: add dashboard comment
+- [x] fix: dashboard theme switch button
 - [ ] improve: cannot use space on dashboard image search
 - [ ] feat: add topic ordered by article count on topnav
 - [ ] feat: add hreflang / alternate link to article page
@@ -15,4 +16,3 @@
 - [ ] fix: clean topic or article translation primary that doesnt have children
 - [ ] fix: dashboard add topic cannot find topic type all
 - [ ] fix: switch language button not working
-- [ ] fix: dashboard theme switch button
