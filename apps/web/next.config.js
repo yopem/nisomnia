@@ -32,7 +32,7 @@ const ContentSecurityPolicy = `
     connect-src *;
     font-src 'self';
     frame-src https://www.youtube.com https://platform.twitter.com https://www.youtube-nocookie.com;
-    script-src-elem 'self' 'unsafe-inline' https://www.youtube.com https://platform.twitter.com http://platform.twitter.com/widgets.js;
+    script-src-elem 'self' 'unsafe-inline' https://www.youtube.com https://platform.twitter.com https://platform.twitter.com/widgets.js https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID};
 `
 
 const securityHeaders = [
