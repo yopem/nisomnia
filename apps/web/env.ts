@@ -5,7 +5,6 @@ import { getProtocol } from "@nisomnia/utils"
 
 const env = createEnv({
   server: {
-    APP_ENV: z.string().min(1),
     DATABASE_URL: z.string().min(1),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
@@ -32,10 +31,8 @@ const env = createEnv({
     NEXT_PUBLIC_PINTEREST_USERNAME: z.string().min(1),
     NEXT_PUBLIC_TWITTER_USERNAME: z.string().min(1),
     NEXT_PUBLIC_ADSENSE_CLIENT_ID: z.string().min(1),
-    NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().min(1),
   },
   runtimeEnv: {
-    APP_ENV: process.env.APP_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
@@ -54,7 +51,6 @@ const env = createEnv({
     NEXT_PUBLIC_PINTEREST_USERNAME: process.env.NEXT_PUBLIC_PINTEREST_USERNAME,
     NEXT_PUBLIC_TWITTER_USERNAME: process.env.NEXT_PUBLIC_TWITTER_USERNAME,
     NEXT_PUBLIC_ADSENSE_CLIENT_ID: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID,
-    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
     R2_REGION: process.env.R2_REGION,
     R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
     R2_ACCESS_KEY: process.env.R2_ACCESS_KEY,
