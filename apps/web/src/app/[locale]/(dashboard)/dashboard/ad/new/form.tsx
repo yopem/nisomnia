@@ -123,7 +123,7 @@ export const CreateAdForm: React.FunctionComponent = () => {
                     Single Article (Above Content)
                   </SelectItem>
                   <SelectItem value="single_article_middle_content">
-                    Single Article (Inline Content)
+                    Single Article (Middle Content)
                   </SelectItem>
                   <SelectItem value="single_article_below_content">
                     Single Article (Below Content)
