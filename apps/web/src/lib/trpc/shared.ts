@@ -7,7 +7,7 @@ export const transformer = superjson
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return ""
-  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL
+  if (process.env.NEXT_PUBLIC_API) return process.env.NEXT_PUBLIC_API
   return `http://localhost:${process.env.PORT ?? 3000}`
 }
 

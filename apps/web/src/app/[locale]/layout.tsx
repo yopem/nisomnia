@@ -91,28 +91,24 @@ export default function RootLayout({
             </TRPCReactProvider>
           </AuthProvider>
         </ThemeProvider>
-        {process.env.APP_ENV === "production" && (
-          <>
-            <Script
-              id="adsense"
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-              crossOrigin="anonymous"
-              strategy="beforeInteractive"
-            />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-            />
-            <Script id="google-analytics">
-              {`
+        <Script
+          id="adsense"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+        />
+        <Script id="google-analytics">
+          {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
               `}
-            </Script>
-          </>
-        )}
+        </Script>
       </body>
     </html>
   )
