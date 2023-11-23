@@ -14,7 +14,6 @@ import {
   toast,
 } from "@nisomnia/ui/next-client"
 
-import { CopyMediaLinkButton } from "@/components/Media/client"
 import { api } from "@/lib/trpc/react"
 
 const DeleteMediaButton = dynamic(() =>
@@ -81,7 +80,6 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
                     description={media.name}
                     action={() => handleDelete(media.name)}
                   />
-                  <CopyMediaLinkButton url={media.url} />
                   <NextLink
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}
