@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  web:
+    container_name: web_container
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    networks:
+      - nisomnia_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+networks:
+  nisomnia_network:
+    driver: bridge
