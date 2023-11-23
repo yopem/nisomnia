@@ -1,8 +1,8 @@
 import * as React from "react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import env from "env"
 
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import { EditAdForm } from "./form"
 

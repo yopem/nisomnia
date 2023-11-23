@@ -1,10 +1,10 @@
 import * as React from "react"
 import { notFound } from "next/navigation"
-import env from "env"
 
 import { getCurrentUser } from "@nisomnia/auth"
 
 import { PageInfo } from "@/components/Layout"
+import env from "@/env"
 import { UserSettingForm } from "./form"
 
 export const metadata = {

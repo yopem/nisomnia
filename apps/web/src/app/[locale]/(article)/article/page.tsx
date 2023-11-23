@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import env from "env"
 import { BreadcrumbJsonLd } from "next-seo"
 
 import type { LanguageType } from "@nisomnia/db"
@@ -13,6 +12,7 @@ import {
 
 import { Ad } from "@/components/Ad"
 import { InfiniteScrollArticles } from "@/components/Article/client"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0

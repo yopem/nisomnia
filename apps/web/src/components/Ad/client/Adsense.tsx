@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import Script from "next/script"
-import env from "env"
+
+import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string

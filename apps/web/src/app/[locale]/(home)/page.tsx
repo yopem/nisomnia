@@ -1,4 +1,3 @@
-import env from "env"
 import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import type { LanguageType } from "@nisomnia/db"
@@ -7,6 +6,7 @@ import { Ad } from "@/components/Ad"
 import { InfiniteScrollArticles } from "@/components/Article/client"
 import { Container, Footer } from "@/components/Layout"
 import { TopNav } from "@/components/Layout/client"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 export default async function HomePage({

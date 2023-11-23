@@ -1,8 +1,8 @@
 import * as React from "react"
-import env from "env"
 
 import { getCurrentSession } from "@nisomnia/auth"
 
+import env from "@/env"
 import { CreateArticleForm } from "./form"
 
 export const metadata = {

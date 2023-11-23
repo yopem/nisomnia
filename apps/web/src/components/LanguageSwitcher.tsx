@@ -3,7 +3,6 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { useParams, usePathname } from "next/navigation"
-import env from "env"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 import {
@@ -11,6 +10,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nisomnia/ui/next-client"
+
+import env from "@/env"
 
 export const LanguageSwitcher: React.FunctionComponent = () => {
   const params = useParams()

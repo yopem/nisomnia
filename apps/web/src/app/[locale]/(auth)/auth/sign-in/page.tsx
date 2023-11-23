@@ -1,11 +1,11 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { redirect } from "next/navigation"
-import env from "env"
 
 import { getCurrentUser } from "@nisomnia/auth"
 import { buttonVariants, cn, Icon } from "@nisomnia/ui/next"
 
+import env from "@/env"
 import { SignInContent } from "./content"
 
 export const metadata = {

@@ -1,6 +1,6 @@
 import * as React from "react"
-import env from "env"
 
+import env from "@/env"
 import { CreateAdForm } from "./form"
 
 export const metadata = {

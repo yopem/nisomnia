@@ -4,7 +4,6 @@ import * as React from "react"
 import type { Metadata } from "next"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
-import env from "env"
 
 import {
   Breadcrumb,
@@ -15,6 +14,7 @@ import {
 
 import { Ad } from "@/components/Ad"
 import { ArticleCardVertical } from "@/components/Article"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0

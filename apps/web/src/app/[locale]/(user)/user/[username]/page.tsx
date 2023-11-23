@@ -2,7 +2,6 @@ import * as React from "react"
 import type { Metadata } from "next"
 import NextLink from "next/link"
 import type { LanguageType } from "@prisma/client"
-import env from "env"
 import { BreadcrumbJsonLd } from "next-seo"
 
 import { Icon } from "@nisomnia/ui/next"
@@ -10,6 +9,7 @@ import { formatDate } from "@nisomnia/utils"
 
 import { ArticleCardVertical } from "@/components/Article"
 import { Image } from "@/components/Image"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 0

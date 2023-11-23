@@ -3,7 +3,6 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 import NextLink from "next/link"
-import env from "env"
 
 import {
   Button,
@@ -19,6 +18,7 @@ import {
 import { toast } from "@nisomnia/ui/next-client"
 import { formatDate } from "@nisomnia/utils"
 
+import env from "@/env"
 import { api } from "@/lib/trpc/react"
 
 const DashboardAction = dynamic(() =>

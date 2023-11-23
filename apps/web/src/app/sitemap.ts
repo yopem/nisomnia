@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
-import env from "env"
 
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 interface RouteProps {

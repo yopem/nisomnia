@@ -1,9 +1,9 @@
 import * as React from "react"
-import env from "env"
 
 import { Icon } from "@nisomnia/ui/next"
 
 import { DashboardBox } from "@/components/Dashboard"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
 export const revalidate = 60

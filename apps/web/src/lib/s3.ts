@@ -1,5 +1,6 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
-import env from "env"
+
+import env from "@/env"
 
 export const s3Config = {
   region: env.R2_REGION,

@@ -1,11 +1,11 @@
 import * as React from "react"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
-import env from "env"
 
 import { getCurrentSession } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import { TranslateArticleForm } from "./form"
 

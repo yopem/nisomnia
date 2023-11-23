@@ -1,10 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server"
-import env from "env"
 
 import { getCurrentUser } from "@nisomnia/auth"
 import { db } from "@nisomnia/db"
 import { slugifyFile, uniqueCharacter } from "@nisomnia/utils"
 
+import env from "@/env"
 import { uploadImageToS3 } from "@/lib/s3"
 
 export async function POST(request: NextRequest) {

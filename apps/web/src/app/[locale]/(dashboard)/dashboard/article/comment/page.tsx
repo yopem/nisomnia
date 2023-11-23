@@ -1,6 +1,6 @@
 import * as React from "react"
-import env from "env"
 
+import env from "@/env"
 import { DashboardArticleCommentContent } from "./content"
 
 export const metadata = {
