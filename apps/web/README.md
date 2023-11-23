@@ -11,6 +11,7 @@
 - [x] fix: dashboard theme switch button
 - [x] improve: replace env with @/env
 - [x] improve: remove APP_ENV from env config
+- [ ] improve: add suspense on infinite scroll
 - [ ] improve: cannot use space on dashboard image search
 - [ ] feat: add topic ordered by article count on topnav
 - [ ] feat: add hreflang / alternate link to article page
