@@ -9,6 +9,8 @@
 - [x] fix: cannot submit comment
 - [x] feat: add dashboard comment
 - [x] fix: dashboard theme switch button
+- [ ] improve: replace env with @/env
+- [ ] imporove: remove APP_ENV from env config
 - [ ] improve: cannot use space on dashboard image search
 - [ ] feat: add topic ordered by article count on topnav
 - [ ] feat: add hreflang / alternate link to article page
