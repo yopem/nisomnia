@@ -23,23 +23,7 @@ const enableMillionJS =
 
 const plugins = [withPWA, withBundleAnalyzer]
 
-const ContentSecurityPolicy = `
-    default-src 'self' vercel.live;
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.vercel-insights.com vercel.live vitals.vercel-insights.com platform.twitter.com youtube.com;
-    style-src 'self' 'unsafe-inline';
-    img-src * blob: data:;
-    media-src 'none';
-    connect-src *;
-    font-src 'self';
-    frame-src https://www.youtube.com https://platform.twitter.com https://www.youtube-nocookie.com;
-    script-src-elem 'self' 'unsafe-inline' https://www.youtube.com https://platform.twitter.com https://platform.twitter.com/widgets.js https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} https://static.cloudflareinsights.com;
-`
-
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: ContentSecurityPolicy.replace(/\n/g, ""),
-  },
   {
     key: "Referrer-Policy",
     value: "origin-when-cross-origin",
