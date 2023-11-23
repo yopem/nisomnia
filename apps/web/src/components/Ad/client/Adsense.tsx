@@ -24,7 +24,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
 
   return (
     <>
-      {env.APP_ENV === "production" && (
+      {process.env.APP_ENV === "production" && (
         <Script
           id="adsense"
           async
