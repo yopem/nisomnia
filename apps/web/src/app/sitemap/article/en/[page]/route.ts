@@ -21,7 +21,9 @@ function generateSiteMap(
            return `
        <url>
            <loc>${`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}</loc>
-           <lastmod>${article.updatedAt}</lastmod>
+           <lastmod>${
+             new Date(article.updatedAt).toISOString().split("T")[0]
+           }</lastmod>
        </url>
      `
          })
