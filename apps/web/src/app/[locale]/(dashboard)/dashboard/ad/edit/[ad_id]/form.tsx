@@ -140,7 +140,7 @@ export const EditAdForm: React.FunctionComponent<EditAdForm> = (props) => {
                   <SelectItem value="single_article_above_content">
                     Single Article (Above Content)
                   </SelectItem>
-                  <SelectItem value="single_article_inline_content">
+                  <SelectItem value="single_article_middle_content">
                     Single Article (Inline Content)
                   </SelectItem>
                   <SelectItem value="single_article_below_content">
