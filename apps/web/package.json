@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.456.0",
+    "@builder.io/partytown": "^0.8.1",
     "@nisomnia/api": "workspace:*",
     "@nisomnia/auth": "workspace:*",
     "@nisomnia/db": "workspace:*",
