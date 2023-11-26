@@ -50,7 +50,6 @@ module.exports = () => {
     reactStrictMode: true,
     experimental: {
       webpackBuildWorker: true,
-      nextScriptWorkers: true,
       optimizePackageImports: ["@nisomnia/ui", "@nisomnia/editor"],
     },
     images: {
