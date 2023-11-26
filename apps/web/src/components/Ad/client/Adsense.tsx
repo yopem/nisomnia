@@ -14,16 +14,12 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const { content } = props
 
-  const [loading, setLoading] = React.useState<boolean>(true)
-
   React.useEffect(() => {
     try {
       if (typeof window === "object") {
         window.adsbygoogle = window.adsbygoogle || []
         window.adsbygoogle.push({})
       }
-
-      setLoading(false)
     } catch (e) {
       console.log(e)
     }
@@ -43,11 +39,9 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
           strategy="lazyOnload"
         />
       )}
-      {loading ? (
-        <Skeleton className="mb-4 h-72 rounded-xl" />
-      ) : (
+      <React.Suspense fallback={<Skeleton className="mb-4 h-72 rounded-xl" />}>
         <div className="my-10" dangerouslySetInnerHTML={{ __html: content }} />
-      )}
+      </React.Suspense>
     </>
   )
 }
