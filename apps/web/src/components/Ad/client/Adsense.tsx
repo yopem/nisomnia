@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { Skeleton } from "@nisomnia/ui"
 
+import env from "@/env"
+
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
 }
@@ -17,10 +19,8 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     setLoading(true)
 
     try {
-      if (typeof window === "object") {
-        window.adsbygoogle = window.adsbygoogle || []
-        window.adsbygoogle.push({})
-      }
+      window.adsbygoogle = window.adsbygoogle || []
+      window.adsbygoogle.push({})
 
       setLoading(false)
     } catch (e) {
@@ -33,7 +33,16 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       {loading ? (
         <Skeleton className="mb-4 h-72 rounded-xl" />
       ) : (
-        <div className="my-10" dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="my-10">
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+            data-ad-slot={content}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+        </div>
       )}
     </>
   )
