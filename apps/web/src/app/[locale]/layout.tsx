@@ -1,13 +1,13 @@
 import * as React from "react"
 import { Inter } from "next/font/google"
 import { headers } from "next/headers"
+import Script from "next/script"
 
 import type { LanguageType } from "@nisomnia/db"
 import { Toaster } from "@nisomnia/ui/next-client"
 
 import "@/styles/globals.css"
 
-import { LoadAdsense } from "@/components/Ad/client"
 import { AuthProvider } from "@/components/Auth/client"
 import { ThemeProvider } from "@/components/Theme/client"
 import env from "@/env"
@@ -90,7 +90,30 @@ export default function RootLayout({
             </TRPCReactProvider>
           </AuthProvider>
         </ThemeProvider>
-        {process.env.APP_ENV === "production" && <LoadAdsense />}
+        {process.env.APP_ENV === "production" && (
+          <Script
+            strategy="afterInteractive"
+            id="adsense"
+            async
+            crossOrigin="anonymous"
+          >
+            {`
+        function downloadJSAtOnload() {
+          var element = document.createElement("script");
+          element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}";
+          document.body.appendChild(element);
+        }
+
+        if (window.addEventListener) {
+          window.addEventListener("load", downloadJSAtOnload, false);
+        } else if (window.attachEvent) {
+          window.attachEvent("onload", downloadJSAtOnload);
+        } else {
+          window.onload = downloadJSAtOnload;
+        }
+      `}
+          </Script>
+        )}
       </body>
     </html>
   )
