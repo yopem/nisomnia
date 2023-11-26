@@ -33,7 +33,7 @@
     "@nisomnia/auth": "workspace:*",
     "@nisomnia/db": "workspace:*",
     "@nisomnia/utils": "workspace:*",
-    "@trpc/server": "^10.43.7"
+    "@trpc/server": "^10.44.1"
   },
   "prettier": "@nisomnia/prettier-config",
   "eslintConfig": {
