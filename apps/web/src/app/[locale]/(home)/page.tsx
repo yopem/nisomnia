@@ -1,13 +1,18 @@
+import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import type { LanguageType } from "@nisomnia/db"
 
-import { Ad } from "@/components/Ad"
 import { InfiniteScrollArticles } from "@/components/Article/client"
 import { Container, Footer } from "@/components/Layout"
 import { TopNav } from "@/components/Layout/client"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+
+const Ad = dynamic(async () => {
+  const { Ad } = await import("@/components/Ad")
+  return { default: Ad }
+})
 
 export default async function HomePage({
   params,

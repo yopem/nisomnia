@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { BreadcrumbJsonLd } from "next-seo"
@@ -11,10 +12,14 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import { Ad } from "@/components/Ad"
 import { InfiniteScrollTopicArticles } from "@/components/Article/client"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+
+const Ad = dynamic(async () => {
+  const { Ad } = await import("@/components/Ad")
+  return { default: Ad }
+})
 
 export const revalidate = 0
 
