@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import { Skeleton } from "@nisomnia/ui"
 
@@ -15,6 +16,9 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
 
   const [loading, setLoading] = React.useState<boolean>(true)
 
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   React.useEffect(() => {
     setLoading(true)
 
@@ -26,7 +30,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     } catch (e) {
       console.log(e)
     }
-  }, [])
+  }, [pathname, searchParams])
 
   return (
     <>
