@@ -4,14 +4,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 })
 
-const withPWA = require("@ducanh2912/next-pwa").default({
-  dest: "public",
-  disable: process.env.APP_ENV === "development",
-  register: true,
-  sw: "service-worker.js",
-  swcMinify: true,
-})
-
 const boolVals = {
   true: true,
   false: false,
@@ -21,7 +13,7 @@ const enableMillionJS =
   boolVals[process.env.ENABLE_MILLION_JS] ??
   process.env.APP_ENV === "production"
 
-const plugins = [withPWA, withBundleAnalyzer]
+const plugins = [withBundleAnalyzer]
 
 const securityHeaders = [
   {
@@ -58,6 +50,7 @@ module.exports = () => {
     reactStrictMode: true,
     experimental: {
       webpackBuildWorker: true,
+      nextScriptWorkers: true,
       optimizePackageImports: ["@nisomnia/ui", "@nisomnia/editor"],
     },
     images: {
