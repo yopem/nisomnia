@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
@@ -23,10 +21,19 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   React.useEffect(() => {
     setLoading(true)
 
-    try {
-      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-
+    const handleAdsenseLoad = () => {
       setLoading(false)
+    }
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+      if (window.adsbygoogle && window.adsbygoogle.push) {
+        window.adsbygoogle.push({})
+      } else {
+        window.adsbygoogle = {
+          push: handleAdsenseLoad,
+        }
+      }
     } catch (e) {
       console.log(e)
     }
