@@ -47,7 +47,7 @@ module.exports = () => {
   /** @type {import('next').NextConfig} */
 
   let config = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     experimental: {
       webpackBuildWorker: true,
       optimizePackageImports: ["@nisomnia/ui", "@nisomnia/editor"],

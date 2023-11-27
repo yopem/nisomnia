@@ -12,21 +12,27 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const { content } = props
-
   const [loading, setLoading] = React.useState<boolean>(true)
 
   React.useEffect(() => {
     setLoading(true)
 
-    try {
-      if (typeof window === "object") {
-        window.adsbygoogle = window.adsbygoogle || []
-        window.adsbygoogle.push({})
+    const delay = 3000
+
+    const timerId = setTimeout(() => {
+      try {
+        if (typeof window === "object") {
+          window.adsbygoogle = window.adsbygoogle || []
+          window.adsbygoogle.push({})
+        }
+      } catch (e) {
+        console.error("Error initializing AdSense:", e)
       }
-    } catch (e) {
-      console.log(e)
-    }
-    setLoading(false)
+
+      setLoading(false)
+    }, delay)
+
+    return () => clearTimeout(timerId)
   }, [])
 
   return (
