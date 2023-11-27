@@ -16,7 +16,10 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const [loading, setLoading] = React.useState<boolean>(true)
 
   const initAd = () => {
-    ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+    if (typeof window === "object") {
+      window.adsbygoogle = window.adsbygoogle || []
+      window.adsbygoogle.push({})
+    }
   }
 
   React.useEffect(() => {
