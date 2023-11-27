@@ -8,10 +8,11 @@ import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
+  id: string
 }
 
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
-  const { content } = props
+  const { content, id } = props
   const [loading, setLoading] = React.useState<boolean>(true)
 
   React.useEffect(() => {
@@ -40,14 +41,16 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       {loading ? (
         <Skeleton className="mb-4 h-72 rounded-xl" />
       ) : (
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block", width: "100%" }}
-          data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
-          data-ad-slot={content}
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
+        <div key={id}>
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block", width: "100%" }}
+            data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+            data-ad-slot={content}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+        </div>
       )}
     </>
   )
