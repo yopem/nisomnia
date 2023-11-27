@@ -8,10 +8,11 @@ import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
+  children?: React.ReactNode
 }
 
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
-  const { content } = props
+  const { content, children } = props
 
   const [loading, setLoading] = React.useState<boolean>(true)
 
@@ -42,7 +43,9 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
               data-ad-slot={content}
               data-ad-format="auto"
               data-full-width-responsive="true"
-            />
+            >
+              {children}
+            </ins>
           </script>
         </div>
       )}
