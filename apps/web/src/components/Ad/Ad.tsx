@@ -17,7 +17,7 @@ export const Ad: React.FunctionComponent<AdProps> = (props) => {
       {ad.type === "plain_ad" ? (
         <PlainAd content={ad.content!} />
       ) : (
-        <Adsense>{ad.content}</Adsense>
+        <Adsense content={ad.content!} />
       )}
     </div>
   )
