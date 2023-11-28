@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 "use client"
 
 import * as React from "react"
@@ -22,10 +21,6 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   }
 
   React.useEffect(() => {
-    const url = `${pathname}?${searchParams}`
-
-    console.log("Adsense -> router changed ", url)
-
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
@@ -33,28 +28,41 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     const handleScriptLoad = () => {
       try {
         if (window.adsbygoogle) {
-          console.log("pushing ads ")
           window.adsbygoogle.push({})
         } else {
           scriptElement?.addEventListener("load", handleScriptLoad)
-          console.log(
-            "waiting until adsense lib is loaded...This prevents adsbygoogle is not defined error",
-          )
         }
       } catch (err) {
-        console.log(
-          "error in adsense - This prevents ad already exists error",
-          err,
-        )
+        console.log(err)
       }
     }
 
-    handleScriptLoad()
+    let userInteraction = false
+
+    const userInteractionHandler = () => {
+      userInteraction = true
+    }
+
+    window.addEventListener("mousemove", userInteractionHandler)
+    window.addEventListener("scroll", userInteractionHandler)
+    window.addEventListener("touchstart", userInteractionHandler)
+
+    const delayTimeout = setTimeout(() => {
+      if (!userInteraction) {
+        handleScriptLoad()
+      }
+    }, 8000)
 
     return () => {
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
+
+      window.removeEventListener("mousemove", userInteractionHandler)
+      window.removeEventListener("scroll", userInteractionHandler)
+      window.removeEventListener("touchstart", userInteractionHandler)
+
+      clearTimeout(delayTimeout)
     }
   }, [pathname, searchParams])
 
