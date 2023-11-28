@@ -32,9 +32,9 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     )
 
     const handleScriptLoad = () => {
-      try {
-        setLoading(false)
+      setLoading(false)
 
+      try {
         if (window.adsbygoogle) {
           window.adsbygoogle.push({})
         } else {
