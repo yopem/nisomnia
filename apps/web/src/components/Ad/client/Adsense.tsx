@@ -3,8 +3,6 @@
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 
-import { Skeleton } from "@nisomnia/ui"
-
 import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,21 +12,19 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const { content } = props
 
-  const [loading, setLoading] = React.useState<boolean>(true)
-
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  React.useEffect(() => {
-    setLoading(true)
+  if (process.env.APP_ENV == "development") {
+    return <></>
+  }
 
+  React.useEffect(() => {
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
 
     const handleScriptLoad = () => {
-      setLoading(false)
-
       try {
         if (window.adsbygoogle) {
           window.adsbygoogle.push({})
@@ -40,35 +36,25 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       }
     }
 
-    const delayTimeout = setTimeout(() => {
-      handleScriptLoad()
-    }, 3000)
+    handleScriptLoad()
 
     return () => {
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
-
-      clearTimeout(delayTimeout)
     }
-  }, [pathname, searchParams, setLoading])
+  }, [pathname, searchParams])
 
   return (
-    <>
-      {loading ? (
-        <Skeleton className="mb-4 h-72 rounded-xl" />
-      ) : (
-        <div style={{ overflow: "hidden", margin: "5px" }}>
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
-            data-ad-slot={content}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-    </>
+    <div style={{ overflow: "hidden", margin: "5px" }}>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+        data-ad-slot={content}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+    </div>
   )
 }
