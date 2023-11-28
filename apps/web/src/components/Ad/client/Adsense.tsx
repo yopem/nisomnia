@@ -1,57 +1,73 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 "use client"
 
 import * as React from "react"
-
-import { Skeleton } from "@nisomnia/ui"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
-  id: string
 }
 
 export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
-  const { content, id } = props
-  const [loading, setLoading] = React.useState<boolean>(true)
+  const { content } = props
+
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  if (process.env.APP_ENV == "development") {
+    return <></>
+  }
 
   React.useEffect(() => {
-    setLoading(true)
+    const url = `${pathname}?${searchParams}`
 
-    const delay = 3000
+    console.log("Adsense -> router changed ", url)
 
-    const timerId = setTimeout(() => {
+    const scriptElement = document.querySelector(
+      'script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4354027605127587"]',
+    )
+
+    const handleScriptLoad = () => {
       try {
-        if (typeof window === "object") {
-          window.adsbygoogle = window.adsbygoogle || []
+        if (window.adsbygoogle) {
+          console.log("pushing ads ")
           window.adsbygoogle.push({})
+        } else {
+          scriptElement?.addEventListener("load", handleScriptLoad)
+          console.log(
+            "waiting until adsense lib is loaded...This prevents adsbygoogle is not defined error",
+          )
         }
-      } catch (e) {
-        console.error("Error initializing AdSense:", e)
+      } catch (err) {
+        console.log(
+          "error in adsense - This prevents ad already exists error",
+          err,
+        )
       }
+    }
 
-      setLoading(false)
-    }, delay)
+    handleScriptLoad()
 
-    return () => clearTimeout(timerId)
-  }, [])
+    return () => {
+      if (scriptElement) {
+        scriptElement.removeEventListener("load", handleScriptLoad)
+      }
+    }
+  }, [pathname, searchParams])
 
   return (
-    <>
-      {loading ? (
-        <Skeleton className="mb-4 h-72 rounded-xl" />
-      ) : (
-        <div key={id}>
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block", width: "100%" }}
-            data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
-            data-ad-slot={content}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-    </>
+    <div style={{ overflow: "hidden", margin: "5px" }}>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+        data-ad-slot={content}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+    </div>
   )
 }
