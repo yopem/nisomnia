@@ -37,30 +37,12 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       }
     }
 
-    let userInteraction = false
-
-    const userInteractionHandler = () => {
-      userInteraction = true
-    }
-
-    window.addEventListener("mousemove", userInteractionHandler)
-    window.addEventListener("scroll", userInteractionHandler)
-    window.addEventListener("touchstart", userInteractionHandler)
-
-    const delayTimeout = setTimeout(() => {
-      if (!userInteraction) {
-        handleScriptLoad()
-      }
-    }, 8000)
+    const delayTimeout = setTimeout(handleScriptLoad, 3000)
 
     return () => {
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
-
-      window.removeEventListener("mousemove", userInteractionHandler)
-      window.removeEventListener("scroll", userInteractionHandler)
-      window.removeEventListener("touchstart", userInteractionHandler)
 
       clearTimeout(delayTimeout)
     }
