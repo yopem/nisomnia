@@ -20,10 +20,6 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  if (process.env.APP_ENV == "development") {
-    return <></>
-  }
-
   React.useEffect(() => {
     setLoading(true)
 
@@ -45,10 +41,16 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       }
     }
 
+    const delayTimeout = setTimeout(() => {
+      handleScriptLoad()
+    }, 3000)
+
     return () => {
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
+
+      clearTimeout(delayTimeout)
     }
   }, [pathname, searchParams, setLoading])
 
