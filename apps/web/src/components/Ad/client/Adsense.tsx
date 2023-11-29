@@ -4,6 +4,8 @@
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 
+import { Skeleton } from "@nisomnia/ui"
+
 import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,7 +18,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  if (process.env.APP_ENV == "development") {
+  if (process.env.APP_ENV === "development") {
     return <></>
   }
 
@@ -24,6 +26,22 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
+
+    let userInteracted = false
+
+    const handleUserInteraction = () => {
+      userInteracted = true
+    }
+
+    window.addEventListener("mousemove", handleUserInteraction)
+    window.addEventListener("scroll", handleUserInteraction)
+    window.addEventListener("touchstart", handleUserInteraction)
+
+    const delayTimeout = setTimeout(() => {
+      if (!userInteracted) {
+        handleScriptLoad()
+      }
+    }, 8000)
 
     const handleScriptLoad = () => {
       try {
@@ -33,13 +51,19 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
           scriptElement?.addEventListener("load", handleScriptLoad)
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
-    handleScriptLoad()
+    handleScriptLoad() // Load script immediately
 
     return () => {
+      window.removeEventListener("mousemove", handleUserInteraction)
+      window.removeEventListener("scroll", handleUserInteraction)
+      window.removeEventListener("touchstart", handleUserInteraction)
+
+      clearTimeout(delayTimeout)
+
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
@@ -47,15 +71,19 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   }, [pathname, searchParams])
 
   return (
-    <div style={{ overflow: "hidden", margin: "5px" }}>
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
-        data-ad-slot={content}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-    </div>
+    <React.Suspense
+      fallback={<Skeleton className="mb-4 h-72 w-full rounded-xl" />}
+    >
+      <div style={{ overflow: "hidden", margin: "5px" }}>
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+          data-ad-slot={content}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+      </div>
+    </React.Suspense>
   )
 }
