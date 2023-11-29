@@ -18,7 +18,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  if (process.env.APP_ENV === "development") {
+  if (process.env.APP_ENV == "development") {
     return <></>
   }
 
@@ -26,22 +26,6 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
-
-    let userInteracted = false
-
-    const handleUserInteraction = () => {
-      userInteracted = true
-    }
-
-    window.addEventListener("mousemove", handleUserInteraction)
-    window.addEventListener("scroll", handleUserInteraction)
-    window.addEventListener("touchstart", handleUserInteraction)
-
-    const delayTimeout = setTimeout(() => {
-      if (!userInteracted) {
-        handleScriptLoad()
-      }
-    }, 8000)
 
     const handleScriptLoad = () => {
       try {
@@ -51,19 +35,13 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
           scriptElement?.addEventListener("load", handleScriptLoad)
         }
       } catch (err) {
-        console.error(err)
+        console.log(err)
       }
     }
 
-    handleScriptLoad() // Load script immediately
+    handleScriptLoad()
 
     return () => {
-      window.removeEventListener("mousemove", handleUserInteraction)
-      window.removeEventListener("scroll", handleUserInteraction)
-      window.removeEventListener("touchstart", handleUserInteraction)
-
-      clearTimeout(delayTimeout)
-
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
