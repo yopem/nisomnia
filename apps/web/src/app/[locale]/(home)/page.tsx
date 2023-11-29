@@ -21,7 +21,7 @@ export default async function HomePage({
 }) {
   const { locale } = params
 
-  const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
+  const adsBelowHeader = await api.ad.byPosition.query("home_below_header")
 
   return (
     <>
