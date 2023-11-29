@@ -97,8 +97,9 @@ export default async function SingleTopicPage({
           <div className="my-2 flex flex-row items-center justify-between">
             <h2 className="text-2xl">Articles</h2>
             <NextLink
-              className="text-sm"
+              aria-label={topicArticle.title}
               href={`/article/topic/${topicArticle.slug}`}
+              className="text-sm"
             >
               See more
             </NextLink>

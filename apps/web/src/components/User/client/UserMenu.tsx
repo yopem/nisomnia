@@ -38,14 +38,26 @@ export const UserMenu = ({ session }: { session: Session | null }) => {
             </IconButton>
           </PopoverTrigger>
           <PopoverContent className="w-56 bg-background">
-            <NextLink href={`/user/${username}`} className={itemClass}>
+            <NextLink
+              aria-label="Profile"
+              href={`/user/${username}`}
+              className={itemClass}
+            >
               <Icon.User className="mr-2 h-5 w-5" /> Profile
             </NextLink>
-            <NextLink href="/setting/user/profile" className={itemClass}>
+            <NextLink
+              aria-label="Setting"
+              href="/setting/user/profile"
+              className={itemClass}
+            >
               <Icon.Setting className="mr-2 h-5 w-5" /> Setting
             </NextLink>
             {session?.user?.role?.includes("admin" || "author") && (
-              <NextLink href="/dashboard" className={itemClass}>
+              <NextLink
+                aria-label="Dashboard"
+                href="/dashboard"
+                className={itemClass}
+              >
                 <Icon.Dashboard className="mr-2 h-5 w-5" />
                 Dashboard
               </NextLink>
@@ -56,7 +68,11 @@ export const UserMenu = ({ session }: { session: Session | null }) => {
           </PopoverContent>
         </Popover>
       ) : (
-        <NextLink href="/auth/sign-in" className={itemClass}>
+        <NextLink
+          aria-label="Sign In"
+          href="/auth/sign-in"
+          className={itemClass}
+        >
           <Icon.SignIn />
         </NextLink>
       )}

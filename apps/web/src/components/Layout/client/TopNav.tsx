@@ -56,10 +56,14 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
             <DrawerContent position="left" className="w-full md:w-[250px]">
               <div className="flex flex-col items-start">
                 <Button asChild variant="ghost">
-                  <NextLink href="/">Home</NextLink>
+                  <NextLink aria-label="Home" href="/">
+                    Home
+                  </NextLink>
                 </Button>
                 <Button asChild variant="ghost">
-                  <NextLink href="/article">Article</NextLink>
+                  <NextLink aria-label="Article" href="/article">
+                    Article
+                  </NextLink>
                 </Button>
               </div>
             </DrawerContent>
@@ -75,7 +79,9 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
           </NextLink>
           <div className="ml-4 hidden  md:flex">
             <Button asChild variant="ghost">
-              <NextLink href="/article">Article</NextLink>
+              <NextLink aria-label="Article" href="/article">
+                Article
+              </NextLink>
             </Button>
           </div>
         </div>

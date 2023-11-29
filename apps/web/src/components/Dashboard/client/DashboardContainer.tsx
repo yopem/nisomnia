@@ -29,8 +29,9 @@ export const DashboardContainer: React.FunctionComponent<
       </div>
       <div className="fixed inset-x-0 bottom-0 z-[49] flex items-center justify-around border-t bg-background py-3 lg:hidden">
         <NextLink
-          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-foreground"
+          aria-label="Dashboard"
           href="/dashboard"
+          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-foreground"
         >
           <Button
             variant="ghost"
@@ -41,8 +42,9 @@ export const DashboardContainer: React.FunctionComponent<
           </Button>
         </NextLink>
         <NextLink
-          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-foreground"
+          aria-label="Dashboard Article"
           href="/dashboard/article"
+          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-foreground"
         >
           <Button
             variant="ghost"

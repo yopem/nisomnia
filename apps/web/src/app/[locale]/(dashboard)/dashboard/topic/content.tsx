@@ -143,7 +143,7 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
     <>
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink href="/dashboard/topic/new">
+          <NextLink aria-label="Add New Topic" href="/dashboard/topic/new">
             <Button variant="ghost">
               <Icon.Add />
               Add New

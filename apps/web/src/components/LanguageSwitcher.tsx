@@ -31,10 +31,18 @@ export const LanguageSwitcher: React.FunctionComponent = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="flex w-[50px] flex-col space-y-4">
-          <NextLink href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`} locale="id">
+          <NextLink
+            aria-label="Switch to Bahasa"
+            href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`}
+            locale="id"
+          >
             <Icon.IndonesiaFlag className="mr-2 h-5 w-5" />
           </NextLink>
-          <NextLink href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`} locale="en">
+          <NextLink
+            aria-label="Switch to English"
+            href={`${env.NEXT_PUBLIC_SITE_URL}${pathname}`}
+            locale="en"
+          >
             <Icon.USAFlag className="mr-2 h-5 w-5" />
           </NextLink>
         </PopoverContent>

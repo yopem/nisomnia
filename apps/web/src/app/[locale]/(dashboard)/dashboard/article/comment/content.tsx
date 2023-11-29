@@ -65,7 +65,7 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
     <>
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink href="/dashboard/ad/new">
+          <NextLink aria-label="Add New Article" href="/dashboard/ad/new">
             <Button variant="ghost">
               <Icon.Add />
               Add New

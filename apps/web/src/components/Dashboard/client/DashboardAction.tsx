@@ -46,7 +46,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       {...rest}
     >
       {viewLink && (
-        <NextLink href={viewLink} target="_blank">
+        <NextLink aria-label="View" href={viewLink} target="_blank">
           <Icon.Visibility className="mr-2 w-4 transform  cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}
@@ -59,7 +59,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       )}
 
       {editLink && (
-        <NextLink href={editLink}>
+        <NextLink aria-label="Edit" href={editLink}>
           <Icon.Edit className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}
@@ -72,7 +72,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       )}
 
       {deleteLink && (
-        <NextLink href={deleteLink}>
+        <NextLink aria-label="Delete" href={deleteLink}>
           <Icon.Delete className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}

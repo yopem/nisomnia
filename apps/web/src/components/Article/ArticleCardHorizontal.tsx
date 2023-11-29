@@ -21,6 +21,7 @@ export const ArticleCardHorizontal: React.FunctionComponent<
     <div className="mb-[30px] flex grow border-separate flex-row rounded-lg lg:flex-col">
       <div className="relative flex w-full flex-row justify-between lg:justify-start">
         <NextLink
+          aria-label={title}
           href={`/article/${slug}`}
           className="order-2 md:order-1 md:mr-[30px]"
         >
@@ -35,7 +36,7 @@ export const ArticleCardHorizontal: React.FunctionComponent<
           </div>
         </NextLink>
         <div className="order-1 mr-3 flex flex-col md:order-2 md:mr-[unset]">
-          <NextLink href={`/article/${slug}/`}>
+          <NextLink aria-label={title} href={`/article/${slug}/`}>
             <h3 className="line-clamp-3 text-lg font-semibold hover:text-primary/90 md:text-2xl md:font-bold">
               {title}
             </h3>

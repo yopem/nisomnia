@@ -22,6 +22,7 @@ export const DashboardSidebar: React.FunctionComponent<
     <Sidebar {...rest}>
       <div className="flex items-center gap-2">
         <NextLink
+          aria-label="Home"
           href="/"
           className="my-0 flex items-center justify-center py-5"
         >

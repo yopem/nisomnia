@@ -29,7 +29,7 @@ export const DashboardAddLanguage: React.FunctionComponent<
       <Tooltip>
         <TooltipTrigger asChild>
           {
-            <NextLink href={triggerLink}>
+            <NextLink aria-label="Translate" href={triggerLink}>
               <div className="relative h-3 w-4 cursor-pointer">
                 {language === "en" ? (
                   <Icon.USAFlag />

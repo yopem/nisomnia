@@ -26,6 +26,7 @@ export default async function SignInPage() {
   return (
     <div className="container mx-auto flex h-screen w-screen flex-col items-center justify-center">
       <NextLink
+        aria-label="Home"
         href="/"
         className={cn(
           buttonVariants({ variant: "ghost" }),

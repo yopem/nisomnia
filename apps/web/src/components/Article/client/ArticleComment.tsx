@@ -175,7 +175,7 @@ export const ArticleComment: React.FunctionComponent<
           </form>
         ) : (
           <div className="my-8 flex items-center justify-center">
-            <NextLink href="/auth/sign-in">
+            <NextLink aria-label="Sign In" href="/auth/sign-in">
               <Button>You should login before comment</Button>
             </NextLink>
           </div>

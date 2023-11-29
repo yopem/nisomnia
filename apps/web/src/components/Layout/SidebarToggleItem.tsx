@@ -12,6 +12,7 @@ export const SidebarToggleItem: React.FunctionComponent<
 
   return (
     <NextLink
+      aria-label="Sidebar Toggle Item"
       href={href}
       className="group flex w-full items-center rounded-lg bg-background p-2 pl-11 text-base font-normal text-foreground transition duration-75 hover:bg-primary/10"
     >

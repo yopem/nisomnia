@@ -18,6 +18,7 @@ export const SidebarItem: React.FunctionComponent<SidebarItemProps> = (
     <li {...rest}>
       {href ? (
         <NextLink
+          aria-label="Sidebar item"
           href={href}
           className="flex items-center rounded-lg bg-background p-2 text-base font-normal text-foreground hover:bg-primary/10"
         >
