@@ -28,6 +28,24 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
 
+    let userInteracted = false
+
+    const handleUserInteraction = () => {
+      userInteracted = true
+    }
+
+    // Set up event listeners for user interaction events
+    window.addEventListener("mousemove", handleUserInteraction)
+    window.addEventListener("scroll", handleUserInteraction)
+    window.addEventListener("touchstart", handleUserInteraction)
+
+    // Set a timeout to load the script after 8 seconds if there is no user interaction
+    const delayTimeout = setTimeout(() => {
+      if (!userInteracted) {
+        handleScriptLoad()
+      }
+    }, 8000)
+
     const handleScriptLoad = () => {
       try {
         if (window.adsbygoogle) {
@@ -36,13 +54,21 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
           scriptElement?.addEventListener("load", handleScriptLoad)
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
     handleScriptLoad()
 
     return () => {
+      // Remove event listeners
+      window.removeEventListener("mousemove", handleUserInteraction)
+      window.removeEventListener("scroll", handleUserInteraction)
+      window.removeEventListener("touchstart", handleUserInteraction)
+
+      // Clear the timeout if the component is unmounted before the delay expires
+      clearTimeout(delayTimeout)
+
       if (scriptElement) {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
