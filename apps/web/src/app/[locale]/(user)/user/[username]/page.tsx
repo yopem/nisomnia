@@ -102,7 +102,7 @@ export default async function UserPage({ params }: UserPageProps) {
             <div className="my-1 flex flex-row items-center justify-between">
               <h3 className="text-2xl">Articles</h3>
               <NextLink
-                aria-label={user.name}
+                aria-label={user.name ?? user.username}
                 href={`/article/user/${user.username}`}
                 className="text-sm"
               >
