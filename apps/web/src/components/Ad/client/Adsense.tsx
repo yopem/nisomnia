@@ -18,7 +18,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  if (process.env.APP_ENV == "development") {
+  if (process.env.APP_ENV === "development") {
     return <></>
   }
 
