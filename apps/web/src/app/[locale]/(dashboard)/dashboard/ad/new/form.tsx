@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Controller, useForm } from "react-hook-form"
 
-import { type AdPosition, type Ad as AdProps, type AdType } from "@nisomnia/db"
+import type { AdPosition, Ad as AdProps, AdType } from "@nisomnia/db"
 import { Button, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
