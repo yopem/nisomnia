@@ -10,14 +10,6 @@ import { api } from "@/lib/trpc/server"
 
 export const revalidate = 60
 
-export const metadata = {
-  title: "Dashboard",
-  description: "Dashboard",
-  alternates: {
-    canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/`,
-  },
-}
-
 export function generateMetadata({
   params,
 }: {

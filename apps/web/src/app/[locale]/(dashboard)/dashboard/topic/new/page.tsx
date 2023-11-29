@@ -6,14 +6,6 @@ import type { LanguageType } from "@nisomnia/db"
 import env from "@/env"
 import { CreateTopicForm } from "./form"
 
-export const metadata = {
-  title: "Create Topic Dashboard",
-  description: "Create Topic Dashboard",
-  alternates: {
-    canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/topic/new/`,
-  },
-}
-
 export function generateMetadata({
   params,
 }: {

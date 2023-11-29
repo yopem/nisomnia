@@ -9,14 +9,6 @@ import { PageInfo } from "@/components/Layout"
 import env from "@/env"
 import { UserSettingForm } from "./form"
 
-export const metadata = {
-  title: "Edit Profile",
-  description: "Edit Profile",
-  alternates: {
-    canonical: `${env.NEXT_PUBLIC_SITE_URL}/setting/user/profile/`,
-  },
-}
-
 export function generateMetadata({
   params,
 }: {

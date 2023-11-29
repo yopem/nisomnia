@@ -6,14 +6,6 @@ import type { LanguageType } from "@nisomnia/db"
 import env from "@/env"
 import { DashboardTopicContent } from "./content"
 
-export const metadata = {
-  title: "Topic Dashboard",
-  description: "Topic Dashboard",
-  alternates: {
-    canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/topic/`,
-  },
-}
-
 export function generateMetadata({
   params,
 }: {
