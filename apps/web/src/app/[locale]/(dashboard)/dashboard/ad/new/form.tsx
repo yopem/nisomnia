@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { Controller, useForm } from "react-hook-form"
 
-import type { AdPosition, Ad as AdProps, AdType } from "@nisomnia/db"
+import { type AdPosition, type AdType } from "@nisomnia/db"
 import { Button, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
@@ -26,7 +25,6 @@ import {
 import { api } from "@/lib/trpc/react"
 
 interface FormValues {
-  id: string
   title: string
   content: string
   position: AdPosition
@@ -34,39 +32,24 @@ interface FormValues {
   active: boolean
 }
 
-interface EditAdForm {
-  ad: Pick<AdProps, "id" | "title" | "content" | "position" | "type" | "active">
-}
-
-export const EditAdForm: React.FunctionComponent<EditAdForm> = (props) => {
-  const { ad } = props
-
+export const CreateAdForm = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
-
-  const router = useRouter()
 
   const {
     register,
     formState: { errors },
+    handleSubmit,
     control,
     watch,
-    handleSubmit,
-  } = useForm<FormValues>({
-    defaultValues: {
-      id: ad.id,
-      title: ad?.title || "",
-      content: ad?.content || "",
-      position: ad?.position || "home_below_header",
-      type: ad?.type || "plain_ad",
-      active: ad?.active || false,
-    },
-  })
+    reset,
+  } = useForm<FormValues>()
 
   const adType = watch("type")
 
-  const { mutate: updateAd } = api.ad.update.useMutation({
+  const { mutate: createAd } = api.ad.create.useMutation({
     onSuccess: () => {
-      router.push("/dashboard/ad")
+      reset()
+      toast({ variant: "success", description: "Ad Successfully created" })
     },
     onError: (err) => {
       toast({ variant: "danger", description: err.message })
@@ -75,7 +58,7 @@ export const EditAdForm: React.FunctionComponent<EditAdForm> = (props) => {
 
   const onSubmit = (values: FormValues) => {
     setLoading(true)
-    updateAd(values)
+    createAd(values)
     setLoading(false)
   }
 

@@ -194,7 +194,7 @@ export const EditAdForm: React.FunctionComponent<EditAdForm> = (props) => {
                   <SelectItem value="single_article_pop_up">
                     Single Article (Pop Up)
                   </SelectItem>
-                </SelectGroup>{" "}
+                </SelectGroup>
               </SelectContent>
             </Select>
           )}
