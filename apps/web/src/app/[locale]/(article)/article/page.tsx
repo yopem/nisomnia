@@ -1,4 +1,5 @@
 import * as React from "react"
+import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { BreadcrumbJsonLd } from "next-seo"
@@ -22,9 +23,26 @@ const Ad = dynamic(async () => {
 
 export const revalidate = 0
 
-export const metadata = {
-  title: "Article",
-  description: "Article",
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: LanguageType }
+}): Metadata {
+  const { locale } = params
+
+  return {
+    title: "Article",
+    description: "Article",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/article`,
+    },
+    openGraph: {
+      title: "Article",
+      description: "Article",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/article`,
+      locale: locale,
+    },
+  }
 }
 
 export default async function ArticlePage({

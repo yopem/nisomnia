@@ -2,6 +2,8 @@ import * as React from "react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import type { LanguageType } from "@nisomnia/db"
+
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import { EditUserForm } from "./form"
@@ -9,9 +11,9 @@ import { EditUserForm } from "./form"
 export async function generateMetadata({
   params,
 }: {
-  params: { user_id: string }
+  params: { user_id: string; locale: LanguageType }
 }): Promise<Metadata> {
-  const { user_id } = params
+  const { user_id, locale } = params
 
   const user = await api.user.byId.query(user_id)
 
@@ -20,6 +22,12 @@ export async function generateMetadata({
     description: "Edit User Dashboard",
     alternates: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/user/edit/${user?.id}`,
+    },
+    openGraph: {
+      title: "Edit User Dashboard",
+      description: "Edit User Dashboard",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/user/edit/${user?.id}`,
+      locale: locale,
     },
   }
 }

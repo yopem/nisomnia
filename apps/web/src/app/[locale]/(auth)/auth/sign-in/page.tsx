@@ -1,19 +1,35 @@
 import * as React from "react"
+import type { Metadata } from "next"
 import NextLink from "next/link"
 import { redirect } from "next/navigation"
 
 import { getCurrentUser } from "@nisomnia/auth"
+import type { LanguageType } from "@nisomnia/db"
 import { buttonVariants, cn, Icon } from "@nisomnia/ui/next"
 
 import env from "@/env"
 import { SignInContent } from "./content"
 
-export const metadata = {
-  title: "Sign In",
-  description: "Sign in to your account. ",
-  alternates: {
-    canonical: `${env.NEXT_PUBLIC_SITE_URL}/auth/sign-in/`,
-  },
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: LanguageType }
+}): Metadata {
+  const { locale } = params
+
+  return {
+    title: "Sign In",
+    description: "Sign to your Nisomnia Account",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/auth/sign-in`,
+    },
+    openGraph: {
+      title: "Sign In",
+      description: "Sign to your Nisomnia Account",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/authsign-in`,
+      locale: locale,
+    },
+  }
 }
 
 export default async function SignInPage() {

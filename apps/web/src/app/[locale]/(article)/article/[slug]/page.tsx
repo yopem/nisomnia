@@ -46,6 +46,9 @@ export async function generateMetadata({
   return {
     title: article?.meta_title ?? article?.title,
     description: article?.meta_description ?? article?.excerpt,
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/article/${article?.slug}`,
+    },
     openGraph: {
       title: article?.title,
       description: article?.meta_description ?? article?.excerpt,

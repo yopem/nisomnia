@@ -15,13 +15,14 @@ interface TranslateArticleMetaDataProps {
   params: {
     article_translation_primary_id: string
     language: LanguageType
+    locale: LanguageType
   }
 }
 
 export async function generateMetadata({
   params,
 }: TranslateArticleMetaDataProps): Promise<Metadata> {
-  const { article_translation_primary_id, language } = params
+  const { article_translation_primary_id, language, locale } = params
 
   const articleTranslationPrimary =
     await api.article.articleTranslationPrimaryById.query(
@@ -33,6 +34,12 @@ export async function generateMetadata({
     description: "Translate Article Dashboard",
     alternates: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/article/translate/${language}/${articleTranslationPrimary?.id}`,
+    },
+    openGraph: {
+      title: "Translate Article Dashboard",
+      description: "Translate Article Dashboard",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/article/translate/${language}/${articleTranslationPrimary?.id}`,
+      locale: locale,
     },
   }
 }

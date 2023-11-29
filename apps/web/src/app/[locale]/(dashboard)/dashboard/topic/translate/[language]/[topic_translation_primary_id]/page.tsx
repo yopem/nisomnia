@@ -14,13 +14,14 @@ interface TranslateTopicMetaDataProps {
   params: {
     topic_translation_primary_id: string
     language: LanguageType
+    locale: LanguageType
   }
 }
 
 export async function generateMetadata({
   params,
 }: TranslateTopicMetaDataProps): Promise<Metadata> {
-  const { topic_translation_primary_id, language } = params
+  const { topic_translation_primary_id, language, locale } = params
 
   const topicTranslationPrimary =
     await api.topic.topicTranslationPrimaryById.query(
@@ -32,6 +33,12 @@ export async function generateMetadata({
     description: "Translate Topic Dashboard",
     alternates: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/topic/translate/${language}/${topicTranslationPrimary?.id}`,
+    },
+    openGraph: {
+      title: "Translate Topic Dashboard",
+      description: "Translate Topic Dashboard",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/topic/translate/${language}/${topicTranslationPrimary?.id}`,
+      locale: locale,
     },
   }
 }

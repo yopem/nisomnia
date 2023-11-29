@@ -32,6 +32,12 @@ export async function generateMetadata({
     alternates: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/user/${user?.username}/`,
     },
+    openGraph: {
+      title: user?.name!,
+      description: user?.about ?? `${user?.name} Profile Page`,
+      url: `${env.NEXT_PUBLIC_SITE_URL}/user/${user?.username}/`,
+      locale: locale,
+    },
   }
 }
 

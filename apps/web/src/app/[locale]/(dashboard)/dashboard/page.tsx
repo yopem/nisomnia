@@ -1,5 +1,7 @@
 import * as React from "react"
+import type { Metadata } from "next"
 
+import type { LanguageType } from "@nisomnia/db"
 import { Icon } from "@nisomnia/ui/next"
 
 import { DashboardBox } from "@/components/Dashboard"
@@ -14,6 +16,28 @@ export const metadata = {
   alternates: {
     canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/`,
   },
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: LanguageType }
+}): Metadata {
+  const { locale } = params
+
+  return {
+    title: "Dashboard",
+    description: "Dashboard",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/`,
+    },
+    openGraph: {
+      title: "Dashboard",
+      description: "Dashboard",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/`,
+      locale: locale,
+    },
+  }
 }
 
 export default async function DashboardPage() {

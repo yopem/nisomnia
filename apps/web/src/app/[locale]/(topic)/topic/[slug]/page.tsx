@@ -36,6 +36,9 @@ export async function generateMetadata({
   return {
     title: topic?.meta_title ?? topic?.title,
     description: topic?.meta_description ?? topic?.description,
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/topic/${topic?.slug}`,
+    },
     openGraph: {
       title: topic?.title,
       description: topic?.meta_description! ?? topic?.description!,
