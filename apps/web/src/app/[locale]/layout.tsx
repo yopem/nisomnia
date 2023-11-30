@@ -8,7 +8,6 @@ import { Toaster } from "@nisomnia/ui/next-client"
 
 import "@/styles/globals.css"
 
-import { AuthProvider } from "@/components/Auth/client"
 import { ThemeProvider } from "@/components/Theme/client"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
@@ -84,11 +83,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Toaster />
         <ThemeProvider>
-          <AuthProvider>
-            <TRPCReactProvider headers={headers()}>
-              {children}
-            </TRPCReactProvider>
-          </AuthProvider>
+          <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
         </ThemeProvider>
         {process.env.APP_ENV === "production" && (
           <Script

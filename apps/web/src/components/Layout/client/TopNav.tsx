@@ -4,12 +4,12 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
-import { useSession } from "@nisomnia/auth/client"
 import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon, IconButton } from "@nisomnia/ui/next"
 import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 
 import { Logo } from "@/components/Logo"
+import type { UserMenuProps } from "@/components/User/client"
 
 const SearchTopNav = dynamic(() =>
   import("./SearchTopNav").then((mod) => mod.SearchTopNav),
@@ -18,14 +18,14 @@ const UserMenu = dynamic(() =>
   import("@/components/User/client").then((mod) => mod.UserMenu),
 )
 
-interface TopNavProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TopNavProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    UserMenuProps {
   locale: LanguageType
 }
 
 export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
-  const { locale, ...rest } = props
-
-  const { data: session } = useSession()
+  const { locale, user, ...rest } = props
 
   const [searchVisibility, setSearchVisibility] = React.useState<boolean>(false)
 
@@ -93,7 +93,7 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
           >
             <Icon.Search className="h-5 w-5 px-0" />
           </IconButton>
-          <UserMenu session={session} />
+          <UserMenu user={user} />
         </div>
       </div>
       <SearchTopNav

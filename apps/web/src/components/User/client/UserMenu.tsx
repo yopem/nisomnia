@@ -4,7 +4,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
-import type { Session } from "@nisomnia/auth"
+import type { User as UserProps } from "@nisomnia/auth"
 import { Icon, IconButton } from "@nisomnia/ui/next"
 import {
   Popover,
@@ -15,24 +15,28 @@ import {
 import { Image } from "@/components/Image"
 
 const SignOutButton = dynamic(() =>
-  import("@/components/Auth/client").then((mod) => mod.SignOutButton),
+  import("./SignOutButton").then((mod) => mod.SignOutButton),
 )
 
-export const UserMenu = ({ session }: { session: Session | null }) => {
-  const { name, username, image } = session?.user ?? {}
+export interface UserMenuProps {
+  user: UserProps
+}
+
+export const UserMenu: React.FunctionComponent<UserMenuProps> = (props) => {
+  const { user } = props
 
   const itemClass =
     "relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:text-foreground/90"
 
   return (
     <>
-      {session ? (
+      {user ? (
         <Popover>
           <PopoverTrigger asChild>
             <IconButton aria-label="User Menu" variant="ghost">
               <Image
-                src={image!}
-                alt={name!}
+                src={user.image!}
+                alt={user.name!}
                 className="!relative m-0 h-4 w-4 rounded-full"
               />
             </IconButton>
@@ -40,7 +44,7 @@ export const UserMenu = ({ session }: { session: Session | null }) => {
           <PopoverContent className="w-56 bg-background">
             <NextLink
               aria-label="Profile"
-              href={`/user/${username}`}
+              href={`/user/${user.username}`}
               className={itemClass}
             >
               <Icon.User className="mr-2 h-5 w-5" /> Profile
@@ -52,7 +56,7 @@ export const UserMenu = ({ session }: { session: Session | null }) => {
             >
               <Icon.Setting className="mr-2 h-5 w-5" /> Setting
             </NextLink>
-            {session?.user?.role?.includes("admin" || "author") && (
+            {user?.role?.includes("admin" || "author") && (
               <NextLink
                 aria-label="Dashboard"
                 href="/dashboard"

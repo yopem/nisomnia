@@ -9,9 +9,9 @@ import { uploadImageToS3 } from "@/lib/s3"
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getCurrentUser()
+    const user = await getCurrentUser()
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json("Unauthorized", { status: 403 })
     }
 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
           name: uniqueFileName,
           url: "https://" + env.R2_DOMAIN + "/" + uniqueFileName,
           type: defaultFileType,
-          author_id: session.id,
+          author_id: user.id,
         },
       })
 

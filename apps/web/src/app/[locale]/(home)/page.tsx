@@ -1,11 +1,10 @@
 import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
+import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 
-import { InfiniteScrollArticles } from "@/components/Article/client"
 import { Container, Footer } from "@/components/Layout"
-import { TopNav } from "@/components/Layout/client"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
@@ -14,14 +13,27 @@ const Ad = dynamic(async () => {
   return { default: Ad }
 })
 
-export default async function HomePage({
-  params,
-}: {
-  params: { locale: LanguageType }
-}) {
+const InfiniteScrollArticles = dynamic(async () => {
+  const { InfiniteScrollArticles } = await import("@/components/Article/client")
+  return { default: InfiniteScrollArticles }
+})
+
+const TopNav = dynamic(async () => {
+  const { TopNav } = await import("@/components/Layout/client")
+  return { default: TopNav }
+})
+
+interface HomePageProps {
+  params: {
+    locale: LanguageType
+  }
+}
+
+export default async function HomePage({ params }: HomePageProps) {
   const { locale } = params
 
   const adsBelowHeader = await api.ad.byPosition.query("home_below_header")
+  const user = await getCurrentUser()
 
   return (
     <>
@@ -46,7 +58,7 @@ export default async function HomePage({
         ]}
       />
       <div>
-        <TopNav locale={locale} />
+        <TopNav locale={locale} user={user!} />
         <Container className="mt-20 min-h-screen px-2 lg:px-80">
           <section>
             {adsBelowHeader.length > 0 &&

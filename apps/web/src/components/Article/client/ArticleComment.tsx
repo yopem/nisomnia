@@ -4,7 +4,7 @@ import * as React from "react"
 import NextLink from "next/link"
 import { useForm, type SubmitHandler } from "react-hook-form"
 
-import type { User } from "@nisomnia/auth"
+import type { User as UserProps } from "@nisomnia/auth"
 import { Button, Icon, IconButton, Textarea } from "@nisomnia/ui/next"
 import {
   Popover,
@@ -22,7 +22,7 @@ import { ReplyArticleComment } from "./ReplyArticleComment"
 
 interface ArticleCommentFormProps extends React.HTMLAttributes<HTMLDivElement> {
   article_id: string
-  user: User
+  user: UserProps
 }
 
 interface FormValues {

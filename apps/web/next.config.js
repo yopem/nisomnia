@@ -103,6 +103,11 @@ module.exports = () => {
     async redirects() {
       return [
         {
+          source: "/auth/login",
+          destination: "/auth/sign-in",
+          permanent: true,
+        },
+        {
           source: "/read",
           destination: "/article",
           permanent: true,
