@@ -2,12 +2,8 @@ import * as React from "react"
 
 import type { Ad as AdDataProps } from "@nisomnia/db"
 
+import { Adsense } from "./client"
 import { PlainAd } from "./PlainAd"
-
-const Adsense = React.lazy(async () => {
-  const { Adsense } = await import("./client")
-  return { default: Adsense }
-})
 
 export interface AdProps extends React.HTMLAttributes<HTMLDivElement> {
   ad: Partial<AdDataProps>
