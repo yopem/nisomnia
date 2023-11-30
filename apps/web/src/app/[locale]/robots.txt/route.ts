@@ -5,10 +5,8 @@ import env from "@/env"
 export function GET(_request: NextRequest) {
   const response = new Response(
     `User-Agent: *
-
-     Allow: /
-     Host: ${env.NEXT_PUBLIC_SITE_URL}
-     Sitemap: ${env.NEXT_PUBLIC_SITE_URL}/sitemap.xml`,
+Allow: /
+Sitemap: ${env.NEXT_PUBLIC_SITE_URL}/sitemap.xml`,
   )
   response.headers.set("Content-Type", "text/plain")
 
