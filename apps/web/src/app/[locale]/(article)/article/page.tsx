@@ -1,6 +1,5 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { BreadcrumbJsonLd } from "next-seo"
 
@@ -20,7 +19,7 @@ const Ad = React.lazy(async () => {
   return { default: Ad }
 })
 
-const InfiniteScrollArticles = dynamic(async () => {
+const InfiniteScrollArticles = React.lazy(async () => {
   const { InfiniteScrollArticles } = await import("@/components/Article/client")
   return { default: InfiniteScrollArticles }
 })
