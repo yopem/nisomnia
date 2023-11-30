@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { BreadcrumbJsonLd } from "next-seo"
 
@@ -11,11 +12,15 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import { InfiniteScrollUserArticles } from "@/components/Article/client"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-export const revalidate = 0
+const InfiniteScrollUserArticles = dynamic(async () => {
+  const { InfiniteScrollUserArticles } = await import(
+    "@/components/Article/client"
+  )
+  return { default: InfiniteScrollUserArticles }
+})
 
 export async function generateMetadata({
   params,
@@ -111,3 +116,5 @@ export default async function UserArticlesPage({
     </>
   )
 }
+
+export const revalidate = 0

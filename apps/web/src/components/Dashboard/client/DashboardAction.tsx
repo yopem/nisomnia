@@ -7,9 +7,10 @@ import NextLink from "next/link"
 
 import { cn, Icon } from "@nisomnia/ui/next"
 
-const AlertDelete = dynamic(() =>
-  import("@/components/AlertDelete").then((mod) => mod.AlertDelete),
-)
+const AlertDelete = dynamic(async () => {
+  const { AlertDelete } = await import("@/components/AlertDelete")
+  return { default: AlertDelete }
+})
 
 export interface DashboardActionProps
   extends React.HTMLAttributes<HTMLDivElement> {

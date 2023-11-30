@@ -22,8 +22,6 @@ const Ad = dynamic(async () => {
   return { default: Ad }
 })
 
-export const revalidate = 0
-
 export async function generateMetadata({
   params,
 }: {
@@ -123,3 +121,5 @@ export default async function SingleTopicPage({
     </section>
   )
 }
+
+export const revalidate = 0

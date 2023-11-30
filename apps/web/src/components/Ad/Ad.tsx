@@ -1,9 +1,14 @@
 import * as React from "react"
+import dynamic from "next/dynamic"
 
 import type { Ad as AdDataProps } from "@nisomnia/db"
 
-import { Adsense } from "./client"
 import { PlainAd } from "./PlainAd"
+
+const Adsense = dynamic(async () => {
+  const { Adsense } = await import("./client")
+  return { default: Adsense }
+})
 
 export interface AdProps extends React.HTMLAttributes<HTMLDivElement> {
   ad: Partial<AdDataProps>

@@ -1,4 +1,5 @@
 import * as React from "react"
+import dynamic from "next/dynamic"
 import { Inter } from "next/font/google"
 import { headers } from "next/headers"
 import Script from "next/script"
@@ -8,9 +9,13 @@ import { Toaster } from "@nisomnia/ui/next-client"
 
 import "@/styles/globals.css"
 
-import { ThemeProvider } from "@/components/Theme/client"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
+
+const ThemeProvider = dynamic(async () => {
+  const { ThemeProvider } = await import("@/components/Theme/client")
+  return { default: ThemeProvider }
+})
 
 const inter = Inter({ subsets: ["latin"] })
 

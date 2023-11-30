@@ -1,10 +1,15 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
-import { MediaLibraryDashboard } from "./content"
+
+const MediaLibraryContent = dynamic(async () => {
+  const { MediaLibraryContent } = await import("./content")
+  return { default: MediaLibraryContent }
+})
 
 export function generateMetadata({
   params,
@@ -29,5 +34,5 @@ export function generateMetadata({
 }
 
 export default function MediasDashboard() {
-  return <MediaLibraryDashboard />
+  return <MediaLibraryContent />
 }

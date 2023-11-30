@@ -21,9 +21,10 @@ import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
 
-const DashboardAction = dynamic(() =>
-  import("@/components/Dashboard/client").then((mod) => mod.DashboardAction),
-)
+const DashboardAction = dynamic(async () => {
+  const { DashboardAction } = await import("@/components/Dashboard/client")
+  return { default: DashboardAction }
+})
 
 export const DashboardAdContent: React.FunctionComponent = () => {
   const [page, setPage] = React.useState<number>(1)

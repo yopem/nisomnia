@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
 
 import { getCurrentUser } from "@nisomnia/auth"
@@ -7,7 +8,11 @@ import type { LanguageType } from "@nisomnia/db"
 
 import { PageInfo } from "@/components/Layout"
 import env from "@/env"
-import { UserSettingForm } from "./form"
+
+const UserSettingForm = dynamic(async () => {
+  const { UserSettingForm } = await import("./form")
+  return { default: UserSettingForm }
+})
 
 export function generateMetadata({
   params,
@@ -31,8 +36,6 @@ export function generateMetadata({
   }
 }
 
-export const revalidate = 60
-
 export default async function EditUserProfilePage() {
   const user = await getCurrentUser()
 
@@ -47,3 +50,5 @@ export default async function EditUserProfilePage() {
     </>
   )
 }
+
+export const revalidate = 60

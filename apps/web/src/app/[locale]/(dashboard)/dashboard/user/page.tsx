@@ -1,10 +1,15 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
-import { DashboardUserContent } from "./content"
+
+const DashboardUserContent = dynamic(async () => {
+  const { DashboardUserContent } = await import("./content")
+  return { default: DashboardUserContent }
+})
 
 export function generateMetadata({
   params,

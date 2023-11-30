@@ -34,14 +34,15 @@ import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
 
-const DashboardAction = dynamic(() =>
-  import("@/components/Dashboard/client").then((mod) => mod.DashboardAction),
-)
-const DashboardAddLanguageAction = dynamic(() =>
-  import("@/components/Dashboard/client").then(
-    (mod) => mod.DashboardAddLanguage,
-  ),
-)
+const DashboardAction = dynamic(async () => {
+  const { DashboardAction } = await import("@/components/Dashboard/client")
+  return { default: DashboardAction }
+})
+
+const DashboardAddLanguage = dynamic(async () => {
+  const { DashboardAddLanguage } = await import("@/components/Dashboard/client")
+  return { default: DashboardAddLanguage }
+})
 
 type ArticleDataProps = ArticleProps & {
   article_translation_primary: ArticleTranslationPrimaryProps & {
@@ -311,7 +312,7 @@ const ArticleTable = (props: ArticleTableProps) => {
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <div className="flex justify-between gap-2">
-                    <DashboardAddLanguageAction
+                    <DashboardAddLanguage
                       language={articleIndo?.language}
                       triggerLink={`/dashboard/article/translate/id/${article.article_translation_primary_id}`}
                       content={
@@ -328,7 +329,7 @@ const ArticleTable = (props: ArticleTableProps) => {
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <div className="flex justify-between gap-2">
-                    <DashboardAddLanguageAction
+                    <DashboardAddLanguage
                       language={articleEnglish?.language}
                       triggerLink={`/dashboard/article/translate/en/${article.article_translation_primary_id}`}
                       content={

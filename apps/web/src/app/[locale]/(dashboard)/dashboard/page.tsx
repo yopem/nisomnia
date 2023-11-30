@@ -8,8 +8,6 @@ import { DashboardBox } from "@/components/Dashboard"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-export const revalidate = 60
-
 export function generateMetadata({
   params,
 }: {
@@ -79,3 +77,5 @@ export default async function DashboardPage() {
     </div>
   )
 }
+
+export const revalidate = 60

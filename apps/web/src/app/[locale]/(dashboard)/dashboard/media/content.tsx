@@ -16,14 +16,17 @@ import {
 
 import { api } from "@/lib/trpc/react"
 
-const DeleteMediaButton = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.DeleteMediaButton),
-)
-const InfiniteScrollMedia = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.InfiniteScrollMedia),
-)
+const DeleteMediaButton = dynamic(async () => {
+  const { DeleteMediaButton } = await import("@/components/Media/client")
+  return { default: DeleteMediaButton }
+})
 
-export const MediaLibraryDashboard: React.FunctionComponent = () => {
+const InfiniteScrollMedia = dynamic(async () => {
+  const { InfiniteScrollMedia } = await import("@/components/Media/client")
+  return { default: InfiniteScrollMedia }
+})
+
+export const MediaLibraryContent: React.FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = React.useState<string | null>(null)
 
   const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +44,6 @@ export const MediaLibraryDashboard: React.FunctionComponent = () => {
         variant: "success",
         description: "Media deleted successfully",
       })
-      updateResultsMedias()
       updateResultsMedias()
     }
   }

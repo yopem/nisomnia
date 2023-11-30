@@ -12,7 +12,6 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import { InfiniteScrollArticles } from "@/components/Article/client"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
@@ -21,7 +20,10 @@ const Ad = dynamic(async () => {
   return { default: Ad }
 })
 
-export const revalidate = 0
+const InfiniteScrollArticles = dynamic(async () => {
+  const { InfiniteScrollArticles } = await import("@/components/Article/client")
+  return { default: InfiniteScrollArticles }
+})
 
 export function generateMetadata({
   params,
@@ -91,3 +93,5 @@ export default async function ArticlePage({
     </>
   )
 }
+
+export const revalidate = 0

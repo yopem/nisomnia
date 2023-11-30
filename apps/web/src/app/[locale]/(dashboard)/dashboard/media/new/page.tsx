@@ -1,10 +1,15 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
-import { UploadMediaForm } from "./form"
+
+const UploadMediaForm = dynamic(async () => {
+  const { UploadMediaForm } = await import("./form")
+  return { default: UploadMediaForm }
+})
 
 export function generateMetadata({
   params,

@@ -1,10 +1,15 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
-import { CreateTopicForm } from "./form"
+
+const CreateTopicForm = dynamic(async () => {
+  const { CreateTopicForm } = await import("./form")
+  return { default: CreateTopicForm }
+})
 
 export function generateMetadata({
   params,

@@ -10,7 +10,7 @@ import type {
 import { toast } from "@nisomnia/ui/next-client"
 
 import { ArticleCardHorizontal } from "@/components/Article"
-import { LoadingProgress } from "@/components/Layout"
+import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
 
 export type InfinteScrollUserArticlesDataProps = Pick<

@@ -1,22 +1,31 @@
 import * as React from "react"
+import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
-import type { Session } from "@nisomnia/auth"
+import type { User as UserProps } from "@nisomnia/auth"
 import { Icon } from "@nisomnia/ui/next"
 
 import { Sidebar, SidebarItem, SidebarToggleItem } from "@/components/Layout"
-import { SidebarToggle } from "@/components/Layout/client"
 import { Logo } from "@/components/Logo"
-import { ThemeSwitcher } from "@/components/Theme/client"
+
+const SidebarToggle = dynamic(async () => {
+  const { SidebarToggle } = await import("@/components/Layout/client")
+  return { default: SidebarToggle }
+})
+
+const ThemeSwitcher = dynamic(async () => {
+  const { ThemeSwitcher } = await import("@/components/Theme/client")
+  return { default: ThemeSwitcher }
+})
 
 export interface DashboardSidebarProps {
-  session: Session | null
+  user: UserProps
 }
 
 export const DashboardSidebar: React.FunctionComponent<
   DashboardSidebarProps
 > = (props) => {
-  const { session, ...rest } = props
+  const { user, ...rest } = props
 
   return (
     <Sidebar {...rest}>
@@ -54,7 +63,7 @@ export const DashboardSidebar: React.FunctionComponent<
           Add new topic
         </SidebarToggleItem>
       </SidebarToggle>
-      {session?.user?.role === "admin" && (
+      {user?.role === "admin" && (
         <SidebarToggle icon={<Icon.Ads />} title="Ads">
           <SidebarToggleItem href="/dashboard/ad">All Ads</SidebarToggleItem>
           <SidebarToggleItem href="/dashboard/ad/new">
@@ -68,10 +77,7 @@ export const DashboardSidebar: React.FunctionComponent<
           Add new
         </SidebarToggleItem>
       </SidebarToggle>
-      {/* <SidebarItem icon={<Icon.Comment />} href="/dashboard/comment">
-            Comments
-          </SidebarItem> */}
-      {session?.user?.role === "admin" && (
+      {user?.role === "admin" && (
         <>
           <SidebarToggle icon={<Icon.Users />} title="Users">
             <SidebarToggleItem href="/dashboard/user">

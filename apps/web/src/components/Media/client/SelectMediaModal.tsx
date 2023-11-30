@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import dynamic from "next/dynamic"
 
 import { Icon } from "@nisomnia/ui/next"
 import {
@@ -18,8 +19,16 @@ import {
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
-import { InfiniteScrollMedia } from "./InfiniteScrollMedia"
-import { UploadMedia } from "./UploadMedia"
+
+const InfiniteScrollMedia = dynamic(async () => {
+  const { InfiniteScrollMedia } = await import("./InfiniteScrollMedia")
+  return { default: InfiniteScrollMedia }
+})
+
+const UploadMedia = dynamic(async () => {
+  const { UploadMedia } = await import("./UploadMedia")
+  return { default: UploadMedia }
+})
 
 interface SelectMediaModalProps {
   handleSelectUpdateMedia: (_media: {

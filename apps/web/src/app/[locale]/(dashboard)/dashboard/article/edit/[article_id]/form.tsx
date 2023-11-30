@@ -36,25 +36,30 @@ import {
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const Editor = dynamic(() =>
-  import("@/components/Editor").then((mod) => mod.Editor),
-)
-const DashboardAddAuthors = dynamic(() =>
-  import("@/components/Dashboard/client").then(
-    (mod) => mod.DashboardAddAuthors,
-  ),
-)
-const DashboardAddEditors = dynamic(() =>
-  import("@/components/Dashboard/client").then(
-    (mod) => mod.DashboardAddEditors,
-  ),
-)
-const DashboardAddTopics = dynamic(() =>
-  import("@/components/Dashboard/client").then((mod) => mod.DashboardAddTopics),
-)
-const SelectMediaModal = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.SelectMediaModal),
-)
+const Editor = dynamic(async () => {
+  const { Editor } = await import("@/components/Editor")
+  return { default: Editor }
+})
+
+const DashboardAddAuthors = dynamic(async () => {
+  const { DashboardAddAuthors } = await import("@/components/Dashboard/client")
+  return { default: DashboardAddAuthors }
+})
+
+const DashboardAddEditors = dynamic(async () => {
+  const { DashboardAddEditors } = await import("@/components/Dashboard/client")
+  return { default: DashboardAddEditors }
+})
+
+const DashboardAddTopics = dynamic(async () => {
+  const { DashboardAddTopics } = await import("@/components/Dashboard/client")
+  return { default: DashboardAddTopics }
+})
+
+const SelectMediaModal = dynamic(async () => {
+  const { SelectMediaModal } = await import("@/components/Media/client")
+  return { default: SelectMediaModal }
+})
 
 interface FormValues {
   id: string

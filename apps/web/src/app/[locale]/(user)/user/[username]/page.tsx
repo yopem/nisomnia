@@ -12,8 +12,6 @@ import { Image } from "@/components/Image"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-export const revalidate = 0
-
 export async function generateMetadata({
   params,
 }: {
@@ -135,3 +133,5 @@ export default async function UserPage({ params }: UserPageProps) {
     </>
   )
 }
+
+export const revalidate = 0

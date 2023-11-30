@@ -1,14 +1,17 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import { redirect } from "next/navigation"
 
 import type { LanguageType, TopicType } from "@nisomnia/db"
 
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
-import { TranslateTopicForm } from "./form"
 
-export const revalidate = 60
+const TranslateTopicForm = dynamic(async () => {
+  const { TranslateTopicForm } = await import("./form")
+  return { default: TranslateTopicForm }
+})
 
 interface TranslateTopicMetaDataProps {
   params: {
@@ -81,3 +84,5 @@ export default async function TranslateTopicDashboardPage({
     />
   )
 }
+
+export const revalidate = 60

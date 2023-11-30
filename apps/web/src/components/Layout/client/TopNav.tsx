@@ -11,12 +11,15 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 import { Logo } from "@/components/Logo"
 import type { UserMenuProps } from "@/components/User/client"
 
-const SearchTopNav = dynamic(() =>
-  import("./SearchTopNav").then((mod) => mod.SearchTopNav),
-)
-const UserMenu = dynamic(() =>
-  import("@/components/User/client").then((mod) => mod.UserMenu),
-)
+const SearchTopNav = dynamic(async () => {
+  const { SearchTopNav } = await import("./SearchTopNav")
+  return { default: SearchTopNav }
+})
+
+const UserMenu = dynamic(async () => {
+  const { UserMenu } = await import("@/components/User/client")
+  return { default: UserMenu }
+})
 
 interface TopNavProps
   extends React.HTMLAttributes<HTMLDivElement>,

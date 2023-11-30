@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import { redirect } from "next/navigation"
 
 import { getCurrentSession } from "@nisomnia/auth"
@@ -7,9 +8,11 @@ import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
-import { TranslateArticleForm } from "./form"
 
-export const revalidate = 60
+const TranslateArticleForm = dynamic(async () => {
+  const { TranslateArticleForm } = await import("./form")
+  return { default: TranslateArticleForm }
+})
 
 interface TranslateArticleMetaDataProps {
   params: {
@@ -81,3 +84,5 @@ export default async function TranslateArticleDashboardPage({
     </>
   )
 }
+
+export const revalidate = 60

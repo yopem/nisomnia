@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { useForm, type SubmitHandler } from "react-hook-form"
 
@@ -16,9 +17,23 @@ import { formatDate } from "@nisomnia/utils"
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
-import { DeleteArticleCommentButton } from "./DeleteArticleCommentButton"
-import { EditArticleComment } from "./EditArticleComment"
-import { ReplyArticleComment } from "./ReplyArticleComment"
+
+const DeleteArticleCommentButton = dynamic(async () => {
+  const { DeleteArticleCommentButton } = await import(
+    "./DeleteArticleCommentButton"
+  )
+  return { default: DeleteArticleCommentButton }
+})
+
+const EditArticleComment = dynamic(async () => {
+  const { EditArticleComment } = await import("./EditArticleComment")
+  return { default: EditArticleComment }
+})
+
+const ReplyArticleComment = dynamic(async () => {
+  const { ReplyArticleComment } = await import("./ReplyArticleComment")
+  return { default: ReplyArticleComment }
+})
 
 interface ArticleCommentFormProps extends React.HTMLAttributes<HTMLDivElement> {
   article_id: string

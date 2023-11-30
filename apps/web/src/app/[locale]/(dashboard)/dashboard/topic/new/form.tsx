@@ -25,9 +25,10 @@ import {
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const SelectMediaModal = dynamic(() =>
-  import("@/components/Media/client").then((mod) => mod.SelectMediaModal),
-)
+const SelectMediaModal = dynamic(async () => {
+  const { SelectMediaModal } = await import("@/components/Media/client")
+  return { default: SelectMediaModal }
+})
 
 interface FormValues {
   title: string

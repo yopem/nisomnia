@@ -15,10 +15,6 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import {
-  ArticleComment,
-  InfiniteScrollArticles,
-} from "@/components/Article/client"
 import { Image } from "@/components/Image"
 import { Share } from "@/components/Share"
 import env from "@/env"
@@ -32,7 +28,15 @@ const Ad = dynamic(async () => {
   return { default: Ad }
 })
 
-export const revalidate = 0
+const ArticleComment = dynamic(async () => {
+  const { ArticleComment } = await import("@/components/Article/client")
+  return { default: ArticleComment }
+})
+
+const InfiniteScrollArticles = dynamic(async () => {
+  const { InfiniteScrollArticles } = await import("@/components/Article/client")
+  return { default: InfiniteScrollArticles }
+})
 
 export async function generateMetadata({
   params,
@@ -246,3 +250,5 @@ export default async function ArticleSlugPage({
     </>
   )
 }
+
+export const revalidate = 0

@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { redirect } from "next/navigation"
 
@@ -8,7 +9,11 @@ import type { LanguageType } from "@nisomnia/db"
 import { buttonVariants, cn, Icon } from "@nisomnia/ui/next"
 
 import env from "@/env"
-import { SignInContent } from "./content"
+
+const SignInContent = dynamic(async () => {
+  const { SignInContent } = await import("./content")
+  return { default: SignInContent }
+})
 
 export function generateMetadata({
   params,

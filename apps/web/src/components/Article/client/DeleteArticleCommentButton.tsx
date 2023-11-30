@@ -5,9 +5,10 @@ import dynamic from "next/dynamic"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 
-const AlertDelete = dynamic(() =>
-  import("@/components/AlertDelete").then((mod) => mod.AlertDelete),
-)
+const AlertDelete = dynamic(async () => {
+  const { AlertDelete } = await import("@/components/AlertDelete")
+  return { default: AlertDelete }
+})
 
 interface DeleteArticleCommentButtonProps {
   description: React.ReactNode
