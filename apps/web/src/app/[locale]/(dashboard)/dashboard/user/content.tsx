@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import type { User as UserProps } from "@prisma/client"
 
 import {
@@ -26,7 +25,7 @@ import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
 
-const DashboardAction = dynamic(async () => {
+const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import("@/components/Dashboard/client")
   return { default: DashboardAction }
 })

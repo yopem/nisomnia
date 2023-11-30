@@ -3,7 +3,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { useRouter } from "next/navigation"
 import { Controller, useForm } from "react-hook-form"
@@ -36,27 +35,27 @@ import {
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const Editor = dynamic(async () => {
+const Editor = React.lazy(async () => {
   const { Editor } = await import("@/components/Editor")
   return { default: Editor }
 })
 
-const DashboardAddAuthors = dynamic(async () => {
+const DashboardAddAuthors = React.lazy(async () => {
   const { DashboardAddAuthors } = await import("@/components/Dashboard/client")
   return { default: DashboardAddAuthors }
 })
 
-const DashboardAddEditors = dynamic(async () => {
+const DashboardAddEditors = React.lazy(async () => {
   const { DashboardAddEditors } = await import("@/components/Dashboard/client")
   return { default: DashboardAddEditors }
 })
 
-const DashboardAddTopics = dynamic(async () => {
+const DashboardAddTopics = React.lazy(async () => {
   const { DashboardAddTopics } = await import("@/components/Dashboard/client")
   return { default: DashboardAddTopics }
 })
 
-const SelectMediaModal = dynamic(async () => {
+const SelectMediaModal = React.lazy(async () => {
   const { SelectMediaModal } = await import("@/components/Media/client")
   return { default: SelectMediaModal }
 })

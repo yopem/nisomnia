@@ -1,5 +1,4 @@
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
 
 import { getCurrentUser } from "@nisomnia/auth"
@@ -7,7 +6,7 @@ import type { LanguageType } from "@nisomnia/db"
 
 import { Container, Footer } from "@/components/Layout"
 
-const TopNav = dynamic(async () => {
+const TopNav = React.lazy(async () => {
   const { TopNav } = await import("@/components/Layout/client")
   return { default: TopNav }
 })

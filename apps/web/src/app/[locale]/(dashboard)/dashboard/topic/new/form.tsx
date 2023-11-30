@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { Controller, useForm } from "react-hook-form"
 
 import type { LanguageType, TopicType } from "@nisomnia/db"
@@ -25,7 +24,7 @@ import {
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const SelectMediaModal = dynamic(async () => {
+const SelectMediaModal = React.lazy(async () => {
   const { SelectMediaModal } = await import("@/components/Media/client")
   return { default: SelectMediaModal }
 })

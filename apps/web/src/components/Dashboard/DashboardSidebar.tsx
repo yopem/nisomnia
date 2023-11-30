@@ -1,5 +1,4 @@
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import type { User as UserProps } from "@nisomnia/auth"
@@ -8,12 +7,12 @@ import { Icon } from "@nisomnia/ui/next"
 import { Sidebar, SidebarItem, SidebarToggleItem } from "@/components/Layout"
 import { Logo } from "@/components/Logo"
 
-const SidebarToggle = dynamic(async () => {
+const SidebarToggle = React.lazy(async () => {
   const { SidebarToggle } = await import("@/components/Layout/client")
   return { default: SidebarToggle }
 })
 
-const ThemeSwitcher = dynamic(async () => {
+const ThemeSwitcher = React.lazy(async () => {
   const { ThemeSwitcher } = await import("@/components/Theme/client")
   return { default: ThemeSwitcher }
 })

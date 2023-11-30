@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import type { Ad as AdProps } from "@nisomnia/db"
@@ -21,7 +20,7 @@ import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
 
-const DashboardAction = dynamic(async () => {
+const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import("@/components/Dashboard/client")
   return { default: DashboardAction }
 })

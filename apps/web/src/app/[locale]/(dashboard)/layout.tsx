@@ -1,12 +1,11 @@
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
 
 import { getCurrentUser } from "@nisomnia/auth"
 
 import { DashboardSidebar } from "@/components/Dashboard"
 
-const DashboardContainer = dynamic(async () => {
+const DashboardContainer = React.lazy(async () => {
   const { DashboardContainer } = await import("@/components/Dashboard/client")
   return { default: DashboardContainer }
 })

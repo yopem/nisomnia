@@ -15,7 +15,7 @@ import {
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-const Ad = dynamic(async () => {
+const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
   return { default: Ad }
 })

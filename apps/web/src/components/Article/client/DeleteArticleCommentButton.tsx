@@ -1,11 +1,10 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 
-const AlertDelete = dynamic(async () => {
+const AlertDelete = React.lazy(async () => {
   const { AlertDelete } = await import("@/components/AlertDelete")
   return { default: AlertDelete }
 })

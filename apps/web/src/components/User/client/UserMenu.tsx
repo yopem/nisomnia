@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import type { User as UserProps } from "@nisomnia/auth"
@@ -14,9 +13,10 @@ import {
 
 import { Image } from "@/components/Image"
 
-const SignOutButton = dynamic(() =>
-  import("./SignOutButton").then((mod) => mod.SignOutButton),
-)
+const SignOutButton = React.lazy(async () => {
+  const { SignOutButton } = await import("./SignOutButton")
+  return { default: SignOutButton }
+})
 
 export interface UserMenuProps {
   user: UserProps

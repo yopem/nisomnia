@@ -1,12 +1,11 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
 
-const CreateTopicForm = dynamic(async () => {
+const CreateTopicForm = React.lazy(async () => {
   const { CreateTopicForm } = await import("./form")
   return { default: CreateTopicForm }
 })

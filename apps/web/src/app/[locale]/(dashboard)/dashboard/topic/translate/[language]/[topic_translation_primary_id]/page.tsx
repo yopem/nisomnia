@@ -1,6 +1,5 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import { redirect } from "next/navigation"
 
 import type { LanguageType, TopicType } from "@nisomnia/db"
@@ -8,7 +7,7 @@ import type { LanguageType, TopicType } from "@nisomnia/db"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-const TranslateTopicForm = dynamic(async () => {
+const TranslateTopicForm = React.lazy(async () => {
   const { TranslateTopicForm } = await import("./form")
   return { default: TranslateTopicForm }
 })

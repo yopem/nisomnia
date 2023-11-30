@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
@@ -16,12 +15,12 @@ import {
 
 import { api } from "@/lib/trpc/react"
 
-const DeleteMediaButton = dynamic(async () => {
+const DeleteMediaButton = React.lazy(async () => {
   const { DeleteMediaButton } = await import("@/components/Media/client")
   return { default: DeleteMediaButton }
 })
 
-const InfiniteScrollMedia = dynamic(async () => {
+const InfiniteScrollMedia = React.lazy(async () => {
   const { InfiniteScrollMedia } = await import("@/components/Media/client")
   return { default: InfiniteScrollMedia }
 })

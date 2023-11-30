@@ -1,12 +1,11 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 
 import type { LanguageType } from "@nisomnia/db"
 
 import env from "@/env"
 
-const DashboardAdContent = dynamic(async () => {
+const DashboardAdContent = React.lazy(async () => {
   const { DashboardAdContent } = await import("./content")
   return { default: DashboardAdContent }
 })

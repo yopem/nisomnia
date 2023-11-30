@@ -1,5 +1,4 @@
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import { cn, Icon, IconButton } from "@nisomnia/ui/next"
@@ -7,12 +6,12 @@ import { Separator } from "@nisomnia/ui/next-client"
 
 import env from "@/env"
 
-const LanguageSwitcher = dynamic(async () => {
+const LanguageSwitcher = React.lazy(async () => {
   const { LanguageSwitcher } = await import("@/components/LanguageSwitcher")
   return { default: LanguageSwitcher }
 })
 
-const ThemeSwitcher = dynamic(async () => {
+const ThemeSwitcher = React.lazy(async () => {
   const { ThemeSwitcher } = await import("@/components/Theme/client")
   return { default: ThemeSwitcher }
 })

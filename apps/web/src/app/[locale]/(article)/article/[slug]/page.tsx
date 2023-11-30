@@ -1,6 +1,5 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
@@ -23,17 +22,17 @@ import { readingTime } from "@/lib/reading-time"
 import { transformContent } from "@/lib/transform-content"
 import { api } from "@/lib/trpc/server"
 
-const Ad = dynamic(async () => {
+const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
   return { default: Ad }
 })
 
-const ArticleComment = dynamic(async () => {
+const ArticleComment = React.lazy(async () => {
   const { ArticleComment } = await import("@/components/Article/client")
   return { default: ArticleComment }
 })
 
-const InfiniteScrollArticles = dynamic(async () => {
+const InfiniteScrollArticles = React.lazy(async () => {
   const { InfiniteScrollArticles } = await import("@/components/Article/client")
   return { default: InfiniteScrollArticles }
 })

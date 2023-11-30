@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 
@@ -17,7 +16,7 @@ import { ArticleCardVertical } from "@/components/Article"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-const Ad = dynamic(async () => {
+const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
   return { default: Ad }
 })

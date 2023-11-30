@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import type { LanguageType } from "@nisomnia/db"
@@ -11,12 +10,12 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 import { Logo } from "@/components/Logo"
 import type { UserMenuProps } from "@/components/User/client"
 
-const SearchTopNav = dynamic(async () => {
+const SearchTopNav = React.lazy(async () => {
   const { SearchTopNav } = await import("./SearchTopNav")
   return { default: SearchTopNav }
 })
 
-const UserMenu = dynamic(async () => {
+const UserMenu = React.lazy(async () => {
   const { UserMenu } = await import("@/components/User/client")
   return { default: UserMenu }
 })

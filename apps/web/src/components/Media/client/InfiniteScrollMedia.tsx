@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 
 import { type Media as MediaProps } from "@nisomnia/db"
@@ -11,12 +10,12 @@ import { Image } from "@/components/Image"
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
 
-const CopyMediaLinkButton = dynamic(async () => {
+const CopyMediaLinkButton = React.lazy(async () => {
   const { CopyMediaLinkButton } = await import("./CopyMediaLinkButton")
   return { default: CopyMediaLinkButton }
 })
 
-const DeleteMediaButton = dynamic(async () => {
+const DeleteMediaButton = React.lazy(async () => {
   const { DeleteMediaButton } = await import("./DeleteMediaButton")
   return { default: DeleteMediaButton }
 })

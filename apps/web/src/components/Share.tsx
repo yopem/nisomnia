@@ -6,7 +6,10 @@ import {
   ShareButtonX,
 } from "@nisomnia/ui/next"
 
-import { CopyLinkButon } from "@/components/CopyLinkButton"
+const CopyLinkButon = React.lazy(async () => {
+  const { CopyLinkButon } = await import("./CopyLinkButton")
+  return { default: CopyLinkButon }
+})
 
 interface ShareProps extends React.HTMLAttributes<HTMLDivElement> {
   url: string

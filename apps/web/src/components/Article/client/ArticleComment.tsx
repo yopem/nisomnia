@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import NextLink from "next/link"
 import { useForm, type SubmitHandler } from "react-hook-form"
 
@@ -18,19 +17,19 @@ import { formatDate } from "@nisomnia/utils"
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
-const DeleteArticleCommentButton = dynamic(async () => {
+const DeleteArticleCommentButton = React.lazy(async () => {
   const { DeleteArticleCommentButton } = await import(
     "./DeleteArticleCommentButton"
   )
   return { default: DeleteArticleCommentButton }
 })
 
-const EditArticleComment = dynamic(async () => {
+const EditArticleComment = React.lazy(async () => {
   const { EditArticleComment } = await import("./EditArticleComment")
   return { default: EditArticleComment }
 })
 
-const ReplyArticleComment = dynamic(async () => {
+const ReplyArticleComment = React.lazy(async () => {
   const { ReplyArticleComment } = await import("./ReplyArticleComment")
   return { default: ReplyArticleComment }
 })

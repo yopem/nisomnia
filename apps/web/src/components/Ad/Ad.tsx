@@ -1,11 +1,10 @@
 import * as React from "react"
-import dynamic from "next/dynamic"
 
 import type { Ad as AdDataProps } from "@nisomnia/db"
 
 import { PlainAd } from "./PlainAd"
 
-const Adsense = dynamic(async () => {
+const Adsense = React.lazy(async () => {
   const { Adsense } = await import("./client")
   return { default: Adsense }
 })

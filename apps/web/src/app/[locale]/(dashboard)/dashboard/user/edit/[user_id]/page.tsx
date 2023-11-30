@@ -1,6 +1,5 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
 
 import type { LanguageType } from "@nisomnia/db"
@@ -8,7 +7,7 @@ import type { LanguageType } from "@nisomnia/db"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-const EditUserForm = dynamic(async () => {
+const EditUserForm = React.lazy(async () => {
   const { EditUserForm } = await import("./form")
   return { default: EditUserForm }
 })

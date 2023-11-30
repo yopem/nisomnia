@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic"
+import * as React from "react"
 import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import { getCurrentUser } from "@nisomnia/auth"
@@ -8,17 +8,17 @@ import { Container, Footer } from "@/components/Layout"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
-const Ad = dynamic(async () => {
+const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
   return { default: Ad }
 })
 
-const InfiniteScrollArticles = dynamic(async () => {
+const InfiniteScrollArticles = React.lazy(async () => {
   const { InfiniteScrollArticles } = await import("@/components/Article/client")
   return { default: InfiniteScrollArticles }
 })
 
-const TopNav = dynamic(async () => {
+const TopNav = React.lazy(async () => {
   const { TopNav } = await import("@/components/Layout/client")
   return { default: TopNav }
 })
