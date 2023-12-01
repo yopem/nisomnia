@@ -23,7 +23,7 @@
   "dependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "@manypkg/cli": "^0.21.0",
+    "@manypkg/cli": "^0.21.1",
     "@nisomnia/prettier-config": "workspace:*",
     "commitizen": "^4.3.0",
     "husky": "^8.0.3",
