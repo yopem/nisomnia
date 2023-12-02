@@ -52,6 +52,10 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN yarn global add pnpm turbo
 RUN pnpm install
 
+# Generate DB
+RUN pnpm db:generate
+RUN pnpm db:migrate-deploy
+
 # Copy built project from the builder stage
 COPY --from=builder /app/out/full/ .
 
