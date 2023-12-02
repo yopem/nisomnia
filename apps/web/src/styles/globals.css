@@ -66,8 +66,19 @@
 }
 
 /* Article */
-.article-container {
+.article-container,
+.ProseMirror {
   @apply space-y-2;
+}
+
+.article-container p,
+.ProseMirror p {
+  @apply text-base md:text-lg;
+}
+
+.article-container a,
+.ProseMirror a {
+  @apply text-blue-500 no-underline duration-200 hover:text-blue-600 hover:underline;
 }
 
 .article-container a,
