@@ -51,7 +51,7 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
         <div className="flex lg:hidden">
           <Drawer>
             <DrawerTrigger asChild>
-              <IconButton variant="ghost">
+              <IconButton variant="ghost" aria-label="Menu">
                 <Icon.Menu />
               </IconButton>
             </DrawerTrigger>
