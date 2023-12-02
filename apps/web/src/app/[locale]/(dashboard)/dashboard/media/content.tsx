@@ -15,6 +15,11 @@ import {
 
 import { api } from "@/lib/trpc/react"
 
+const CopyMediaLinkButton = React.lazy(async () => {
+  const { CopyMediaLinkButton } = await import("@/components/Media/client")
+  return { default: CopyMediaLinkButton }
+})
+
 const DeleteMediaButton = React.lazy(async () => {
   const { DeleteMediaButton } = await import("@/components/Media/client")
   return { default: DeleteMediaButton }
@@ -81,6 +86,7 @@ export const MediaLibraryContent: React.FunctionComponent = () => {
                     description={media.name}
                     action={() => handleDelete(media.name)}
                   />
+                  <CopyMediaLinkButton url={media.url} />
                   <NextLink
                     aria-label={media.name}
                     href={`/dashboard/media/edit/${media.id}`}
