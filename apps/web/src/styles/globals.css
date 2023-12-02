@@ -81,11 +81,6 @@
   @apply text-blue-500 no-underline duration-200 hover:text-blue-600 hover:underline;
 }
 
-.article-container a,
-.ProseMirror a {
-  @apply text-blue-500 no-underline duration-200 hover:text-blue-600 hover:underline;
-}
-
 .article-container ul li,
 .ProseMirror ul li {
   @apply ml-12 list-disc;
