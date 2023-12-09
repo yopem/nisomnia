@@ -27,7 +27,7 @@
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
     "eslint": "^8.55.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@nisomnia/auth": "workspace:*",
