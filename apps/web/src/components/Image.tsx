@@ -20,6 +20,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
     src,
     alt,
     sizes = `(max-width: 768px) 100px, (max-width: 1200px) 200px, 300px`,
+    className,
     placeholder = "blur",
     fill = true,
   } = props
@@ -29,6 +30,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
       alt={alt}
       placeholder={placeholder}
       blurDataURL={rgbDataURL(218, 218, 218)}
+      className={className}
       quality={70}
       sizes={sizes}
       fill={fill}
