@@ -12,10 +12,10 @@ export interface SidebarItemProps extends React.HTMLAttributes<HTMLLIElement> {
 export const SidebarItem: React.FunctionComponent<SidebarItemProps> = (
   props,
 ) => {
-  const { icon, badge, children, href, onClick, ...rest } = props
+  const { icon, badge, children, href, onClick } = props
 
   return (
-    <li {...rest}>
+    <li>
       {href ? (
         <NextLink
           aria-label="Sidebar item"

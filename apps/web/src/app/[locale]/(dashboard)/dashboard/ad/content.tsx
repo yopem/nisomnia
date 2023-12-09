@@ -21,7 +21,9 @@ import { formatDate } from "@nisomnia/utils"
 import { api } from "@/lib/trpc/react"
 
 const DashboardAction = React.lazy(async () => {
-  const { DashboardAction } = await import("@/components/Dashboard/client")
+  const { DashboardAction } = await import(
+    "@/components/Dashboard/DashboardAction"
+  )
   return { default: DashboardAction }
 })
 

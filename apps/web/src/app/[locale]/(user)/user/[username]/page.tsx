@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "next-seo"
 import { Icon } from "@nisomnia/ui/next"
 import { formatDate } from "@nisomnia/utils"
 
-import { ArticleCardVertical } from "@/components/Article"
+import { ArticleCardVertical } from "@/components/Article/ArticleCardVertical"
 import { Image } from "@/components/Image"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"

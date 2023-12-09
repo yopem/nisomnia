@@ -20,7 +20,7 @@ interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
 export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
   props,
 ) => {
-  const { setToggleUpload, ...rest } = props
+  const { setToggleUpload } = props
   const [showUploadForm, setShowUploadForm] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -62,7 +62,7 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
   }
 
   return (
-    <div className="my-2 space-y-2" {...rest}>
+    <div className="my-2 space-y-2">
       <Button
         aria-label="Add New Media"
         type="button"

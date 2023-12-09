@@ -4,16 +4,18 @@ import NextLink from "next/link"
 import type { User as UserProps } from "@nisomnia/auth"
 import { Icon } from "@nisomnia/ui/next"
 
-import { Sidebar, SidebarItem, SidebarToggleItem } from "@/components/Layout"
+import { Sidebar } from "@/components/Layout/Sidebar"
+import { SidebarItem } from "@/components/Layout/SidebarItem"
+import { SidebarToggleItem } from "@/components/Layout/SidebarToggleItem"
 import { Logo } from "@/components/Logo"
 
 const SidebarToggle = React.lazy(async () => {
-  const { SidebarToggle } = await import("@/components/Layout/client")
+  const { SidebarToggle } = await import("@/components/Layout/SidebarToggle")
   return { default: SidebarToggle }
 })
 
 const ThemeSwitcher = React.lazy(async () => {
-  const { ThemeSwitcher } = await import("@/components/Theme/client")
+  const { ThemeSwitcher } = await import("@/components/Theme/ThemeSwitcher")
   return { default: ThemeSwitcher }
 })
 
@@ -24,10 +26,10 @@ export interface DashboardSidebarProps {
 export const DashboardSidebar: React.FunctionComponent<
   DashboardSidebarProps
 > = (props) => {
-  const { user, ...rest } = props
+  const { user } = props
 
   return (
-    <Sidebar {...rest}>
+    <Sidebar>
       <div className="flex items-center gap-2">
         <NextLink
           aria-label="Home"

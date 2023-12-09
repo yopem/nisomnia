@@ -16,7 +16,7 @@ import { api } from "@/lib/trpc/server"
 
 const InfiniteScrollUserArticles = React.lazy(async () => {
   const { InfiniteScrollUserArticles } = await import(
-    "@/components/Article/client"
+    "@/components/Article/InfiniteScrollUserArticles"
   )
   return { default: InfiniteScrollUserArticles }
 })

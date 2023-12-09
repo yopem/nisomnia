@@ -2,7 +2,7 @@ import * as React from "react"
 
 import type { Ad as AdDataProps } from "@nisomnia/db"
 
-import { Adsense } from "./client"
+import { Adsense } from "./Adsense"
 import { PlainAd } from "./PlainAd"
 
 export interface AdProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -10,10 +10,10 @@ export interface AdProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Ad: React.FunctionComponent<AdProps> = (props) => {
-  const { ad, ...rest } = props
+  const { ad } = props
 
   return (
-    <div {...rest}>
+    <div>
       {ad.type === "plain_ad" ? (
         <PlainAd content={ad.content!} />
       ) : (

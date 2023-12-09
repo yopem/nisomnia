@@ -9,10 +9,10 @@ interface DashboardArticleContainerProps
 export const DashboardArticleContainer: React.FunctionComponent<
   DashboardArticleContainerProps
 > = (props) => {
-  const { isOpen, sidebar, children, ...rest } = props
+  const { isOpen, sidebar, children } = props
 
   return (
-    <div className="flex min-h-screen flex-row flex-wrap" {...rest}>
+    <div className="flex min-h-screen flex-row flex-wrap">
       <div className="order-1 w-full md:px-64 lg:w-10/12">{children}</div>
       <div
         className={`${

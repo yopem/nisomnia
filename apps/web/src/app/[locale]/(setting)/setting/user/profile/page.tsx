@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 
-import { PageInfo } from "@/components/Layout"
+import { PageInfo } from "@/components/Layout/PageInfo"
 import env from "@/env"
 
 const UserSettingForm = React.lazy(async () => {

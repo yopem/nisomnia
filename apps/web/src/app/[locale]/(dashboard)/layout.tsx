@@ -3,10 +3,12 @@ import { notFound } from "next/navigation"
 
 import { getCurrentUser } from "@nisomnia/auth"
 
-import { DashboardSidebar } from "@/components/Dashboard"
+import { DashboardSidebar } from "@/components/Dashboard/DashboardSidebar"
 
 const DashboardContainer = React.lazy(async () => {
-  const { DashboardContainer } = await import("@/components/Dashboard/client")
+  const { DashboardContainer } = await import(
+    "@/components/Dashboard/DashboardContainer"
+  )
   return { default: DashboardContainer }
 })
 

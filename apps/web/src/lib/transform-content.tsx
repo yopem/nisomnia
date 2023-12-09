@@ -10,7 +10,8 @@ import { unified } from "unified"
 
 import { cn } from "@nisomnia/ui/next"
 
-import { TwitterEmbed, YoutubeEmbed } from "@/components/Embed/client"
+import { TwitterEmbed } from "@/components/Embed/TwitterEmbed"
+import { YoutubeEmbed } from "@/components/Embed/YoutubeEmbed"
 import { Image } from "@/components/Image"
 
 const parsePlugin = rehypeParse as never

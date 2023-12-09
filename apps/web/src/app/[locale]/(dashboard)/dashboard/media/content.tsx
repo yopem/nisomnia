@@ -16,17 +16,23 @@ import {
 import { api } from "@/lib/trpc/react"
 
 const CopyMediaLinkButton = React.lazy(async () => {
-  const { CopyMediaLinkButton } = await import("@/components/Media/client")
+  const { CopyMediaLinkButton } = await import(
+    "@/components/Media/CopyMediaLinkButton"
+  )
   return { default: CopyMediaLinkButton }
 })
 
 const DeleteMediaButton = React.lazy(async () => {
-  const { DeleteMediaButton } = await import("@/components/Media/client")
+  const { DeleteMediaButton } = await import(
+    "@/components/Media/DeleteMediaButton"
+  )
   return { default: DeleteMediaButton }
 })
 
 const InfiniteScrollMedia = React.lazy(async () => {
-  const { InfiniteScrollMedia } = await import("@/components/Media/client")
+  const { InfiniteScrollMedia } = await import(
+    "@/components/Media/InfiniteScrollMedia"
+  )
   return { default: InfiniteScrollMedia }
 })
 

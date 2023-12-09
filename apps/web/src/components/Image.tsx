@@ -18,20 +18,20 @@ const rgbDataURL = (r: number, g: number, b: number) =>
 export const Image: React.FunctionComponent<ImageProps> = (props) => {
   const {
     src,
+    alt,
     sizes = `(max-width: 768px) 100px, (max-width: 1200px) 200px, 300px`,
     placeholder = "blur",
     fill = true,
-    ...rest
   } = props
   return (
     <NextImage
       src={src}
+      alt={alt}
       placeholder={placeholder}
       blurDataURL={rgbDataURL(218, 218, 218)}
       quality={70}
       sizes={sizes}
       fill={fill}
-      {...rest}
     />
   )
 }

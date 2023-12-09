@@ -12,21 +12,20 @@ const LanguageSwitcher = React.lazy(async () => {
 })
 
 const ThemeSwitcher = React.lazy(async () => {
-  const { ThemeSwitcher } = await import("@/components/Theme/client")
+  const { ThemeSwitcher } = await import("@/components/Theme/ThemeSwitcher")
   return { default: ThemeSwitcher }
 })
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const Footer: React.FunctionComponent<FooterProps> = (props) => {
-  const { className, ...rest } = props
+  const { className } = props
   return (
     <footer
       className={cn(
         "sticky top-[100vh] z-40 mt-auto border-t border-border px-6 py-4 text-center",
         className,
       )}
-      {...rest}
     >
       <div className="m-6 flex flex-col justify-between md:flex-row">
         <div className="flex-row space-x-3 font-semibold">

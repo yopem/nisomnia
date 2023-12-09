@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import type { LanguageType } from "@nisomnia/db"
 import { Icon } from "@nisomnia/ui/next"
 
-import { DashboardBox } from "@/components/Dashboard"
+import { DashboardBox } from "@/components/Dashboard/DashboardBox"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 

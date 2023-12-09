@@ -28,12 +28,14 @@ const Ad = React.lazy(async () => {
 })
 
 const ArticleComment = React.lazy(async () => {
-  const { ArticleComment } = await import("@/components/Article/client")
+  const { ArticleComment } = await import("@/components/Article/ArticleComment")
   return { default: ArticleComment }
 })
 
 const InfiniteScrollArticles = React.lazy(async () => {
-  const { InfiniteScrollArticles } = await import("@/components/Article/client")
+  const { InfiniteScrollArticles } = await import(
+    "@/components/Article/InfiniteScrollArticles"
+  )
   return { default: InfiniteScrollArticles }
 })
 

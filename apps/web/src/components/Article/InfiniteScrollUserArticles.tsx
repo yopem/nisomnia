@@ -2,36 +2,42 @@
 
 import * as React from "react"
 
-import type { Article as ArticleProps, Media as MediaProps } from "@nisomnia/db"
+import type {
+  Article as ArticleProps,
+  LanguageType,
+  Media as MediaProps,
+} from "@nisomnia/db"
 import { toast } from "@nisomnia/ui/next-client"
 
-import { ArticleCardHorizontal } from "@/components/Article"
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { ArticleCardHorizontal } from "./ArticleCardHorizontal"
 
-export type InfinteScrollTopicArticlesDataProps = Pick<
+export type InfinteScrollUserArticlesDataProps = Pick<
   ArticleProps,
   "title" | "slug" | "excerpt"
 > & {
   featured_image: Pick<MediaProps, "url">
 }
 
-interface InfiniteScrollTopicArticlesProps
+interface InfiniteScrollUserArticlesProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  slug: string
+  username: string
+  locale: LanguageType
 }
 
-export const InfiniteScrollTopicArticles: React.FunctionComponent<
-  InfiniteScrollTopicArticlesProps
+export const InfiniteScrollUserArticles: React.FunctionComponent<
+  InfiniteScrollUserArticlesProps
 > = (props) => {
-  const { slug, ...rest } = props
+  const { username, locale } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
   const { data, hasNextPage, fetchNextPage } =
-    api.topic.articlesByTopicSlugInfinite.useInfiniteQuery(
+    api.user.articlesByUserUsernameInfinite.useInfiniteQuery(
       {
-        slug: slug,
+        username: username,
+        language: locale,
         limit: 10,
       },
       {
@@ -64,9 +70,9 @@ export const InfiniteScrollTopicArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div {...rest}>
+    <div>
       {data?.pages.map((page) => {
-        return page.topic?.articles.map((article) => {
+        return page.user?.article_authors.map((article) => {
           return <ArticleCardHorizontal article={article} key={article.slug} />
         })
       })}

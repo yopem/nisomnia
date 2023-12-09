@@ -35,22 +35,30 @@ const Editor = React.lazy(async () => {
 })
 
 const DashboardAddAuthors = React.lazy(async () => {
-  const { DashboardAddAuthors } = await import("@/components/Dashboard/client")
+  const { DashboardAddAuthors } = await import(
+    "@/components/Dashboard/DashboardAddAuthors"
+  )
   return { default: DashboardAddAuthors }
 })
 
 const DashboardAddEditors = React.lazy(async () => {
-  const { DashboardAddEditors } = await import("@/components/Dashboard/client")
+  const { DashboardAddEditors } = await import(
+    "@/components/Dashboard/DashboardAddEditors"
+  )
   return { default: DashboardAddEditors }
 })
 
 const DashboardAddTopics = React.lazy(async () => {
-  const { DashboardAddTopics } = await import("@/components/Dashboard/client")
+  const { DashboardAddTopics } = await import(
+    "@/components/Dashboard/DashboardAddTopics"
+  )
   return { default: DashboardAddTopics }
 })
 
 const SelectMediaModal = React.lazy(async () => {
-  const { SelectMediaModal } = await import("@/components/Media/client")
+  const { SelectMediaModal } = await import(
+    "@/components/Media/SelectMediaModal"
+  )
   return { default: SelectMediaModal }
 })
 

@@ -3,10 +3,11 @@ import * as React from "react"
 import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 
-import { Container, Footer } from "@/components/Layout"
+import { Container } from "@/components/Layout/Container"
+import { Footer } from "@/components/Layout/Footer"
 
 const TopNav = React.lazy(async () => {
-  const { TopNav } = await import("@/components/Layout/client")
+  const { TopNav } = await import("@/components/Layout/TopNav")
   return { default: TopNav }
 })
 

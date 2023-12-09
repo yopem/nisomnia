@@ -35,7 +35,6 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
     viewLink,
     className,
     content,
-    ...rest
   } = props
 
   const [openModal, setOpenModal] = React.useState<boolean>(false)
@@ -43,7 +42,6 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
   return (
     <div
       className={cn("flex content-start items-start justify-start", className)}
-      {...rest}
     >
       {viewLink && (
         <NextLink aria-label="View" href={viewLink} target="_blank">

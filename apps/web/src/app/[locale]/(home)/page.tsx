@@ -4,7 +4,8 @@ import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 
-import { Container, Footer } from "@/components/Layout"
+import { Container } from "@/components/Layout/Container"
+import { Footer } from "@/components/Layout/Footer"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
@@ -14,12 +15,14 @@ const Ad = React.lazy(async () => {
 })
 
 const InfiniteScrollArticles = React.lazy(async () => {
-  const { InfiniteScrollArticles } = await import("@/components/Article/client")
+  const { InfiniteScrollArticles } = await import(
+    "@/components/Article/InfiniteScrollArticles"
+  )
   return { default: InfiniteScrollArticles }
 })
 
 const TopNav = React.lazy(async () => {
-  const { TopNav } = await import("@/components/Layout/client")
+  const { TopNav } = await import("@/components/Layout/TopNav")
   return { default: TopNav }
 })
 

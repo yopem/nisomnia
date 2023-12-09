@@ -12,7 +12,7 @@ import {
   Icon,
 } from "@nisomnia/ui/next"
 
-import { ArticleCardVertical } from "@/components/Article"
+import { ArticleCardVertical } from "@/components/Article/ArticleCardVertical"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 

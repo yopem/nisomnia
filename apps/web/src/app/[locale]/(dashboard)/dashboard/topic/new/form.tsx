@@ -25,7 +25,9 @@ import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
 
 const SelectMediaModal = React.lazy(async () => {
-  const { SelectMediaModal } = await import("@/components/Media/client")
+  const { SelectMediaModal } = await import(
+    "@/components/Media/SelectMediaModal"
+  )
   return { default: SelectMediaModal }
 })
 

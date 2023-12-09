@@ -29,11 +29,10 @@ interface InfiniteScrollMediaProps
   toggleUpload?: boolean
 }
 
-export const InfiniteScrollMedia = React.forwardRef<
-  HTMLDivElement,
+export const InfiniteScrollMedia: React.FunctionComponent<
   InfiniteScrollMediaProps
->((props, ref) => {
-  const { isLibrary, selectMedia, index, toggleUpload, ...rest } = props
+> = (props) => {
+  const { isLibrary, selectMedia, index, toggleUpload } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
   const {
@@ -93,7 +92,7 @@ export const InfiniteScrollMedia = React.forwardRef<
   }
 
   return (
-    <div ref={ref} {...rest}>
+    <div>
       <div className="mb-4 grid grid-cols-3 gap-3 lg:grid-cols-5">
         {isLibrary
           ? medias?.pages.map((list) =>
@@ -158,4 +157,4 @@ export const InfiniteScrollMedia = React.forwardRef<
       )}
     </div>
   )
-})
+}

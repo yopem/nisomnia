@@ -12,7 +12,6 @@ export const ShareButtonEmail: React.FunctionComponent<ShareButtonProps> = (
     <ShareButton
       onClick={onClick}
       icon={<Icon.Email />}
-      subject={subject}
       title={title ?? "Email"}
       url={`mailto:?subject=${encodeURI(subject!)}&body=${encodeURI(url)}`}
       {...rest}

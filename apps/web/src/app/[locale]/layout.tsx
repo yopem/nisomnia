@@ -6,7 +6,7 @@ import Script from "next/script"
 import type { LanguageType } from "@nisomnia/db"
 import { Toaster } from "@nisomnia/ui/next-client"
 
-import { ThemeProvider } from "@/components/Theme/client"
+import { ThemeProvider } from "@/components/Theme/ThemeProvider"
 
 import "@/styles/globals.css"
 

@@ -6,10 +6,10 @@ import type { LanguageType } from "@nisomnia/db"
 import { Icon } from "@nisomnia/ui/next"
 import { Input } from "@nisomnia/ui/next-client"
 
-import { ArticleCardSearch } from "@/components/Article"
-import { Container } from "@/components/Layout"
-import { TopicCardSearch } from "@/components/Topic"
-import { UserCardSearch } from "@/components/User"
+import { ArticleCardSearch } from "@/components/Article/ArticleCardSearch"
+import { Container } from "@/components/Layout/Container"
+import { TopicCardSearch } from "@/components/Topic/TopicCardSearch"
+import { UserCardSearch } from "@/components/User/UserCardSearch"
 import { api } from "@/lib/trpc/react"
 
 interface SearchTopNavProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -9,9 +9,9 @@ import type {
 } from "@nisomnia/db"
 import { toast } from "@nisomnia/ui/next-client"
 
-import { ArticleCardHorizontal } from "@/components/Article"
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { ArticleCardHorizontal } from "./ArticleCardHorizontal"
 
 export type InfinteScrollArticlesDataProps = Pick<
   ArticleProps,
@@ -28,7 +28,7 @@ interface InfiniteScrollArticlesProps
 export const InfiniteScrollArticles: React.FunctionComponent<
   InfiniteScrollArticlesProps
 > = (props) => {
-  const { locale, ...rest } = props
+  const { locale } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -68,7 +68,7 @@ export const InfiniteScrollArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div {...rest}>
+    <div>
       {data?.pages.map((page) => {
         return page.articles.map((article) => {
           return <ArticleCardHorizontal article={article} key={article.slug} />

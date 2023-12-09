@@ -16,14 +16,14 @@ export interface SidebarToggleProps
 export const SidebarToggle: React.FunctionComponent<SidebarToggleProps> = (
   props,
 ) => {
-  const { icon, title, children, ...rest } = props
+  const { icon, title, children } = props
 
   const [toggle, setToggle] = React.useState<boolean>(false)
 
   const dropdownClasses = cn(!toggle && "hidden", "space-y-2 py-2")
 
   return (
-    <li {...rest}>
+    <li>
       <button
         type="button"
         onClick={() => setToggle(!toggle)}
