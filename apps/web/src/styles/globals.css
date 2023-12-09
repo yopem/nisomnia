@@ -78,7 +78,7 @@
 
 .article-container a,
 .ProseMirror a {
-  @apply text-6xl text-blue-500 no-underline duration-200 hover:text-blue-600 hover:underline;
+  @apply text-blue-500 no-underline duration-200 hover:text-blue-600 hover:underline;
 }
 
 .article-container ul li,
