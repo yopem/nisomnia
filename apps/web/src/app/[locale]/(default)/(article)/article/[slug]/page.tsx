@@ -179,7 +179,7 @@ export default async function ArticleSlugPage({
           <div className="flex justify-between">
             <div className="inline-flex space-x-1">
               <NextLink
-                aria-label="User Articles"
+                aria-label={`Go To ${article?.authors[0]?.name} Profile`}
                 href={`/user/${article?.authors[0]?.username}`}
                 className="text-sm font-bold"
               >
