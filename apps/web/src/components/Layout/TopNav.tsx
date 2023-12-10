@@ -5,10 +5,10 @@ import NextLink from "next/link"
 
 import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon, IconButton } from "@nisomnia/ui/next"
-import { Drawer, DrawerContent, DrawerTrigger } from "@nisomnia/ui/next-client"
 
 import { Logo } from "@/components/Logo"
 import type { UserMenuProps } from "@/components/User/UserMenu"
+import { MobileMenu } from "./MobileMenu"
 
 const SearchTopNav = React.lazy(async () => {
   const { SearchTopNav } = await import("./SearchTopNav")
@@ -45,29 +45,7 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
   return (
     <nav className="opacity-1 fixed left-auto top-0 z-40 -my-0 mx-auto box-border flex h-16 w-full items-center border-border bg-background px-4 py-0 align-baseline shadow-sm outline-none">
       <div className="container mx-auto flex flex-row items-center justify-between">
-        <div className="flex lg:hidden">
-          <Drawer>
-            <DrawerTrigger asChild>
-              <IconButton variant="ghost" aria-label="Menu">
-                <Icon.Menu />
-              </IconButton>
-            </DrawerTrigger>
-            <DrawerContent position="left" className="w-full md:w-[250px]">
-              <div className="flex flex-col items-start">
-                <Button asChild variant="ghost">
-                  <NextLink aria-label="Home" href="/">
-                    Home
-                  </NextLink>
-                </Button>
-                <Button asChild variant="ghost">
-                  <NextLink aria-label="Article" href="/article">
-                    Article
-                  </NextLink>
-                </Button>
-              </div>
-            </DrawerContent>
-          </Drawer>
-        </div>
+        <MobileMenu />
         <div className="flex flex-row">
           <NextLink
             aria-label="Home"
