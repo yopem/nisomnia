@@ -2,6 +2,7 @@
 // components
 export * from "./src/alert-dialog"
 export * from "./src/dialog"
+export * from "./src/drawer"
 export * from "./src/dropdown-menu"
 export * from "./src/form"
 export * from "./src/popover"
