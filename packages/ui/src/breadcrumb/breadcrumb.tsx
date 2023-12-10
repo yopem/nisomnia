@@ -17,7 +17,7 @@ export const BreadcrumbSeparator = React.forwardRef<
     <span
       ref={ref}
       role="presentation"
-      className={cn("mx-2 text-foreground/60", className)}
+      className={cn("mx-2 text-foreground/80", className)}
       {...rest}
     />
   )
@@ -36,8 +36,8 @@ export const BreadcrumbLink = React.forwardRef<any, any>((props, ref) => {
       ref={ref}
       className={
         currentPage
-          ? "max-w-[100px] truncate whitespace-nowrap text-foreground/50 md:max-w-[200px] lg:max-w-[400px]"
-          : "text-foreground/60"
+          ? "max-w-[100px] truncate whitespace-nowrap text-foreground/70 md:max-w-[200px] lg:max-w-[400px]"
+          : "text-foreground/80"
       }
       aria-current={currentPage ? "page" : undefined}
       {...rest}

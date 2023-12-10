@@ -186,7 +186,10 @@ export const ArticleComment: React.FunctionComponent<
           </form>
         ) : (
           <div className="my-8 flex items-center justify-center">
-            <NextLink aria-label="Go To Sign In" href="/auth/sign-in">
+            <NextLink
+              aria-label="You should sign in before comment"
+              href="/auth/sign-in"
+            >
               <Button>You should sign in before comment</Button>
             </NextLink>
           </div>
