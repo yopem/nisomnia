@@ -11,17 +11,17 @@ const TopNav = React.lazy(async () => {
   return { default: TopNav }
 })
 
-interface TopicLayoutProps {
+interface DefaultLayoutProps {
   params: {
     locale: LanguageType
   }
   children: React.ReactNode
 }
 
-export default async function TopicLayout({
+export default async function DefaultLayout({
   params,
   children,
-}: TopicLayoutProps) {
+}: DefaultLayoutProps) {
   const { locale } = params
 
   const user = await getCurrentUser()
