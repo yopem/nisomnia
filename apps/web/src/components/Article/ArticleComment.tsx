@@ -127,12 +127,9 @@ export const ArticleComment: React.FunctionComponent<
     <>
       <div id="comment" className="block w-full bg-background">
         <div className="mb-4 flex justify-between">
-          <h5
-            id="drawer-label"
-            className="inline-flex items-center text-lg font-semibold text-foreground"
-          >
+          <span className="inline-flex items-center text-lg font-semibold text-foreground">
             Comments ({commentCount ?? 0})
-          </h5>
+          </span>
         </div>
         {user ? (
           <form className="mb-5 mt-4" onSubmit={(e) => e.preventDefault()}>
@@ -189,8 +186,8 @@ export const ArticleComment: React.FunctionComponent<
           </form>
         ) : (
           <div className="my-8 flex items-center justify-center">
-            <NextLink aria-label="Sign In" href="/auth/sign-in">
-              <Button>You should login before comment</Button>
+            <NextLink aria-label="Go To Sign In" href="/auth/sign-in">
+              <Button>You should sign in before comment</Button>
             </NextLink>
           </div>
         )}
