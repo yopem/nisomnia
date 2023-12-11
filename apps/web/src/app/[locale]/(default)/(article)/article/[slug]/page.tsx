@@ -16,10 +16,10 @@ import {
 
 import { Image } from "@/components/Image"
 import { Share } from "@/components/Share"
+import { TransformContent } from "@/components/TransformContent"
 import env from "@/env"
 import { parseAndSplitHTMLString } from "@/lib/content"
 import { readingTime } from "@/lib/reading-time"
-import { transformContent } from "@/lib/transform-content"
 import { api } from "@/lib/trpc/server"
 
 const Ad = React.lazy(async () => {
@@ -95,9 +95,15 @@ export default async function ArticleSlugPage({
 
   const { firstHalf, secondHalf } = parseAndSplitHTMLString(article?.content)
 
-  const firstContent = await transformContent(firstHalf, article?.title)
+  const firstContent = TransformContent({
+    htmlInput: firstHalf,
+    title: article?.title!,
+  })
 
-  const secondContent = await transformContent(secondHalf, article?.title)
+  const secondContent = TransformContent({
+    htmlInput: secondHalf,
+    title: article?.title!,
+  })
 
   return (
     <>
