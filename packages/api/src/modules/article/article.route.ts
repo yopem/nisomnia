@@ -266,6 +266,82 @@ export const articleRouter = createTRPCRouter({
         nextCursor,
       }
     }),
+  relatedInfinite: publicProcedure
+    .input(
+      z.object({
+        language: z.enum(LANGUAGE_TYPE),
+        topic_slug: z.string(),
+        current_article_slug: z.string(),
+        limit: z.number().min(1).max(100).nullable(),
+        cursor: z.string().nullable(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50
+
+      const cursorCondition = input.cursor
+        ? {
+            updatedAt: {
+              lt: new Date(input.cursor),
+            },
+          }
+        : {}
+
+      const articles = await ctx.db.article.findMany({
+        where: {
+          AND: [
+            {
+              language: input.language,
+              topics: {
+                some: {
+                  slug: input.topic_slug,
+                },
+              },
+              status: "published",
+            },
+            cursorCondition,
+          ],
+          NOT: [
+            {
+              slug: input.current_article_slug,
+            },
+          ],
+        },
+        take: limit + 1,
+        orderBy: {
+          updatedAt: "desc",
+        },
+        select: {
+          article_translation_primary_id: true,
+          id: true,
+          title: true,
+          language: true,
+          excerpt: true,
+          slug: true,
+          status: true,
+          featured_image: {
+            select: {
+              url: true,
+            },
+          },
+          updatedAt: true,
+        },
+      })
+
+      let nextCursor: string | undefined = undefined
+
+      if (articles.length > limit) {
+        const nextItem = articles.pop()
+        if (nextItem?.updatedAt) {
+          nextCursor = nextItem.updatedAt.toISOString()
+        }
+      }
+
+      return {
+        articles,
+        nextCursor,
+      }
+    }),
   technoByLanguageInfinite: publicProcedure
     .input(
       z.object({

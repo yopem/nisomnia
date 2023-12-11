@@ -32,11 +32,11 @@ const ArticleComment = React.lazy(async () => {
   return { default: ArticleComment }
 })
 
-const InfiniteScrollArticles = React.lazy(async () => {
-  const { InfiniteScrollArticles } = await import(
-    "@/components/Article/InfiniteScrollArticles"
+const InfiniteScrollRelatedArticles = React.lazy(async () => {
+  const { InfiniteScrollRelatedArticles } = await import(
+    "@/components/Article/InfiniteScrollRelatedArticles"
   )
-  return { default: InfiniteScrollArticles }
+  return { default: InfiniteScrollRelatedArticles }
 })
 
 export async function generateMetadata({
@@ -250,7 +250,11 @@ export default async function ArticleSlugPage({
           <ArticleComment article_id={article.id} user={user!} />
           <div className="flex w-full flex-col space-y-4">
             <h3>You may also like</h3>
-            <InfiniteScrollArticles locale={locale} />
+            <InfiniteScrollRelatedArticles
+              locale={locale}
+              current_article_slug={article.slug}
+              topic_slug={article?.topics[0]?.slug!}
+            />
           </div>
         </div>
       </section>
