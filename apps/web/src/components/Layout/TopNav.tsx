@@ -8,6 +8,7 @@ import { Button, Icon, IconButton } from "@nisomnia/ui/next"
 
 import { Logo } from "@/components/Logo"
 import type { UserMenuProps } from "@/components/User/UserMenu"
+import { MobileMenu } from "./MobileMenu"
 
 const SearchTopNav = React.lazy(async () => {
   const { SearchTopNav } = await import("./SearchTopNav")
@@ -17,11 +18,6 @@ const SearchTopNav = React.lazy(async () => {
 const UserMenu = React.lazy(async () => {
   const { UserMenu } = await import("@/components/User/UserMenu")
   return { default: UserMenu }
-})
-
-const MobileMenu = React.lazy(async () => {
-  const { MobileMenu } = await import("./MobileMenu")
-  return { default: MobileMenu }
 })
 
 interface TopNavProps

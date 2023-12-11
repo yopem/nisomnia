@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  #mobile-menu:not(:checked) + label > .fixed {
+    transform: translateX(-100%);
+  }
+
+  #mobile-menu:checked + label > .fixed {
+    transform: translateX(0);
+  }
+
   .scrollbar-hide.scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
   }
