@@ -29,7 +29,7 @@ export default async function ArticleLayout({
   return (
     <>
       <TopNav locale={locale} user={user!} />
-      <Container className="mt-20 min-h-screen px-2 lg:px-80">
+      <Container className="mt-20 min-h-screen px-2 md:px-24 lg:px-48 xl:px-80">
         {children}
       </Container>
       <Footer />
