@@ -206,7 +206,7 @@ export default async function ArticleSlugPage({
               className="w-full rounded-md object-cover"
             />
           </div>
-          <div className="article-container" id="container">
+          <article className="article-container" id="container">
             {adsSingleArticleAboveContent.length > 0 &&
               adsSingleArticleAboveContent.map((ad) => {
                 return <Ad key={ad.id} ad={ad} />
@@ -217,7 +217,7 @@ export default async function ArticleSlugPage({
                 return <Ad key={ad.id} ad={ad} />
               })}
             {secondContent as React.ReactNode}
-          </div>
+          </article>
           <div className="my-4 space-x-2">
             {article.topics.map((topic) => {
               return (
