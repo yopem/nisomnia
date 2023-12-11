@@ -54,7 +54,7 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
           >
             <Logo />
           </NextLink>
-          <div className="ml-4 hidden  md:flex">
+          <div className="ml-4 hidden lg:flex">
             <Button asChild variant="ghost">
               <NextLink aria-label="Article" href="/article">
                 Article

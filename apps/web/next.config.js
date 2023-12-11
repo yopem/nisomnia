@@ -48,6 +48,27 @@ module.exports = () => {
 
   let config = {
     reactStrictMode: false,
+    webpack(config, { isServer }) {
+      if (!isServer) {
+        config.optimization.splitChunks.cacheGroups = {
+          ...config.optimization.splitChunks.cacheGroups,
+          "@radix-ui": {
+            test: /[\\/]node_modules[\\/](@radix-ui)[\\/]/,
+            name: "@radix-ui",
+            priority: 10,
+            reuseExistingChunk: false,
+          },
+          "@tiptap": {
+            test: /[\\/]node_modules[\\/](@tiptap)[\\/]/,
+            name: "@tiptap",
+            priority: 10,
+            reuseExistingChunk: false,
+          },
+        }
+        config.optimization.mergeDuplicateChunks = true
+      }
+      return config
+    },
     experimental: {
       webpackBuildWorker: true,
       optimizePackageImports: ["@nisomnia/ui", "@nisomnia/editor"],
