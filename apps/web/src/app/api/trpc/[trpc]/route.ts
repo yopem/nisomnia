@@ -3,12 +3,18 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
 import { appRouter, createTRPCContext } from "@nisomnia/api"
 
+const createContext = async (req: NextRequest) => {
+  return createTRPCContext({
+    headers: req.headers,
+  })
+}
+
 const handler = (req: NextRequest) =>
   fetchRequestHandler({
     endpoint: "/api/trpc",
     req,
     router: appRouter,
-    createContext: () => createTRPCContext({ req }),
+    createContext: () => createContext(req),
     onError:
       process.env.APP_ENV === "development"
         ? ({ path, error }) => {

@@ -1,4 +1,3 @@
-import { type NextRequest } from "next/server"
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
@@ -6,24 +5,18 @@ import { ZodError } from "zod"
 import { getServerAuthSession } from "@nisomnia/auth"
 import { db } from "@nisomnia/db"
 
-interface CreateContextOptions {
-  headers: Headers
-}
-
-export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = async (opts: { headers: Headers }) => {
   const session = await getServerAuthSession()
 
   return {
     session,
-    headers: opts.headers,
+    ...opts,
     db,
   }
 }
 
-export const createTRPCContext = async (opts: { req: NextRequest }) => {
-  return await createInnerTRPCContext({
-    headers: opts.req.headers,
-  })
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  return await createInnerTRPCContext({ ...opts })
 }
 
 const t = initTRPC.context<typeof createTRPCContext>().create({

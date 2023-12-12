@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Inter } from "next/font/google"
-import { headers } from "next/headers"
+import { cookies } from "next/headers"
 import Script from "next/script"
 
 import type { LanguageType } from "@nisomnia/db"
@@ -86,7 +86,9 @@ export default function RootLayout({
         <Toaster />
         <TopLoader />
         <ThemeProvider>
-          <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
+          <TRPCReactProvider cookies={cookies().toString()}>
+            {children}
+          </TRPCReactProvider>
         </ThemeProvider>
         {process.env.APP_ENV === "production" && (
           <Script

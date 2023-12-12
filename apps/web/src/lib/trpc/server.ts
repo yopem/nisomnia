@@ -1,13 +1,28 @@
-import { headers } from "next/headers"
+import "server-only"
+
+import { cache } from "react"
+import { cookies } from "next/headers"
 import {
   createTRPCProxyClient,
   loggerLink,
-  unstable_httpBatchStreamLink,
+  TRPCClientError,
 } from "@trpc/client"
+import { callProcedure } from "@trpc/server"
+import { observable } from "@trpc/server/observable"
+import { type TRPCErrorResponse } from "@trpc/server/rpc"
 
-import { type AppRouter } from "@nisomnia/api"
+import { appRouter, createTRPCContext, type AppRouter } from "@nisomnia/api"
 
-import { getUrl, transformer } from "./shared"
+import { transformer } from "./shared"
+
+const createContext = cache(() => {
+  return createTRPCContext({
+    headers: new Headers({
+      cookie: cookies().toString(),
+      "x-trpc-source": "rsc",
+    }),
+  })
+})
 
 export const api = createTRPCProxyClient<AppRouter>({
   transformer,
@@ -17,13 +32,26 @@ export const api = createTRPCProxyClient<AppRouter>({
         process.env.APP_ENV === "development" ||
         (op.direction === "down" && op.result instanceof Error),
     }),
-    unstable_httpBatchStreamLink({
-      url: getUrl(),
-      headers() {
-        const heads = new Map(headers())
-        heads.set("x-trpc-source", "rsc")
-        return Object.fromEntries(heads)
-      },
-    }),
+    () =>
+      ({ op }) =>
+        observable((observer) => {
+          createContext()
+            .then((ctx) => {
+              return callProcedure({
+                procedures: appRouter._def.procedures,
+                path: op.path,
+                rawInput: op.input,
+                ctx,
+                type: op.type,
+              })
+            })
+            .then((data) => {
+              observer.next({ result: { data } })
+              observer.complete()
+            })
+            .catch((cause: TRPCErrorResponse) => {
+              observer.error(TRPCClientError.from(cause))
+            })
+        }),
   ],
 })
