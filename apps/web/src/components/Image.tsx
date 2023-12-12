@@ -22,6 +22,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
     sizes = `(max-width: 768px) 100px, (max-width: 1200px) 200px, 300px`,
     className,
     placeholder = "blur",
+    onClick,
     fill = true,
   } = props
   return (
@@ -32,6 +33,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
       blurDataURL={rgbDataURL(218, 218, 218)}
       className={className}
       quality={70}
+      onClick={onClick}
       sizes={sizes}
       fill={fill}
     />

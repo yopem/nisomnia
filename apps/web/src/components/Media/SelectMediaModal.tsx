@@ -110,7 +110,7 @@ export const SelectMediaModal: React.FunctionComponent<
                         alt={media.name}
                         fill
                         sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 33vw"
-                        className="!relative aspect-[1/1] h-[500px] max-w-[unset] rounded-lg border-2 border-muted/30 bg-muted/30 object-cover"
+                        className="!relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-lg border-2 border-muted/30 bg-muted/30 object-cover"
                         onClick={(e: { preventDefault: () => void }) => {
                           e.preventDefault()
                           handleSelectUpdateMedia(media)
