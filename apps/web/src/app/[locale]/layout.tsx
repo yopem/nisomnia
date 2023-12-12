@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/Theme/ThemeProvider"
 
 import "@/styles/globals.css"
 
+import { TopLoader } from "@/components/TopLoader"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
 
@@ -83,6 +84,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
         <Toaster />
+        <TopLoader />
         <ThemeProvider>
           <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
         </ThemeProvider>
