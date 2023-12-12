@@ -3,8 +3,6 @@ import NextLink from "next/link"
 import Script from "next/script"
 import { Parser, ProcessNodeDefinitions } from "html-to-react"
 
-import { cn } from "@nisomnia/ui/next"
-
 import { TwitterEmbed } from "@/components/Embed/TwitterEmbed"
 import { YoutubeEmbed } from "@/components/Embed/YoutubeEmbed"
 import { Image } from "@/components/Image"
@@ -56,25 +54,12 @@ export const TransformContent: React.FunctionComponent<
       },
       processNode: function (node: Node) {
         return (
-          <React.Fragment>
-            {node.attribs?.className ? (
-              <Image
-                className={cn(`${node.attribs?.className} !relative`)}
-                src={node.attribs?.src ?? ""}
-                alt={title}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
-              />
-            ) : (
-              <div className="relative aspect-video w-full">
-                <Image
-                  src={node.attribs?.src ?? ""}
-                  alt={title}
-                  className="rounded-lg"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
-                />
-              </div>
-            )}
-          </React.Fragment>
+          <Image
+            className={node.attribs?.className}
+            src={node.attribs?.src ?? ""}
+            alt={title}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
+          />
         )
       },
     },
