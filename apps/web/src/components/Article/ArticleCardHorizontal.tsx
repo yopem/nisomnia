@@ -37,7 +37,7 @@ export const ArticleCardHorizontal: React.FunctionComponent<
         </NextLink>
         <div className="order-1 mr-3 flex flex-col md:order-2 md:mr-[unset]">
           <NextLink aria-label={title} href={`/article/${slug}/`}>
-            <h3 className="line-clamp-3 text-lg font-semibold hover:text-primary/90 md:text-2xl md:font-bold">
+            <h3 className="line-clamp-3 text-lg font-semibold hover:text-primary/90 md:text-xl lg:text-2xl">
               {title}
             </h3>
             <div className="hidden text-sm text-foreground/70 md:my-2.5 md:line-clamp-4">
