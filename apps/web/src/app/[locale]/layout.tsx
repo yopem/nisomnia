@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Inter } from "next/font/google"
 import { cookies } from "next/headers"
-import Script from "next/script"
 
 import type { LanguageType } from "@nisomnia/db"
 import { Toaster } from "@nisomnia/ui/next-client"
@@ -10,6 +9,7 @@ import { ThemeProvider } from "@/components/Theme/ThemeProvider"
 
 import "@/styles/globals.css"
 
+import { Scripts } from "@/components/Scripts"
 import { TopLoader } from "@/components/TopLoader"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
@@ -90,15 +90,7 @@ export default function RootLayout({
             {children}
           </TRPCReactProvider>
         </ThemeProvider>
-        {process.env.APP_ENV === "production" && (
-          <Script
-            id="adsense"
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-          />
-        )}
+        <Scripts />
       </body>
     </html>
   )
