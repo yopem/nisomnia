@@ -24,7 +24,7 @@
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
     "eslint": "^8.55.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3"
   },
