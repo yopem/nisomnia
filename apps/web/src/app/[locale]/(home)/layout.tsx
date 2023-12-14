@@ -11,17 +11,17 @@ const TopNav = React.lazy(async () => {
   return { default: TopNav }
 })
 
-interface DefaultLayoutProps {
+interface ArticleLayoutProps {
   params: {
     locale: LanguageType
   }
   children: React.ReactNode
 }
 
-export default async function DefaultLayout({
+export default async function ArticleLayout({
   params,
   children,
-}: DefaultLayoutProps) {
+}: ArticleLayoutProps) {
   const { locale } = params
 
   const user = await getCurrentUser()
@@ -29,9 +29,7 @@ export default async function DefaultLayout({
   return (
     <>
       <TopNav locale={locale} user={user!} />
-      <Container className="mt-20 min-h-screen px-2 md:px-24 lg:px-48 xl:px-80">
-        {children}
-      </Container>
+      <Container className="mt-20 min-h-screen px-5">{children}</Container>
       <Footer />
     </>
   )

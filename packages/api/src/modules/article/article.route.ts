@@ -171,6 +171,15 @@ export const articleRouter = createTRPCRouter({
               status: "published",
             },
           ],
+          NOT: [
+            {
+              topics: {
+                some: {
+                  title: "Teknologi" || "Technology",
+                },
+              },
+            },
+          ],
         },
         orderBy: {
           updatedAt: "desc",
@@ -410,6 +419,51 @@ export const articleRouter = createTRPCRouter({
         articles,
         nextCursor,
       }
+    }),
+  byTopic: publicProcedure
+    .input(
+      z.object({
+        language: z.enum(LANGUAGE_TYPE),
+        page: z.number(),
+        per_page: z.number(),
+        topic: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.article.findMany({
+        where: {
+          AND: [
+            {
+              language: input.language,
+              status: "published",
+              topics: {
+                some: {
+                  title: input.topic,
+                },
+              },
+            },
+          ],
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+        skip: (input.page - 1) * input.per_page,
+        take: input.per_page,
+        select: {
+          article_translation_primary_id: true,
+          id: true,
+          title: true,
+          language: true,
+          excerpt: true,
+          slug: true,
+          status: true,
+          featured_image: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      })
     }),
   byAuthor: publicProcedure
     .input(
