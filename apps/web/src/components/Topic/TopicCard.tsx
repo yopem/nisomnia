@@ -15,11 +15,11 @@ export const TopicCard: React.FunctionComponent<TopicCardProps> = (props) => {
 
   return (
     <NextLink href={`/article/topic/${topic.slug}`}>
-      <div className="dark:bg-theme-700 my-2 h-[200px] max-w-[200px] rounded-md bg-white p-5 shadow-md">
+      <div className="my-2 h-[200px] max-w-[200px] rounded-lg bg-background p-5 shadow-md">
         <div className="flex items-center justify-center">
-          <Icon.Topic className="text-theme-800 hover:text-primary-400 dark:hover:text-primary-200 dark:text-theme-400 h-20 w-20" />
+          <Icon.Topic className="h-20 w-20 text-foreground hover:text-foreground/90" />
         </div>
-        <div className="text-theme-800 hover:text-primary-400 dark:hover:text-primary-200 dark:text-theme-400 truncate p-5 text-center">
+        <div className="truncate p-5 text-center text-foreground hover:text-foreground/90">
           {topic.title}
         </div>
       </div>
