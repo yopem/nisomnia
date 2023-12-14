@@ -30,14 +30,22 @@ export const ArticleListByTopic: React.FunctionComponent<
   return (
     <div className={cn("space-y-2 rounded-lg bg-foreground/20 p-5", className)}>
       <div className="flex flex-row items-center justify-between">
-        <h1>{topic_title}</h1>
-        <NextLink aria-label="See more" href={`/article/topic/${topic_slug}`}>
+        <h1 className="text-zinc-900">{topic_title}</h1>
+        <NextLink
+          aria-label="See more"
+          href={`/article/topic/${topic_slug}`}
+          className="text-zinc-900 hover:text-zinc-950"
+        >
           See more
         </NextLink>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
         {articles.map((article) => (
-          <ArticleCardVertical key={article.id} article={article} />
+          <ArticleCardVertical
+            key={article.id}
+            article={article}
+            className="text-zinc-900 hover:text-zinc-950"
+          />
         ))}
       </div>
     </div>
