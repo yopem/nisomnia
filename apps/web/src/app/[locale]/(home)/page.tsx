@@ -8,6 +8,7 @@ import { Button } from "@nisomnia/ui/next"
 import { ArticleListByTopic } from "@/components/Article/ArticleListByTopic"
 import { ArticleListHome } from "@/components/Article/ArticleListHome"
 import { FeaturedArticles } from "@/components/Article/FeaturedArticles"
+import { PopularTopics } from "@/components/Topic/PopularTopics"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 
@@ -49,12 +50,13 @@ export default async function HomePage({ params }: HomePageProps) {
           },
         ]}
       />
-      <section className="mx-0 space-y-4 lg:mx-24">
+      <section className="mx-0 space-y-4 lg:mx-48">
         {adsBelowHeader.length > 0 &&
           adsBelowHeader.map((ad) => {
             return <Ad key={ad.id} ad={ad} />
           })}
         <FeaturedArticles locale={locale} />
+        <PopularTopics locale={locale} />
         <ArticleListByTopic
           locale={locale}
           topic_title="Anime"

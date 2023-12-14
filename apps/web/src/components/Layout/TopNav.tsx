@@ -7,6 +7,7 @@ import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon, IconButton } from "@nisomnia/ui/next"
 
 import { Logo } from "@/components/Logo"
+import { TopicListNav } from "@/components/Topic/TopicListNav"
 import type { UserMenuProps } from "@/components/User/UserMenu"
 import { MobileMenu } from "./MobileMenu"
 
@@ -56,10 +57,11 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
           </NextLink>
           <div className="ml-4 hidden lg:flex">
             <Button asChild variant="ghost">
-              <NextLink aria-label="Article" href="/article">
-                Article
+              <NextLink aria-label="Home" href="/">
+                Home
               </NextLink>
             </Button>
+            <TopicListNav />
           </div>
         </div>
         <div className="flex justify-center">

@@ -97,6 +97,48 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
+  byArticleCount: publicProcedure
+    .input(
+      z.object({
+        language: z.enum(LANGUAGE_TYPE),
+        page: z.number(),
+        per_page: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findMany({
+        where: {
+          AND: [
+            {
+              language: input.language,
+            },
+          ],
+        },
+        orderBy: {
+          articles: {
+            _count: "desc",
+          },
+        },
+        skip: (input.page - 1) * input.per_page,
+        take: input.per_page,
+        select: {
+          topic_translation_primary_id: true,
+          id: true,
+          language: true,
+          title: true,
+          slug: true,
+          description: true,
+          meta_title: true,
+          meta_description: true,
+          type: true,
+          featured_image: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      })
+    }),
   dashboard: adminProtectedProcedure
     .input(
       z.object({

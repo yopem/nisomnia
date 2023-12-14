@@ -3,6 +3,8 @@ import NextLink from "next/link"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 
+import { TopicListNav } from "../Topic/TopicListNav"
+
 export const MobileMenu: React.FunctionComponent = () => {
   return (
     <div className="relative z-10 flex lg:hidden">
@@ -20,11 +22,7 @@ export const MobileMenu: React.FunctionComponent = () => {
                   Home
                 </NextLink>
               </Button>
-              <Button asChild variant="ghost">
-                <NextLink aria-label="Article" href="/article">
-                  Article
-                </NextLink>
-              </Button>
+              <TopicListNav />
             </menu>
           </div>
         </div>
