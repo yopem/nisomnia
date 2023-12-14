@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+  /* Drawer */
   #mobile-menu:not(:checked) + label > .fixed {
     transform: translateX(-100%);
   }
@@ -11,6 +12,12 @@
     transform: translateX(0);
   }
 
+  /* Modal*/
+  details[open].modal summary::before {
+    @apply fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-all duration-100 content-[''] data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in;
+  }
+
+  /* Scrollbar */
   .scrollbar-hide.scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
   }
@@ -53,6 +60,7 @@
     scrollbar-width: thin;
   }
 
+  /* Search Result  */
   .search-result[aria-expanded="false"] {
     @apply hidden h-0 w-0 opacity-0;
   }
@@ -71,6 +79,10 @@
 .ProseMirror p.is-editor-empty:first-child::before {
   @apply pointer-events-none float-left h-0 text-foreground;
   content: attr(data-placeholder);
+}
+
+.tippybox {
+  @apply !max-w-5xl;
 }
 
 /* Article */
@@ -106,7 +118,7 @@
 
 .article-container img,
 .ProseMirror img {
-  @apply !relative !h-auto !w-auto max-w-full rounded-md;
+  @apply !relative !h-auto !w-auto max-w-full rounded-md object-cover;
 }
 
 .article-container pre,
@@ -119,10 +131,12 @@
   @apply bg-[none] p-0 text-xs text-[inherit];
 }
 
+/* Youtube Embed */
 .yt-lite {
   @apply aspect-video h-auto w-full rounded-lg shadow-lg;
 }
 
+/* Code Highlight*/
 .hljs-comment,
 .hljs-quote {
   color: #616161;
@@ -173,8 +187,4 @@
 
 .hljs-strong {
   font-weight: 700;
-}
-
-.tippybox {
-  @apply !max-w-5xl;
 }
