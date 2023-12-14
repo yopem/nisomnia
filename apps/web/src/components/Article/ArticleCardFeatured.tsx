@@ -49,7 +49,7 @@ export const ArticleCardFeatured: React.FunctionComponent<
         <div className="featured-meta absolute bottom-0 left-0 z-20 w-full p-5 md:px-4 md:py-5 min-[992px]:p-[25px]">
           <NextLink aria-label={title} href={`/article/${slug}`}>
             <h3
-              className={`line-clamp-4 text-xl font-bold leading-[1.3] text-background`}
+              className={`line-clamp-4 text-xl font-bold leading-[1.3] text-white`}
             >
               {title}
             </h3>

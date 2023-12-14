@@ -2,10 +2,12 @@ import * as React from "react"
 import NextLink from "next/link"
 
 import type { Article as ArticleProps, Media as MediaProps } from "@nisomnia/db"
+import { cn } from "@nisomnia/ui/next"
 
 import { Image } from "@/components/Image"
 
-interface ArticleCardVerticalProps {
+interface ArticleCardVerticalProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   article: Pick<ArticleProps, "slug" | "title"> & {
     featured_image?: Pick<MediaProps, "url">
   }
@@ -14,7 +16,7 @@ interface ArticleCardVerticalProps {
 export const ArticleCardVertical: React.FunctionComponent<
   ArticleCardVerticalProps
 > = (props) => {
-  const { article } = props
+  const { article, className } = props
 
   const { featured_image, slug, title } = article
 
@@ -30,7 +32,12 @@ export const ArticleCardVertical: React.FunctionComponent<
       </NextLink>
       <div className="px-2 py-3">
         <NextLink aria-label={title} href={`/article/${slug}/`}>
-          <h3 className="mb-2 line-clamp-3 text-xl font-semibold hover:text-primary/80 md:line-clamp-4 md:font-bold">
+          <h3
+            className={cn(
+              "mb-2 line-clamp-3 text-xl font-semibold hover:text-primary/80 md:line-clamp-4 md:font-bold",
+              className,
+            )}
+          >
             {title}
           </h3>
         </NextLink>
