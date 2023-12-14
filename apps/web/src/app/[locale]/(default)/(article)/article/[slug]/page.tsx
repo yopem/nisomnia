@@ -185,7 +185,7 @@ export default async function ArticleSlugPage({
           <div className="flex justify-between">
             <div className="inline-flex space-x-1">
               <NextLink
-                aria-label={article?.authors[0]?.username!}
+                aria-label={article?.authors[0]?.name!}
                 href={`/user/${article?.authors[0]?.username}`}
                 className="text-sm font-bold"
               >
@@ -197,15 +197,13 @@ export default async function ArticleSlugPage({
               {readingTime(article)}
             </p>
           </div>
-          <div className="relative aspect-video w-full">
-            <Image
-              fill
-              sizes="(max-width: 720px) 100vw, 50vw"
-              src={article.featured_image.url}
-              alt={article.title}
-              className="w-full rounded-md object-cover"
-            />
-          </div>
+          <Image
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
+            src={article.featured_image.url}
+            alt={article.title}
+            className="!relative !h-auto !w-auto max-w-full rounded-md object-cover"
+          />
           <article className="article-container" id="container">
             {adsSingleArticleAboveContent.length > 0 &&
               adsSingleArticleAboveContent.map((ad) => {
