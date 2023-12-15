@@ -3,7 +3,8 @@
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
-import { Skeleton } from "@gamedaim/ui/next"
+
+import { Skeleton } from "@nisomnia/ui/next"
 
 import env from "@/env"
 
