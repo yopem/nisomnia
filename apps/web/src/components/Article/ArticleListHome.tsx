@@ -24,7 +24,7 @@ export const ArticleListHome: React.FunctionComponent<
 
   return (
     <>
-      <h1>Latest</h1>
+      <h2>Latest</h2>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
         {remainingArticles.map((article) => (
           <ArticleCardVertical key={article.id} article={article} />

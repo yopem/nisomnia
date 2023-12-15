@@ -30,7 +30,7 @@ export const ArticleListByTopic: React.FunctionComponent<
   return (
     <div className={cn("space-y-2 rounded-lg bg-foreground/20 p-5", className)}>
       <div className="flex flex-row items-center justify-between">
-        <h1 className="text-zinc-900">{topic_title}</h1>
+        <h2 className="text-zinc-900">{topic_title}</h2>
         <NextLink
           aria-label="See more"
           href={`/article/topic/${topic_slug}`}

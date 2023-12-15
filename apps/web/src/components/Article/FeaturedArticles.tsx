@@ -38,7 +38,7 @@ export const FeaturedArticles: React.FunctionComponent<
 
   return (
     <>
-      <h1>Featured</h1>
+      <h2>Featured</h2>
       <div className="lg:grid-[rows_7] flex h-full flex-col gap-4 lg:grid lg:h-[600px] lg:grid-cols-3 lg:gap-8">
         {articles.map((article, index) => (
           <ArticleCardFeatured

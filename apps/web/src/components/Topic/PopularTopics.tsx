@@ -24,7 +24,7 @@ export const PopularTopics: React.FunctionComponent<
 
   return (
     <>
-      <h1>Popular Topics</h1>
+      <h2>Popular Topics</h2>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
         {topics.map((topic) => (
           <TopicCard topic={topic} key={topic.id} />
