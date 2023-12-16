@@ -24,23 +24,6 @@ export const Scripts = () => {
           gtag('config', '${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
         `}
         </Script>
-        <Script
-          async
-          type="application/javascript"
-          src="https://news.google.com/swg/js/v1/swg-basic.js"
-        />
-        <Script id="google-news">
-          {`
-        (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
-        basicSubscriptions.init({
-        type: "NewsArticle",
-        isPartOfType: ["Product"],
-        isPartOfProductId: "CAowiP6nDA:openaccess",
-        clientOptions: { theme: "light", lang: "id" },
-            });
-        });
-        `}
-        </Script>
       </>
     )
   }
