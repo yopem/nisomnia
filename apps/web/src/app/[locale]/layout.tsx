@@ -14,7 +14,10 @@ import { TopLoader } from "@/components/TopLoader"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+})
 
 export function generateMetadata({
   params,
