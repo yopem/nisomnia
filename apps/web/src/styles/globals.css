@@ -98,7 +98,7 @@
 
 .article-container a,
 .ProseMirror a {
-  @apply font-bold text-info/90 no-underline duration-200 hover:text-info hover:underline;
+  @apply font-semibold text-sky-900 no-underline duration-200 hover:text-sky-950 hover:underline;
 }
 
 .article-container ul li,
