@@ -81,8 +81,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning={true}>
+      <body>
         <Toaster />
         <TopLoader />
         <ThemeProvider>
