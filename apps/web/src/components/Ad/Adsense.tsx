@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
@@ -16,28 +14,25 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
   const { content } = props
 
   const [showComponent, setShowComponent] = React.useState(false)
-  const [timerId, setTimerId] = React.useState<NodeJS.Timeout | null>(null)
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null)
 
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const resetTimer = () => {
-    if (timerId) {
-      clearTimeout(timerId)
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
     }
 
-    setTimerId(
-      setTimeout(() => {
-        setShowComponent(true)
-      }, 8000),
-    )
+    timerRef.current = setTimeout(() => {
+      setShowComponent(true)
+    }, 8000)
   }
 
   React.useEffect(() => {
     const handleScriptLoad = () => {
       try {
-        window.adsbygoogle = window.adsbygoogle || []
-        window.adsbygoogle.push({})
+        ;(window.adsbygoogle = window.adsbygoogle || []).push({})
       } catch (err) {
         console.error(err)
       }
@@ -65,7 +60,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
         scriptElement.removeEventListener("load", handleScriptLoad)
       }
     }
-  }, [pathname, searchParams])
+  }, [])
 
   React.useEffect(() => {
     const scrollListener = () => resetTimer()
@@ -75,34 +70,31 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
     window.addEventListener("keydown", keydownListener)
 
     return () => {
-      if (timerId) {
-        clearTimeout(timerId)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
       }
       window.removeEventListener("scroll", scrollListener)
       window.removeEventListener("keydown", keydownListener)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timerId])
+  }, [])
 
-  if (process.env.APP_ENV === "development") {
-    return <></>
-  }
+  React.useEffect(() => {
+    resetTimer()
+  }, [pathname, searchParams])
 
-  if (!showComponent) {
+  if (process.env.APP_ENV === "development" || !showComponent) {
     return null
   }
 
   return (
     <>
-      {process.env.APP_ENV === "production" && (
-        <Script
-          id="adsense"
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-      )}
+      <Script
+        id="adsense"
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
       <React.Suspense
         fallback={<Skeleton className="mb-4 h-72 w-full rounded-xl" />}
       >
