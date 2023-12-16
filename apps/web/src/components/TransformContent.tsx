@@ -1,9 +1,7 @@
 import * as React from "react"
 import NextLink from "next/link"
-import Script from "next/script"
 import { Parser, ProcessNodeDefinitions } from "html-to-react"
 
-import { TwitterEmbed } from "@/components/Embed/TwitterEmbed"
 import { YoutubeEmbed } from "@/components/Embed/YoutubeEmbed"
 import { Image } from "@/components/Image"
 
@@ -82,25 +80,6 @@ export const TransformContent: React.FunctionComponent<
           )
         }
         return <iframe title={title} {...node.attribs} />
-      },
-    },
-    {
-      shouldProcessNode: function (node: Node) {
-        return node.name && node.name === "blockquote"
-      },
-      processNode: function (node: Node, children: React.ReactNode[]) {
-        if (node.attribs?.className?.includes("twitter-tweet")) {
-          return <TwitterEmbed>{children}</TwitterEmbed>
-        }
-        return <blockquote {...node.attribs}>{children}</blockquote>
-      },
-    },
-    {
-      shouldProcessNode: function (node: Node) {
-        return node.name && node.name === "script"
-      },
-      processNode: function (node: Node) {
-        return <Script {...node.attribs} />
       },
     },
     {

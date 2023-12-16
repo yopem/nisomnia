@@ -113,9 +113,6 @@ importers:
       react-lite-youtube-embed:
         specifier: ^2.4.0
         version: 2.4.0(react-dom@18.2.0)(react@18.2.0)
-      react-tweet-embed:
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.2.0)
       react-wrap-balancer:
         specifier: ^1.1.0
         version: 1.1.0(react@18.2.0)
@@ -8134,14 +8131,6 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.6.2
-    dev: false
-
-  /react-tweet-embed@2.0.0(react@18.2.0):
-    resolution: {integrity: sha512-g2kfPjSRTOKeJtaQF5EMuSTmp/q8I0qdDs/pZ2qLXZjCWExDT/JgjxSlyM65NyNzsz8072PDpvlO/sIXwwVpdQ==}
-    peerDependencies:
-      react: '>=17'
-    dependencies:
-      react: 18.2.0
     dev: false
 
   /react-wrap-balancer@1.1.0(react@18.2.0):
