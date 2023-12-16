@@ -3,7 +3,7 @@
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 
-import { Skeleton } from "@nisomnia/ui"
+import { Skeleton } from "@nisomnia/ui/next"
 
 import env from "@/env"
 
