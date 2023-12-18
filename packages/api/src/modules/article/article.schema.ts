@@ -2,6 +2,13 @@ import { z } from "zod"
 
 import { LANGUAGE_TYPE } from "../language/language.schema"
 
+export const STATUS_TYPE = [
+  "published",
+  "draft",
+  "rejected",
+  "in_review",
+] as const
+
 export const articleInput = {
   title: z
     .string({
@@ -32,6 +39,12 @@ export const articleInput = {
   meta_description: z
     .string({
       invalid_type_error: "Meta Description must be a string",
+    })
+    .optional(),
+  status: z
+    .enum(STATUS_TYPE, {
+      invalid_type_error:
+        "only published, draft, rejected and in_review are accepted",
     })
     .optional(),
   featured_image_id: z.string({

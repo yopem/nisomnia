@@ -726,6 +726,7 @@ export const articleRouter = createTRPCRouter({
               meta_description: generatedMetaDescription,
               slug: slug,
               featured_image_id: input.featured_image_id,
+              status: input.status,
               topics: {
                 connect: input.topics.map((topicId) => ({ id: topicId })),
               },
@@ -737,6 +738,36 @@ export const articleRouter = createTRPCRouter({
               },
             },
           },
+        },
+      })
+    }),
+  update: adminProtectedProcedure
+    .input(updateArticleSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.article.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          language: input.language,
+          content: input.content,
+          excerpt: input.excerpt,
+          meta_title: input.meta_title,
+          meta_description: input.meta_description,
+          slug: input.slug,
+          status: input.status,
+          featured_image_id: input.featured_image_id,
+          topics: {
+            connect: input.topics.map((topicId) => ({ id: topicId })),
+          },
+          authors: {
+            connect: input.authors.map((authorId) => ({ id: authorId })),
+          },
+          editors: {
+            connect: input.editors.map((editorId) => ({ id: editorId })),
+          },
+          updatedAt: new Date(),
         },
       })
     }),
@@ -763,6 +794,7 @@ export const articleRouter = createTRPCRouter({
           meta_title: generatedMetaTitle,
           meta_description: generatedMetaDescription,
           slug: slug,
+          status: input.status,
           featured_image_id: input.featured_image_id,
           topics: {
             connect: input.topics.map((topicId) => ({ id: topicId })),
@@ -773,35 +805,6 @@ export const articleRouter = createTRPCRouter({
           editors: {
             connect: input.editors.map((editorId) => ({ id: editorId })),
           },
-        },
-      })
-    }),
-  update: adminProtectedProcedure
-    .input(updateArticleSchema)
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.db.article.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          title: input.title,
-          language: input.language,
-          content: input.content,
-          excerpt: input.excerpt,
-          meta_title: input.meta_title,
-          meta_description: input.meta_description,
-          slug: input.slug,
-          featured_image_id: input.featured_image_id,
-          topics: {
-            connect: input.topics.map((topicId) => ({ id: topicId })),
-          },
-          authors: {
-            connect: input.authors.map((authorId) => ({ id: authorId })),
-          },
-          editors: {
-            connect: input.editors.map((editorId) => ({ id: editorId })),
-          },
-          updatedAt: new Date(),
         },
       })
     }),
