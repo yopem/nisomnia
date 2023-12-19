@@ -1,23 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
-import type { LanguageType, TopicType } from "@nisomnia/db"
-import { Button, Textarea } from "@nisomnia/ui/next"
+import type { LanguageType, PostStatus, TopicType } from "@nisomnia/db"
+import { Button, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   RequiredIndicator,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   toast,
 } from "@nisomnia/ui/next-client"
 
@@ -38,6 +31,7 @@ interface FormValues {
   meta_description?: string
   language: LanguageType
   type: TopicType
+  status: PostStatus
 }
 
 export const CreateTopicForm: React.FunctionComponent = () => {
@@ -63,8 +57,8 @@ export const CreateTopicForm: React.FunctionComponent = () => {
     register,
     formState: { errors },
     handleSubmit,
-    control,
     reset,
+    setValue,
   } = useForm<FormValues>()
 
   const onSubmit = (values: FormValues) => {
@@ -89,7 +83,12 @@ export const CreateTopicForm: React.FunctionComponent = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+      }}
+      className="space-y-4"
+    >
       <FormControl invalid={Boolean(errors.title)}>
         <FormLabel>
           Title
@@ -112,28 +111,15 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           Language
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="language"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: LanguageType) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Language</SelectLabel>
-                  <SelectItem value="id">Indonesia</SelectItem>
-                  <SelectItem value="en">English</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("language", {
+            required: "Language is Required",
+          })}
+          placeholder="Select a Language"
+        >
+          <option value="id">Indonesia</option>
+          <option value="en">English</option>
+        </Select>
         {errors?.language && (
           <FormErrorMessage>{errors.language.message}</FormErrorMessage>
         )}
@@ -143,30 +129,17 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           Type
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="type"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: TopicType) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Type</SelectLabel>
-                  <SelectItem value="all">ALL</SelectItem>
-                  <SelectItem value="article">ARTICLE</SelectItem>
-                  <SelectItem value="review">REVIEW</SelectItem>
-                  <SelectItem value="tutorial">TUTORIAL</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("type", {
+            required: "Type is Required",
+          })}
+          placeholder="Select a Type"
+        >
+          <option value="all">ALL</option>
+          <option value="article">ARTICLE</option>
+          <option value="review">REVIEW</option>
+          <option value="tutorial">TUTORIAL</option>
+        </Select>
         {errors?.type && (
           <FormErrorMessage>{errors.type.message}</FormErrorMessage>
         )}
@@ -244,9 +217,30 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           <FormErrorMessage>{errors.meta_description.message}</FormErrorMessage>
         )}
       </FormControl>
-      <Button aria-label="Submit" type="submit" loading={loading}>
-        Submit
-      </Button>
+      <div className="flex space-x-2">
+        <Button
+          aria-label="Save as Draft"
+          type="submit"
+          onClick={() => {
+            setValue("status", "draft")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Save as Draft
+        </Button>
+        <Button
+          aria-label="Submit"
+          type="submit"
+          onClick={() => {
+            setValue("status", "published")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   )
 }

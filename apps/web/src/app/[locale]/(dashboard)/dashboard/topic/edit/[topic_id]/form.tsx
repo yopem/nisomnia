@@ -2,28 +2,22 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import type {
   LanguageType,
   Media as MediaProps,
+  PostStatus,
   Topic as TopicProps,
   TopicType,
 } from "@nisomnia/db"
-import { Button, Textarea } from "@nisomnia/ui/next"
+import { Button, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   RequiredIndicator,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   toast,
 } from "@nisomnia/ui/next-client"
 
@@ -46,6 +40,7 @@ interface FormValues {
   meta_description?: string
   language: LanguageType
   type: TopicType
+  status: PostStatus
   topic_translation_primary_id: string
 }
 
@@ -60,6 +55,7 @@ interface EditTopicFormProps {
     | "meta_description"
     | "language"
     | "type"
+    | "status"
     | "topic_translation_primary_id"
   > & {
     featured_image?: Pick<MediaProps, "id" | "url"> | null
@@ -95,7 +91,6 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
     onSuccess: () => {
       setSelectFeaturedImageId("")
       setSelectedFeaturedImageUrl("")
-      reset()
       toast({ variant: "success", description: "Update Topic successfully" })
       router.push("/dashboard/topic")
     },
@@ -108,19 +103,19 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
   const {
     register,
     formState: { errors },
-    control,
-    reset,
+    setValue,
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
       id: topic?.id,
-      title: topic?.title || "",
-      slug: topic?.slug || "",
+      title: topic?.title ?? "",
+      slug: topic?.slug ?? "",
       description: topic?.description ?? "",
       meta_title: topic?.meta_title ?? "",
       meta_description: topic?.meta_description ?? "",
-      language: topic?.language || "id",
-      type: topic?.type || "all",
+      language: topic?.language ?? "id",
+      type: topic?.type ?? "all",
+      status: topic?.status ?? "published",
       topic_translation_primary_id: topic?.topic_translation_primary_id || "",
     },
   })
@@ -156,7 +151,12 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+      }}
+      className="space-y-4"
+    >
       <FormControl invalid={Boolean(errors.title)}>
         <FormLabel>
           Title
@@ -196,31 +196,18 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
           Language
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="language"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: LanguageType) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Language</SelectLabel>
-                  <SelectItem value={topic.language}>
-                    {topic.language === "id"
-                      ? "Indonesia"
-                      : topic.language === "en" && "English"}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("language", {
+            required: "Language is Required",
+          })}
+          placeholder="Select a Language"
+        >
+          <option value={topic.language}>
+            {topic.language === "id"
+              ? "Indonesia"
+              : topic.language === "en" && "English"}
+          </option>
+        </Select>
         {errors?.language && (
           <FormErrorMessage>{errors.language.message}</FormErrorMessage>
         )}
@@ -230,30 +217,17 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
           Type
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="type"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: TopicType) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Type</SelectLabel>
-                  <SelectItem value="all">all</SelectItem>
-                  <SelectItem value="article">article</SelectItem>
-                  <SelectItem value="review">review</SelectItem>
-                  <SelectItem value="tutorial">tutorial</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("type", {
+            required: "Type is Required",
+          })}
+          placeholder="Select a Type"
+        >
+          <option value="all">all</option>
+          <option value="article">article</option>
+          <option value="review">review</option>
+          <option value="tutorial">tutorial</option>
+        </Select>
         {errors?.type && (
           <FormErrorMessage>{errors.type.message}</FormErrorMessage>
         )}
@@ -331,9 +305,30 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
           <FormErrorMessage>{errors.meta_description.message}</FormErrorMessage>
         )}
       </FormControl>
-      <Button aria-label="Submit" type="submit" loading={loading}>
-        Submit
-      </Button>
+      <div className="flex space-x-2">
+        <Button
+          aria-label="Save as Draft"
+          type="submit"
+          onClick={() => {
+            setValue("status", "draft")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Save as Draft
+        </Button>
+        <Button
+          aria-label="Submit"
+          type="submit"
+          onClick={() => {
+            setValue("status", "published")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   )
 }

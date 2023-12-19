@@ -4,25 +4,19 @@
 
 import * as React from "react"
 import NextLink from "next/link"
-import { Controller, useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
 import type { Session } from "@nisomnia/auth"
-import type { LanguageType } from "@nisomnia/db"
+import type { LanguageType, PostStatus } from "@nisomnia/db"
 import { useDisclosure } from "@nisomnia/ui/hooks"
-import { Button, Icon, Textarea } from "@nisomnia/ui/next"
+import { Button, Icon, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   ScrollArea,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   toast,
 } from "@nisomnia/ui/next-client"
 
@@ -69,6 +63,7 @@ interface FormValues {
   language: LanguageType
   meta_title?: string
   meta_description?: string
+  status?: PostStatus
 }
 
 interface CreateArticleFormProps {
@@ -120,7 +115,9 @@ export const CreateArticleForm: React.FunctionComponent<
         ]
       : [],
   )
-  const [isClear, setIsClear] = React.useState(false)
+  const [isClear, setIsClear] = React.useState<boolean>(false)
+
+  const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
 
@@ -130,6 +127,7 @@ export const CreateArticleForm: React.FunctionComponent<
     handleSubmit,
     control,
     reset,
+    setValue,
     watch,
   } = useForm<FormValues>({
     mode: "onChange",
@@ -150,6 +148,7 @@ export const CreateArticleForm: React.FunctionComponent<
         variant: "success",
         description: "Article successfully created ",
       })
+      router.push("/dashboard/article")
     },
     onError: (err) => {
       console.log(err)
@@ -202,9 +201,24 @@ export const CreateArticleForm: React.FunctionComponent<
         </Button>
         <div>
           <Button
+            aria-label="Save as Draft"
+            type="submit"
+            onClick={() => {
+              setValue("status", "draft")
+              handleSubmit(onSubmit)()
+            }}
+            variant="ghost"
+            loading={loading}
+          >
+            Save as Draft
+          </Button>
+          <Button
             aria-label="Publish"
-            type="button"
-            onClick={handleSubmit(onSubmit)}
+            type="submit"
+            onClick={() => {
+              setValue("status", "published")
+              handleSubmit(onSubmit)()
+            }}
             variant="ghost"
             loading={loading}
           >
@@ -264,36 +278,20 @@ export const CreateArticleForm: React.FunctionComponent<
               <div className="flex flex-col bg-background px-2 py-2">
                 <div className="my-2 flex flex-col px-4">
                   <FormControl invalid={Boolean(errors.language)}>
-                    <Controller
-                      control={control}
-                      name="language"
-                      render={({ field }) => (
-                        <>
-                          <FormLabel>Language</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Select a language" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Language</SelectLabel>
-                                <SelectItem value="id">Indonesia</SelectItem>
-                                <SelectItem value="en">English</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                          {errors?.language && (
-                            <FormErrorMessage>
-                              {errors.language.message}
-                            </FormErrorMessage>
-                          )}
-                        </>
-                      )}
-                    />
+                    <Select
+                      {...register("language", {
+                        required: "Language is Required",
+                      })}
+                      placeholder="Select a Language"
+                    >
+                      <option value="id">Indonesia</option>
+                      <option value="en">English</option>
+                    </Select>
+                    {errors?.language && (
+                      <FormErrorMessage>
+                        {errors.language.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">

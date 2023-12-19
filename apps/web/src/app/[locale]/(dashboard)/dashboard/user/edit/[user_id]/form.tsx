@@ -2,23 +2,16 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import type { User as UserProps, UserRole } from "@nisomnia/db"
-import { Button, Textarea } from "@nisomnia/ui/next"
+import { Button, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   RequiredIndicator,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   toast,
 } from "@nisomnia/ui/next-client"
 
@@ -150,30 +143,17 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
           Role
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="role"
-          render={({ field }) => (
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-              value={field.value}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Role</SelectLabel>
-                  <SelectItem value="admin">admin</SelectItem>
-                  <SelectItem value="author">author</SelectItem>
-                  <SelectItem value="pro_user">pro user</SelectItem>
-                  <SelectItem value="user">user</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("role", {
+            required: "Role is Required",
+          })}
+          placeholder="Select a Role"
+        >
+          <option value="admin">admin</option>
+          <option value="author">author</option>
+          <option value="pro_user">pro user</option>
+          <option value="user">user</option>
+        </Select>
         {errors?.role && (
           <FormErrorMessage>{errors.role.message}</FormErrorMessage>
         )}

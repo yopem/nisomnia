@@ -4,31 +4,24 @@
 
 import * as React from "react"
 import NextLink from "next/link"
-import { useRouter } from "next/navigation"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import type {
   Article as ArticleProps,
   LanguageType,
   Media as MediaProps,
+  PostStatus,
   Topic as TopicProps,
   User as UserProps,
 } from "@nisomnia/db"
 import { useDisclosure } from "@nisomnia/ui/hooks"
-import { Button, Icon, Textarea } from "@nisomnia/ui/next"
+import { Button, Icon, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   ScrollArea,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   toast,
 } from "@nisomnia/ui/next-client"
 
@@ -77,6 +70,7 @@ interface FormValues {
   language: LanguageType
   meta_title?: string
   meta_description?: string
+  status: PostStatus
   article_translation_primary_id: string
 }
 
@@ -91,6 +85,7 @@ interface EditArticleFormProps {
     | "slug"
     | "meta_title"
     | "meta_description"
+    | "status"
     | "article_translation_primary_id"
   > & {
     featured_image: Pick<MediaProps, "id" | "url">
@@ -104,8 +99,6 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   props,
 ) => {
   const { article } = props
-
-  const router = useRouter()
 
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
@@ -164,16 +157,12 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   )
   const [articleTranslationPrimaryId, setArticleTranslationPrimaryId] =
     React.useState<string>("")
-  const [isClear, setIsClear] = React.useState(false)
 
   const { isOpen, onToggle } = useDisclosure()
 
   const { mutate: updateArticle } = api.article.update.useMutation({
     onSuccess: () => {
-      setIsClear((prev) => !prev)
-      reset()
       toast({ variant: "success", description: "Update Article successfully" })
-      router.push("/dashboard/article")
     },
     onError: (err) => {
       setLoading(false)
@@ -186,21 +175,22 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
     formState: { errors },
     handleSubmit,
     control,
-    reset,
     watch,
+    setValue,
   } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
       id: article?.id,
-      language: article?.language || "id",
-      title: article?.title || "",
-      slug: article?.slug || "",
-      content: article?.content || "",
-      excerpt: article?.excerpt || "",
+      language: article?.language ?? "id",
+      title: article?.title ?? "",
+      slug: article?.slug ?? "",
+      content: article?.content ?? "",
+      excerpt: article?.excerpt ?? "",
       meta_title: article?.meta_title ?? "",
       meta_description: article?.meta_description ?? "",
+      status: article?.status ?? "published",
       article_translation_primary_id:
-        article?.article_translation_primary_id || "",
+        article?.article_translation_primary_id ?? "",
     },
   })
 
@@ -262,9 +252,24 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
         </Button>
         <div>
           <Button
-            aria-label="Publish"
+            aria-label="Save as Draft"
             type="submit"
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => {
+              setValue("status", "draft")
+              handleSubmit(onSubmit)()
+            }}
+            variant="ghost"
+            loading={loading}
+          >
+            Save as Draft
+          </Button>
+          <Button
+            aria-label="Update"
+            type="submit"
+            onClick={() => {
+              setValue("status", "published")
+              handleSubmit(onSubmit)()
+            }}
             variant="ghost"
             loading={loading}
           >
@@ -295,11 +300,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                 )}
               </FormControl>
               <FormControl invalid={Boolean(errors.content)}>
-                <Editor
-                  control={control}
-                  fieldName={"content"}
-                  isClear={isClear}
-                />
+                <Editor control={control} fieldName={"content"} />
               </FormControl>
               {errors?.content && (
                 <FormErrorMessage>{errors.content.message}</FormErrorMessage>
@@ -319,39 +320,23 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
               <div className="flex flex-col bg-background px-2 py-2">
                 <div className="my-2 flex flex-col px-4">
                   <FormControl invalid={Boolean(errors.language)}>
-                    <Controller
-                      control={control}
-                      name="language"
-                      render={({ field }) => (
-                        <>
-                          <FormLabel>Language</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Select a language" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Language</SelectLabel>
-                                <SelectItem value={article?.language as string}>
-                                  {article?.language === "id"
-                                    ? "Indonesia"
-                                    : article?.language === "en" && "English"}
-                                </SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                          {errors?.language && (
-                            <FormErrorMessage>
-                              {errors.language.message}
-                            </FormErrorMessage>
-                          )}
-                        </>
-                      )}
-                    />
+                    <Select
+                      {...register("language", {
+                        required: "Language is Required",
+                      })}
+                      placeholder="Select a Language"
+                    >
+                      <option value={article?.language as string}>
+                        {article?.language === "id"
+                          ? "Indonesia"
+                          : article?.language === "en" && "English"}
+                      </option>
+                    </Select>
+                    {errors?.language && (
+                      <FormErrorMessage>
+                        {errors.language.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">

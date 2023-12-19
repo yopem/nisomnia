@@ -87,47 +87,47 @@
 
 /* Article */
 .article-container,
-.ProseMirror {
+.tiptap {
   @apply space-y-2 break-words;
 }
 
 .article-container p,
-.ProseMirror p {
+.tiptap p {
   @apply text-base md:text-lg;
 }
 
 .article-container a,
-.ProseMirror a {
+.tiptap a {
   @apply font-semibold text-sky-900 no-underline duration-200 hover:text-sky-950 hover:underline;
 }
 
 .article-container ul li,
-.ProseMirror ul li {
+.tiptap ul li {
   @apply ml-12 list-disc;
 }
 
 .article-container ol li,
-.ProseMirror ol li {
+.tiptap ol li {
   @apply ml-12 list-decimal;
 }
 
 .article-container blockquote,
-.ProseMirror blockquote {
+.tiptap blockquote {
   @apply my-4 rounded-sm border-l-4 border-border p-4 italic;
 }
 
 .article-container img,
-.ProseMirror img {
+.tiptap img {
   @apply !relative !h-auto !w-auto max-w-full rounded-md object-cover;
 }
 
 .article-container pre,
-.ProseMirror pre {
+.tiptap pre {
   @apply rounded-lg bg-black px-3 py-2 font-mono text-white;
 }
 
 .article-container code,
-.ProseMirror code {
+.tiptap code {
   @apply bg-[none] p-0 text-xs text-[inherit];
 }
 

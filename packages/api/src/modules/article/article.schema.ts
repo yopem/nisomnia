@@ -1,13 +1,7 @@
 import { z } from "zod"
 
 import { LANGUAGE_TYPE } from "../language/language.schema"
-
-export const STATUS_TYPE = [
-  "published",
-  "draft",
-  "rejected",
-  "in_review",
-] as const
+import { STATUS_TYPE } from "../status/status.schema"
 
 export const articleInput = {
   title: z

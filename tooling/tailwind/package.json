@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "autoprefixer": "^10.4.16",
     "postcss": "8.4.32",
     "tailwindcss": "3.3.6"
@@ -23,7 +24,7 @@
     "@nisomnia/eslint-config": "workspace:*",
     "@nisomnia/prettier-config": "workspace:*",
     "@nisomnia/tsconfig": "workspace:*",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3"

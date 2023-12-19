@@ -81,7 +81,7 @@ export const Input = React.forwardRef<HTMLElement, InputProps>((props, ref) => {
     plain: cn(
       "relative w-full min-w-0 inline-flex px-3 items-center appearance-none outline-none focus:outline-none border-none focus:border-none hover:border-none focus:ring-0 text-foreground invalid:text-danger bg-background text-foreground",
       disabled &&
-      "disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 disabled:border-border/50 disabled:bg-background/50",
+        "disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 disabled:border-border/50 disabled:bg-background/50",
     ),
     solid: cn(
       "relative rounded-md w-full min-w-0 inline-flex px-3 items-center appearance-none focus:outline-none transition-colors duration-75 ease-out border border-input text-foreground bg-background hover:bg-background/80 invalid:border-1 invalid:border-danger invalid:ring-danger focus:ring-2 placeholder:text-muted-foreground",

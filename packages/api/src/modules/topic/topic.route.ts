@@ -52,6 +52,7 @@ export const topicRouter = createTRPCRouter({
           meta_title: true,
           meta_description: true,
           type: true,
+          status: true,
           featured_image: {
             select: {
               id: true,
@@ -73,7 +74,7 @@ export const topicRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.db.topic.findMany({
-        where: { language: input.language },
+        where: { language: input.language, status: "published" },
         orderBy: {
           createdAt: "desc",
         },
@@ -111,6 +112,7 @@ export const topicRouter = createTRPCRouter({
           AND: [
             {
               language: input.language,
+              status: "published",
             },
           ],
         },
@@ -161,6 +163,7 @@ export const topicRouter = createTRPCRouter({
           language: true,
           title: true,
           slug: true,
+          status: true,
           type: true,
           createdAt: true,
           updatedAt: true,
@@ -188,7 +191,7 @@ export const topicRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.db.topic.findMany({
-        where: { language: input.language },
+        where: { language: input.language, status: "published" },
         orderBy: {
           createdAt: "desc",
         },
@@ -252,6 +255,7 @@ export const topicRouter = createTRPCRouter({
       return await ctx.db.topic.findUnique({
         where: {
           slug: input.slug,
+          status: "published",
         },
         select: {
           id: true,
@@ -264,6 +268,9 @@ export const topicRouter = createTRPCRouter({
           meta_description: true,
           type: true,
           articles: {
+            where: {
+              status: "published",
+            },
             skip: (input.page - 1) * input.per_page,
             take: input.per_page,
             orderBy: {
@@ -328,6 +335,7 @@ export const topicRouter = createTRPCRouter({
       const topic = await ctx.db.topic.findUnique({
         where: {
           slug: input.slug,
+          status: "published",
         },
         select: {
           id: true,
@@ -404,7 +412,7 @@ export const topicRouter = createTRPCRouter({
     }),
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return await ctx.db.topic.findUnique({
-      where: { slug: input },
+      where: { slug: input, status: "published" },
       select: {
         id: true,
         title: true,
@@ -414,6 +422,7 @@ export const topicRouter = createTRPCRouter({
         meta_title: true,
         meta_description: true,
         type: true,
+        status: true,
         featured_image: {
           select: {
             url: true,
@@ -452,6 +461,7 @@ export const topicRouter = createTRPCRouter({
           AND: [
             {
               language: input.language,
+              status: "published",
             },
           ],
           OR: [
@@ -510,6 +520,7 @@ export const topicRouter = createTRPCRouter({
           language: true,
           title: true,
           slug: true,
+          status: true,
           type: true,
           createdAt: true,
           updatedAt: true,
@@ -562,55 +573,10 @@ export const topicRouter = createTRPCRouter({
           type: true,
           slug: true,
           title: true,
+          status: true,
           featured_image: {
             select: {
               url: true,
-            },
-          },
-        },
-      })
-    }),
-  dashboardSearch: adminProtectedProcedure
-    .input(
-      z.object({ language: z.enum(LANGUAGE_TYPE), search_query: z.string() }),
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.db.topic.findMany({
-        where: {
-          AND: [
-            {
-              language: input.language,
-            },
-          ],
-          OR: [
-            {
-              title: {
-                search: input.search_query.split(" ").join(" & "),
-              },
-              slug: {
-                search: input.search_query.split(" ").join(" & "),
-              },
-            },
-          ],
-        },
-        take: 10,
-        select: {
-          topic_translation_primary_id: true,
-          id: true,
-          slug: true,
-          title: true,
-          type: true,
-          createdAt: true,
-          updatedAt: true,
-          topic_translation_primary: {
-            select: {
-              id: true,
-              topics: {
-                select: {
-                  title: true,
-                  language: true,
-                },
-              },
             },
           },
         },
@@ -625,6 +591,7 @@ export const topicRouter = createTRPCRouter({
       return await ctx.db.topic.count({
         where: {
           language: input,
+          status: "published",
         },
       })
     }),
@@ -649,6 +616,7 @@ export const topicRouter = createTRPCRouter({
               meta_title: generatedMetaTitle,
               meta_description: generatedMetaDescription,
               type: input.type,
+              status: input.status,
               featured_image_id: input.featured_image_id,
             },
           },
@@ -688,6 +656,7 @@ export const topicRouter = createTRPCRouter({
           meta_title: generatedMetaTitle,
           meta_description: generatedMetaDescription,
           type: input.type,
+          status: input.status,
           featured_image_id: input.featured_image_id,
         },
       })

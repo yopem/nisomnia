@@ -4,20 +4,13 @@ import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 
 import { type AdPosition, type AdType } from "@nisomnia/db"
-import { Button, Textarea } from "@nisomnia/ui/next"
+import { Button, Select, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   RequiredIndicator,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   Switch,
   toast,
 } from "@nisomnia/ui/next-client"
@@ -86,28 +79,15 @@ export const CreateAdForm = () => {
           Type
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="type"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: AdType) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Type</SelectLabel>
-                  <SelectItem value="plain_ad">Plain Ad</SelectItem>
-                  <SelectItem value="adsense">Adsense</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("type", {
+            required: "Type is Required",
+          })}
+          placeholder="Select a Type"
+        >
+          <option value="plain_ad">Plain Ad</option>
+          <option value="adsense">Adsense</option>
+        </Select>
         {errors?.type && (
           <FormErrorMessage>{errors.type.message}</FormErrorMessage>
         )}
@@ -141,52 +121,30 @@ export const CreateAdForm = () => {
           Position
           <RequiredIndicator />
         </FormLabel>
-        <Controller
-          control={control}
-          name="position"
-          render={({ field }) => (
-            <Select
-              defaultValue={field.value}
-              value={field.value}
-              onValueChange={(value: AdPosition) => field.onChange(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a position" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Position</SelectLabel>
-                  <SelectItem value="home_below_header">
-                    Home (Below Header)
-                  </SelectItem>
-                  <SelectItem value="topic_below_header">
-                    Topic (Below Header)
-                  </SelectItem>
-                  <SelectItem value="article_below_header">
-                    Article (Below Header)
-                  </SelectItem>
-                  <SelectItem value="single_article_above_content">
-                    Single Article (Above Content)
-                  </SelectItem>
-                  <SelectItem value="single_article_middle_content">
-                    Single Article (Middle Content)
-                  </SelectItem>
-                  <SelectItem value="single_article_below_content">
-                    Single Article (Below Content)
-                  </SelectItem>
-                  <SelectItem value="single_article_pop_up">
-                    Single Article (Pop Up)
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          {...register("position", {
+            required: "Position is Required",
+          })}
+          placeholder="Select a Position"
+        >
+          <option value="home_below_header">Home (Below Header)</option>
+          <option value="topic_below_header">Topic (Below Header)</option>
+          <option value="article_below_header">Article (Below Header)</option>
+          <option value="single_article_above_content">
+            Single Article (Above Content)
+          </option>
+          <option value="single_article_middle_content">
+            Single Article (Middle Content)
+          </option>
+          <option value="single_article_below_content">
+            Single Article (Below Content)
+          </option>
+          <option value="single_article_pop_up">Single Article (Pop Up)</option>
+        </Select>
         {errors?.position && (
           <FormErrorMessage>{errors.position.message}</FormErrorMessage>
         )}
       </FormControl>
-
       <FormControl invalid={Boolean(errors.active)}>
         <FormLabel>Active</FormLabel>
         <Controller

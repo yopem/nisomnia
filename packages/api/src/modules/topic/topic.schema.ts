@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { LANGUAGE_TYPE } from "../language/language.schema"
+import { STATUS_TYPE } from "../status/status.schema"
 
 export const TOPIC_TYPE = [
   "all",
@@ -39,6 +40,12 @@ const topicInput = {
     .enum(TOPIC_TYPE, {
       invalid_type_error:
         "only all, article, review ,tutorial, download, movie, tv, game are accepted",
+    })
+    .optional(),
+  status: z
+    .enum(STATUS_TYPE, {
+      invalid_type_error:
+        "only published, draft, rejected and in_review are accepted",
     })
     .optional(),
   featured_image_id: z

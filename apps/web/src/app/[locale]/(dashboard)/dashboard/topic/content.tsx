@@ -5,6 +5,7 @@ import NextLink from "next/link"
 
 import type { Topic as TopicProps } from "@nisomnia/db"
 import {
+  Badge,
   Button,
   Icon,
   IconButton,
@@ -50,6 +51,7 @@ type TopicDataProps = Pick<
   | "language"
   | "title"
   | "slug"
+  | "status"
   | "type"
   | "createdAt"
   | "updatedAt"
@@ -284,6 +286,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
             </TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Slug</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead className="hidden md:table-cell">
               Published Date
             </TableHead>
@@ -352,6 +355,13 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
                 <TableCell className="whitespace-nowrap">
                   <div className="flex">
                     <span className="font-medium">{topic.slug}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="hidden whitespace-nowrap md:table-cell">
+                  <div className="flex">
+                    <span className="font-medium">
+                      <Badge variant="outline">{topic.status}</Badge>
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell className="hidden whitespace-nowrap md:table-cell">

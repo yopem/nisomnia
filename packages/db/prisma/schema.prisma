@@ -154,6 +154,7 @@ model Topic {
   meta_description String?
   type             TopicType    @default(all)
   views            Int          @default(0)
+  status   PostStatus       @default(published)
 
   topic_translation_primary_id String
   topic_translation_primary    TopicTranslationPrimary @relation(name: "topic_translations", fields: [topic_translation_primary_id], references: [id])
