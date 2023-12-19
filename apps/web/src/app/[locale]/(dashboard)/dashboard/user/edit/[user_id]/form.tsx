@@ -55,7 +55,6 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
   const {
     register,
     formState: { errors },
-    control,
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
