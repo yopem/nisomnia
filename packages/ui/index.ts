@@ -1,2 +1,1 @@
-export * from "./next-client"
-export * from "./next"
+export * from "./src"

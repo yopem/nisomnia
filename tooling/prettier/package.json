@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "main": "index.mjs",
+  "files": [
+    "./index.mjs"
+  ],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",

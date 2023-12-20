@@ -6,6 +6,8 @@
   "license": "MIT",
   "files": [
     "index.ts",
+    "plugin.ts",
+    "preset.ts",
     "postcss.js"
   ],
   "scripts": {

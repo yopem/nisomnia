@@ -11,5 +11,5 @@
     "strictNullChecks": true
   },
   "include": [".", ".next/types/**/*.ts", "global.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "build"]
 }

@@ -3,11 +3,13 @@
   "private": true,
   "version": "0.0.1",
   "main": "./index.ts",
-  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
   "typesVersions": {
     "*": {
       "*": [
-        "./*"
+        "*"
       ]
     }
   },
@@ -22,6 +24,12 @@
   "peerDependencies": {
     "react": ">=18"
   },
+  "dependencies": {
+    "@nisomnia/auth": "workspace:*",
+    "@nisomnia/db": "workspace:*",
+    "@nisomnia/utils": "workspace:*",
+    "@trpc/server": "^10.44.1"
+  },
   "devDependencies": {
     "@nisomnia/eslint-config": "workspace:*",
     "@nisomnia/prettier-config": "workspace:*",
@@ -29,17 +37,11 @@
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   },
-  "dependencies": {
-    "@nisomnia/auth": "workspace:*",
-    "@nisomnia/db": "workspace:*",
-    "@nisomnia/utils": "workspace:*",
-    "@trpc/server": "^10.44.1"
-  },
-  "prettier": "@nisomnia/prettier-config",
   "eslintConfig": {
     "extends": [
       "@nisomnia/eslint-config/base",
       "@nisomnia/eslint-config/react"
     ]
-  }
+  },
+  "prettier": "@nisomnia/prettier-config"
 }

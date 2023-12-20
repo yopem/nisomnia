@@ -28,7 +28,7 @@
     },
     "build": {
       "dependsOn": ["^build", "^db:generate"],
-      "outputs": [".next/**", ".expo/**"]
+      "outputs": ["!.next/cache/**", ".next/**", ".expo/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^topo"],

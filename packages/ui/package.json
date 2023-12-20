@@ -3,11 +3,16 @@
   "private": true,
   "version": "0.0.1",
   "main": "./index.ts",
-  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./hooks": "./hooks.ts",
+    "./next": "./next.ts",
+    "./next-client": "./next-client.ts"
+  },
   "typesVersions": {
     "*": {
       "*": [
-        "./*"
+        "*"
       ]
     }
   },
@@ -22,22 +27,6 @@
   "peerDependencies": {
     "react": ">=18"
   },
-  "devDependencies": {
-    "@nisomnia/eslint-config": "workspace:*",
-    "@nisomnia/prettier-config": "workspace:*",
-    "@nisomnia/tsconfig": "workspace:*",
-    "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
-    "react": "18.2.0",
-    "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@nisomnia/eslint-config/base",
-      "@nisomnia/eslint-config/react"
-    ]
-  },
-  "prettier": "@nisomnia/prettier-config",
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -54,5 +43,21 @@
     "clsx": "^2.0.0",
     "react-icons": "^4.12.0",
     "tailwind-merge": "^2.1.0"
-  }
+  },
+  "devDependencies": {
+    "@nisomnia/eslint-config": "workspace:*",
+    "@nisomnia/prettier-config": "workspace:*",
+    "@nisomnia/tsconfig": "workspace:*",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "react": "18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@nisomnia/eslint-config/base",
+      "@nisomnia/eslint-config/react"
+    ]
+  },
+  "prettier": "@nisomnia/prettier-config"
 }
