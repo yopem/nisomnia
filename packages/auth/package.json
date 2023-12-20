@@ -7,13 +7,6 @@
     ".": "./index.ts",
     "./client": "./client.ts"
   },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "*"
-      ]
-    }
-  },
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
