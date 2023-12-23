@@ -5,6 +5,7 @@ import type { Metadata } from "next"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 
+import type { LanguageType } from "@nisomnia/db"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -48,16 +49,18 @@ export async function generateMetadata({
 interface SingleTopicPageProps {
   params: {
     slug: string
+    locale: LanguageType
   }
 }
 
 export default async function SingleTopicPage({
   params,
 }: SingleTopicPageProps) {
-  const { slug } = params
+  const { slug, locale } = params
 
   const topicArticle = await api.topic.articlesByTopicSlug.query({
     slug: slug,
+    language: locale,
     page: 1,
     per_page: 10,
   })
