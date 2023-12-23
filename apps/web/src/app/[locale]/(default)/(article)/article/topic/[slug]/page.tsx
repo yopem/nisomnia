@@ -4,6 +4,7 @@ import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { BreadcrumbJsonLd } from "next-seo"
 
+import type { LanguageType } from "@nisomnia/db"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -53,16 +54,18 @@ export async function generateMetadata({
 interface TopicArticlePageProps {
   params: {
     slug: string
+    locale: LanguageType
   }
 }
 
 export default async function TopicArticlePage({
   params,
 }: TopicArticlePageProps) {
-  const { slug } = params
+  const { slug, locale } = params
 
   const topicArticle = await api.topic.articlesByTopicSlug.query({
     slug: slug,
+    language: locale,
     page: 1,
     per_page: 10,
   })
@@ -122,7 +125,10 @@ export default async function TopicArticlePage({
         </div>
         <div className="flex w-full flex-col">
           {topicArticle && totalPage && topicArticle.articles && (
-            <InfiniteScrollTopicArticles slug={topicArticle.slug} />
+            <InfiniteScrollTopicArticles
+              slug={topicArticle.slug}
+              language={locale}
+            />
           )}
         </div>
       </section>

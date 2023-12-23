@@ -247,6 +247,7 @@ export const topicRouter = createTRPCRouter({
     .input(
       z.object({
         slug: z.string(),
+        language: z.enum(LANGUAGE_TYPE),
         page: z.number(),
         per_page: z.number(),
       }),
@@ -269,6 +270,7 @@ export const topicRouter = createTRPCRouter({
           type: true,
           articles: {
             where: {
+              language: input.language,
               status: "published",
             },
             skip: (input.page - 1) * input.per_page,
@@ -317,6 +319,7 @@ export const topicRouter = createTRPCRouter({
     .input(
       z.object({
         slug: z.string(),
+        language: z.enum(LANGUAGE_TYPE),
         limit: z.number().min(1).max(100).nullable(),
         cursor: z.string().nullable(),
       }),
@@ -351,6 +354,7 @@ export const topicRouter = createTRPCRouter({
             where: {
               AND: [
                 {
+                  language: input.language,
                   status: "published",
                 },
                 cursorCondition,

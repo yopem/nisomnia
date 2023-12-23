@@ -2,7 +2,11 @@
 
 import * as React from "react"
 
-import type { Article as ArticleProps, Media as MediaProps } from "@nisomnia/db"
+import type {
+  Article as ArticleProps,
+  LanguageType,
+  Media as MediaProps,
+} from "@nisomnia/db"
 import { toast } from "@nisomnia/ui/next-client"
 
 import { LoadingProgress } from "@/components/LoadingProgress"
@@ -19,12 +23,13 @@ export type InfinteScrollTopicArticlesDataProps = Pick<
 interface InfiniteScrollTopicArticlesProps
   extends React.HTMLAttributes<HTMLDivElement> {
   slug: string
+  language: LanguageType
 }
 
 export const InfiniteScrollTopicArticles: React.FunctionComponent<
   InfiniteScrollTopicArticlesProps
 > = (props) => {
-  const { slug } = props
+  const { slug, language } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -32,6 +37,7 @@ export const InfiniteScrollTopicArticles: React.FunctionComponent<
     api.topic.articlesByTopicSlugInfinite.useInfiniteQuery(
       {
         slug: slug,
+        language: language,
         limit: 10,
       },
       {
