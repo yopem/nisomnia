@@ -254,6 +254,15 @@ export const articleRouter = createTRPCRouter({
                 status: "published",
               },
             ],
+            NOT: [
+              {
+                topics: {
+                  some: {
+                    title: "Teknologi" || "Technology",
+                  },
+                },
+              },
+            ],
           },
           orderBy: {
             updatedAt: "desc",
@@ -324,6 +333,15 @@ export const articleRouter = createTRPCRouter({
                 status: "published",
               },
               cursorCondition,
+            ],
+            NOT: [
+              {
+                topics: {
+                  some: {
+                    title: "Teknologi" || "Technology",
+                  },
+                },
+              },
             ],
           },
           take: limit + 1,
@@ -1147,7 +1165,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Failed to delte article",
+            message: "Failed to delete article",
           })
         }
 
