@@ -254,15 +254,6 @@ export const articleRouter = createTRPCRouter({
                 status: "published",
               },
             ],
-            NOT: [
-              {
-                topics: {
-                  some: {
-                    title: "Teknologi" || "Technology",
-                  },
-                },
-              },
-            ],
           },
           orderBy: {
             updatedAt: "desc",
@@ -333,15 +324,6 @@ export const articleRouter = createTRPCRouter({
                 status: "published",
               },
               cursorCondition,
-            ],
-            NOT: [
-              {
-                topics: {
-                  some: {
-                    title: "Teknologi" || "Technology",
-                  },
-                },
-              },
             ],
           },
           take: limit + 1,
