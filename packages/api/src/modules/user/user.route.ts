@@ -541,6 +541,43 @@ export const userRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
+        const isUser = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+        })
+
+        if (!isUser) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "You can only delete your profile.",
+          })
+        }
+
+        const data = await ctx.db.user.delete({ where: { id: input } })
+
+        if (!data) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Failed to delete profile",
+          })
+        }
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
+  deleteByAdmin: adminProtectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      try {
         const data = await ctx.db.user.delete({ where: { id: input } })
 
         if (!data) {

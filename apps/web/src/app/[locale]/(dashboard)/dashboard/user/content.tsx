@@ -52,7 +52,7 @@ export const DashboardUserContent: React.FunctionComponent = () => {
 
   const { data: searchResults } = api.user.search.useQuery(searchQuery)
 
-  const { mutate: deleteUser } = api.user.delete.useMutation({
+  const { mutate: deleteUser } = api.user.deleteByAdmin.useMutation({
     onSuccess: () => {
       toast({ variant: "success", description: "Delete User Successfully" })
       refetch()
