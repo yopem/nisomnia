@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Metadata } from "next"
 import NextLink from "next/link"
+import { notFound } from "next/navigation"
 import type { LanguageType } from "@prisma/client"
 import { BreadcrumbJsonLd } from "next-seo"
 
@@ -53,6 +54,10 @@ export default async function UserPage({ params }: UserPageProps) {
     username: username,
     language: locale,
   })
+
+  if (!user) {
+    return notFound()
+  }
 
   return (
     <>
