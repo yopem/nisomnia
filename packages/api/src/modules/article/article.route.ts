@@ -986,7 +986,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Article not created",
+            message: "Failed to create article",
           })
         }
       } catch (error) {
@@ -1035,7 +1035,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Article not updated",
+            message: "Failed to update article",
           })
         }
 
@@ -1095,7 +1095,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Article not translated",
+            message: "Failed to translate article",
           })
         }
 
@@ -1139,7 +1139,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Article not deleted",
+            message: "Failed to delete article",
           })
         }
 
@@ -1165,7 +1165,7 @@ export const articleRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Article not deleted",
+            message: "Failed to delte article",
           })
         }
 

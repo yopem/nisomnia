@@ -158,7 +158,7 @@ export const adRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Ad not created",
+            message: "Failed to create ad",
           })
         }
 
@@ -192,7 +192,7 @@ export const adRouter = createTRPCRouter({
         if (!data) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Ad not updated",
+            message: "Failed to update ad",
           })
         }
 
