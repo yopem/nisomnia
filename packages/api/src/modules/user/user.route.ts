@@ -96,6 +96,9 @@ export const userRouter = createTRPCRouter({
               where: {
                 language: input.language,
               },
+              orderBy: {
+                updatedAt: "desc",
+              },
               take: 6,
               select: {
                 title: true,
@@ -300,6 +303,7 @@ export const userRouter = createTRPCRouter({
                 title: true,
                 excerpt: true,
                 slug: true,
+                updatedAt: true,
                 featured_image: {
                   select: {
                     url: true,
@@ -312,9 +316,13 @@ export const userRouter = createTRPCRouter({
 
         let nextCursor: string | undefined = undefined
 
-        if (user && Array.isArray(user) && user.length > limit) {
-          const nextItem = user.pop()
-          if (nextItem.updatedAt) {
+        if (
+          user?.article_authors &&
+          Array.isArray(user.article_authors) &&
+          user.article_authors.length > limit
+        ) {
+          const nextItem = user.article_authors.pop()
+          if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt.toISOString()
           }
         }
