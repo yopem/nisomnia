@@ -1273,7 +1273,6 @@ export default [
       "https://nisomnia.com/article/karakter-jujutsu-kaisen-yang-berpotensi-melampaui-kemampuan-gojo-satoru_y6jev",
     permanent: true,
   },
-  { source: "/?p=990", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/topic/internet_wll50",
     destination: "https://nisomnia.com/topic/internet_166wt",
@@ -1347,7 +1346,6 @@ export default [
     destination: "https://nisomnia.com/article/build-clint-ml-tersakit_0n5ik",
     permanent: true,
   },
-  { source: "/?p=380", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/read/fakta-menarik-kurama/",
     destination: "https://nisomnia.com/article/fakta-menarik-kurama_dx5y5",
@@ -1817,8 +1815,6 @@ export default [
     destination: "https://nisomnia.com/",
     permanent: true,
   },
-
-  { source: "/?p=407", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/fakta-unik-eren-yeager-rer8p",
     destination: "https://nisomnia.com/article/fakta-eren-yeager_f1zu4",
@@ -2138,7 +2134,6 @@ export default [
     destination: "https://nisomnia.com/article/build-lancelot-ml_e8amo",
     permanent: true,
   },
-  { source: "/?p=127", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/topic/yuji-kaji",
     destination: "https://nisomnia.com/",
@@ -2228,12 +2223,6 @@ export default [
     permanent: true,
   },
   {
-    source:
-      "/read/fakta-menarik-twice/?trk=organization-update-content_share-embed-video_share-article",
-    destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
-    permanent: true,
-  },
-  {
     source: "/read/novel-sepak-bola-sebelas-patriot-andrea-hirata/amp/",
     destination: "https://nisomnia.com/article/topic/novel_e9szh",
     permanent: true,
@@ -2319,8 +2308,6 @@ export default [
       "https://nisomnia.com/article/game-android-offline-terbaik_oanl7",
     permanent: true,
   },
-  { source: "/?p=147", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=308", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/read/fakta-unik-one-piece",
     destination: "https://nisomnia.com/article/fakta-unik-one-piece_kdzo8",
@@ -2336,8 +2323,6 @@ export default [
     destination: "https://nisomnia.com/",
     permanent: true,
   },
-  { source: "/?p=138", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=288", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/cheat-gta-san-andreas/",
     destination: "https://nisomnia.com/",
@@ -2374,17 +2359,11 @@ export default [
     destination: "https://nisomnia.com/topic/tutorial_jamls",
     permanent: true,
   },
-  { source: "/?p=365", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=170", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=201", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/read/drama-korea-sekolah/amp/",
     destination: "https://nisomnia.com/article/drama-korea-sekolah_p1l8k",
     permanent: true,
   },
-  { source: "/?p=187", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=137", destination: "https://nisomnia.com/", permanent: true },
-  { source: "/?p=294", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/apa-arti-dari-sebutan-waifu-dan-husbando",
     destination:
@@ -2422,14 +2401,6 @@ export default [
     destination: "https://nisomnia.com/article/apa-itu-usb_1xoec",
     permanent: true,
   },
-  { source: "/?p=191", destination: "https://nisomnia.com/", permanent: true },
-  {
-    source:
-      "/read/fakta-menarik-twice?trk=organization-update-content_share-embed-video_share-article",
-    destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
-    permanent: true,
-  },
-  { source: "/?p=89", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/apa-itu-otaku",
     destination: "https://nisomnia.com/article/apa-itu-otaku_50l9t",
@@ -2458,13 +2429,6 @@ export default [
   },
   {
     source: "/read/lagu-linkin-park-terbaik/amp/",
-    destination:
-      "https://nisomnia.com/article/alasan-kenapa-harus-mendarat-di-pochinki_c9q2k",
-    permanent: true,
-  },
-  {
-    source:
-      "/read/alasan-kamu-harus-mendarat-di-pochinki-pubg-mobile/?login_popup",
     destination:
       "https://nisomnia.com/article/alasan-kenapa-harus-mendarat-di-pochinki_c9q2k",
     permanent: true,
@@ -2502,7 +2466,6 @@ export default [
       "https://nisomnia.com/article/daftar-hero-terkuat-multirole-mobile-legends_b7l6u",
     permanent: true,
   },
-  { source: "/?p=300", destination: "https://nisomnia.com/", permanent: true },
   {
     source: "/article/kunci-jawaban-brain-out/",
     destination: "https://nisomnia.com/article/kunci-jawaban-brain-out_aiobz",
@@ -2552,11 +2515,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/article/drama-korea-sekolah?amp",
-    destination: "https://nisomnia.com/article/drama-korea-sekolah_p1l8k",
-    permanent: true,
-  },
-  {
     source: "/article/drama-korea-sekolah-p1l8k",
     destination: "https://nisomnia.com/article/drama-korea-sekolah_p1l8k",
     permanent: true,
@@ -2574,12 +2532,6 @@ export default [
   {
     source: "/fakta-unik-one-piece_kdzo8",
     destination: "https://nisomnia.com/article/fakta-unik-one-piece_kdzo8",
-    permanent: true,
-  },
-  {
-    source:
-      "/article/fakta-menarik-twice_n0qaj?trk=organization-update-content_share-embed-video_share-article",
-    destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
     permanent: true,
   },
   {
@@ -2606,12 +2558,6 @@ export default [
     source: "/read/novel-misteri-terbaik-agatha-christie/amp/",
     destination:
       "https://nisomnia.com/article/novel-misteri-terbaik-agatha-christie_j6muv",
-    permanent: true,
-  },
-  {
-    source:
-      "/article/anime-horror-terbaik?trk=organization-update-content_share-embed-video_share-article",
-    destination: "https://nisomnia.com/article/anime-horror-terbaik_ouiv7",
     permanent: true,
   },
   {
@@ -3594,11 +3540,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/search?q=%7Bsearch_term_string%7D",
-    destination: "https://nisomnia.com/",
-    permanent: true,
-  },
-  {
     source: "/cheat-gta-san-andreas/amp/",
     destination: "https://nisomnia.com/",
     permanent: true,
@@ -3680,11 +3621,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/article/novel-sepak-bola-sebelas-patriot-andrea-hirata?swcfpc=1",
-    destination: "https://nisomnia.com/",
-    permanent: true,
-  },
-  {
     source: "/article/topic/tutorial-bckr5",
     destination: "https://nisomnia.com/topic/tutorial_jamls",
     permanent: true,
@@ -3714,4 +3650,67 @@ export default [
     destination: "https://nisomnia.com/",
     permanent: true,
   },
+  // { source: "/?p=990", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=380", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=407", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=127", destination: "https://nisomnia.com/", permanent: true },
+  // {
+  //     source:
+  //       "/read/fakta-menarik-twice/?trk=organization-update-content_share-embed-video_share-article",
+  //     destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
+  //     permanent: true,
+  //   },
+  // { source: "/?p=147", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=308", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=138", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=288", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=365", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=170", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=201", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=187", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=137", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=294", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=191", destination: "https://nisomnia.com/", permanent: true },
+  // {
+  //     source:
+  //       "/read/fakta-menarik-twice?trk=organization-update-content_share-embed-video_share-article",
+  //     destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
+  //     permanent: true,
+  //   },
+  // {
+  //    source:
+  //      "/read/alasan-kamu-harus-mendarat-di-pochinki-pubg-mobile/?login_popup",
+  //    destination:
+  //      "https://nisomnia.com/article/alasan-kenapa-harus-mendarat-di-pochinki_c9q2k",
+  //    permanent: true,
+  //  },
+  // { source: "/?p=89", destination: "https://nisomnia.com/", permanent: true },
+  // { source: "/?p=300", destination: "https://nisomnia.com/", permanent: true },
+  // {
+  //   source: "/article/drama-korea-sekolah?amp",
+  //   destination: "https://nisomnia.com/article/drama-korea-sekolah_p1l8k",
+  //   permanent: true,
+  // },
+  // {
+  //   source:
+  //     "/article/fakta-menarik-twice_n0qaj?trk=organization-update-content_share-embed-video_share-article",
+  //   destination: "https://nisomnia.com/article/fakta-menarik-twice_n0qaj",
+  //   permanent: true,
+  // },
+  // {
+  //   source:
+  //     "/article/anime-horror-terbaik?trk=organization-update-content_share-embed-video_share-article",
+  //   destination: "https://nisomnia.com/article/anime-horror-terbaik_ouiv7",
+  //   permanent: true,
+  // },
+  // {
+  //   source: "/search?q=%7Bsearch_term_string%7D",
+  //   destination: "https://nisomnia.com/",
+  //   permanent: true,
+  // },
+  // {
+  //     source: "/article/novel-sepak-bola-sebelas-patriot-andrea-hirata?swcfpc=1",
+  //     destination: "https://nisomnia.com/",
+  //     permanent: true,
+  //   },
 ]
