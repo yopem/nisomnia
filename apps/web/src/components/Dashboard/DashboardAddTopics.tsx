@@ -223,12 +223,12 @@ export const DashboardAddTopics: React.FunctionComponent<
     }
   }
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    setInputValue(e.target.value)
-    if (e.target.value.length > 1) {
-      setSearchQuery(e.target.value)
-    } else if (e.target.value.length < 1) {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault()
+    setInputValue(event.target.value)
+    if (event.target.value.length > 1) {
+      setSearchQuery(event.target.value)
+    } else if (event.target.value.length < 1) {
       setSearchQuery("")
     }
   }
