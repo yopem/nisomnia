@@ -35,13 +35,6 @@ export const mediaRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -71,13 +64,6 @@ export const mediaRouter = createTRPCRouter({
             name: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -140,13 +126,6 @@ export const mediaRouter = createTRPCRouter({
           }
         }
 
-        if (!medias) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
-
         return {
           medias,
           nextCursor,
@@ -185,13 +164,6 @@ export const mediaRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -226,13 +198,6 @@ export const mediaRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -271,13 +236,6 @@ export const mediaRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Media not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -307,13 +265,6 @@ export const mediaRouter = createTRPCRouter({
         },
       })
 
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Media not found",
-        })
-      }
-
       return data
     } catch (error) {
       console.error("Error:", error)
@@ -330,13 +281,6 @@ export const mediaRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.media.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Media not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -365,13 +309,6 @@ export const mediaRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to create media",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -399,13 +336,6 @@ export const mediaRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update media",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -425,13 +355,6 @@ export const mediaRouter = createTRPCRouter({
       try {
         const data = await ctx.db.media.delete({ where: { id: input } })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete media",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -450,13 +373,6 @@ export const mediaRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.media.delete({ where: { name: input } })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete media",
-          })
-        }
 
         return data
       } catch (error) {

@@ -31,13 +31,6 @@ export const adRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Ads not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -68,13 +61,6 @@ export const adRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Ad not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -107,13 +93,6 @@ export const adRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Ad not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -126,13 +105,6 @@ export const adRouter = createTRPCRouter({
   count: adminProtectedProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.ad.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Ads not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -154,13 +126,6 @@ export const adRouter = createTRPCRouter({
         const data = await ctx.db.ad.create({
           data: input,
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to create ad",
-          })
-        }
 
         return data
       } catch (error) {
@@ -189,13 +154,6 @@ export const adRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update ad",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -216,13 +174,6 @@ export const adRouter = createTRPCRouter({
         const data = await ctx.db.ad.delete({
           where: { id: input },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete ad",
-          })
-        }
 
         return data
       } catch (error) {

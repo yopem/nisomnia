@@ -23,13 +23,6 @@ export const articleRouter = createTRPCRouter({
         orderBy: { id: "desc" },
       })
 
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Articles not found",
-        })
-      }
-
       return data
     } catch (error) {
       console.error("Error:", error)
@@ -81,13 +74,6 @@ export const articleRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -154,13 +140,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article not found",
-          })
-        }
-
         return data
       } catch (error) {
         if (error instanceof TRPCError) {
@@ -216,13 +195,6 @@ export const articleRouter = createTRPCRouter({
           },
         },
       })
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Article not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -284,13 +256,6 @@ export const articleRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -372,13 +337,6 @@ export const articleRouter = createTRPCRouter({
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt.toISOString()
           }
-        }
-
-        if (!articles) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
         }
 
         return {
@@ -469,13 +427,6 @@ export const articleRouter = createTRPCRouter({
           }
         }
 
-        if (!articles) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
-
         return {
           articles,
           nextCursor,
@@ -537,13 +488,6 @@ export const articleRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -613,13 +557,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -686,13 +623,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -736,13 +666,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -759,13 +682,6 @@ export const articleRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.article.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Articles not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -789,13 +705,6 @@ export const articleRouter = createTRPCRouter({
             language: input,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -848,13 +757,6 @@ export const articleRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -921,13 +823,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Articles not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -983,12 +878,7 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to create article",
-          })
-        }
+        return data
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {
@@ -1031,13 +921,6 @@ export const articleRouter = createTRPCRouter({
             updatedAt: new Date(),
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update article",
-          })
-        }
 
         return data
       } catch (error) {
@@ -1092,13 +975,6 @@ export const articleRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to translate article",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -1136,13 +1012,6 @@ export const articleRouter = createTRPCRouter({
 
         const data = await ctx.db.article.delete({ where: { id: input } })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete article",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -1161,13 +1030,6 @@ export const articleRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.article.delete({ where: { id: input } })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete article",
-          })
-        }
 
         return data
       } catch (error) {

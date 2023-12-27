@@ -38,13 +38,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -85,13 +78,6 @@ export const topicRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -140,13 +126,6 @@ export const topicRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -205,13 +184,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -266,13 +238,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -308,13 +273,6 @@ export const topicRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -369,13 +327,6 @@ export const topicRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -462,13 +413,6 @@ export const topicRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -579,13 +523,6 @@ export const topicRouter = createTRPCRouter({
           }
         }
 
-        if (!topic) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return {
           topic,
           nextCursor,
@@ -644,13 +581,6 @@ export const topicRouter = createTRPCRouter({
         },
       })
 
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Topic not found",
-        })
-      }
-
       return data
     } catch (error) {
       console.error("Error:", error)
@@ -703,13 +633,6 @@ export const topicRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -773,13 +696,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -838,13 +754,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -861,13 +770,6 @@ export const topicRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.topic.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Topic not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -892,13 +794,6 @@ export const topicRouter = createTRPCRouter({
             status: "published",
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -943,13 +838,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Topic not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -976,13 +864,6 @@ export const topicRouter = createTRPCRouter({
             updatedAt: new Date(),
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update topic",
-          })
-        }
 
         return data
       } catch (error) {
@@ -1023,13 +904,6 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to translate topic",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -1048,13 +922,6 @@ export const topicRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.topic.delete({ where: { id: input } })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete topic",
-          })
-        }
 
         return data
       } catch (error) {

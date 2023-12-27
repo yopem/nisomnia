@@ -37,13 +37,6 @@ export const articleCommentRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article comments not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -84,13 +77,6 @@ export const articleCommentRouter = createTRPCRouter({
             updatedAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article comments not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -153,13 +139,6 @@ export const articleCommentRouter = createTRPCRouter({
             createdAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article comments not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -247,13 +226,6 @@ export const articleCommentRouter = createTRPCRouter({
           }
         }
 
-        if (!articleComments) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article comments not found",
-          })
-        }
-
         return {
           articleComments,
           nextCursor,
@@ -308,13 +280,6 @@ export const articleCommentRouter = createTRPCRouter({
         },
       })
 
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Article comments not found",
-        })
-      }
-
       return data
     } catch (error) {
       console.error("Error:", error)
@@ -331,13 +296,6 @@ export const articleCommentRouter = createTRPCRouter({
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.articleComment.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Article comments not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -361,13 +319,6 @@ export const articleCommentRouter = createTRPCRouter({
             AND: [{ article_id: input, reply_to: null }],
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Article comments not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -394,13 +345,6 @@ export const articleCommentRouter = createTRPCRouter({
             author_id: ctx.session.user.id,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to create article comment",
-          })
-        }
 
         return data
       } catch (error) {
@@ -446,13 +390,6 @@ export const articleCommentRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update article comment",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -479,13 +416,6 @@ export const articleCommentRouter = createTRPCRouter({
             updatedAt: new Date(),
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update article comment",
-          })
-        }
 
         return data
       } catch (error) {
@@ -525,13 +455,6 @@ export const articleCommentRouter = createTRPCRouter({
           where: { id: input },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete article comment",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -552,13 +475,6 @@ export const articleCommentRouter = createTRPCRouter({
         const data = await ctx.db.articleComment.delete({
           where: { id: input },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete article comment",
-          })
-        }
 
         return data
       } catch (error) {

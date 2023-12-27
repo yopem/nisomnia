@@ -35,13 +35,6 @@ export const userRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Users not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -70,13 +63,6 @@ export const userRouter = createTRPCRouter({
             createdAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -126,13 +112,6 @@ export const userRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -159,13 +138,6 @@ export const userRouter = createTRPCRouter({
           createdAt: true,
         },
       })
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -205,13 +177,6 @@ export const userRouter = createTRPCRouter({
             createdAt: true,
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Users not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -273,13 +238,6 @@ export const userRouter = createTRPCRouter({
             },
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          })
-        }
 
         return data
       } catch (error) {
@@ -361,13 +319,6 @@ export const userRouter = createTRPCRouter({
           }
         }
 
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          })
-        }
-
         return {
           user,
           nextCursor,
@@ -387,13 +338,6 @@ export const userRouter = createTRPCRouter({
   count: adminProtectedProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.user.count()
-
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Users not found",
-        })
-      }
 
       return data
     } catch (error) {
@@ -438,13 +382,6 @@ export const userRouter = createTRPCRouter({
         },
       })
 
-      if (!data) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Users not found",
-        })
-      }
-
       return data
     } catch (error) {
       console.error("Error:", error)
@@ -483,13 +420,6 @@ export const userRouter = createTRPCRouter({
           },
         })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update user",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -516,13 +446,6 @@ export const userRouter = createTRPCRouter({
             updatedAt: new Date(),
           },
         })
-
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to update user",
-          })
-        }
 
         return data
       } catch (error) {
@@ -554,13 +477,6 @@ export const userRouter = createTRPCRouter({
 
         const data = await ctx.db.user.delete({ where: { id: input } })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete profile",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -580,13 +496,6 @@ export const userRouter = createTRPCRouter({
       try {
         const data = await ctx.db.user.delete({ where: { id: input } })
 
-        if (!data) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Failed to delete user",
-          })
-        }
-
         return data
       } catch (error) {
         console.error("Error:", error)
@@ -603,13 +512,6 @@ export const userRouter = createTRPCRouter({
   current: protectedProcedure.query(({ ctx }) => {
     try {
       const data = ctx.session?.user
-
-      if (!data) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You are not authorized",
-        })
-      }
 
       return data
     } catch (error) {
