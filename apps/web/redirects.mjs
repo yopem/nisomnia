@@ -1540,12 +1540,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/article/lagu-exo-terbaik-dan-termerdu",
-    destination:
-      "https://nisomnia.com/article/lagu-exo-terbaik-dan-termerdu_yb4qp",
-    permanent: true,
-  },
-  {
     source: "/article/siapa-itu-daimyo/",
     destination: "https://nisomnia.com/article/siapa-itu-daimyo_ww4f",
     permanent: true,
@@ -1803,11 +1797,6 @@ export default [
   {
     source: "/article/kunci-jawaban-tts-pintar",
     destination: "https://nisomnia.com/topic/kunci-jawaban_he36k",
-    permanent: true,
-  },
-  {
-    source: "/fakta-menarik-jackie-chan/amp/",
-    destination: "https://nisomnia.com/",
     permanent: true,
   },
   {
@@ -2273,11 +2262,6 @@ export default [
     source: "/article/daftar-role-mobile-legends/",
     destination:
       "https://nisomnia.com/article/daftar-role-mobile-legends_l1y7s",
-    permanent: true,
-  },
-  {
-    source: "/article/fakta-menarik-jackie-chan",
-    destination: "https://nisomnia.com/",
     permanent: true,
   },
   {
