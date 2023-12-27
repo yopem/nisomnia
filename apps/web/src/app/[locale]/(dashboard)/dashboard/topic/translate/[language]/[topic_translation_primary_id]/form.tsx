@@ -63,9 +63,27 @@ export const TranslateTopicForm: React.FunctionComponent<
       toast({ variant: "success", description: "Translate Topic successfully" })
       router.push("/dashboard/topic")
     },
-    onError: (err) => {
+    onError: (error) => {
       setLoading(false)
-      toast({ variant: "danger", description: err.message })
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to translate topic! Please try again later",
+        })
+      }
     },
   })
 

@@ -44,8 +44,27 @@ export const CreateAdForm = () => {
       reset()
       toast({ variant: "success", description: "Ad Successfully created" })
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      setLoading(false)
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to create ad! Please try again later",
+        })
+      }
     },
   })
 

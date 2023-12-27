@@ -150,12 +150,27 @@ export const CreateArticleForm: React.FunctionComponent<
       })
       router.push("/dashboard/article")
     },
-    onError: (err) => {
-      console.log(err)
-      toast({
-        variant: "danger",
-        description: err.message,
-      })
+    onError: (error) => {
+      setLoading(false)
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to update article! Please try again later",
+        })
+      }
     },
   })
 

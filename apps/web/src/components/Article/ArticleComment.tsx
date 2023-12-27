@@ -1,3 +1,5 @@
+//TODO: handle delete and edit comment button for every user
+
 "use client"
 
 import * as React from "react"
@@ -52,9 +54,9 @@ export const ArticleComment: React.FunctionComponent<
   const [openDeleteAction, setOpenDeleteAction] = React.useState<string | null>(
     null,
   )
-  const [isEdited, setIsEdited] = React.useState("")
-  const [isReplyied, setIsReplyied] = React.useState("")
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [edited, setEdited] = React.useState("")
+  const [replied, setReplied] = React.useState("")
+  const [loading, setLoading] = React.useState(false)
 
   const { data: commentCount, refetch } =
     api.articleComment.countByArticleId.useQuery(article_id)
@@ -89,19 +91,37 @@ export const ArticleComment: React.FunctionComponent<
         description: "Comment is successfully created",
       })
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      setLoading(false)
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to submit comment! Please try again later",
+        })
+      }
     },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (values) => {
-    setIsLoading(true)
+    setLoading(true)
     createComment({
       article_id,
       content: values.content,
     })
-
-    setIsLoading(false)
+    setLoading(false)
   }
 
   const { mutate: deleteArticleCommentAction } =
@@ -114,8 +134,26 @@ export const ArticleComment: React.FunctionComponent<
           description: "Comment is successfully deleted",
         })
       },
-      onError: (err) => {
-        toast({ variant: "danger", description: err.message })
+      onError: (error) => {
+        const errorData = error?.data?.zodError?.fieldErrors
+
+        if (errorData) {
+          for (const field in errorData) {
+            if (errorData.hasOwnProperty(field)) {
+              errorData[field]?.forEach((errorMessage) => {
+                toast({
+                  variant: "danger",
+                  description: errorMessage,
+                })
+              })
+            }
+          }
+        } else {
+          toast({
+            variant: "danger",
+            description: "Failed to delete comment! Please try again later",
+          })
+        }
       },
     })
 
@@ -174,12 +212,12 @@ export const ArticleComment: React.FunctionComponent<
                   />
                 </div>
                 <Button
-                  loading={isLoading}
+                  loading={loading}
                   variant="outline"
                   className="ml-auto block h-auto rounded-full px-2 py-1"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  {!isLoading && "Submit"}
+                  {!loading && "Submit"}
                 </Button>
               </div>
             </div>
@@ -214,7 +252,7 @@ export const ArticleComment: React.FunctionComponent<
                             <Icon.User className="h-10 w-10" />
                           )}
                         </div>
-                        {isEdited !== comment.id ? (
+                        {edited !== comment.id ? (
                           <div className="flex flex-1 flex-col items-start gap-2">
                             <div className="flex items-center gap-1">
                               <div className="text-[13px] font-bold">
@@ -227,7 +265,7 @@ export const ArticleComment: React.FunctionComponent<
                             <span className="text-sm">{comment.content}</span>
                             <div>
                               <Button
-                                onClick={() => setIsReplyied(comment.id!)}
+                                onClick={() => setReplied(comment.id!)}
                                 variant="ghost"
                                 className="h-8 w-8 rounded-full p-1 md:h-auto md:w-auto md:px-2 md:py-1"
                               >
@@ -240,7 +278,7 @@ export const ArticleComment: React.FunctionComponent<
                               </Button>
                             </div>
                             <div className="w-full">
-                              {isReplyied === comment?.id ? (
+                              {replied === comment?.id ? (
                                 <ReplyArticleComment
                                   id={article_id ?? ""}
                                   reply_to_id={comment?.id ?? ""}
@@ -249,9 +287,9 @@ export const ArticleComment: React.FunctionComponent<
                                   onSuccess={() => {
                                     refetch()
                                     updateComment()
-                                    setIsReplyied("")
+                                    setReplied("")
                                   }}
-                                  onCancel={() => setIsReplyied("")}
+                                  onCancel={() => setReplied("")}
                                 />
                               ) : null}
                             </div>
@@ -259,16 +297,16 @@ export const ArticleComment: React.FunctionComponent<
                         ) : (
                           <EditArticleComment
                             id={comment.id}
-                            onCancel={() => setIsEdited("")}
+                            onCancel={() => setEdited("")}
                             onSuccess={() => {
-                              setIsEdited("")
+                              setEdited("")
                               updateComment()
                             }}
                             content={comment.content ?? ""}
                           />
                         )}
                       </figcaption>
-                      {!isEdited && user?.role === "admin" ? (
+                      {!edited && user?.role === "admin" ? (
                         <Popover
                           open={openDeleteAction === comment.id!}
                           onOpenChange={(isOpen) => {
@@ -301,7 +339,7 @@ export const ArticleComment: React.FunctionComponent<
                                 </Button>
                                 <Button
                                   onClick={() => {
-                                    setIsEdited(comment.id!)
+                                    setEdited(comment.id!)
                                     setOpenDeleteAction(null)
                                   }}
                                   variant="ghost"
@@ -337,7 +375,7 @@ export const ArticleComment: React.FunctionComponent<
                                 <Icon.User className="h-6 w-6 md:h-10 md:w-10" />
                               )}
                             </div>
-                            {isEdited !== reply.id ? (
+                            {edited !== reply.id ? (
                               <div className="flex flex-1 flex-col items-start gap-2">
                                 <div className="flex items-center gap-1">
                                   <div className="text-[13px] font-bold">
@@ -352,16 +390,16 @@ export const ArticleComment: React.FunctionComponent<
                             ) : (
                               <EditArticleComment
                                 id={reply.id}
-                                onCancel={() => setIsEdited("")}
+                                onCancel={() => setEdited("")}
                                 onSuccess={() => {
-                                  setIsEdited("")
+                                  setEdited("")
                                   updateComment()
                                 }}
                                 content={reply.content ?? ""}
                               />
                             )}
                           </figcaption>
-                          {!isEdited && user?.role === "admin" ? (
+                          {!edited && user?.role === "admin" ? (
                             <Popover
                               open={openDeleteAction === reply.id!}
                               onOpenChange={(isOpen) => {
@@ -390,7 +428,7 @@ export const ArticleComment: React.FunctionComponent<
                                     />
                                     <Button
                                       onClick={() => {
-                                        setIsEdited(reply.id!)
+                                        setEdited(reply.id!)
                                         setOpenDeleteAction(null)
                                       }}
                                       variant="ghost"

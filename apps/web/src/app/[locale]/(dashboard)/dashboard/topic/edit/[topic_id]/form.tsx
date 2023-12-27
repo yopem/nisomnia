@@ -94,9 +94,27 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
       toast({ variant: "success", description: "Update Topic successfully" })
       router.push("/dashboard/topic")
     },
-    onError: (err) => {
+    onError: (error) => {
       setLoading(false)
-      toast({ variant: "danger", description: err.message })
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to update topic! Please try again later",
+        })
+      }
     },
   })
 

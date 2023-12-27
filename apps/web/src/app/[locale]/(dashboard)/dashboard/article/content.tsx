@@ -259,11 +259,28 @@ const ArticleTable = (props: ArticleTableProps) => {
   const { mutate: deleteArticle } = api.article.deleteByAdmin.useMutation({
     onSuccess: () => {
       refetch()
-
       toast({ variant: "success", description: "Delete Article Successfully" })
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to delete article! Please try again later",
+        })
+      }
     },
   })
 

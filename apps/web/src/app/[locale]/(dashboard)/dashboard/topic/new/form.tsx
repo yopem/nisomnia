@@ -47,9 +47,27 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       reset()
       toast({ variant: "success", description: "Topic Successfully created" })
     },
-    onError: (err) => {
+    onError: (error) => {
       setLoading(false)
-      toast({ variant: "danger", description: err.message })
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to create topic! Please try again later",
+        })
+      }
     },
   })
 

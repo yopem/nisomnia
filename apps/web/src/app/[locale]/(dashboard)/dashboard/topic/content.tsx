@@ -263,8 +263,26 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
       refetch()
       toast({ variant: "success", description: "Delete Topic Successfully" })
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to delete topic! Please try again later",
+        })
+      }
     },
   })
 

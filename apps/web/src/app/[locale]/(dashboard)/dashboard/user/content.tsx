@@ -57,8 +57,26 @@ export const DashboardUserContent: React.FunctionComponent = () => {
       toast({ variant: "success", description: "Delete User Successfully" })
       refetch()
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to delete user! Please try again later",
+        })
+      }
     },
   })
 

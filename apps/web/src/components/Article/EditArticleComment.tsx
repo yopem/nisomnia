@@ -22,7 +22,7 @@ interface EditArticleCommentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const EditArticleComment = (props: EditArticleCommentProps) => {
   const { id, onSuccess, content, type = "default", onCancel } = props
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   const { register, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
@@ -44,16 +44,34 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
         description: "Comment is successfully created",
       })
     },
-    onError: (err) => {
-      toast({ variant: "danger", description: err.message })
+    onError: (error) => {
+      setLoading(false)
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to update comment! Please try again later",
+        })
+      }
     },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (values) => {
-    setIsLoading(true)
+    setLoading(true)
     update({ id: id, content: values.content })
-
-    setIsLoading(false)
+    setLoading(false)
   }
 
   return (
@@ -103,12 +121,12 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
           </Button>
         )}
         <Button
-          loading={isLoading}
+          loading={loading}
           variant="outline"
           className="ml-auto block h-auto rounded-full px-2 py-1"
           onClick={handleSubmit(onSubmit)}
         >
-          {!isLoading && "Submit"}
+          {!loading && "Submit"}
         </Button>
       </div>
     </div>
