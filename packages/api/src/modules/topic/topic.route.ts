@@ -486,6 +486,7 @@ export const topicRouter = createTRPCRouter({
                 excerpt: true,
                 status: true,
                 content: true,
+                updatedAt: true,
                 topics: {
                   select: {
                     title: true,
@@ -516,10 +517,14 @@ export const topicRouter = createTRPCRouter({
 
         let nextCursor: string | undefined = undefined
 
-        if (topic && Array.isArray(topic) && topic.length > limit) {
-          const nextItem = topic.pop()
-          if (nextItem.updatedAt) {
-            nextCursor = nextItem.updatedAt.toISOString()
+        if (
+          topic?.articles &&
+          Array.isArray(topic.articles) &&
+          topic.articles.length > limit
+        ) {
+          const nextItem = topic.articles.pop()
+          if (nextItem?.updatedAt) {
+            nextCursor = nextItem?.updatedAt.toISOString()
           }
         }
 
