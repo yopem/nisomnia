@@ -1,3 +1,5 @@
+// NOTE: username is disabled because prisma cannot handle existing data
+
 "use client"
 
 import * as React from "react"
@@ -39,9 +41,27 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
     onSuccess: () => {
       toast({ variant: "success", description: "Update User successfully" })
     },
-    onError: (err) => {
+    onError: (error) => {
       setLoading(false)
-      toast({ variant: "danger", description: err.message })
+      const errorData = error?.data?.zodError?.fieldErrors
+
+      if (errorData) {
+        for (const field in errorData) {
+          if (errorData.hasOwnProperty(field)) {
+            errorData[field]?.forEach((errorMessage) => {
+              toast({
+                variant: "danger",
+                description: errorMessage,
+              })
+            })
+          }
+        }
+      } else {
+        toast({
+          variant: "danger",
+          description: "Failed to update! Please try again later",
+        })
+      }
     },
   })
 
@@ -76,16 +96,30 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
           <RequiredIndicator />
         </FormLabel>
         <Input
-          type="text"
           {...register("username", {
             required: "Username is Required",
+            pattern: {
+              value: /^[a-z0-9]{3,16}$/i,
+              message:
+                "Username should be 3-20 characters without spaces, symbol or any special characters.",
+            },
+            min: {
+              value: 3,
+              message: "Minimal username 3 characters",
+            },
+            max: {
+              value: 20,
+              message: "Maximum username 20 characters",
+            },
           })}
+          disabled
+          // placeholder="Enter your username"
           className="max-w-xl"
         />
         {errors?.username && (
           <FormErrorMessage>{errors.username.message}</FormErrorMessage>
         )}
-      </FormControl>
+      </FormControl>{" "}
       <FormControl invalid={Boolean(errors.name)}>
         <FormLabel>
           Name

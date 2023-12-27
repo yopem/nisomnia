@@ -23,6 +23,7 @@ const config = {
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "ban-ts-comment": "off",
+    "no-prototype-builtins": "off",
     "no-unsafe-optional-chaining": "off",
     "import/consistent-type-specifier-style": "off",
     "turbo/no-undeclared-env-vars": "off",

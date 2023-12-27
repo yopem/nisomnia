@@ -12,9 +12,9 @@ const userCore = {
       required_error: "Username is required",
       invalid_type_error: "Username must be a string",
     })
-    .regex(new RegExp(/^[a-zA-Z0-9\-_]+$/), {
+    .regex(new RegExp(/^[a-z0-9]{3,16}$/), {
       message:
-        "Username should be 3-20 characters without spaces, symbol or any special characters",
+        "Username should be 3-20 characters without spaces, symbol or any special characters.",
     })
     .min(3),
   name: z
