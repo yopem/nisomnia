@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     source: "/auth/login",
     destination: "/auth/sign-in",
