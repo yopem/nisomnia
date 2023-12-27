@@ -93,11 +93,14 @@ export const DashboardAddTopics: React.FunctionComponent<
   )
 
   const { data: searchResults, isLoading: searchResultsIsLoading } =
-    api.topic.searchByType.useQuery({
-      search_query: searchQuery,
-      language: locale,
-      type: topicType,
-    })
+    api.topic.searchByType.useQuery(
+      {
+        search_query: searchQuery,
+        language: locale,
+        type: topicType,
+      },
+      { enabled: !!searchQuery },
+    )
 
   api.topic.topicTranslationPrimaryById.useQuery(topicId, {
     onSuccess: (data) => {
@@ -131,7 +134,7 @@ export const DashboardAddTopics: React.FunctionComponent<
         })
       }
     },
-    enabled: !!topicId,
+    enabled: !!topicId && !!searchQuery,
   })
 
   const { mutate: createTopic } = api.topic.create.useMutation({
@@ -182,6 +185,13 @@ export const DashboardAddTopics: React.FunctionComponent<
 
             assignTopic(searchResult.id)
             addSelectedTopics((prev) => [...prev, resultValue])
+          } else {
+            toast({
+              variant: "danger",
+              description: value.topicTitle + " already used!",
+            })
+            setInputValue("")
+            setSearchQuery("")
           }
           setInputValue("")
         } else {
@@ -204,10 +214,7 @@ export const DashboardAddTopics: React.FunctionComponent<
     ],
   )
 
-  const handleKeyDown = (event: {
-    key: string
-    preventDefault: () => void
-  }) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       setValue("topicTitle", inputValue)
       event.preventDefault()
@@ -234,7 +241,7 @@ export const DashboardAddTopics: React.FunctionComponent<
       addSelectedTopics((prev) => [...prev, value])
     } else {
       toast({
-        variant: "warning",
+        variant: "danger",
         description: value.title + " already used!",
       })
       setInputValue("")

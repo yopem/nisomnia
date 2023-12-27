@@ -51,7 +51,9 @@ export const DashboardAddEditors = React.forwardRef<
 
   const [searchQuery, setSearchQuery] = React.useState<string>("")
 
-  const { data: searchResults } = api.user.search.useQuery(searchQuery)
+  const { data: searchResults } = api.user.search.useQuery(searchQuery, {
+    enabled: !!searchQuery,
+  })
 
   const {
     register,
