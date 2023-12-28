@@ -172,7 +172,7 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
           <FormErrorMessage>{errors.about.message}</FormErrorMessage>
         )}
       </FormControl>
-      <Button aria-label="Submit" type="submit" loading={loading}>
+      <Button aria-label="Save" type="submit" loading={loading}>
         Save
       </Button>
     </form>

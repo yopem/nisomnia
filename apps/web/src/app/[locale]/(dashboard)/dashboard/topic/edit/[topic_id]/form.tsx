@@ -336,7 +336,7 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
           Save as Draft
         </Button>
         <Button
-          aria-label="Submit"
+          aria-label="Update"
           type="submit"
           onClick={() => {
             setValue("status", "published")
@@ -344,7 +344,7 @@ export const EditTopicForm: React.FunctionComponent<EditTopicFormProps> = (
           }}
           loading={loading}
         >
-          Submit
+          Update
         </Button>
       </div>
     </form>
