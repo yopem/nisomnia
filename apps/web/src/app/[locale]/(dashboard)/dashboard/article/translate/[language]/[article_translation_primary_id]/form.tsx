@@ -216,40 +216,30 @@ export const TranslateArticleForm: React.FunctionComponent<
           </NextLink>
         </Button>
         <div>
-          <div>
-            <Button
-              aria-label="Save as Draft"
-              type="submit"
-              onClick={() => {
-                setValue("status", "draft")
-                handleSubmit(onSubmit)()
-              }}
-              variant="ghost"
-              loading={loading}
-            >
-              Save as Draft
-            </Button>
-            <Button
-              aria-label="Publish"
-              type="submit"
-              onClick={() => {
-                setValue("status", "published")
-                handleSubmit(onSubmit)()
-              }}
-              variant="ghost"
-              loading={loading}
-            >
-              Publish
-            </Button>
-            <Button
-              type="button"
-              aria-label="View Sidebar"
-              variant="ghost"
-              onClick={onToggle}
-            >
-              <Icon.Menu />
-            </Button>
-          </div>
+          <Button
+            aria-label="Save as Draft"
+            type="submit"
+            onClick={() => {
+              setValue("status", "draft")
+              handleSubmit(onSubmit)()
+            }}
+            variant="ghost"
+            loading={loading}
+          >
+            Save as Draft
+          </Button>
+          <Button
+            aria-label="Publish"
+            type="submit"
+            onClick={() => {
+              setValue("status", "published")
+              handleSubmit(onSubmit)()
+            }}
+            variant="ghost"
+            loading={loading}
+          >
+            Publish
+          </Button>
           <Button
             type="button"
             aria-label="View Sidebar"
