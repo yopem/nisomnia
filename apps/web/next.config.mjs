@@ -46,6 +46,12 @@ const config = {
   reactStrictMode: false,
   webpack(config, { isServer }) {
     if (!isServer) {
+      if (
+        process.env.APP_ENV === "development" &&
+        typeof config.optimization.splitChunks === "boolean"
+      ) {
+        config.optimization.splitChunks = {}
+      }
       config.optimization.splitChunks.cacheGroups = {
         ...config.optimization.splitChunks.cacheGroups,
         "@radix-ui": {
