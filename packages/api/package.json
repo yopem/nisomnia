@@ -21,7 +21,7 @@
     "@nisomnia/auth": "workspace:*",
     "@nisomnia/db": "workspace:*",
     "@nisomnia/utils": "workspace:*",
-    "@trpc/server": "^10.44.1"
+    "@trpc/server": "^10.45.0"
   },
   "devDependencies": {
     "@nisomnia/eslint-config": "workspace:*",
