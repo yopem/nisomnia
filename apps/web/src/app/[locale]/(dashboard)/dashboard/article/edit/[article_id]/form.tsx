@@ -291,7 +291,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
             variant="ghost"
             loading={loading}
           >
-            Publish
+            Update
           </Button>
           <Button aria-label="View Sidebar" variant="ghost" onClick={onToggle}>
             <Icon.Menu />

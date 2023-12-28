@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
 import type { Session } from "@nisomnia/auth"
-import type { LanguageType } from "@nisomnia/db"
+import type { LanguageType, PostStatus } from "@nisomnia/db"
 import { useDisclosure } from "@nisomnia/ui/hooks"
 import { Button, Icon, Textarea } from "@nisomnia/ui/next"
 import {
@@ -61,6 +61,7 @@ interface FormValues {
   language: LanguageType
   meta_title?: string
   meta_description?: string
+  status?: PostStatus
   article_translation_primary_id: string
 }
 
@@ -127,6 +128,7 @@ export const TranslateArticleForm: React.FunctionComponent<
     handleSubmit,
     control,
     reset,
+    setValue,
     watch,
   } = useForm<FormValues>({
     mode: "onChange",
@@ -214,15 +216,40 @@ export const TranslateArticleForm: React.FunctionComponent<
           </NextLink>
         </Button>
         <div>
-          <Button
-            aria-label="Publish"
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-            variant="ghost"
-            loading={loading}
-          >
-            Publish
-          </Button>
+          <div>
+            <Button
+              aria-label="Save as Draft"
+              type="submit"
+              onClick={() => {
+                setValue("status", "draft")
+                handleSubmit(onSubmit)()
+              }}
+              variant="ghost"
+              loading={loading}
+            >
+              Save as Draft
+            </Button>
+            <Button
+              aria-label="Publish"
+              type="submit"
+              onClick={() => {
+                setValue("status", "published")
+                handleSubmit(onSubmit)()
+              }}
+              variant="ghost"
+              loading={loading}
+            >
+              Publish
+            </Button>
+            <Button
+              type="button"
+              aria-label="View Sidebar"
+              variant="ghost"
+              onClick={onToggle}
+            >
+              <Icon.Menu />
+            </Button>
+          </div>
           <Button
             type="button"
             aria-label="View Sidebar"
