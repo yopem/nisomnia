@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-import type { LanguageType, TopicType } from "@nisomnia/db"
+import type { LanguageType, PostStatus, TopicType } from "@nisomnia/db"
 import { Button, Textarea } from "@nisomnia/ui/next"
 import {
   FormControl,
@@ -32,6 +31,7 @@ interface FormValues {
   meta_description?: string
   language: LanguageType
   type: TopicType
+  status?: PostStatus
   topic_translation_primary_id: string
 }
 
@@ -53,15 +53,11 @@ export const TranslateTopicForm: React.FunctionComponent<
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
 
-  const router = useRouter()
-
   const { mutate: translateTopic } = api.topic.translate.useMutation({
     onSuccess: () => {
       setSelectFeaturedImageId("")
       setSelectedFeaturedImageUrl("")
-      reset()
       toast({ variant: "success", description: "Translate Topic successfully" })
-      router.push("/dashboard/topic")
     },
     onError: (error) => {
       setLoading(false)
@@ -91,7 +87,7 @@ export const TranslateTopicForm: React.FunctionComponent<
     register,
     formState: { errors },
     handleSubmit,
-    reset,
+    setValue,
   } = useForm<FormValues>({
     defaultValues: {
       topic_translation_primary_id: topic_translation_primary_id,
@@ -216,9 +212,30 @@ export const TranslateTopicForm: React.FunctionComponent<
           <FormErrorMessage>{errors.meta_description.message}</FormErrorMessage>
         )}
       </FormControl>
-      <Button aria-label="Submit" type="submit" loading={loading}>
-        Submit
-      </Button>
+      <div className="flex space-x-2">
+        <Button
+          aria-label="Save as Draft"
+          type="submit"
+          onClick={() => {
+            setValue("status", "draft")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Save as Draft
+        </Button>
+        <Button
+          aria-label="Submit"
+          type="submit"
+          onClick={() => {
+            setValue("status", "published")
+            handleSubmit(onSubmit)()
+          }}
+          loading={loading}
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   )
 }
