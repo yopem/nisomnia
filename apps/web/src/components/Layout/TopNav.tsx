@@ -44,7 +44,7 @@ export const TopNav: React.FunctionComponent<TopNavProps> = (props) => {
   }, [searchVisibility])
 
   return (
-    <nav className="opacity-1 fixed left-auto top-0 z-40 -my-0 mx-auto box-border flex h-16 w-full items-center border-border bg-background px-4 py-0 align-baseline shadow-sm outline-none">
+    <nav className="opacity-1 fixed left-auto top-0 z-40 -my-0 mx-auto box-border flex h-16 w-full items-center border-border bg-background/90 bg-opacity-10 bg-clip-padding px-4 py-0 align-baseline shadow-sm outline-none backdrop-blur-md backdrop-filter">
       <div className="container mx-auto flex flex-row items-center justify-between">
         <MobileMenu />
         <div className="flex flex-row">
