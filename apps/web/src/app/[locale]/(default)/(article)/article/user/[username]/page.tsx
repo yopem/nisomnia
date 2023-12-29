@@ -113,7 +113,7 @@ export default async function UserArticlesPage({
           </h1>
         </div>
         <div className="flex w-full flex-col">
-          <InfiniteScrollUserArticles username={username} language={locale} />
+          <InfiniteScrollUserArticles username={username} locale={locale} />
         </div>
       </section>
     </>
