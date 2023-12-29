@@ -8,6 +8,7 @@ import { toast } from "@nisomnia/ui/next-client"
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   content: string
@@ -25,7 +26,11 @@ interface ReplyArticleCommentProps
 
 export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
   const { id, onSuccess, avatar, username, reply_to_id, onCancel } = props
-  const [loading, setLoading] = React.useState(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("comment")
+
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   const { register, handleSubmit, reset } = useForm<FormValues>()
   const { mutate: createComment } = api.articleComment.create.useMutation({
@@ -39,7 +44,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
       onSuccess()
       toast({
         variant: "success",
-        description: "Comment is successfully created",
+        description: ts("update_success"),
       })
     },
     onError: (error) => {
@@ -60,7 +65,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to create comment! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -114,7 +119,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
                 required: "content must be filled",
               })}
               className="mx-2 h-[30px] max-h-[180px] w-full resize-none overflow-hidden border border-b"
-              placeholder="Write comment…"
+              placeholder={ts("placeholder")}
             />
           </div>
           <div className="ml-auto flex gap-4">
@@ -124,7 +129,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
               variant="outline"
               className="ml-auto block h-auto rounded-full px-2 py-1"
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button
               loading={loading}
@@ -132,7 +137,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
               className="ml-auto block h-auto rounded-full px-2 py-1"
               onClick={handleSubmit(onSubmit)}
             >
-              {!loading && "Submit"}
+              {!loading && t("submit")}
             </Button>
           </div>
         </div>

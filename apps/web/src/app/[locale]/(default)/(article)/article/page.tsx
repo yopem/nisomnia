@@ -13,6 +13,7 @@ import {
 
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n } from "@/locales/server"
 
 const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
@@ -55,6 +56,8 @@ export default async function ArticlePage({
 }) {
   const { locale } = params
 
+  const t = await getI18n()
+
   const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
 
   return (
@@ -84,7 +87,7 @@ export default async function ArticlePage({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem currentPage>
-            <BreadcrumbLink currentPage>Articles</BreadcrumbLink>
+            <BreadcrumbLink currentPage>{t("articles")}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <div className="flex w-full flex-col">

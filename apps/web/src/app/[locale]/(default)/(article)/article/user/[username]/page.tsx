@@ -13,6 +13,7 @@ import {
 
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 const InfiniteScrollUserArticles = React.lazy(async () => {
   const { InfiniteScrollUserArticles } = await import(
@@ -60,6 +61,9 @@ export default async function UserArticlesPage({
 }: UserArticlesPageProps) {
   const { username, locale } = params
 
+  const t = await getI18n()
+  const ts = await getScopedI18n("user")
+
   const user = await api.user.byUsername.query({
     username: username,
     language: locale,
@@ -96,7 +100,7 @@ export default async function UserArticlesPage({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbLink as={NextLink} href="/article">
-              Article
+              {t("article")}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem currentPage>
@@ -105,11 +109,11 @@ export default async function UserArticlesPage({
         </Breadcrumb>
         <div className="my-8">
           <h1 className="text-center text-4xl">
-            Articles By {`${user?.name}`}
+            {ts("articles_by")} {`${user?.name}`}
           </h1>
         </div>
         <div className="flex w-full flex-col">
-          <InfiniteScrollUserArticles username={username} locale={locale} />
+          <InfiniteScrollUserArticles username={username} language={locale} />
         </div>
       </section>
     </>

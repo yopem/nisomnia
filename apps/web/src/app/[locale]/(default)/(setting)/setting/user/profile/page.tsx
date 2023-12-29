@@ -7,6 +7,7 @@ import type { LanguageType } from "@nisomnia/db"
 
 import { PageInfo } from "@/components/Layout/PageInfo"
 import env from "@/env"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 const UserSettingForm = React.lazy(async () => {
   const { UserSettingForm } = await import("./form")
@@ -38,13 +39,16 @@ export function generateMetadata({
 export default async function EditUserProfilePage() {
   const user = await getCurrentUser()
 
+  const t = await getI18n()
+  const ts = await getScopedI18n("user")
+
   if (!user) {
     return notFound
   }
 
   return (
     <>
-      <PageInfo title="Settings" description="Manage your account." />
+      <PageInfo title={t("settings")} description={ts("setting_header")} />
       <UserSettingForm user={user} />
     </>
   )

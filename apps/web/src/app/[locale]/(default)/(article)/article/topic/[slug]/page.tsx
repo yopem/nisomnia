@@ -14,6 +14,7 @@ import {
 
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
@@ -63,20 +64,14 @@ export default async function TopicArticlePage({
 }: TopicArticlePageProps) {
   const { slug, locale } = params
 
-  const topicArticle = await api.topic.articlesByTopicSlug.query({
-    slug: slug,
-    language: locale,
-    page: 1,
-    per_page: 10,
-  })
+  const t = await getI18n()
+  const ts = await getScopedI18n("article")
 
-  const totalPage =
-    topicArticle?._count.articles &&
-    Math.ceil(topicArticle._count.articles / 10)
+  const topic = await api.topic.bySlug.query(slug)
 
   const adsBelowHeader = await api.ad.byPosition.query("article_below_header")
 
-  if (!topicArticle) {
+  if (!topic) {
     notFound()
   }
 
@@ -95,8 +90,8 @@ export default async function TopicArticlePage({
           },
           {
             position: 4,
-            name: topicArticle?.meta_title ?? topicArticle?.title,
-            item: `${env.NEXT_PUBLIC_SITE_URL}/article/topic/${topicArticle?.slug}`,
+            name: topic?.meta_title ?? topic?.title,
+            item: `${env.NEXT_PUBLIC_SITE_URL}/article/topic/${topic?.slug}`,
           },
         ]}
       />
@@ -113,23 +108,20 @@ export default async function TopicArticlePage({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbLink as={NextLink} href="/article">
-              Article
+              {t("article")}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem currentPage>
-            <BreadcrumbLink currentPage>{topicArticle.title}</BreadcrumbLink>
+            <BreadcrumbLink currentPage>{topic.title}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <div className="my-8">
-          <h1 className="text-center text-4xl">{`${topicArticle.title} Articles`}</h1>
+          <h1 className="text-center text-4xl">
+            {ts("topic", { title: topic.title })}
+          </h1>
         </div>
         <div className="flex w-full flex-col">
-          {topicArticle && totalPage && topicArticle.articles && (
-            <InfiniteScrollTopicArticles
-              slug={topicArticle.slug}
-              language={locale}
-            />
-          )}
+          <InfiniteScrollTopicArticles slug={topic.slug} locale={locale} />
         </div>
       </section>
     </>

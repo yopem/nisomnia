@@ -16,6 +16,7 @@ import {
 import { ArticleCardVertical } from "@/components/Article/ArticleCardVertical"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
@@ -58,6 +59,9 @@ export default async function SingleTopicPage({
 }: SingleTopicPageProps) {
   const { slug, locale } = params
 
+  const t = await getI18n()
+  const ts = await getScopedI18n("article")
+
   const topicArticle = await api.topic.articlesByTopicSlug.query({
     slug: slug,
     language: locale,
@@ -85,7 +89,7 @@ export default async function SingleTopicPage({
         </BreadcrumbItem>
         <BreadcrumbItem>
           <BreadcrumbLink as={NextLink} href="/topic">
-            Topic
+            {t("topic")}
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem currentPage>
@@ -98,13 +102,13 @@ export default async function SingleTopicPage({
       {(topicArticle.type === "article" || topicArticle.type === "all") && (
         <div className="flex w-full flex-col">
           <div className="my-2 flex flex-row items-center justify-between">
-            <h2 className="text-2xl">Articles</h2>
+            <h2 className="text-2xl">{t("articles")}</h2>
             <NextLink
               aria-label={topicArticle.title}
               href={`/article/topic/${topicArticle.slug}`}
               className="text-sm"
             >
-              See more
+              {t("see_more")}
             </NextLink>
           </div>
           {topicArticle.articles.length > 0 ? (
@@ -116,7 +120,7 @@ export default async function SingleTopicPage({
               })}
             </div>
           ) : (
-            <h3 className="my-16 text-center text-3xl">Article Not Found</h3>
+            <h3 className="my-16 text-center text-3xl">{ts("not_found")}</h3>
           )}
         </div>
       )}

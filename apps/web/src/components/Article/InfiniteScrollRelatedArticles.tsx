@@ -11,6 +11,7 @@ import { toast } from "@nisomnia/ui/next-client"
 
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { useScopedI18n } from "@/locales/client"
 import { ArticleCardHorizontal } from "./ArticleCardHorizontal"
 
 export type InfinteScrollRelatedArticlesDataProps = Pick<
@@ -31,6 +32,8 @@ export const InfiniteScrollRelatedArticles: React.FunctionComponent<
   InfiniteScrollRelatedArticlesProps
 > = (props) => {
   const { locale, current_article_slug, topic_slug } = props
+
+  const ts = useScopedI18n("article")
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -91,6 +94,7 @@ export const InfiniteScrollRelatedArticles: React.FunctionComponent<
 
   return (
     <div>
+      <h3>{ts("related")}</h3>
       {data?.pages.map((page) => {
         return page.articles.map((article) => {
           return <ArticleCardHorizontal article={article} key={article.slug} />

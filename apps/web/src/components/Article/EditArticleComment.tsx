@@ -7,6 +7,7 @@ import { Button, cn, Textarea } from "@nisomnia/ui/next"
 import { toast } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   content: string
@@ -22,6 +23,10 @@ interface EditArticleCommentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const EditArticleComment = (props: EditArticleCommentProps) => {
   const { id, onSuccess, content, type = "default", onCancel } = props
+
+  const t = useI18n()
+  const ts = useScopedI18n("comment")
+
   const [loading, setLoading] = React.useState(false)
 
   const { register, handleSubmit, reset } = useForm<FormValues>({
@@ -41,7 +46,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
       onSuccess()
       toast({
         variant: "success",
-        description: "Comment is successfully created",
+        description: ts("update_success"),
       })
     },
     onError: (error) => {
@@ -62,7 +67,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to update comment! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -106,7 +111,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
               ? "mx-2 h-[30px] resize-y overflow-hidden"
               : "m-0 h-[200px]",
           )}
-          placeholder="Write comment…"
+          placeholder={ts("placeholder")}
         />
       </div>
       <div className="ml-auto flex gap-4">
@@ -117,7 +122,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
             variant="outline"
             className="ml-auto block h-auto rounded-full px-2 py-1"
           >
-            Cancel
+            {t("cancel")}
           </Button>
         )}
         <Button
@@ -126,7 +131,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
           className="ml-auto block h-auto rounded-full px-2 py-1"
           onClick={handleSubmit(onSubmit)}
         >
-          {!loading && "Submit"}
+          {!loading && t("submit")}
         </Button>
       </div>
     </div>

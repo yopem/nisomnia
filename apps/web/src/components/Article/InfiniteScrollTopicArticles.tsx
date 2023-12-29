@@ -11,6 +11,7 @@ import { toast } from "@nisomnia/ui/next-client"
 
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { useScopedI18n } from "@/locales/client"
 import { ArticleCardHorizontal } from "./ArticleCardHorizontal"
 
 export type InfinteScrollTopicArticlesDataProps = Pick<
@@ -23,13 +24,15 @@ export type InfinteScrollTopicArticlesDataProps = Pick<
 interface InfiniteScrollTopicArticlesProps
   extends React.HTMLAttributes<HTMLDivElement> {
   slug: string
-  language: LanguageType
+  locale: LanguageType
 }
 
 export const InfiniteScrollTopicArticles: React.FunctionComponent<
   InfiniteScrollTopicArticlesProps
 > = (props) => {
-  const { slug, language } = props
+  const { slug, locale } = props
+
+  const ts = useScopedI18n("article")
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -37,7 +40,7 @@ export const InfiniteScrollTopicArticles: React.FunctionComponent<
     api.topic.articlesByTopicSlugInfinite.useInfiniteQuery(
       {
         slug: slug,
-        language: language,
+        language: locale,
         limit: 10,
       },
       {
@@ -88,12 +91,18 @@ export const InfiniteScrollTopicArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div>
-      {data?.pages.map((page) => {
-        return page.topic?.articles.map((article) => {
-          return <ArticleCardHorizontal article={article} key={article.slug} />
+    <div className="flex items-center justify-center">
+      {data?.pages ? (
+        data?.pages.map((page) => {
+          return page?.topic?.articles.map((article) => {
+            return (
+              <ArticleCardHorizontal article={article} key={article.slug} />
+            )
+          })
         })
-      })}
+      ) : (
+        <h3 className="my-16 text-center text-3xl">{ts("not_found")}</h3>
+      )}
       {hasNextPage && (
         <div ref={loadMoreRef}>
           <div className="text-center">

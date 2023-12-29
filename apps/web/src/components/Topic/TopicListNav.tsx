@@ -3,9 +3,18 @@
 import * as React from "react"
 import NextLink from "next/link"
 
+import type { LanguageType } from "@nisomnia/db"
 import { Button } from "@nisomnia/ui/next"
 
-export const TopicListNav: React.FunctionComponent = () => {
+interface TopicListNavProps {
+  locale: LanguageType
+}
+
+export const TopicListNav: React.FunctionComponent<TopicListNavProps> = (
+  props,
+) => {
+  const { locale } = props
+
   const topics = [
     { id: 1, title: "Anime", slug: "anime_izghk" },
     { id: 2, title: "Game", slug: "game_srjgj" },
@@ -14,9 +23,8 @@ export const TopicListNav: React.FunctionComponent = () => {
     { id: 5, title: "Teknologi", slug: "teknologi_3ince" },
   ]
 
-  return (
-    <>
-      {topics.map((topic) => (
+  return locale === "id"
+    ? topics.map((topic) => (
         <Button asChild variant="ghost" key={topic.id}>
           <NextLink
             aria-label={topic.title}
@@ -25,7 +33,6 @@ export const TopicListNav: React.FunctionComponent = () => {
             {topic.title}
           </NextLink>
         </Button>
-      ))}
-    </>
-  )
+      ))
+    : null
 }

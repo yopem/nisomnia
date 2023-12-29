@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 
+import { useI18n } from "@/locales/client"
+
 const AlertDelete = React.lazy(async () => {
   const { AlertDelete } = await import("@/components/AlertDelete")
   return { default: AlertDelete }
@@ -19,17 +21,19 @@ export const DeleteArticleCommentButton: React.FunctionComponent<
 > = (props) => {
   const { description, action } = props
 
+  const t = useI18n()
+
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   return (
     <div>
       <Button
-        aria-label="Delete Article Comment"
+        aria-label="Delete"
         variant="ghost"
         className="h-auto justify-start"
         onClick={() => setOpenModal(true)}
       >
         <Icon.Delete className="mr-1" />
-        Delete
+        {t("delete")}
       </Button>
       <AlertDelete
         description={<>{description}</>}

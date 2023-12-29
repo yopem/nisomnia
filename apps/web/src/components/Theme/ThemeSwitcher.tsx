@@ -11,8 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@nisomnia/ui/next-client"
 
+import { useScopedI18n } from "@/locales/client"
+
 export const ThemeSwitcher: React.FunctionComponent = () => {
   const { setTheme } = useTheme()
+
+  const ts = useScopedI18n("theme")
 
   return (
     <DropdownMenu>
@@ -26,15 +30,15 @@ export const ThemeSwitcher: React.FunctionComponent = () => {
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
           <Icon.Light className="mr-2 h-4 w-4" />
-          <span>Light</span>
+          <span>{ts("light")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Icon.Dark className="mr-2 h-4 w-4" />
-          <span>Dark</span>
+          <span>{ts("dark")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           <Icon.Laptop className="mr-2 h-4 w-4" />
-          <span>System</span>
+          <span>{ts("system")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

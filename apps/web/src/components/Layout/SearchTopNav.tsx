@@ -11,6 +11,7 @@ import { Container } from "@/components/Layout/Container"
 import { TopicCardSearch } from "@/components/Topic/TopicCardSearch"
 import { UserCardSearch } from "@/components/User/UserCardSearch"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface SearchTopNavProps extends React.HTMLAttributes<HTMLDivElement> {
   hideSearchVisibility: () => void
@@ -22,8 +23,12 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
   props,
 ) => {
   const { searchVisibility, hideSearchVisibility, locale } = props
+
   const [searchQuery, setSearchQuery] = React.useState("")
   const [searched, setSearched] = React.useState<boolean>(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("search")
 
   const { data: articles } = api.article.search.useQuery({
     search_query: searchQuery,
@@ -71,7 +76,7 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
               className="py-3"
               onChange={handleSearchChange}
               autoComplete="off"
-              placeholder="Search..."
+              placeholder={ts("placeholder")}
               required
             />
           </div>
@@ -86,7 +91,7 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
           >
             {articles !== undefined && articles.length > 0 && (
               <>
-                <h4 className="mb-2 border-b">Article</h4>
+                <h4 className="mb-2 border-b">{t("article")}</h4>
                 <div className="flex flex-col">
                   {articles.map((article) => {
                     return (
@@ -98,7 +103,7 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
             )}
             {topics !== undefined && topics.length > 0 && (
               <>
-                <h4 className="mb-2 border-b">Topic</h4>
+                <h4 className="mb-2 border-b">{t("topic")}</h4>
                 <div className="flex flex-col">
                   {topics.map((topic) => {
                     return <TopicCardSearch key={topic.slug} topic={topic} />
@@ -108,7 +113,7 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
             )}
             {users !== undefined && users && users.length > 0 && (
               <>
-                <h4 className="mb-2 border-b">User</h4>
+                <h4 className="mb-2 border-b">{t("user")}</h4>
                 <div className="flex flex-col">
                   {users.map((user) => {
                     return <UserCardSearch key={user.username} user={user} />
@@ -122,7 +127,7 @@ export const SearchTopNav: React.FunctionComponent<SearchTopNavProps> = (
               topics.length === 0 &&
               users !== undefined &&
               users.length === 0 && (
-                <p className="semibold text-lg">results not found!</p>
+                <p className="semibold text-lg">{ts("not_found")}</p>
               )}
           </div>
         )}

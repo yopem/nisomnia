@@ -1,11 +1,18 @@
 import * as React from "react"
 import NextLink from "next/link"
 
+import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon } from "@nisomnia/ui/next"
 
-import { TopicListNav } from "../Topic/TopicListNav"
+import { TopicListNav } from "@/components/Topic/TopicListNav"
 
-export const MobileMenu: React.FunctionComponent = () => {
+interface MobileMenuProps {
+  locale: LanguageType
+}
+
+export const MobileMenu: React.FunctionComponent<MobileMenuProps> = (props) => {
+  const { locale } = props
+
   return (
     <div className="relative z-10 flex lg:hidden">
       <input className="peer hidden" type="checkbox" id="mobile-menu" />
@@ -22,7 +29,7 @@ export const MobileMenu: React.FunctionComponent = () => {
                   Home
                 </NextLink>
               </Button>
-              <TopicListNav />
+              <TopicListNav locale={locale} />
             </menu>
           </div>
         </div>

@@ -20,6 +20,7 @@ import { TransformContent } from "@/components/TransformContent"
 import env from "@/env"
 import { parseAndSplitHTMLString } from "@/lib/content"
 import { api } from "@/lib/trpc/server"
+import { getI18n } from "@/locales/server"
 
 const Ad = React.lazy(async () => {
   const { Ad } = await import("@/components/Ad")
@@ -73,6 +74,8 @@ export default async function ArticleSlugPage({
   params,
 }: ArticleSlugPageProps) {
   const { locale, slug } = params
+
+  const t = await getI18n()
 
   const user = await getCurrentUser()
   const article = await api.article.bySlug.query(slug)
@@ -163,7 +166,7 @@ export default async function ArticleSlugPage({
             </BreadcrumbItem>
             <BreadcrumbItem>
               <BreadcrumbLink as={NextLink} href="/article">
-                Article
+                {t("article")}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
@@ -242,7 +245,6 @@ export default async function ArticleSlugPage({
           />
           <ArticleComment article_id={article.id} user={user!} />
           <div className="flex w-full flex-col space-y-4">
-            <h3>You may also like</h3>
             <InfiniteScrollRelatedArticles
               locale={locale}
               current_article_slug={article.slug}

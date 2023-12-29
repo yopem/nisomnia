@@ -17,6 +17,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   id: string
@@ -35,11 +36,14 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
 ) => {
   const { user } = props
 
+  const t = useI18n()
+  const ts = useScopedI18n("user")
+
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const { mutate: updateUser } = api.user.update.useMutation({
     onSuccess: () => {
-      toast({ variant: "success", description: "Update User successfully" })
+      toast({ variant: "success", description: ts("update_profile_success") })
     },
     onError: (error) => {
       setLoading(false)
@@ -59,7 +63,7 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
       } else {
         toast({
           variant: "danger",
-          description: "Failed to update! Please try again later",
+          description: ts("update_profile_failed"),
         })
       }
     },
@@ -92,44 +96,44 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
     >
       <FormControl invalid={Boolean(errors.username)}>
         <FormLabel>
-          Username
+          {ts("username")}
           <RequiredIndicator />
         </FormLabel>
         <Input
           {...register("username", {
-            required: "Username is Required",
+            required: ts("validation_username_required"),
             pattern: {
               value: /^[a-z0-9]{3,16}$/i,
-              message:
-                "Username should be 3-20 characters without spaces, symbol or any special characters.",
+              message: ts("validation_username_pattern"),
             },
             min: {
               value: 3,
-              message: "Minimal username 3 characters",
+              message: ts("validaion_username_min"),
             },
             max: {
               value: 20,
-              message: "Maximum username 20 characters",
+              message: ts("validaion_username_max"),
             },
           })}
           disabled
-          // placeholder="Enter your username"
+          placeholder={ts("username_placeholder")}
           className="max-w-xl"
         />
         {errors?.username && (
           <FormErrorMessage>{errors.username.message}</FormErrorMessage>
         )}
-      </FormControl>{" "}
+      </FormControl>
       <FormControl invalid={Boolean(errors.name)}>
         <FormLabel>
-          Name
+          {ts("name")}
           <RequiredIndicator />
         </FormLabel>
         <Input
           type="text"
           {...register("name", {
-            required: "Name is Required",
+            required: ts("validation_name_required"),
           })}
+          placeholder={ts("name_placeholder")}
           className="max-w-xl"
         />
         {errors?.name && (
@@ -137,43 +141,43 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.phone_number)}>
-        <FormLabel>Phone Number</FormLabel>
+        <FormLabel>{ts("phone_number")}</FormLabel>
         <Input
           type="string"
           {...register("phone_number", {
             pattern: {
               value: /^[0-9]*$/,
-              message: "Please enter a valid phone number",
+              message: ts("validation_phone_number_pattern"),
             },
             minLength: {
               value: 9,
-              message: "Phone number must be at least 9 characters",
+              message: ts("validation_phone_number_min"),
             },
             maxLength: {
               value: 16,
-              message: "Phone number must be at most 16 characters",
+              message: ts("validation_phone_number_max"),
             },
           })}
           className="max-w-xl"
-          placeholder="Enter Phone Number (Optional)"
+          placeholder={ts("phone_number_placeholder")}
         />
         {errors?.phone_number && (
           <FormErrorMessage>{errors.phone_number.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.about)}>
-        <FormLabel>About</FormLabel>
+        <FormLabel>{ts("about")}</FormLabel>
         <Textarea
           {...register("about")}
           className="max-w-xl"
-          placeholder="Enter About (Optional)"
+          placeholder={ts("about_placeholder")}
         />
         {errors?.about && (
           <FormErrorMessage>{errors.about.message}</FormErrorMessage>
         )}
       </FormControl>
       <Button aria-label="Save" type="submit" loading={loading}>
-        Save
+        {t("save")}
       </Button>
     </form>
   )

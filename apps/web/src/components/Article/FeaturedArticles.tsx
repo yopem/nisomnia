@@ -3,6 +3,7 @@ import React from "react"
 import type { LanguageType } from "@nisomnia/db"
 
 import { api } from "@/lib/trpc/server"
+import { getScopedI18n } from "@/locales/server"
 import { ArticleCardFeatured } from "./ArticleCardFeatured"
 
 interface FeaturedArticlesProps {
@@ -13,6 +14,8 @@ export const FeaturedArticles: React.FunctionComponent<
   FeaturedArticlesProps
 > = async (props) => {
   const { locale } = props
+
+  const ts = await getScopedI18n("home")
 
   const articles = await api.article.byLanguage.query({
     page: 1,
@@ -38,7 +41,7 @@ export const FeaturedArticles: React.FunctionComponent<
 
   return (
     <>
-      <h2>Featured</h2>
+      <h2>{ts("featured")}</h2>
       <div className="lg:grid-[rows_7] flex h-full flex-col gap-4 lg:grid lg:h-[600px] lg:grid-cols-3 lg:gap-8">
         {articles.map((article, index) => (
           <ArticleCardFeatured

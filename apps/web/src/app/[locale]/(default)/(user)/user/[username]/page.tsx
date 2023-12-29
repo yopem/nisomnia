@@ -12,6 +12,7 @@ import { ArticleCardVertical } from "@/components/Article/ArticleCardVertical"
 import { Image } from "@/components/Image"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 export async function generateMetadata({
   params,
@@ -49,6 +50,9 @@ interface UserPageProps {
 
 export default async function UserPage({ params }: UserPageProps) {
   const { username, locale } = params
+
+  const t = await getI18n()
+  const ts = await getScopedI18n("user")
 
   const user = await api.user.byUsername.query({
     username: username,
@@ -101,7 +105,7 @@ export default async function UserPage({ params }: UserPageProps) {
           <div className="mt-3 flex items-center justify-center text-sm">
             <Icon.Calendar className="mr-0 h-3 w-3" />
             <p className="text-xs">
-              Member since{" "}
+              {ts("member_since")}{" "}
               {formatDate(user?.createdAt as unknown as string, "LL")}
             </p>
           </div>
@@ -109,13 +113,13 @@ export default async function UserPage({ params }: UserPageProps) {
         {user?.article_authors && (
           <div className="flex w-full flex-col">
             <div className="my-1 flex flex-row items-center justify-between">
-              <h3 className="text-2xl">Articles</h3>
+              <h3 className="text-2xl">{t("articles")}</h3>
               <NextLink
                 aria-label={user.name ?? user.username}
                 href={`/article/user/${user.username}`}
                 className="text-sm"
               >
-                See more
+                {t("see_more")}
               </NextLink>
             </div>
             {user.article_authors.length > 0 ? (

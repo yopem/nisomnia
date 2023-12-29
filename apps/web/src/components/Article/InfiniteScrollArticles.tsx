@@ -11,6 +11,7 @@ import { toast } from "@nisomnia/ui/next-client"
 
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { useScopedI18n } from "@/locales/client"
 import { ArticleCardHorizontal } from "./ArticleCardHorizontal"
 
 export type InfinteScrollArticlesDataProps = Pick<
@@ -29,6 +30,8 @@ export const InfiniteScrollArticles: React.FunctionComponent<
   InfiniteScrollArticlesProps
 > = (props) => {
   const { locale } = props
+
+  const ts = useScopedI18n("article")
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -86,12 +89,18 @@ export const InfiniteScrollArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div>
-      {data?.pages.map((page) => {
-        return page.articles.map((article) => {
-          return <ArticleCardHorizontal article={article} key={article.slug} />
+    <div className="flex items-center justify-center">
+      {data?.pages ? (
+        data?.pages.map((page) => {
+          return page.articles.map((article) => {
+            return (
+              <ArticleCardHorizontal article={article} key={article.slug} />
+            )
+          })
         })
-      })}
+      ) : (
+        <h3 className="my-16 text-center text-3xl">{ts("not_found")}</h3>
+      )}
       {hasNextPage && (
         <div ref={loadMoreRef}>
           <div className="text-center">

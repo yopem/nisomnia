@@ -18,6 +18,7 @@ import { formatDate } from "@nisomnia/utils"
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DeleteArticleCommentButton = React.lazy(async () => {
   const { DeleteArticleCommentButton } = await import(
@@ -50,6 +51,9 @@ export const ArticleComment: React.FunctionComponent<
   ArticleCommentFormProps
 > = (props) => {
   const { article_id, user } = props
+
+  const t = useI18n()
+  const ts = useScopedI18n("comment")
 
   const [openDeleteAction, setOpenDeleteAction] = React.useState<string | null>(
     null,
@@ -88,7 +92,7 @@ export const ArticleComment: React.FunctionComponent<
       refetch()
       toast({
         variant: "success",
-        description: "Comment is successfully created",
+        description: ts("create_success"),
       })
     },
     onError: (error) => {
@@ -109,7 +113,7 @@ export const ArticleComment: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to submit comment! Please try again later",
+          description: ts("create_failed"),
         })
       }
     },
@@ -131,7 +135,7 @@ export const ArticleComment: React.FunctionComponent<
         refetch()
         toast({
           variant: "success",
-          description: "Comment is successfully deleted",
+          description: "",
         })
       },
       onError: (error) => {
@@ -151,7 +155,7 @@ export const ArticleComment: React.FunctionComponent<
         } else {
           toast({
             variant: "danger",
-            description: "Failed to delete comment! Please try again later",
+            description: ts("delete_failed"),
           })
         }
       },
@@ -166,7 +170,7 @@ export const ArticleComment: React.FunctionComponent<
       <div id="comment" className="block w-full bg-background">
         <div className="mb-4 flex justify-between">
           <span className="inline-flex items-center text-lg font-semibold text-foreground">
-            Comments ({commentCount ?? 0})
+            {t("comments")}&nbsp;({commentCount ?? 0})
           </span>
         </div>
         {user ? (
@@ -205,30 +209,27 @@ export const ArticleComment: React.FunctionComponent<
                       }
                     }}
                     {...register("content", {
-                      required: "content must be filled",
+                      required: ts("content_reqired"),
                     })}
                     className="mx-2 h-[30px] max-h-[180px] w-full resize-none overflow-hidden border border-b"
-                    placeholder="Write comment…"
+                    placeholder={ts("placeholder")}
                   />
                 </div>
                 <Button
                   loading={loading}
                   variant="outline"
-                  className="ml-auto block h-auto rounded-full px-2 py-1"
+                  className="ml-auto block h-auto rounded-full"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  {!loading && "Submit"}
+                  {!loading && t("submit")}
                 </Button>
               </div>
             </div>
           </form>
         ) : (
           <div className="my-8 flex items-center justify-center">
-            <NextLink
-              aria-label="You should sign in before comment"
-              href="/auth/sign-in"
-            >
-              <Button>You should sign in before comment</Button>
+            <NextLink aria-label={ts("auth")} href="/auth/sign-in">
+              <Button>{ts("auth")}</Button>
             </NextLink>
           </div>
         )}
@@ -273,7 +274,7 @@ export const ArticleComment: React.FunctionComponent<
                                   <Icon.Comment />
                                 </span>
                                 <span className="hidden text-xs md:block">
-                                  Reply
+                                  {t("reply")}
                                 </span>
                               </Button>
                             </div>
@@ -335,7 +336,7 @@ export const ArticleComment: React.FunctionComponent<
                                   }}
                                 >
                                   <Icon.Delete className="mr-1" />
-                                  Delete
+                                  {t("delete")}
                                 </Button>
                                 <Button
                                   onClick={() => {
@@ -346,7 +347,7 @@ export const ArticleComment: React.FunctionComponent<
                                   className="h-auto justify-start"
                                 >
                                   <Icon.Edit className="mr-1" />
-                                  Edit
+                                  {t("edit")}
                                 </Button>
                               </div>
                             </div>
@@ -420,7 +421,7 @@ export const ArticleComment: React.FunctionComponent<
                                 <div className="divide-y divide-muted/50">
                                   <div className="flex flex-col py-1 text-sm text-foreground">
                                     <DeleteArticleCommentButton
-                                      description="this comment"
+                                      description={ts("delete_description")}
                                       action={() => {
                                         handleDeleteComment(reply.id!)
                                         setOpenDeleteAction("")
@@ -435,7 +436,7 @@ export const ArticleComment: React.FunctionComponent<
                                       className="h-auto justify-start"
                                     >
                                       <Icon.Edit className="mr-1" />
-                                      Edit
+                                      {t("edit")}
                                     </Button>
                                   </div>
                                 </div>
@@ -459,7 +460,7 @@ export const ArticleComment: React.FunctionComponent<
             type="button"
             className="mt-2 w-full"
           >
-            Load More
+            {t("load_more")}
           </Button>
         ) : null}
       </div>

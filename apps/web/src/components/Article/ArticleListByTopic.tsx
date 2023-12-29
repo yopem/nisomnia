@@ -4,7 +4,7 @@ import * as React from "react"
 import NextLink from "next/link"
 
 import type { LanguageType } from "@nisomnia/db"
-import { cn } from "@nisomnia/ui/next"
+import { cn, Icon } from "@nisomnia/ui/next"
 
 import { api } from "@/lib/trpc/server"
 import { ArticleCardVertical } from "./ArticleCardVertical"
@@ -36,7 +36,7 @@ export const ArticleListByTopic: React.FunctionComponent<
           href={`/article/topic/${topic_slug}`}
           className="text-zinc-900 hover:text-zinc-950"
         >
-          See more
+          <Icon.ChevronRight className="size-8" />
         </NextLink>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
