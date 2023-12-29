@@ -19,7 +19,6 @@ import { Share } from "@/components/Share"
 import { TransformContent } from "@/components/TransformContent"
 import env from "@/env"
 import { parseAndSplitHTMLString } from "@/lib/content"
-import { readingTime } from "@/lib/reading-time"
 import { api } from "@/lib/trpc/server"
 
 const Ad = React.lazy(async () => {
@@ -192,10 +191,6 @@ export default async function ArticleSlugPage({
                 {article?.authors[0]?.name}
               </NextLink>
             </div>
-            <p className="text-sm">
-              <Icon.Read className="mr-1 inline-flex h-4 w-4" />
-              {readingTime(article)}
-            </p>
           </div>
           <Image
             fill
