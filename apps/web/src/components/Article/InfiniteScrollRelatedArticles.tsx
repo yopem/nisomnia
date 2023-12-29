@@ -93,7 +93,7 @@ export const InfiniteScrollRelatedArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div>
+    <div className="space-y-4">
       <h3>{ts("related")}</h3>
       {data?.pages.map((page) => {
         return page.articles.map((article) => {
