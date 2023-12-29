@@ -121,7 +121,12 @@ export const TranslateTopicForm: React.FunctionComponent<
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+      }}
+      className="space-y-4"
+    >
       <FormControl invalid={Boolean(errors.title)}>
         <FormLabel>
           Title
