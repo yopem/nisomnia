@@ -1,25 +1,20 @@
 import type { NextRequest } from "next/server"
-import createIntlMiddleware from "next-intl/middleware"
+import { createI18nMiddleware } from "next-international/middleware"
 
 export default function middleware(request: NextRequest) {
   const defaultLocale = "id"
 
-  const handleI18nRouting = createIntlMiddleware({
+  const I18nMiddleware = createI18nMiddleware({
     locales: ["id", "en"],
     defaultLocale,
-    localeDetection: false,
-    localePrefix: "never",
+    urlMappingStrategy: "rewrite",
   })
 
-  const response = handleI18nRouting(request)
-
-  response.headers.set("x-default-locale", defaultLocale)
+  const response = I18nMiddleware(request)
 
   return response
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|public|sitemap|logo|icon|images).*)",
-  ],
+  matcher: ["/((?!api|static|.*\\..*|_next|favicon.ico|robots.txt).*)"],
 }

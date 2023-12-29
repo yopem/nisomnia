@@ -13,6 +13,7 @@ import { Scripts } from "@/components/Scripts"
 import { TopLoader } from "@/components/TopLoader"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
+import { I18nProviderClient } from "@/locales/client"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -93,14 +94,16 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
       suppressHydrationWarning={true}
     >
       <body>
-        <Toaster />
-        <TopLoader />
-        <ThemeProvider>
-          <TRPCReactProvider cookies={cookies().toString()}>
-            {children}
-          </TRPCReactProvider>
-        </ThemeProvider>
-        <Scripts />
+        <I18nProviderClient locale={locale}>
+          <Toaster />
+          <TopLoader />
+          <ThemeProvider>
+            <TRPCReactProvider cookies={cookies().toString()}>
+              {children}
+            </TRPCReactProvider>
+          </ThemeProvider>
+          <Scripts />
+        </I18nProviderClient>
       </body>
     </html>
   )

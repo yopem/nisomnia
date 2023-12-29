@@ -31,7 +31,7 @@
     "axios": "^1.6.3",
     "html-to-react": "^1.7.0",
     "million": "2.6.4",
-    "next-intl": "^3.4.0",
+    "next-international": "^1.1.4",
     "next-seo": "^6.4.0",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.4",
