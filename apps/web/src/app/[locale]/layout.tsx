@@ -78,13 +78,20 @@ export function generateMetadata({
   }
 }
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode
-}) {
+  params: { locale: LanguageType }
+}
+
+export default function RootLayout({ children, params }: RootLayoutProps) {
+  const { locale } = params
+
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning={true}>
+    <html
+      lang={locale}
+      className={inter.className}
+      suppressHydrationWarning={true}
+    >
       <body>
         <Toaster />
         <TopLoader />
