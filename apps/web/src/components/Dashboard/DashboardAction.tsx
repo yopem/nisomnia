@@ -6,6 +6,8 @@ import NextLink from "next/link"
 
 import { cn, Icon } from "@nisomnia/ui/next"
 
+import { useI18n } from "@/locales/client"
+
 const AlertDelete = React.lazy(async () => {
   const { AlertDelete } = await import("@/components/AlertDelete")
   return { default: AlertDelete }
@@ -37,6 +39,8 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
     content,
   } = props
 
+  const t = useI18n()
+
   const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   return (
@@ -44,7 +48,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       className={cn("flex content-start items-start justify-start", className)}
     >
       {viewLink && (
-        <NextLink aria-label="View" href={viewLink} target="_blank">
+        <NextLink aria-label={t("view")} href={viewLink} target="_blank">
           <Icon.Visibility className="mr-2 w-4 transform  cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}
@@ -57,7 +61,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       )}
 
       {editLink && (
-        <NextLink aria-label="Edit" href={editLink}>
+        <NextLink aria-label={t("edit")} href={editLink}>
           <Icon.Edit className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}
@@ -70,7 +74,7 @@ export const DashboardAction: React.FunctionComponent<DashboardActionProps> = (
       )}
 
       {deleteLink && (
-        <NextLink aria-label="Delete" href={deleteLink}>
+        <NextLink aria-label={t("delete")} href={deleteLink}>
           <Icon.Delete className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary/90" />
         </NextLink>
       )}

@@ -18,6 +18,7 @@ import {
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useScopedI18n } from "@/locales/client"
 
 const InfiniteScrollMedia = React.lazy(async () => {
   const { InfiniteScrollMedia } = await import("./InfiniteScrollMedia")
@@ -45,6 +46,8 @@ export const SelectMediaModal: React.FunctionComponent<
 > = (props) => {
   const { handleSelectUpdateMedia, triggerContent, open, setOpen } = props
 
+  const ts = useScopedI18n("media")
+
   const [searched, setSearched] = React.useState<boolean>(false)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [toggleUpload, setToggleUpload] = React.useState(false)
@@ -67,7 +70,7 @@ export const SelectMediaModal: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to fetch! Please try again later",
+          description: ts("fetch_failed"),
         })
       }
     },
@@ -99,7 +102,7 @@ export const SelectMediaModal: React.FunctionComponent<
                     <Input
                       onChange={handleSearchChange}
                       type="text"
-                      placeholder="Search image"
+                      placeholder={ts("search")}
                     />
                     <InputRightElement className="w-2">
                       <div className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none">
@@ -140,7 +143,7 @@ export const SelectMediaModal: React.FunctionComponent<
                   })}
                 </div>
               ) : (
-                searched && <p>Medias Not Found</p>
+                searched && <p>{ts("not_found")}</p>
               )}
             </div>
           </ScrollArea>

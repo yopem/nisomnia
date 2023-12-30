@@ -9,6 +9,7 @@ import { toast } from "@nisomnia/ui/next-client"
 import { Image } from "@/components/Image"
 import { LoadingProgress } from "@/components/LoadingProgress"
 import { api } from "@/lib/trpc/react"
+import { useScopedI18n } from "@/locales/client"
 
 const CopyMediaLinkButton = React.lazy(async () => {
   const { CopyMediaLinkButton } = await import("./CopyMediaLinkButton")
@@ -33,6 +34,8 @@ export const InfiniteScrollMedia: React.FunctionComponent<
   InfiniteScrollMediaProps
 > = (props) => {
   const { isLibrary, selectMedia, index, toggleUpload } = props
+
+  const ts = useScopedI18n("media")
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
   const {
@@ -62,7 +65,7 @@ export const InfiniteScrollMedia: React.FunctionComponent<
         } else {
           toast({
             variant: "danger",
-            description: "Failed to fetch! Please try again later",
+            description: ts("fetch_failed"),
           })
         }
       },
@@ -117,7 +120,7 @@ export const InfiniteScrollMedia: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to delete media! Please try again later",
+          description: ts("delete_failed"),
         })
       }
     },

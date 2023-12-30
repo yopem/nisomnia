@@ -6,6 +6,8 @@ import { Icon, IconButton } from "@nisomnia/ui/next"
 import { toast } from "@nisomnia/ui/next-client"
 import { copyToClipboard } from "@nisomnia/utils"
 
+import { useScopedI18n } from "@/locales/client"
+
 interface CopyLinkButonProps extends React.HTMLAttributes<HTMLDivElement> {
   url: string
 }
@@ -14,6 +16,8 @@ export const CopyLinkButon: React.FunctionComponent<CopyLinkButonProps> = (
   props,
 ) => {
   const { url } = props
+
+  const ts = useScopedI18n("article")
 
   return (
     <IconButton
@@ -24,7 +28,7 @@ export const CopyLinkButon: React.FunctionComponent<CopyLinkButonProps> = (
         copyToClipboard(url)
         toast({
           variant: "success",
-          description: "Article Link Copied",
+          description: ts("copy_link"),
         })
       }}
     >

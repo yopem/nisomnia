@@ -209,7 +209,7 @@ export const ArticleComment: React.FunctionComponent<
                       }
                     }}
                     {...register("content", {
-                      required: ts("content_reqired"),
+                      required: ts("content_required"),
                     })}
                     className="mx-2 h-[30px] max-h-[180px] w-full resize-none overflow-hidden border border-b"
                     placeholder={ts("placeholder")}

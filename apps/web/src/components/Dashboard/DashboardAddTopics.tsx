@@ -13,6 +13,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   topicTitle: string
@@ -54,6 +55,9 @@ export const DashboardAddTopics: React.FunctionComponent<
     addSelectedTopics,
     locale,
   } = props
+
+  const t = useI18n()
+  const ts = useScopedI18n("topic")
 
   const [topicId, setTopicId] = React.useState<string>("")
   const [searchQuery, setSearchQuery] = React.useState<string>("")
@@ -130,7 +134,7 @@ export const DashboardAddTopics: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to find topic",
+          description: ts("find_failed"),
         })
       }
     },
@@ -139,7 +143,7 @@ export const DashboardAddTopics: React.FunctionComponent<
 
   const { mutate: createTopic } = api.topic.create.useMutation({
     onSuccess: (data) => {
-      toast({ variant: "success", description: "Topic Successfully created" })
+      toast({ variant: "success", description: ts("create_success") })
       setTopicId(data?.id)
     },
     onError: (error) => {
@@ -159,7 +163,7 @@ export const DashboardAddTopics: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to create topic! Please try again later",
+          description: ts("create_failed"),
         })
       }
     },
@@ -188,7 +192,7 @@ export const DashboardAddTopics: React.FunctionComponent<
           } else {
             toast({
               variant: "danger",
-              description: value.topicTitle + " already used!",
+              description: value.topicTitle + `&nbsp;${t("already_used")}`,
             })
             setInputValue("")
             setSearchQuery("")
@@ -211,10 +215,11 @@ export const DashboardAddTopics: React.FunctionComponent<
       searchResults,
       selectedTopics,
       topicType,
+      t,
     ],
   )
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       setValue("topicTitle", inputValue)
       event.preventDefault()
@@ -242,7 +247,7 @@ export const DashboardAddTopics: React.FunctionComponent<
     } else {
       toast({
         variant: "danger",
-        description: value.title + " already used!",
+        description: value.title + `&nbsp;${t("already_used")}`,
       })
       setInputValue("")
       setSearchQuery("")
@@ -286,10 +291,10 @@ export const DashboardAddTopics: React.FunctionComponent<
             })}
             className="h-auto w-full min-w-[50px] max-w-full shrink grow basis-0 border-none !bg-transparent p-0 focus:border-none focus:ring-0"
             name="topicTitle"
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleEnter}
             id="searchTopic"
             value={inputValue}
-            placeholder="Enter topics"
+            placeholder={ts("enter")}
             onChange={handleSearchChange}
           />
 

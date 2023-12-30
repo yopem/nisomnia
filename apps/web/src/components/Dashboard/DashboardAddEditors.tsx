@@ -12,6 +12,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   name: string
@@ -48,6 +49,9 @@ export const DashboardAddEditors = React.forwardRef<
   DashboardAddEditorsProps
 >((props, ref) => {
   const { editors, addEditors, selectedEditors, addSelectedEditors } = props
+
+  const t = useI18n()
+  const ts = useScopedI18n("user")
 
   const [searchQuery, setSearchQuery] = React.useState<string>("")
 
@@ -116,16 +120,13 @@ export const DashboardAddEditors = React.forwardRef<
     } else {
       toast({
         variant: "danger",
-        description: value.name + " already used!",
+        description: value.name + `&nbsp;${t("already_used")}`,
       })
       setSearchQuery("")
     }
   }
 
-  const handleKeyDown = (event: {
-    key: string
-    preventDefault: () => void
-  }) => {
+  const handleEnter = (event: { key: string; preventDefault: () => void }) => {
     if (event.key === "Enter") {
       setValue("name", searchQuery)
       event.preventDefault()
@@ -146,7 +147,7 @@ export const DashboardAddEditors = React.forwardRef<
 
   return (
     <div ref={ref}>
-      <FormLabel>Editors</FormLabel>
+      <FormLabel>{t("editors")}</FormLabel>
       <div className="rounded-md border border-muted/30 bg-muted/100">
         <div className="parent-focus flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
           {selectedEditors.length > 0 &&
@@ -171,14 +172,14 @@ export const DashboardAddEditors = React.forwardRef<
           <Input
             type="text"
             {...register("name", {
-              required: selectedEditors.length === 0 && "Editor is Required",
+              required: selectedEditors.length === 0 && ts("editor_required"),
             })}
             className="h-auto w-full min-w-[50px] max-w-full shrink grow basis-0 border-none !bg-transparent p-0 focus:border-none focus:ring-0"
             name="name"
             id="searchEditor"
             value={searchQuery}
-            onKeyDown={handleKeyDown}
-            placeholder="Find editors"
+            onKeyDown={handleEnter}
+            placeholder={ts("find_editor")}
             onChange={handleSearchChange}
           />
 

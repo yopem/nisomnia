@@ -6,6 +6,8 @@ import { Icon, IconButton } from "@nisomnia/ui/next"
 import { toast } from "@nisomnia/ui/next-client"
 import { copyToClipboard } from "@nisomnia/utils"
 
+import { useScopedI18n } from "@/locales/client"
+
 interface CopyMediaLinkButton {
   url: string
 }
@@ -14,6 +16,8 @@ export const CopyMediaLinkButton: React.FunctionComponent<
   CopyMediaLinkButton
 > = (props) => {
   const { url } = props
+
+  const ts = useScopedI18n("media")
 
   return (
     <IconButton
@@ -25,11 +29,11 @@ export const CopyMediaLinkButton: React.FunctionComponent<
         copyToClipboard(url)
         toast({
           variant: "success",
-          description: "Media Permalink Copied",
+          description: ts("copy_link"),
         })
       }}
     >
-      <Icon.Copy aria-label="Delete Media" />
+      <Icon.Copy aria-label="Copy Media" />
     </IconButton>
   )
 }

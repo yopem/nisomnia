@@ -8,6 +8,7 @@ import { Button, DropZone } from "@nisomnia/ui/next"
 import { FormControl, FormErrorMessage, toast } from "@nisomnia/ui/next-client"
 
 import { resizeImage } from "@/lib/resize-image"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   file: Blob[]
@@ -21,8 +22,12 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
   props,
 ) => {
   const { setToggleUpload } = props
+
   const [showUploadForm, setShowUploadForm] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("media")
 
   const {
     register,
@@ -51,11 +56,11 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
       if (res) {
         setToggleUpload((prev) => !prev)
         reset()
-        toast({ variant: "success", description: "Upload Media Successfuly!" })
+        toast({ variant: "success", description: ts("upload_success") })
       }
     } catch (err) {
       console.log(err)
-      toast({ variant: "danger", description: "An error occured" })
+      toast({ variant: "danger", description: ts("upload_failed") })
     }
 
     setLoading(false)
@@ -64,14 +69,14 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
   return (
     <div className="my-2 space-y-2">
       <Button
-        aria-label="Add New Media"
+        aria-label={ts("add")}
         type="button"
         onClick={(e) => {
           e.preventDefault()
           setShowUploadForm(!showUploadForm)
         }}
       >
-        Add New
+        {ts("add")}
       </Button>
       <div className={showUploadForm ? "flex" : "hidden"}>
         <div className="flex-1 space-y-4">
@@ -90,10 +95,10 @@ export const UploadMedia: React.FunctionComponent<UploadMediaProps> = (
               <Button
                 type="button"
                 onClick={handleSubmit(onSubmitMedia)}
-                aria-label="Submit"
+                aria-label={t("submit")}
                 loading={loading}
               >
-                Submit
+                {t("submit")}
               </Button>
             </div>
           </form>

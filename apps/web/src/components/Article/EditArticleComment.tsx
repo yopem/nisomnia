@@ -41,7 +41,6 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
       if (textarea && type === "default") {
         textarea.style.height = "30px"
       }
-
       reset()
       onSuccess()
       toast({
@@ -103,7 +102,7 @@ export const EditArticleComment = (props: EditArticleCommentProps) => {
             }
           }}
           {...register("content", {
-            required: "content must be filled",
+            required: ts("content_required"),
           })}
           className={cn(
             "max-h-[180px] w-full border border-b",

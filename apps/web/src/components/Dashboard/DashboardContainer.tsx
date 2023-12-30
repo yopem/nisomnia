@@ -5,6 +5,8 @@ import NextLink from "next/link"
 
 import { Button, Icon } from "@nisomnia/ui/next"
 
+import { useI18n } from "@/locales/client"
+
 interface DashboardContainerProps {
   children: React.ReactNode
   sidebar?: React.ReactNode
@@ -14,6 +16,8 @@ export const DashboardContainer: React.FunctionComponent<
   DashboardContainerProps
 > = ({ children, sidebar }) => {
   const [open, setOpen] = React.useState<boolean>(false)
+
+  const t = useI18n()
 
   return (
     <div className="relative flex h-auto">
@@ -51,7 +55,7 @@ export const DashboardContainer: React.FunctionComponent<
             className="h-12 flex-col items-center justify-around rounded"
           >
             <Icon.Article />
-            Articles
+            {t("article")}
           </Button>
         </NextLink>
         <Button
@@ -60,7 +64,7 @@ export const DashboardContainer: React.FunctionComponent<
           className="text-froeground flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around rounded text-center"
         >
           <Icon.MoreVertical />
-          More
+          {t("more")}
         </Button>
       </div>
     </div>

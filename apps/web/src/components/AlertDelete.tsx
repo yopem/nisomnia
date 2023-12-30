@@ -13,6 +13,8 @@ import {
   AlertDialogTitle,
 } from "@nisomnia/ui/next-client"
 
+import { useI18n } from "@/locales/client"
+
 interface AlertDeleteProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
   description?: React.ReactNode
@@ -26,6 +28,8 @@ export const AlertDelete: React.FunctionComponent<AlertDeleteProps> = (
 ) => {
   const { description, isOpen, onClose, className, onDelete } = props
 
+  const t = useI18n()
+
   function handleDeleteAndClose() {
     onDelete()
     onClose()
@@ -38,14 +42,17 @@ export const AlertDelete: React.FunctionComponent<AlertDeleteProps> = (
           <AlertDialogHeader>
             <AlertDialogTitle>Delete {description}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure to delete {description}?
+              {/* eslint-disable @typescript-eslint/restrict-template-expressions */}
+              {`${t("delete_prompt")} ${description}?`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction variant="danger" onClick={handleDeleteAndClose}>
-              Yes
+              {t("yes")}
             </AlertDialogAction>
-            <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={onClose}>
+              {t("cancel")}
+            </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

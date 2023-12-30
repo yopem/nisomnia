@@ -27,7 +27,7 @@ export const DeleteArticleCommentButton: React.FunctionComponent<
   return (
     <div>
       <Button
-        aria-label="Delete"
+        aria-label={t("delete")}
         variant="ghost"
         className="h-auto justify-start"
         onClick={() => setOpenModal(true)}

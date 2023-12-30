@@ -6,6 +6,8 @@ import { useController } from "react-hook-form"
 
 import { EditorKitExtension, EditorMenu } from "@nisomnia/editor"
 
+import { useI18n } from "@/locales/client"
+
 interface EditorProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
@@ -15,6 +17,8 @@ interface EditorProps {
 
 export const Editor = (props: EditorProps) => {
   const { control, isClear, fieldName } = props
+
+  const t = useI18n()
 
   const {
     field: { value, onChange },
@@ -49,7 +53,7 @@ export const Editor = (props: EditorProps) => {
       <EditorMenu editor={editor} />
       <EditorContent editor={editor} />
       <p className="absolute bottom-0 right-0">
-        {editor?.storage.characterCount.words()} words
+        {editor?.storage.characterCount.words()} {t("words")}
       </p>
     </>
   )

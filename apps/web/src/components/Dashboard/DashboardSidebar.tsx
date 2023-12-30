@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/Layout/Sidebar"
 import { SidebarItem } from "@/components/Layout/SidebarItem"
 import { SidebarToggleItem } from "@/components/Layout/SidebarToggleItem"
 import { Logo } from "@/components/Logo"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const SidebarToggle = React.lazy(async () => {
   const { SidebarToggle } = await import("@/components/Layout/SidebarToggle")
@@ -28,6 +29,13 @@ export const DashboardSidebar: React.FunctionComponent<
 > = (props) => {
   const { user } = props
 
+  const t = useI18n()
+  const tsAd = useScopedI18n("ad")
+  const tsArticle = useScopedI18n("article")
+  const tsMedia = useScopedI18n("media")
+  const tsTopic = useScopedI18n("topic")
+  const tsUser = useScopedI18n("user")
+
   return (
     <Sidebar>
       <div className="flex items-center gap-2">
@@ -43,53 +51,57 @@ export const DashboardSidebar: React.FunctionComponent<
         </div>
       </div>
       <SidebarItem icon={<Icon.Dashboard />} href="/dashboard">
-        Dashboard
+        {t("dashboard")}
       </SidebarItem>
-      <SidebarToggle icon={<Icon.Article />} title="Articles">
+      <SidebarToggle icon={<Icon.Article />} title={t("article")}>
         <SidebarToggleItem href="/dashboard/article">
-          All Articles
+          {tsArticle("all")}
         </SidebarToggleItem>
         <SidebarToggleItem href="/dashboard/article/comment">
-          Comments
+          {t("comments")}
         </SidebarToggleItem>
         <SidebarToggleItem href="/dashboard/article/new">
-          Add new article
+          {tsArticle("add")}
         </SidebarToggleItem>
       </SidebarToggle>
-      <SidebarToggle icon={<Icon.Topic />} title="Topics">
+      <SidebarToggle icon={<Icon.Topic />} title={t("topic")}>
         <SidebarToggleItem href="/dashboard/topic">
-          All Topics
+          {tsTopic("all")}
         </SidebarToggleItem>
         <SidebarToggleItem href="/dashboard/topic/new">
-          Add new topic
+          {tsTopic("add")}
         </SidebarToggleItem>
       </SidebarToggle>
       {user?.role === "admin" && (
-        <SidebarToggle icon={<Icon.Ads />} title="Ads">
-          <SidebarToggleItem href="/dashboard/ad">All Ads</SidebarToggleItem>
+        <SidebarToggle icon={<Icon.Ads />} title={t("ad")}>
+          <SidebarToggleItem href="/dashboard/ad">
+            {tsAd("all")}
+          </SidebarToggleItem>
           <SidebarToggleItem href="/dashboard/ad/new">
-            Add new ad
+            {tsAd("add")}
           </SidebarToggleItem>
         </SidebarToggle>
       )}
-      <SidebarToggle icon={<Icon.Media />} title="Media">
-        <SidebarToggleItem href="/dashboard/media">Library</SidebarToggleItem>
+      <SidebarToggle icon={<Icon.Media />} title={t("media")}>
+        <SidebarToggleItem href="/dashboard/media">
+          {tsMedia("all")}
+        </SidebarToggleItem>
         <SidebarToggleItem href="/dashboard/media/new">
-          Add new
+          {tsMedia("add")}
         </SidebarToggleItem>
       </SidebarToggle>
       {user?.role === "admin" && (
         <>
-          <SidebarToggle icon={<Icon.Users />} title="Users">
+          <SidebarToggle icon={<Icon.Users />} title={t("user")}>
             <SidebarToggleItem href="/dashboard/user">
-              All users
+              {tsUser("all")}
             </SidebarToggleItem>
           </SidebarToggle>
         </>
       )}
       <div className="py-5">
         <SidebarItem icon={<Icon.Person />} href="/setting/user/profile">
-          Profile
+          {t("profile")}
         </SidebarItem>
       </div>
     </Sidebar>
