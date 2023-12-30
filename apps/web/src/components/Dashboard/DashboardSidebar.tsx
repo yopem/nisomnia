@@ -8,7 +8,7 @@ import { Sidebar } from "@/components/Layout/Sidebar"
 import { SidebarItem } from "@/components/Layout/SidebarItem"
 import { SidebarToggleItem } from "@/components/Layout/SidebarToggleItem"
 import { Logo } from "@/components/Logo"
-import { useI18n, useScopedI18n } from "@/locales/client"
+import { getI18n, getScopedI18n } from "@/locales/server"
 
 const SidebarToggle = React.lazy(async () => {
   const { SidebarToggle } = await import("@/components/Layout/SidebarToggle")
@@ -26,15 +26,15 @@ export interface DashboardSidebarProps {
 
 export const DashboardSidebar: React.FunctionComponent<
   DashboardSidebarProps
-> = (props) => {
+> = async (props) => {
   const { user } = props
 
-  const t = useI18n()
-  const tsAd = useScopedI18n("ad")
-  const tsArticle = useScopedI18n("article")
-  const tsMedia = useScopedI18n("media")
-  const tsTopic = useScopedI18n("topic")
-  const tsUser = useScopedI18n("user")
+  const t = await getI18n()
+  const tsAd = await getScopedI18n("ad")
+  const tsArticle = await getScopedI18n("article")
+  const tsMedia = await getScopedI18n("media")
+  const tsTopic = await getScopedI18n("topic")
+  const tsUser = await getScopedI18n("user")
 
   return (
     <Sidebar>
