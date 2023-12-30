@@ -61,7 +61,7 @@ export const InfiniteScrollArticles: React.FunctionComponent<
           } else {
             toast({
               variant: "danger",
-              description: "Failed to fetch! Please try again later",
+              description: ts("fetch_failed"),
             })
           }
         },
@@ -89,7 +89,7 @@ export const InfiniteScrollArticles: React.FunctionComponent<
   }, [handleObserver])
 
   return (
-    <div className="flex items-center justify-center">
+    <div>
       {data?.pages ? (
         data?.pages.map((page) => {
           return page.articles.map((article) => {

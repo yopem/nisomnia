@@ -116,7 +116,7 @@ export const ReplyArticleComment = (props: ReplyArticleCommentProps) => {
                 }
               }}
               {...register("content", {
-                required: "content must be filled",
+                required: ts("content_required"),
               })}
               className="mx-2 h-[30px] max-h-[180px] w-full resize-none overflow-hidden border border-b"
               placeholder={ts("placeholder")}

@@ -65,7 +65,7 @@ export const InfiniteScrollRelatedArticles: React.FunctionComponent<
           } else {
             toast({
               variant: "danger",
-              description: "Failed to fetch! Please try again later",
+              description: ts("fetch_failed"),
             })
           }
         },
