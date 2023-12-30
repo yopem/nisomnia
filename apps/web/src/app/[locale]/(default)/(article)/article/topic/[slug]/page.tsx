@@ -83,10 +83,12 @@ export default async function TopicArticlePage({
           {
             position: 1,
             name: env.NEXT_PUBLIC_DOMAIN,
+            item: env.NEXT_PUBLIC_SITE_URL,
           },
           {
             position: 2,
-            name: `${env.NEXT_PUBLIC_SITE_URL}/article`,
+            name: "Article",
+            item: `${env.NEXT_PUBLIC_SITE_URL}/article`,
           },
           {
             position: 4,
