@@ -7,6 +7,7 @@ import { Icon } from "@nisomnia/ui/next"
 import { DashboardBox } from "@/components/Dashboard/DashboardBox"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
+import { getI18n } from "@/locales/server"
 
 export function generateMetadata({
   params,
@@ -38,6 +39,8 @@ export default async function DashboardPage() {
   const totalUsers = await api.user.count.query()
   const totalAds = await api.ad.count.query()
 
+  const t = await getI18n()
+
   return (
     <div className="my-8">
       <h2 className="text-3xl">Statistics</h2>
@@ -45,33 +48,33 @@ export default async function DashboardPage() {
         <DashboardBox
           icon={<Icon.Article className="h-5 w-5" />}
           count={totalArticles}
-          text="articles"
+          text={t("articles")}
         />
         <DashboardBox
           icon={<Icon.Topic className="h-5 w-5" />}
           count={totalTopics}
-          text="topics"
+          text={t("topics")}
         />
         <DashboardBox
           icon={<Icon.Media className="h-5 w-5" />}
           count={totalMedias}
-          text="medias"
+          text={t("medias")}
         />
         <DashboardBox
           icon={<Icon.Comment className="h-5 w-5" />}
           count={totalArticleComments}
-          text="comments"
+          text={t("comments")}
         />
 
         <DashboardBox
           icon={<Icon.Users className="h-5 w-5" />}
           count={totalUsers}
-          text="users"
+          text={t("users")}
         />
         <DashboardBox
           icon={<Icon.Ads className="h-5 w-5" />}
           count={totalAds}
-          text="ads"
+          text={t("ads")}
         />
       </div>
     </div>

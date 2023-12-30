@@ -19,6 +19,7 @@ import { toast } from "@nisomnia/ui/next-client"
 import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import(
@@ -29,6 +30,9 @@ const DashboardAction = React.lazy(async () => {
 
 export const DashboardAdContent: React.FunctionComponent = () => {
   const [page, setPage] = React.useState<number>(1)
+
+  const t = useI18n()
+  const ts = useScopedI18n("ad")
 
   const { data: adsCount } = api.ad.count.useQuery()
 
@@ -46,7 +50,7 @@ export const DashboardAdContent: React.FunctionComponent = () => {
   const { mutate: deleteAd } = api.ad.delete.useMutation({
     onSuccess: () => {
       refetch()
-      toast({ variant: "success", description: "Delete Ad Successfully" })
+      toast({ variant: "success", description: ts("delete_success") })
     },
     onError: (error) => {
       const errorData = error?.data?.zodError?.fieldErrors
@@ -65,7 +69,7 @@ export const DashboardAdContent: React.FunctionComponent = () => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to delete ad! Please try again later",
+          description: ts("delete_success"),
         })
       }
     },
@@ -81,10 +85,10 @@ export const DashboardAdContent: React.FunctionComponent = () => {
     <>
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink aria-label="Add New Ad" href="/dashboard/ad/new">
+          <NextLink aria-label={t("add_new")} href="/dashboard/ad/new">
             <Button variant="ghost">
               <Icon.Add />
-              Add New
+              {t("add_new")}
             </Button>
           </NextLink>
         </div>
@@ -96,17 +100,17 @@ export const DashboardAdContent: React.FunctionComponent = () => {
               <Table className="table-fixed border-collapse border-spacing-0">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Position</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Active</TableHead>
+                    <TableHead>{t("title")}</TableHead>
+                    <TableHead>{t("position")}</TableHead>
+                    <TableHead>{t("type")}</TableHead>
+                    <TableHead>{t("active")}</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Published Date
+                      {t("published_date")}
                     </TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Last Modified
+                      {t("last_modified")}
                     </TableHead>
-                    <TableHead align="center">Actions</TableHead>
+                    <TableHead align="center">{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -192,7 +196,9 @@ export const DashboardAdContent: React.FunctionComponent = () => {
             </>
           ) : (
             <div className="my-48 flex items-center justify-center">
-              <h3 className="text-center text-4xl font-bold">Ads Not found</h3>
+              <h3 className="text-center text-4xl font-bold">
+                {ts("not_found")}
+              </h3>
             </div>
           ))}
       </div>

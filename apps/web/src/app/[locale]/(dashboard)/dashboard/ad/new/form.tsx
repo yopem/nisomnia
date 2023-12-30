@@ -16,6 +16,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   title: string
@@ -27,6 +28,9 @@ interface FormValues {
 
 export const CreateAdForm = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("ad")
 
   const {
     register,
@@ -42,7 +46,7 @@ export const CreateAdForm = () => {
   const { mutate: createAd } = api.ad.create.useMutation({
     onSuccess: () => {
       reset()
-      toast({ variant: "success", description: "Ad Successfully created" })
+      toast({ variant: "success", description: ts("create_success") })
     },
     onError: (error) => {
       setLoading(false)
@@ -62,7 +66,7 @@ export const CreateAdForm = () => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to create ad! Please try again later",
+          description: ts("create_failed"),
         })
       }
     },
@@ -78,16 +82,16 @@ export const CreateAdForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <FormControl invalid={Boolean(errors.title)}>
         <FormLabel>
-          Title
+          {t("title")}
           <RequiredIndicator />
         </FormLabel>
         <Input
           type="text"
           {...register("title", {
-            required: "Title is Required",
+            required: ts("title_required"),
           })}
           className="max-w-xl"
-          placeholder="Enter Title"
+          placeholder={ts("title_placeholder")}
         />
         {errors?.title && (
           <FormErrorMessage>{errors.title.message}</FormErrorMessage>
@@ -95,16 +99,16 @@ export const CreateAdForm = () => {
       </FormControl>
       <FormControl invalid={Boolean(errors.type)}>
         <FormLabel>
-          Type
+          {t("type")}
           <RequiredIndicator />
         </FormLabel>
         <Select
           {...register("type", {
-            required: "Type is Required",
+            required: ts("type_required"),
           })}
-          placeholder="Select a Type"
+          placeholder={ts("type_placeholder")}
         >
-          <option value="plain_ad">Plain Ad</option>
+          <option value="plain_ad">{ts("plain_ad")}</option>
           <option value="adsense">Adsense</option>
         </Select>
         {errors?.type && (
@@ -114,20 +118,20 @@ export const CreateAdForm = () => {
       <FormControl invalid={Boolean(errors.content)}>
         {adType !== "adsense" ? (
           <>
-            <FormLabel>Content</FormLabel>
+            <FormLabel>{t("content")}</FormLabel>
             <Textarea
               {...register("content")}
               className="max-w-xl"
-              placeholder="Enter Script"
+              placeholder={ts("content_script_placeholder")}
             />
           </>
         ) : (
           <>
-            <FormLabel>Ad Slot</FormLabel>
+            <FormLabel>{ts("slot")}</FormLabel>
             <Input
               {...register("content")}
               className="max-w-xl"
-              placeholder="AdSlot"
+              placeholder={ts("content_adsense_placeholder")}
             />
           </>
         )}
@@ -137,35 +141,43 @@ export const CreateAdForm = () => {
       </FormControl>
       <FormControl invalid={Boolean(errors.position)}>
         <FormLabel>
-          Position
+          {t("position")}
           <RequiredIndicator />
         </FormLabel>
         <Select
           {...register("position", {
-            required: "Position is Required",
+            required: ts("position_required"),
           })}
-          placeholder="Select a Position"
+          placeholder={ts("position_placeholder")}
         >
-          <option value="home_below_header">Home (Below Header)</option>
-          <option value="topic_below_header">Topic (Below Header)</option>
-          <option value="article_below_header">Article (Below Header)</option>
+          <option value="home_below_header">
+            {ts("position_home_below_header")}
+          </option>
+          <option value="topic_below_header">
+            {ts("position_topic_below_header")}
+          </option>
+          <option value="article_below_header">
+            {ts("position_article_below_header")}
+          </option>
           <option value="single_article_above_content">
-            Single Article (Above Content)
+            {ts("position_single_article_above_content")}
           </option>
           <option value="single_article_middle_content">
-            Single Article (Middle Content)
+            {ts("position_single_article_middle_content")}
           </option>
           <option value="single_article_below_content">
-            Single Article (Below Content)
+            {ts("position_single_article_below_content")}
           </option>
-          <option value="single_article_pop_up">Single Article (Pop Up)</option>
+          <option value="single_article_pop_up">
+            {ts("position_single_article_pop_up")}
+          </option>
         </Select>
         {errors?.position && (
           <FormErrorMessage>{errors.position.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.active)}>
-        <FormLabel>Active</FormLabel>
+        <FormLabel>{t("active")}</FormLabel>
         <Controller
           control={control}
           name="active"
@@ -175,7 +187,7 @@ export const CreateAdForm = () => {
         />
       </FormControl>
       <Button aria-label="Submit" type="submit" loading={loading}>
-        Submit
+        {t("submit")}
       </Button>
     </form>
   )
