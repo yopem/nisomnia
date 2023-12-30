@@ -5,18 +5,16 @@ import type { LanguageType } from "@nisomnia/db"
 import { Button, Icon } from "@nisomnia/ui/next"
 
 import { TopicListNav } from "@/components/Topic/TopicListNav"
-import { getI18n } from "@/locales/server"
+import { useI18n } from "@/locales/client"
 
 interface MobileMenuProps {
   locale: LanguageType
 }
 
-export const MobileMenu: React.FunctionComponent<MobileMenuProps> = async (
-  props,
-) => {
+export const MobileMenu: React.FunctionComponent<MobileMenuProps> = (props) => {
   const { locale } = props
 
-  const t = await getI18n()
+  const t = useI18n()
 
   return (
     <div className="relative z-10 flex lg:hidden">
