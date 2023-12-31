@@ -16,6 +16,7 @@ import {
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const SelectMediaModal = React.lazy(async () => {
   const { SelectMediaModal } = await import(
@@ -42,10 +43,13 @@ export const CreateTopicForm: React.FunctionComponent = () => {
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
 
+  const t = useI18n()
+  const ts = useScopedI18n("topic")
+
   const { mutate: createTopic } = api.topic.create.useMutation({
     onSuccess: () => {
       reset()
-      toast({ variant: "success", description: "Topic Successfully created" })
+      toast({ variant: "success", description: ts("create_success") })
     },
     onError: (error) => {
       setLoading(false)
@@ -65,7 +69,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to create topic! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -96,7 +100,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
   }) => {
     setSelectFeaturedImageId(data.id)
     setSelectedFeaturedImageUrl(data.url)
-    toast({ variant: "success", description: "Image has been selected" })
+    toast({ variant: "success", description: t("media_selected") })
     setOpenModal(false)
   }
 
@@ -109,16 +113,16 @@ export const CreateTopicForm: React.FunctionComponent = () => {
     >
       <FormControl invalid={Boolean(errors.title)}>
         <FormLabel>
-          Title
+          {t("title")}
           <RequiredIndicator />
         </FormLabel>
         <Input
           type="text"
           {...register("title", {
-            required: "Title is Required",
+            required: t("title_required"),
           })}
           className="max-w-xl"
-          placeholder="Enter Title"
+          placeholder={t("title_placeholder")}
         />
         {errors?.title && (
           <FormErrorMessage>{errors.title.message}</FormErrorMessage>
@@ -126,14 +130,14 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       </FormControl>
       <FormControl>
         <FormLabel>
-          Language
+          {t("language")}
           <RequiredIndicator />
         </FormLabel>
         <Select
           {...register("language", {
-            required: "Language is Required",
+            required: t("language_required"),
           })}
-          placeholder="Select a Language"
+          placeholder={t("language_placeholder")}
         >
           <option value="id">Indonesia</option>
           <option value="en">English</option>
@@ -144,30 +148,30 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       </FormControl>
       <FormControl>
         <FormLabel>
-          Type
+          {t("type")}
           <RequiredIndicator />
         </FormLabel>
         <Select
           {...register("type", {
-            required: "Type is Required",
+            required: t("type_required"),
           })}
-          placeholder="Select a Type"
+          placeholder={t("type_placeholder")}
         >
-          <option value="all">ALL</option>
-          <option value="article">ARTICLE</option>
-          <option value="review">REVIEW</option>
-          <option value="tutorial">TUTORIAL</option>
+          <option value="all">{t("all")}</option>
+          <option value="article">{t("article")}</option>
+          <option value="review">{t("review")}</option>
+          <option value="tutorial">{t("tutorial")}</option>
         </Select>
         {errors?.type && (
           <FormErrorMessage>{errors.type.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.description)}>
-        <FormLabel>Description</FormLabel>
+        <FormLabel>{t("description")}</FormLabel>
         <Textarea
           {...register("description")}
           className="max-w-xl"
-          placeholder="Enter Description (Optional)"
+          placeholder={t("description_placeholder")}
         />
         {errors?.description && (
           <FormErrorMessage>{errors.description.message}</FormErrorMessage>
@@ -175,7 +179,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       </FormControl>
       {selectedFeaturedImageUrl ? (
         <>
-          <FormLabel>Featured Image</FormLabel>
+          <FormLabel>{t("featured_image")}</FormLabel>
           <SelectMediaModal
             handleSelectUpdateMedia={handleUpdateMedia}
             open={openModal}
@@ -186,7 +190,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
                   src={selectedFeaturedImageUrl}
                   className="object-cover"
                   fill
-                  alt="Featured Image"
+                  alt={t("featured_image")}
                   onClick={() => setOpenModal(true)}
                   sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 33vw"
                 />
@@ -201,35 +205,35 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           setOpen={setOpenModal}
           triggerContent={
             <>
-              <FormLabel>Featured Image</FormLabel>
+              <FormLabel>{t("featured_image")}</FormLabel>
               <div
                 onClick={() => setOpenModal(true)}
                 className="relative mr-auto flex aspect-video h-[150px] items-center justify-center bg-muted text-success"
               >
-                <p>Select Featured Image</p>
+                <p>{t("featured_image_placeholder")}</p>
               </div>
             </>
           }
         />
       )}
       <FormControl invalid={Boolean(errors.meta_title)}>
-        <FormLabel>Meta Title</FormLabel>
+        <FormLabel>{t("meta_title")}</FormLabel>
         <Input
           type="text"
           {...register("meta_title")}
           className="max-w-xl"
-          placeholder="Enter Meta Title (Optional)"
+          placeholder={t("meta_description_placeholder")}
         />
         {errors?.meta_title && (
           <FormErrorMessage>{errors.meta_title.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.meta_description)}>
-        <FormLabel>Meta Description</FormLabel>
+        <FormLabel>{t("meta_description")}</FormLabel>
         <Textarea
           {...register("meta_description")}
           className="max-w-xl"
-          placeholder="Enter Meta Description (Optional)"
+          placeholder={t("meta_description_placeholder")}
         />
         {errors?.meta_description && (
           <FormErrorMessage>{errors.meta_description.message}</FormErrorMessage>
@@ -237,7 +241,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
       </FormControl>
       <div className="flex space-x-2">
         <Button
-          aria-label="Save as Draft"
+          aria-label={t("save_as_draft")}
           type="submit"
           onClick={() => {
             setValue("status", "draft")
@@ -245,10 +249,10 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           }}
           loading={loading}
         >
-          Save as Draft
+          {t("save_as_draft")}
         </Button>
         <Button
-          aria-label="Submit"
+          aria-label={t("submit")}
           type="submit"
           onClick={() => {
             setValue("status", "published")
@@ -256,7 +260,7 @@ export const CreateTopicForm: React.FunctionComponent = () => {
           }}
           loading={loading}
         >
-          Submit
+          {t("submit")}
         </Button>
       </div>
     </form>

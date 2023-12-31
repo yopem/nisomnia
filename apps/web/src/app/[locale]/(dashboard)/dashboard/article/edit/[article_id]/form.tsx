@@ -346,7 +346,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                       {...register("language", {
                         required: t("language_required"),
                       })}
-                      placeholder={t("language_select")}
+                      placeholder={t("language_placeholder")}
                     >
                       <option value={article?.language as string}>
                         {article?.language === "id"

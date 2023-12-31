@@ -29,6 +29,7 @@ import {
 import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import(
@@ -75,6 +76,9 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
   const [topicsDataLangEn, setTopicsDataLangEn] = React.useState<
     TopicDataProps[]
   >([])
+
+  const t = useI18n()
+  const ts = useScopedI18n("topic")
 
   const { data: topicsCountLangId } = api.topic.countByLanguage.useQuery("id")
   const { data: topicsCountLangEn } = api.topic.countByLanguage.useQuery("en")
@@ -149,10 +153,10 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
     <>
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink aria-label="Add New Topic" href="/dashboard/topic/new">
+          <NextLink aria-label={t("add_new")} href="/dashboard/topic/new">
             <Button variant="ghost">
               <Icon.Add />
-              Add New
+              {t("add_new")}
             </Button>
           </NextLink>
         </div>
@@ -200,7 +204,7 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
               ) : (
                 <div className="my-48 flex items-center justify-center">
                   <h3 className="text-center text-4xl font-bold">
-                    Topics Not found
+                    {ts("not_found")}
                   </h3>
                 </div>
               )}
@@ -225,7 +229,7 @@ export const DashboardTopicContent: React.FunctionComponent = () => {
               ) : (
                 <div className="my-48 flex items-center justify-center">
                   <h3 className="text-center text-4xl font-bold">
-                    Topics Not found
+                    {ts("not_found")}
                   </h3>
                 </div>
               )}
@@ -258,10 +262,13 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
     refetch,
   } = props
 
+  const t = useI18n()
+  const ts = useScopedI18n("topic")
+
   const { mutate: deleteTopic } = api.topic.delete.useMutation({
     onSuccess: () => {
       refetch()
-      toast({ variant: "success", description: "Delete Topic Successfully" })
+      toast({ variant: "success", description: ts("delete_success") })
     },
     onError: (error) => {
       const errorData = error?.data?.zodError?.fieldErrors
@@ -280,7 +287,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to delete topic! Please try again later",
+          description: ts("delete_failed"),
         })
       }
     },
@@ -291,7 +298,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
       <Table className="table-fixed border-collapse border-spacing-0">
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
+            <TableHead>{t("title")}</TableHead>
             <TableHead>
               <div className="relative h-3 w-4">
                 <Icon.IndonesiaFlag />
@@ -302,14 +309,14 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
                 <Icon.USAFlag />
               </div>
             </TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Slug</TableHead>
+            <TableHead>{t("type")}</TableHead>
+            <TableHead>{t("slug")}</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="hidden md:table-cell">
-              Published Date
+              {t("published_date")}
             </TableHead>
             <TableHead className="hidden md:table-cell">
-              Last Modified
+              {t("last_modified")}
             </TableHead>
             <TableHead align="center">Actions</TableHead>
           </TableRow>
@@ -341,7 +348,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
                           {topicIndo ? (
                             <p>{topicIndo.title}</p>
                           ) : (
-                            <p>Add Translations</p>
+                            <p>{t("translate")}</p>
                           )}
                         </>
                       }
@@ -358,7 +365,7 @@ const TopicTable: React.FunctionComponent<TopicTableProps> = (props) => {
                           {topicEnglish ? (
                             <p>{topicEnglish.title}</p>
                           ) : (
-                            <p>Add Translations</p>
+                            <p>{t("translate")}</p>
                           )}
                         </>
                       }
