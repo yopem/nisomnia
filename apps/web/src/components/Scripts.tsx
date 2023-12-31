@@ -1,18 +1,13 @@
 import Script from "next/script"
 
 import env from "@/env"
+import { AdsenseScript } from "./Ad/AdsenseScript"
 
 export const Scripts = () => {
   if (process.env.APP_ENV === "production") {
     return (
       <>
-        <Script
-          id="adsense"
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
+        <AdsenseScript />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
         />
