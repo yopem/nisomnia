@@ -88,10 +88,10 @@ export const CreateAdForm = () => {
         <Input
           type="text"
           {...register("title", {
-            required: ts("title_required"),
+            required: t("title_required"),
           })}
           className="max-w-xl"
-          placeholder={ts("title_placeholder")}
+          placeholder={t("title_placeholder")}
         />
         {errors?.title && (
           <FormErrorMessage>{errors.title.message}</FormErrorMessage>

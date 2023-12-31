@@ -27,6 +27,7 @@ import {
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const Editor = React.lazy(async () => {
   const { Editor } = await import("@/components/Editor")
@@ -158,11 +159,14 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
   const [articleTranslationPrimaryId, setArticleTranslationPrimaryId] =
     React.useState<string>("")
 
+  const t = useI18n()
+  const ts = useScopedI18n("article")
+
   const { isOpen, onToggle } = useDisclosure()
 
   const { mutate: updateArticle } = api.article.update.useMutation({
     onSuccess: () => {
-      toast({ variant: "success", description: "Update Article successfully" })
+      toast({ variant: "success", description: ts("update_success") })
     },
     onError: (error) => {
       setLoading(false)
@@ -182,7 +186,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
       } else {
         toast({
           variant: "danger",
-          description: "Failed to update article! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -262,15 +266,15 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
         <Button aria-label="Back To Articles" variant="ghost">
           <NextLink
             className="flex items-center"
-            aria-label="Back To Articles"
+            aria-label={ts("back")}
             href="/dashboard/article"
           >
-            <Icon.ChevronLeft aria-label="Back To Articles" /> Articles
+            <Icon.ChevronLeft aria-label={ts("back")} /> Articles
           </NextLink>
         </Button>
         <div>
           <Button
-            aria-label="Save as Draft"
+            aria-label={t("save_as_draft")}
             type="submit"
             onClick={() => {
               setValue("status", "draft")
@@ -279,10 +283,10 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
             variant="ghost"
             loading={loading}
           >
-            Save as Draft
+            {t("save_as_draft")}
           </Button>
           <Button
-            aria-label="Update"
+            aria-label={t("update")}
             type="submit"
             onClick={() => {
               setValue("status", "published")
@@ -291,7 +295,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
             variant="ghost"
             loading={loading}
           >
-            Update
+            {t("update")}
           </Button>
           <Button aria-label="View Sidebar" variant="ghost" onClick={onToggle}>
             <Icon.Menu />
@@ -309,9 +313,9 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                   variant="plain"
                   className="font-bold"
                   {...register("title", {
-                    required: "Title is Required",
+                    required: t("title_required"),
                   })}
-                  placeholder="Title"
+                  placeholder={t("title_placeholder")}
                 />
                 {errors?.title && (
                   <FormErrorMessage>{errors.title.message}</FormErrorMessage>
@@ -340,9 +344,9 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                   <FormControl invalid={Boolean(errors.language)}>
                     <Select
                       {...register("language", {
-                        required: "Language is Required",
+                        required: t("language_required"),
                       })}
-                      placeholder="Select a Language"
+                      placeholder={t("language_select")}
                     >
                       <option value={article?.language as string}>
                         {article?.language === "id"
@@ -358,20 +362,23 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Slug</FormLabel>
+                  <FormLabel>{t("slug")}</FormLabel>
                   <FormControl invalid={Boolean(errors.slug)}>
-                    <Input {...register("slug")} placeholder="Enter Slug" />
+                    <Input
+                      {...register("slug")}
+                      placeholder={t("slug_placeholder")}
+                    />
                     {errors?.slug && (
                       <FormErrorMessage>{errors.slug.message}</FormErrorMessage>
                     )}
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Excerpt</FormLabel>
+                  <FormLabel>{t("excerpt")}</FormLabel>
                   <FormControl invalid={Boolean(errors.excerpt)}>
                     <Textarea
                       {...register("excerpt")}
-                      placeholder="Enter Excerpt (Optional)"
+                      placeholder={t("excerpt_placeholder")}
                     />
                     {errors?.excerpt && (
                       <FormErrorMessage>
@@ -396,7 +403,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                 <div className="my-2 px-4">
                   {selectedFeaturedImageUrl ? (
                     <>
-                      <FormLabel>Featured Image</FormLabel>
+                      <FormLabel>{t("featured_image")}</FormLabel>
                       <SelectMediaModal
                         handleSelectUpdateMedia={handleUpdateMedia}
                         open={openModal}
@@ -408,7 +415,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                                 src={selectedFeaturedImageUrl}
                                 className="!relative mt-2 aspect-video h-[120px] cursor-pointer rounded-sm border-2 border-muted/30 object-cover"
                                 fill
-                                alt="Featured Image"
+                                alt={t("featured_image")}
                                 onClick={() => setOpenModal(true)}
                                 sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 33vw"
                                 quality={60}
@@ -420,7 +427,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                     </>
                   ) : (
                     <>
-                      <FormLabel>Featured Image</FormLabel>
+                      <FormLabel>{t("featured_image")}</FormLabel>
                       <SelectMediaModal
                         handleSelectUpdateMedia={handleUpdateMedia}
                         open={openModal}
@@ -430,7 +437,7 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                             onClick={() => setOpenModal(true)}
                             className="relative m-auto flex aspect-video h-[120px] cursor-pointer items-center justify-center bg-muted text-success"
                           >
-                            <p>Select Featured Image</p>
+                            <p>{t("featured_image_placeholder")}</p>
                           </div>
                         }
                       />
@@ -454,11 +461,11 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                   />
                 </div>
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Meta Title</FormLabel>
+                  <FormLabel>{t("meta_title")}</FormLabel>
                   <FormControl invalid={Boolean(errors.meta_title)}>
                     <Input
                       {...register("meta_title")}
-                      placeholder="Enter Meta Title (Optional)"
+                      placeholder={t("meta_title_placeholder")}
                     />
                     {errors?.meta_title && (
                       <FormErrorMessage>
@@ -468,11 +475,11 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Meta Description</FormLabel>
+                  <FormLabel>{t("meta_description")}</FormLabel>
                   <FormControl invalid={Boolean(errors.meta_description)}>
                     <Textarea
                       {...register("meta_description")}
-                      placeholder="Enter Meta Description (Optional)"
+                      placeholder={t("meta_description_placeholder")}
                     />
                     {errors?.meta_description && (
                       <FormErrorMessage>

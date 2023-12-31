@@ -43,7 +43,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="my-8">
-      <h2 className="text-3xl">Statistics</h2>
+      <h2 className="text-3xl">{t("statistics")}</h2>
       <div className="my-8 grid grid-cols-2 gap-3 md:grid-cols-5">
         <DashboardBox
           icon={<Icon.Article className="h-5 w-5" />}

@@ -32,6 +32,7 @@ import {
 import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import(
@@ -66,6 +67,9 @@ export const DashboardArticleContent: React.FunctionComponent = () => {
   const [articlesDataLangEn, setArticlesDataLangEn] = React.useState<
     ArticleDataProps[]
   >([])
+
+  const t = useI18n()
+  const ts = useScopedI18n("article")
 
   const { data: articlesCountLangId } =
     api.article.countByLanguage.useQuery("id")
@@ -147,10 +151,10 @@ export const DashboardArticleContent: React.FunctionComponent = () => {
     <>
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink aria-label="Add New Article" href="/dashboard/article/new">
+          <NextLink aria-label={t("add_new")} href="/dashboard/article/new">
             <Button variant="ghost">
               <Icon.Add />
-              Add New
+              {t("add_new")}
             </Button>
           </NextLink>
         </div>
@@ -198,7 +202,7 @@ export const DashboardArticleContent: React.FunctionComponent = () => {
               ) : (
                 <div className="my-48 flex items-center justify-center">
                   <h3 className="text-center text-4xl font-bold">
-                    Articles Not found
+                    {ts("not_found")}
                   </h3>
                 </div>
               )}
@@ -223,7 +227,7 @@ export const DashboardArticleContent: React.FunctionComponent = () => {
               ) : (
                 <div className="my-48 flex items-center justify-center">
                   <h3 className="text-center text-4xl font-bold">
-                    Articles Not found
+                    {ts("not_found")}
                   </h3>
                 </div>
               )}
@@ -256,10 +260,13 @@ const ArticleTable = (props: ArticleTableProps) => {
     refetch,
   } = props
 
+  const t = useI18n()
+  const ts = useScopedI18n("article")
+
   const { mutate: deleteArticle } = api.article.deleteByAdmin.useMutation({
     onSuccess: () => {
       refetch()
-      toast({ variant: "success", description: "Delete Article Successfully" })
+      toast({ variant: "success", description: ts("delete_success") })
     },
     onError: (error) => {
       const errorData = error?.data?.zodError?.fieldErrors
@@ -278,7 +285,7 @@ const ArticleTable = (props: ArticleTableProps) => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to delete article! Please try again later",
+          description: ts("delete_failed"),
         })
       }
     },
@@ -289,7 +296,7 @@ const ArticleTable = (props: ArticleTableProps) => {
       <Table className="table-fixed	border-collapse border-spacing-0">
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
+            <TableHead>{t("title")}</TableHead>
             <TableHead>
               <div className="relative h-3 w-4">
                 <Icon.IndonesiaFlag />
@@ -301,13 +308,13 @@ const ArticleTable = (props: ArticleTableProps) => {
               </div>
             </TableHead>
             <TableHead className="hidden md:table-cell">
-              Published Date
+              {t("published_date")}
             </TableHead>
             <TableHead className="hidden md:table-cell">
-              Last Modified
+              {t("last_modified")}
             </TableHead>
             <TableHead className="hidden md:table-cell">Status</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -340,7 +347,7 @@ const ArticleTable = (props: ArticleTableProps) => {
                           {articleIndo ? (
                             <p>{articleIndo.title}</p>
                           ) : (
-                            <p>Add Translations</p>
+                            <p>{t("translate")}</p>
                           )}
                         </>
                       }
@@ -357,7 +364,7 @@ const ArticleTable = (props: ArticleTableProps) => {
                           {articleEnglish ? (
                             <p>{articleEnglish.title}</p>
                           ) : (
-                            <p>Add Translations</p>
+                            <p>{t("translate")}</p>
                           )}
                         </>
                       }

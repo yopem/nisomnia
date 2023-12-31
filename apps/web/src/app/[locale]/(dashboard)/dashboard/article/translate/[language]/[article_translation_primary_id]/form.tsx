@@ -20,6 +20,7 @@ import {
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const Editor = React.lazy(async () => {
   const { Editor } = await import("@/components/Editor")
@@ -118,6 +119,9 @@ export const TranslateArticleForm: React.FunctionComponent<
   )
   const [isClear, setIsClear] = React.useState(false)
 
+  const t = useI18n()
+  const ts = useScopedI18n("article")
+
   const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
@@ -149,7 +153,7 @@ export const TranslateArticleForm: React.FunctionComponent<
       setSelectedTopics([])
       toast({
         variant: "success",
-        description: "Translate Article successfully",
+        description: ts("translate_success"),
       })
       router.push("/dashboard/article")
     },
@@ -171,7 +175,7 @@ export const TranslateArticleForm: React.FunctionComponent<
       } else {
         toast({
           variant: "danger",
-          description: "Failed to translate article! Please try again later",
+          description: ts("translate_failed"),
         })
       }
     },
@@ -209,15 +213,15 @@ export const TranslateArticleForm: React.FunctionComponent<
         <Button aria-label="Back To Articles" variant="ghost">
           <NextLink
             className="flex items-center"
-            aria-label="Back To Articles"
+            aria-label={ts("back")}
             href="/dashboard/article"
           >
-            <Icon.ChevronLeft aria-label="Back To Articles" /> Articles
+            <Icon.ChevronLeft aria-label={ts("back")} /> {ts("back")}
           </NextLink>
         </Button>
         <div>
           <Button
-            aria-label="Save as Draft"
+            aria-label={t("save_as_draft")}
             type="submit"
             onClick={() => {
               setValue("status", "draft")
@@ -226,10 +230,10 @@ export const TranslateArticleForm: React.FunctionComponent<
             variant="ghost"
             loading={loading}
           >
-            Save as Draft
+            {t("save_as_draft")}
           </Button>
           <Button
-            aria-label="Publish"
+            aria-label={t("publish")}
             type="submit"
             onClick={() => {
               setValue("status", "published")
@@ -238,7 +242,7 @@ export const TranslateArticleForm: React.FunctionComponent<
             variant="ghost"
             loading={loading}
           >
-            Publish
+            {t("publish")}
           </Button>
           <Button
             type="button"
@@ -261,9 +265,9 @@ export const TranslateArticleForm: React.FunctionComponent<
                   variant="plain"
                   className="font-bold"
                   {...register("title", {
-                    required: "Title is Required",
+                    required: t("title"),
                   })}
-                  placeholder="Title"
+                  placeholder={t("title_placeholder")}
                 />
                 {errors?.title && (
                   <FormErrorMessage>{errors.title.message}</FormErrorMessage>
@@ -308,7 +312,7 @@ export const TranslateArticleForm: React.FunctionComponent<
                 <div className="my-2 px-4">
                   {selectedFeaturedImageUrl ? (
                     <>
-                      <FormLabel>Featured Image</FormLabel>
+                      <FormLabel>{t("featured_image")}</FormLabel>
                       <SelectMediaModal
                         handleSelectUpdateMedia={handleUpdateMedia}
                         open={openModal}
@@ -332,7 +336,7 @@ export const TranslateArticleForm: React.FunctionComponent<
                     </>
                   ) : (
                     <>
-                      <FormLabel>Featured Image</FormLabel>
+                      <FormLabel>{t("featured_image")}</FormLabel>
                       <SelectMediaModal
                         handleSelectUpdateMedia={handleUpdateMedia}
                         open={openModal}
@@ -342,7 +346,7 @@ export const TranslateArticleForm: React.FunctionComponent<
                             onClick={() => setOpenModal(true)}
                             className="relative m-auto flex aspect-video h-[120px] cursor-pointer items-center justify-center bg-muted text-success"
                           >
-                            <p>Select Featured Image</p>
+                            <p>{t("featured_image_placeholder")}</p>
                           </div>
                         }
                       />
@@ -367,11 +371,11 @@ export const TranslateArticleForm: React.FunctionComponent<
                 </div>
 
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Meta Title</FormLabel>
+                  <FormLabel>{t("meta_title")}</FormLabel>
                   <FormControl invalid={Boolean(errors.meta_title)}>
                     <Input
                       {...register("meta_title")}
-                      placeholder="Enter Meta Title (Optional)"
+                      placeholder={t("meta_title_placeholder")}
                     />
                     {errors?.meta_title && (
                       <FormErrorMessage>
@@ -381,11 +385,11 @@ export const TranslateArticleForm: React.FunctionComponent<
                   </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">
-                  <FormLabel>Meta Description</FormLabel>
+                  <FormLabel>{t("meta_description")}</FormLabel>
                   <FormControl invalid={Boolean(errors.meta_description)}>
                     <Textarea
                       {...register("meta_description")}
-                      placeholder="Enter Meta Description (Optional)"
+                      placeholder={t("meta_description_placeholder")}
                     />
                     {errors?.meta_description && (
                       <FormErrorMessage>

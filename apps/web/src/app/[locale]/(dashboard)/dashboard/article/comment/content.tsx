@@ -19,6 +19,7 @@ import { formatDate } from "@nisomnia/utils"
 
 import env from "@/env"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import(
@@ -30,6 +31,9 @@ const DashboardAction = React.lazy(async () => {
 export const DashboardArticleCommentContent: React.FunctionComponent = () => {
   const [page, setPage] = React.useState<number>(1)
 
+  const t = useI18n()
+  const ts = useScopedI18n("comment")
+
   const { data: articleCommentsCount } = api.articleComment.count.useQuery()
 
   const {
@@ -38,7 +42,30 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
     refetch,
   } = api.articleComment.dashboard.useQuery(
     { page: page, per_page: 10 },
-    { keepPreviousData: true },
+    {
+      keepPreviousData: true,
+      onError: (error) => {
+        const errorData = error?.data?.zodError?.fieldErrors
+
+        if (errorData) {
+          for (const field in errorData) {
+            if (errorData.hasOwnProperty(field)) {
+              errorData[field]?.forEach((errorMessage) => {
+                toast({
+                  variant: "danger",
+                  description: errorMessage,
+                })
+              })
+            }
+          }
+        } else {
+          toast({
+            variant: "danger",
+            description: ts("fetch_failed"),
+          })
+        }
+      },
+    },
   )
 
   const lastPage = articleCommentsCount && Math.ceil(articleCommentsCount / 10)
@@ -49,7 +76,7 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
         refetch()
         toast({
           variant: "success",
-          description: "Delete Article Comment Successfully",
+          description: ts("delete_success"),
         })
       },
       onError: (error) => {
@@ -69,7 +96,7 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
         } else {
           toast({
             variant: "danger",
-            description: "Failed to delete article! Please try again later",
+            description: ts("delete_success"),
           })
         }
       },
@@ -88,7 +115,7 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
           <NextLink aria-label="Add New Article" href="/dashboard/ad/new">
             <Button variant="ghost">
               <Icon.Add />
-              Add New
+              {t("add_new")}
             </Button>
           </NextLink>
         </div>
@@ -100,13 +127,13 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
               <Table className="table-fixed border-collapse border-spacing-0">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Content</TableHead>
-                    <TableHead>Author</TableHead>
+                    <TableHead>{t("content")}</TableHead>
+                    <TableHead>{t("author")}</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Published Date
+                      {t("published_date")}
                     </TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Last Modified
+                      {t("last_modified")}
                     </TableHead>
                     <TableHead align="center">Actions</TableHead>
                   </TableRow>
@@ -185,7 +212,7 @@ export const DashboardArticleCommentContent: React.FunctionComponent = () => {
           ) : (
             <div className="my-48 flex items-center justify-center">
               <h3 className="text-center text-4xl font-bold">
-                Article Comments Not found
+                {ts("not_found")}
               </h3>
             </div>
           ))}
