@@ -24,6 +24,7 @@ import {
 import { formatDate } from "@nisomnia/utils"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const DashboardAction = React.lazy(async () => {
   const { DashboardAction } = await import(
@@ -36,6 +37,9 @@ export const DashboardUserContent: React.FunctionComponent = () => {
   const [page, setPage] = React.useState<number>(1)
   const [searchQuery, setSearchQuery] = React.useState<string>("")
   const [usersData, setUsersData] = React.useState<UserProps[]>([])
+
+  const t = useI18n()
+  const ts = useScopedI18n("user")
 
   const { data: usersCount } = api.user.count.useQuery()
 
@@ -54,7 +58,7 @@ export const DashboardUserContent: React.FunctionComponent = () => {
 
   const { mutate: deleteUser } = api.user.deleteByAdmin.useMutation({
     onSuccess: () => {
-      toast({ variant: "success", description: "Delete User Successfully" })
+      toast({ variant: "success", description: ts("update_success") })
       refetch()
     },
     onError: (error) => {
@@ -74,7 +78,7 @@ export const DashboardUserContent: React.FunctionComponent = () => {
       } else {
         toast({
           variant: "danger",
-          description: "Failed to delete user! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -122,16 +126,16 @@ export const DashboardUserContent: React.FunctionComponent = () => {
               <Table className="table-fixed border-collapse border-spacing-0">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Username</TableHead>
-                    <TableHead>Name</TableHead>
+                    <TableHead>{ts("username")}</TableHead>
+                    <TableHead>{ts("name")}</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Email
+                      {ts("email")}
                     </TableHead>
-                    <TableHead>Role</TableHead>
+                    <TableHead>{ts("role")}</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Date Joined
+                      {ts("date_joined")}
                     </TableHead>
-                    <TableHead align="center">Actions</TableHead>
+                    <TableHead align="center">{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -204,7 +208,7 @@ export const DashboardUserContent: React.FunctionComponent = () => {
           ) : (
             <div className="my-48 flex items-center justify-center">
               <h3 className="text-center text-4xl font-bold">
-                Users Not found
+                {ts("not_found")}
               </h3>
             </div>
           ))}

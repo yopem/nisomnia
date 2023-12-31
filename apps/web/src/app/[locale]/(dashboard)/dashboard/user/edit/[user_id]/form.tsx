@@ -16,6 +16,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   id: string
@@ -39,11 +40,14 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
 
   const [loading, setLoading] = React.useState<boolean>(false)
 
+  const t = useI18n()
+  const ts = useScopedI18n("user")
+
   const router = useRouter()
 
   const { mutate: updateUserByAdmin } = api.user.updateByAdmin.useMutation({
     onSuccess: () => {
-      toast({ variant: "success", description: "Update User successfully" })
+      toast({ variant: "success", description: ts("update_success") })
       router.push("/dashboard/user")
     },
     onError: (error) => {
@@ -64,7 +68,7 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
       } else {
         toast({
           variant: "danger",
-          description: "Failed to update user! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -94,13 +98,13 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <FormControl invalid={Boolean(errors.name)}>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>{ts("name")}</FormLabel>
         <Input
           type="name"
           {...register("name", {
-            required: "Name is required",
-            min: { value: 1, message: "Minimal name 1 characters" },
-            max: { value: 64, message: "Maximum name 64 characters" },
+            required: ts("validation_name_required"),
+            min: { value: 1, message: ts("validation_name_min") },
+            max: { value: 64, message: ts("validation_name_max") },
           })}
           placeholder="Enter name"
           className="max-w-xl"
@@ -111,27 +115,26 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
       </FormControl>
       <FormControl invalid={Boolean(errors.username)}>
         <FormLabel>
-          Username
+          {ts("username")}
           <RequiredIndicator />
         </FormLabel>
         <Input
           {...register("username", {
-            required: "Username is Required",
+            required: ts("validation_username_required"),
             pattern: {
               value: /^[a-z0-9]{3,16}$/i,
-              message:
-                "Username should be 3-20 characters without spaces, symbol or any special characters.",
+              message: ts("validation_username_pattern"),
             },
             min: {
               value: 3,
-              message: "Minimal username 3 characters",
+              message: ts("validation_username_min"),
             },
             max: {
               value: 20,
-              message: "Maximum username 20 characters",
+              message: ts("validation_username_max"),
             },
           })}
-          placeholder="Enter your username"
+          placeholder={ts("username_placeholder")}
           className="max-w-xl"
         />
         {errors?.username && (
@@ -139,16 +142,16 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.phone_number)}>
-        <FormLabel>Phone Number</FormLabel>
+        <FormLabel>{ts("phone_number")}</FormLabel>
         <Input
           type="text"
           {...register("phone_number", {
             pattern: {
               value: /^(0|[1-9]\d*)(\.\d+)?$/,
-              message: "Number is Invalid",
+              message: ts("validation_phone_number_pattern"),
             },
           })}
-          placeholder="Optional"
+          placeholder={ts("phone_number_placeholder")}
           className="max-w-xl"
         />
         {errors?.phone_number && (
@@ -157,14 +160,14 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
       </FormControl>
       <FormControl invalid={Boolean(errors.role)}>
         <FormLabel>
-          Role
+          {ts("role")}
           <RequiredIndicator />
         </FormLabel>
         <Select
           {...register("role", {
-            required: "Role is Required",
+            required: ts("validation_role_required"),
           })}
-          placeholder="Select a Role"
+          placeholder={ts("role_placeholder")}
         >
           <option value="admin">admin</option>
           <option value="author">author</option>
@@ -176,18 +179,18 @@ export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
         )}
       </FormControl>
       <FormControl invalid={Boolean(errors.about)}>
-        <FormLabel>About</FormLabel>
+        <FormLabel>{ts("about")}</FormLabel>
         <Textarea
           {...register("about")}
           className="max-w-xl"
-          placeholder="Optional"
+          placeholder={ts("about_placeholder")}
         />
         {errors?.about && (
           <FormErrorMessage>{errors.about.message}</FormErrorMessage>
         )}
       </FormControl>
-      <Button aria-label="Submit" type="submit" loading={loading}>
-        Submit
+      <Button aria-label={t("submit")} type="submit" loading={loading}>
+        {t("submit")}
       </Button>
     </form>
   )

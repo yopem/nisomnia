@@ -108,11 +108,11 @@ export const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
             },
             min: {
               value: 3,
-              message: ts("validaion_username_min"),
+              message: ts("validation_username_min"),
             },
             max: {
               value: 20,
-              message: ts("validaion_username_max"),
+              message: ts("validation_username_max"),
             },
           })}
           disabled
