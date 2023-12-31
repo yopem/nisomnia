@@ -14,6 +14,7 @@ import {
 } from "@nisomnia/ui/next-client"
 
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 const CopyMediaLinkButton = React.lazy(async () => {
   const { CopyMediaLinkButton } = await import(
@@ -39,6 +40,9 @@ const InfiniteScrollMedia = React.lazy(async () => {
 export const MediaLibraryContent: React.FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = React.useState<string | null>(null)
 
+  const t = useI18n()
+  const ts = useScopedI18n("media")
+
   const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     setSearchQuery(e.target.value)
@@ -52,7 +56,7 @@ export const MediaLibraryContent: React.FunctionComponent = () => {
     if (data) {
       toast({
         variant: "success",
-        description: "Media deleted successfully",
+        description: ts("delete_success"),
       })
       updateResultsMedias()
     }
@@ -62,8 +66,8 @@ export const MediaLibraryContent: React.FunctionComponent = () => {
     <div className="mx-4 flex w-full flex-col">
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <NextLink aria-label="Add New Media" href="/dashboard/media/new">
-            <Button aria-label="Add New Media">Add New </Button>
+          <NextLink aria-label={t("add_new")} href="/dashboard/media/new">
+            <Button aria-label={t("add_new")}>Add New </Button>
           </NextLink>
         </div>
         <form
@@ -115,7 +119,7 @@ export const MediaLibraryContent: React.FunctionComponent = () => {
       ) : (
         searchQuery && (
           <div className="my-48 flex items-center justify-center">
-            <h2>Medias Not found</h2>
+            <h2>{ts("not_found")}</h2>
           </div>
         )
       )}
@@ -126,7 +130,7 @@ export const MediaLibraryContent: React.FunctionComponent = () => {
       ) : (
         !searchQuery && (
           <div className="my-48 flex items-center justify-center">
-            <h2 className="text-center font-bold">Medias Not found</h2>
+            <h2 className="text-center font-bold">{ts("not_found")}</h2>
           </div>
         )
       )}

@@ -8,6 +8,7 @@ import { Button, DropZone } from "@nisomnia/ui/next"
 import { FormControl, FormErrorMessage, toast } from "@nisomnia/ui/next-client"
 
 import { resizeImage } from "@/lib/resize-image"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   file: Blob[]
@@ -15,6 +16,9 @@ interface FormValues {
 
 export const UploadMediaForm: React.FunctionComponent = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("media")
 
   const {
     register,
@@ -41,12 +45,12 @@ export const UploadMediaForm: React.FunctionComponent = () => {
       })
 
       if (res) {
-        toast({ variant: "success", description: "Upload Media Successfuly!" })
+        toast({ variant: "success", description: ts("upload_success") })
         reset()
       }
     } catch (err) {
       console.log(err)
-      toast({ variant: "danger", description: "An error occured" })
+      toast({ variant: "danger", description: ts("upload_failed") })
     }
 
     setLoading(false)
@@ -64,7 +68,7 @@ export const UploadMediaForm: React.FunctionComponent = () => {
           </FormControl>
           <div className="align-center flex justify-center">
             <Button aria-label="Submit" loading={loading}>
-              Submit
+              {t("submit")}
             </Button>
           </div>
         </form>

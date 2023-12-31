@@ -16,6 +16,7 @@ import { copyToClipboard } from "@nisomnia/utils"
 
 import { Image } from "@/components/Image"
 import { api } from "@/lib/trpc/react"
+import { useI18n, useScopedI18n } from "@/locales/client"
 
 interface FormValues {
   id: string
@@ -34,11 +35,14 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
 
   const [loading, setLoading] = React.useState<boolean>(false)
 
+  const t = useI18n()
+  const ts = useScopedI18n("media")
+
   const router = useRouter()
 
   const { mutate: updateMedia } = api.media.update.useMutation({
     onSuccess: () => {
-      toast({ variant: "success", description: "Update Media successfully" })
+      toast({ variant: "success", description: ts("update_success") })
       router.push("/dashboard/media")
     },
     onError: (error) => {
@@ -59,7 +63,7 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
       } else {
         toast({
           variant: "danger",
-          description: "Failed to update media! Please try again later",
+          description: ts("update_failed"),
         })
       }
     },
@@ -97,7 +101,7 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
       </div>
       <div className="flex-1 space-y-4">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormLabel>Name</FormLabel>
+          <FormLabel>{t("name")}</FormLabel>
           <div className="invalid:border- relative inline-flex h-9 w-full min-w-0 max-w-xl appearance-none items-center rounded-md border border-muted/30 bg-muted/50 px-3 text-base transition-colors duration-75 ease-out invalid:border-warning/50 invalid:ring-warning/60 focus:bg-background focus:outline-none focus:ring-2 dark:invalid:ring-offset-2">
             <p>{media.name}</p>
           </div>
@@ -114,7 +118,7 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
                 copyToClipboard(media.url)
                 toast({
                   variant: "success",
-                  description: "Media Permalink Copied",
+                  description: ts("copy_link"),
                 })
               }}
             >
@@ -123,14 +127,14 @@ export const EditMediaForm: React.FunctionComponent<EditMediaProps> = (
             </Button>
           </div>
           <FormControl invalid={Boolean(errors.description)}>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>{t("description")}</FormLabel>
             <Textarea {...register("description")} className="max-w-xl" />
             {errors?.description && (
               <FormErrorMessage>{errors.description.message}</FormErrorMessage>
             )}
           </FormControl>
-          <Button aria-label="Save" type="submit" loading={loading}>
-            Save
+          <Button aria-label={t("save")} type="submit" loading={loading}>
+            {t("save")}
           </Button>
         </form>
       </div>
