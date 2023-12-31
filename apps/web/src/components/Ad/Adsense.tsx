@@ -16,31 +16,66 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
 
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [hasScrolled, setHasScrolled] = React.useState(false)
 
   React.useEffect(() => {
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
 
-    const handleScriptLoad = () => {
+    const handleAdLoad = () => {
       try {
-        if (window.adsbygoogle) {
-          window.adsbygoogle.push({})
-        } else {
-          scriptElement?.addEventListener("load", handleScriptLoad)
+        const insElements = Array.from(document.querySelectorAll("ins"))
+        const insWithoutIframe = insElements.filter(
+          (ins) => !ins.querySelector("iframe"),
+        )
+        if (!hasScrolled && insWithoutIframe.length > 0) {
+          if (window.adsbygoogle) {
+            setHasScrolled(true)
+            insWithoutIframe.forEach(() => {
+              window.adsbygoogle.push({})
+            })
+          } else {
+            scriptElement?.addEventListener("load", handleAdLoad)
+          }
         }
       } catch (err) {
         console.log(err)
       }
     }
 
-    handleScriptLoad()
-
-    return () => {
-      if (scriptElement) {
-        scriptElement.removeEventListener("load", handleScriptLoad)
+    const handleAdScroll = () => {
+      const insElements = Array.from(document.querySelectorAll("ins"))
+      const insWithoutIframe = insElements.filter(
+        (ins) => !ins.querySelector("iframe"),
+      )
+      if (!hasScrolled && insWithoutIframe.length > 0) {
+        if (window?.adsbygoogle) {
+          setHasScrolled(true)
+          insWithoutIframe.forEach(() => {
+            window.adsbygoogle.push({})
+          })
+        }
       }
     }
+
+    // Push ad after 8 seconds
+    const timeoutId = setTimeout(handleAdLoad, 8000)
+
+    // Push ad when scrolled
+    window.addEventListener("scroll", handleAdScroll)
+
+    return () => {
+      clearTimeout(timeoutId)
+      if (scriptElement) {
+        scriptElement.removeEventListener("load", handleAdLoad)
+      }
+      window.removeEventListener("scroll", handleAdScroll)
+    }
+  }, [hasScrolled, pathname, searchParams])
+
+  React.useEffect(() => {
+    setHasScrolled(false)
   }, [pathname, searchParams])
 
   if (process.env.APP_ENV === "development") {
@@ -49,11 +84,13 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
 
   return (
     <React.Suspense
-      fallback={<Skeleton className="mb-4 h-72 w-full rounded-xl" />}
+      fallback={
+        <Skeleton className="mb-4 h-auto w-full min-w-full rounded-xl" />
+      }
     >
-      <div style={{ overflow: "hidden", margin: "5px" }}>
+      <div className="m-[5px] flex h-auto w-full min-w-full justify-center overflow-hidden">
         <ins
-          className="adsbygoogle"
+          className="adsbygoogle h-auto w-full min-w-full"
           style={{ display: "block" }}
           data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
           data-ad-slot={content}
