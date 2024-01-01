@@ -88,10 +88,18 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
         <Skeleton className="mb-4 h-auto w-full min-w-full rounded-xl" />
       }
     >
-      <div className="m-[5px] flex h-auto w-full min-w-full justify-center overflow-hidden">
+      <div
+        key={pathname}
+        className="m-[5px] flex h-auto w-full min-w-full justify-center overflow-hidden"
+      >
         <ins
-          className="adsbygoogle h-auto w-full min-w-full"
-          style={{ display: "block" }}
+          className="adsbygoogle"
+          style={{
+            display: "block",
+            height: "auto",
+            minWidth: "100%",
+            width: "100%",
+          }}
           data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
           data-ad-slot={content}
           data-ad-format="auto"

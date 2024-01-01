@@ -9,6 +9,7 @@ export function AdsenseScript() {
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
+
     const handleScriptLoad = () => {
       if (!scriptElement) {
         const script = document.createElement("script")
