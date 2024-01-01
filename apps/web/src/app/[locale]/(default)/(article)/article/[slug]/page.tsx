@@ -197,8 +197,10 @@ export default async function ArticleSlugPage({
           </div>
           <Image
             fill
-            priority
+            loading="eager"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
+            priority
+            placeholder="empty"
             src={article.featured_image.url}
             alt={article.title}
             className="!relative !h-auto !w-auto max-w-full rounded-md object-cover"

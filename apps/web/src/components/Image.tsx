@@ -20,6 +20,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
     src,
     alt,
     sizes = `(max-width: 768px) 100px, (max-width: 1200px) 200px, 300px`,
+    loading = "lazy",
     className,
     placeholder = "blur",
     onClick,
@@ -29,6 +30,7 @@ export const Image: React.FunctionComponent<ImageProps> = (props) => {
     <NextImage
       src={src}
       alt={alt}
+      loading={loading}
       placeholder={placeholder}
       blurDataURL={rgbDataURL(218, 218, 218)}
       className={className}
