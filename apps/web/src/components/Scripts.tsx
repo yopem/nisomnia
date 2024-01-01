@@ -8,7 +8,7 @@ export const Scripts = () => {
     return (
       <>
         <AdsenseScript />
-        {process.env.ENFORCE_GA && (
+        {process.env.ENABLE_GA && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
