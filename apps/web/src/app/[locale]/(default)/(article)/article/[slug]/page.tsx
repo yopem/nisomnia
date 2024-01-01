@@ -197,6 +197,7 @@ export default async function ArticleSlugPage({
           </div>
           <Image
             fill
+            priority
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw"
             src={article.featured_image.url}
             alt={article.title}
