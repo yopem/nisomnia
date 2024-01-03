@@ -2561,12 +2561,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/article/daftar-chipset-snapdragon-terbaru_kuhn0",
-    destination:
-      "https://nisomnia.com/article/daftar-chipset-snapdragon-terbaru_kuhn0",
-    permanent: true,
-  },
-  {
     source: "/article/apa-itu-byte-bit_bv87r",
     destination: "https://nisomnia.com/article/apa-itu-byte-bit_bv87r",
     permanent: true,
