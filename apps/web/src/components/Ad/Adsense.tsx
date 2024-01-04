@@ -93,7 +93,7 @@ export const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
         className="m-[5px] flex h-auto w-full min-w-full justify-center overflow-hidden"
       >
         <ins
-          className="adsbygoogle"
+          className="adsbygoogle manual-ad"
           style={{
             display: "block",
             height: "auto",

@@ -80,7 +80,7 @@ export const adRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.ad.findMany({
-          where: { position: input },
+          where: { position: input, active: true },
           select: {
             id: true,
             title: true,
