@@ -2243,11 +2243,6 @@ export default [
     permanent: true,
   },
   {
-    source: "/article/build-clint-ml-tersakit_0n5ik",
-    destination: "https://nisomnia.com/article/build-clint-ml-tersakit_0n5ik",
-    permanent: true,
-  },
-  {
     source: "/cheat-gta-san-andreas",
     destination: "https://nisomnia.com/",
     permanent: true,
