@@ -39,6 +39,10 @@ const InfiniteScrollRelatedArticles = React.lazy(async () => {
   return { default: InfiniteScrollRelatedArticles }
 })
 
+export function generateStaticParams() {
+  return []
+}
+
 export async function generateMetadata({
   params,
 }: {
