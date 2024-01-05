@@ -157,6 +157,7 @@ export default {
   type_placeholder: "Select type",
   type_required: "Type is required",
   update: "Update",
+  update_without_change_updated_date: "Update Without Change Updated Date",
   user: "User",
   users: "Users",
   "user.about": "About",

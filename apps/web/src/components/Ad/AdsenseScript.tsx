@@ -8,7 +8,7 @@ import env from "@/env"
 export function AdsenseScript() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [hasScrolled, setHasScrolled] = React.useState(false)
+  const [hasScrolled, setHasScrolled] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     const scriptElement = document.querySelector(
@@ -106,7 +106,7 @@ export function AdsenseScript() {
     }
 
     // Push ad after 8 seconds
-    const timeoutId = setTimeout(handleLoad, 7000)
+    const timeoutId = setTimeout(handleLoad, 8000)
 
     // Push ad when scrolled
     window.addEventListener("scroll", handleScroll)

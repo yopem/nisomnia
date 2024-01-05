@@ -17,10 +17,14 @@ import type {
 import { useDisclosure } from "@nisomnia/ui/hooks"
 import { Button, Icon, Select, Textarea } from "@nisomnia/ui/next"
 import {
+  DropdownMenu,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   ScrollArea,
   toast,
 } from "@nisomnia/ui/next-client"
@@ -192,6 +196,35 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
     },
   })
 
+  const { mutate: updateArticleWithoutChaneUpdatedDate } =
+    api.article.updateWithoutChangeUpdatedDate.useMutation({
+      onSuccess: () => {
+        toast({ variant: "success", description: ts("update_success") })
+      },
+      onError: (error) => {
+        setLoading(false)
+        const errorData = error?.data?.zodError?.fieldErrors
+
+        if (errorData) {
+          for (const field in errorData) {
+            if (errorData.hasOwnProperty(field)) {
+              errorData[field]?.forEach((errorMessage) => {
+                toast({
+                  variant: "danger",
+                  description: errorMessage,
+                })
+              })
+            }
+          }
+        } else {
+          toast({
+            variant: "danger",
+            description: ts("update_failed"),
+          })
+        }
+      },
+    })
+
   const {
     register,
     formState: { errors },
@@ -247,6 +280,30 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
     }
   }
 
+  const onSubmitUpdateWithoutChangeUpdatedDate = (values: FormValues) => {
+    const mergedValues = {
+      ...values,
+      topics: topics,
+      featured_image_id: selectedFeaturedImageId,
+      authors: authors,
+      editors: editors,
+    }
+
+    setArticleTranslationPrimaryId(values.article_translation_primary_id)
+
+    if (articleTranslationPrimary) {
+      const otherLangArticle = articleTranslationPrimary?.articles.find(
+        (articleData) => articleData.id !== article?.id,
+      )
+
+      if (otherLangArticle?.language !== values.language) {
+        setLoading(true)
+        updateArticleWithoutChaneUpdatedDate(mergedValues)
+        setLoading(false)
+      }
+    }
+  }
+
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
     url: React.SetStateAction<string>
@@ -285,18 +342,37 @@ export const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
           >
             {t("save_as_draft")}
           </Button>
-          <Button
-            aria-label={t("update")}
-            type="submit"
-            onClick={() => {
-              setValue("status", "published")
-              handleSubmit(onSubmit)()
-            }}
-            variant="ghost"
-            loading={loading}
-          >
-            {t("update")}
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost">{t("update")}</Button>
+            </PopoverTrigger>
+            <PopoverContent className="flex w-full flex-col items-start justify-start space-y-4">
+              <Button
+                aria-label={t("update")}
+                type="submit"
+                onClick={() => {
+                  setValue("status", "published")
+                  handleSubmit(onSubmit)()
+                }}
+                variant="ghost"
+                loading={loading}
+              >
+                {t("update")}
+              </Button>
+              <Button
+                aria-label={t("update_without_change_updated_date")}
+                type="submit"
+                onClick={() => {
+                  setValue("status", "published")
+                  handleSubmit(onSubmitUpdateWithoutChangeUpdatedDate)()
+                }}
+                variant="ghost"
+                loading={loading}
+              >
+                {t("update_without_change_updated_date")}
+              </Button>
+            </PopoverContent>
+          </Popover>
           <Button aria-label="View Sidebar" variant="ghost" onClick={onToggle}>
             <Icon.Menu />
           </Button>

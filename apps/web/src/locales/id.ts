@@ -160,6 +160,8 @@ export default {
   type_placeholder: "Pilih Tipe",
   type_required: "Tipe diperlukan",
   update: "Perbaharui",
+  update_without_change_updated_date:
+    "Perbaharui Tanpa Ubah Tanggal Pembaharuan",
   user: "Pengguna",
   users: "Pengguna",
   "user.about": "Tentang",

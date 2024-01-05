@@ -935,6 +935,49 @@ export const articleRouter = createTRPCRouter({
         }
       }
     }),
+  updateWithoutChangeUpdatedDate: adminProtectedProcedure
+    .input(updateArticleSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.article.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            title: input.title,
+            language: input.language,
+            content: input.content,
+            excerpt: input.excerpt,
+            meta_title: input.meta_title,
+            meta_description: input.meta_description,
+            slug: input.slug,
+            status: input.status,
+            featured_image_id: input.featured_image_id,
+            topics: {
+              set: input.topics.map((topicId) => ({ id: topicId })),
+            },
+            authors: {
+              set: input.authors.map((authorId) => ({ id: authorId })),
+            },
+            editors: {
+              set: input.editors.map((editorId) => ({ id: editorId })),
+            },
+          },
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   translate: adminProtectedProcedure
     .input(translateArticleSchema)
     .mutation(async ({ ctx, input }) => {
