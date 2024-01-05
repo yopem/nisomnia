@@ -57,6 +57,13 @@ export async function generateMetadata({
     openGraph: {
       title: article?.title,
       description: article?.meta_description ?? article?.excerpt,
+      images: [
+        {
+          url: article?.featured_image.url!,
+          width: 1280,
+          height: 720,
+        },
+      ],
       url: `${env.NEXT_PUBLIC_SITE_URL}/article/${article?.slug}`,
       locale: article?.language,
     },
