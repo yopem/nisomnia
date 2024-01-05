@@ -282,4 +282,5 @@ export default async function ArticleSlugPage({
   )
 }
 
-export const revalidate = 0
+export const revalidate = 600
+export const dynamic = "force-static"
