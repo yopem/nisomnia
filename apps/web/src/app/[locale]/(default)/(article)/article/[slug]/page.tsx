@@ -4,7 +4,6 @@ import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
 
-import { getCurrentUser } from "@nisomnia/auth"
 import type { LanguageType } from "@nisomnia/db"
 import {
   Breadcrumb,
@@ -99,7 +98,6 @@ export default async function ArticleSlugPage({
 
   const t = await getI18n()
 
-  const user = await getCurrentUser()
   const article = await api.article.bySlug.query(slug)
 
   if (!article) {
@@ -268,7 +266,7 @@ export default async function ArticleSlugPage({
             url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
             text={article.title}
           />
-          <ArticleComment article_id={article.id} user={user!} />
+          <ArticleComment article_id={article.id} />
           <div className="flex w-full flex-col space-y-4">
             <InfiniteScrollRelatedArticles
               locale={locale}
@@ -283,4 +281,4 @@ export default async function ArticleSlugPage({
 }
 
 export const revalidate = 600
-export const dynamic = "force-static"
+export const dynamic = "force-dynamic"

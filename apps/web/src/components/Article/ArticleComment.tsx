@@ -6,7 +6,7 @@ import * as React from "react"
 import NextLink from "next/link"
 import { useForm, type SubmitHandler } from "react-hook-form"
 
-import type { User as UserProps } from "@nisomnia/auth"
+import { useSession } from "@nisomnia/auth/client"
 import { Button, Icon, IconButton, Textarea } from "@nisomnia/ui/next"
 import {
   Popover,
@@ -39,7 +39,6 @@ const ReplyArticleComment = React.lazy(async () => {
 
 interface ArticleCommentFormProps extends React.HTMLAttributes<HTMLDivElement> {
   article_id: string
-  user: UserProps
 }
 
 interface FormValues {
@@ -50,10 +49,7 @@ interface FormValues {
 export const ArticleComment: React.FunctionComponent<
   ArticleCommentFormProps
 > = (props) => {
-  const { article_id, user } = props
-
-  const t = useI18n()
-  const ts = useScopedI18n("comment")
+  const { article_id } = props
 
   const [openDeleteAction, setOpenDeleteAction] = React.useState<string | null>(
     null,
@@ -61,6 +57,12 @@ export const ArticleComment: React.FunctionComponent<
   const [edited, setEdited] = React.useState("")
   const [replied, setReplied] = React.useState("")
   const [loading, setLoading] = React.useState(false)
+
+  const t = useI18n()
+  const ts = useScopedI18n("comment")
+
+  const { data: session } = useSession()
+  const user = session?.user
 
   const { data: commentCount, refetch } =
     api.articleComment.countByArticleId.useQuery(article_id)

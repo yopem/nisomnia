@@ -11,6 +11,7 @@ import "@/styles/globals.css"
 
 import { Scripts } from "@/components/Scripts"
 import { TopLoader } from "@/components/TopLoader"
+import { AuthProvider } from "@/components/User/AuthProvider"
 import env from "@/env"
 import { TRPCReactProvider } from "@/lib/trpc/react"
 import { I18nProviderClient } from "@/locales/client"
@@ -98,9 +99,11 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           <Toaster />
           <TopLoader />
           <ThemeProvider>
-            <TRPCReactProvider cookies={cookies().toString()}>
-              {children}
-            </TRPCReactProvider>
+            <AuthProvider>
+              <TRPCReactProvider cookies={cookies().toString()}>
+                {children}
+              </TRPCReactProvider>
+            </AuthProvider>
           </ThemeProvider>
           <Scripts />
         </I18nProviderClient>
