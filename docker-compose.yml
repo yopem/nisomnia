@@ -1,28 +1,11 @@
 version: "3"
 
 services:
-  postgres:
-    container_name: postgres_container
-    image: postgres:15
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - /tmp/postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    restart: unless-stopped
-
   web:
     container_name: web_container
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
-    depends_on:
-      - postgres
     env_file:
       - .env
     ports:
@@ -30,6 +13,3 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
-
-volumes:
-  postgres:
