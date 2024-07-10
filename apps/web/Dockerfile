@@ -12,7 +12,7 @@ RUN apk update
 WORKDIR /app
 
 # Install Turbo globally
-RUN yarn global add pnpm turbo
+RUN yarn global add pnpm turbo@1.11.3
 
 # Copy the entire project
 COPY . .
@@ -27,7 +27,7 @@ COPY package.json package.json
 COPY .env .env
 
 # Install dependencies
-RUN yarn global add pnpm turbo
+RUN yarn global add pnpm turbo@1.11.3
 RUN pnpm install
 
 # Build the project
@@ -49,7 +49,7 @@ COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install dependencies
-RUN yarn global add pnpm turbo
+RUN yarn global add pnpm turbo@1.11.3
 RUN pnpm install
 
 # Generate DB
@@ -61,7 +61,7 @@ COPY --from=builder /app/out/full/ .
 
 # Create a runner stage
 FROM base AS runner
-RUN yarn global add pnpm turbo dotenv-cli
+RUN yarn global add pnpm turbo@1.11.3 dotenv-cli
 
 # Set working directory
 WORKDIR /app
