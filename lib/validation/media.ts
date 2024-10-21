@@ -7,6 +7,20 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ]
+export const MEDIA_TYPE = [
+  "all",
+  "article",
+  "topic",
+  "genre",
+  "review",
+  "tutorial",
+  "movie",
+  "tv",
+  "game",
+  "production_company",
+] as const
+
+export const mediaType = z.enum(MEDIA_TYPE)
 
 export const mediaInput = {
   name: z.string({
@@ -22,6 +36,12 @@ export const mediaInput = {
     invalid_type_error: "Url must be a string",
     required_error: "Url Required",
   }),
+  type: z
+    .enum(MEDIA_TYPE, {
+      invalid_type_error:
+        "only all, article, topic, review ,tutorial, movie, tv, game, genre, production_company, are accepted",
+    })
+    .optional(),
   imageType: z.string({
     invalid_type_error: "Image Type must be a string",
     required_error: "Image Type Required",
@@ -42,7 +62,7 @@ const mediaImageUpload = {
     ),
 }
 
-export const uploadMediaSchema = z.object({
+export const createMediaSchema = z.object({
   ...mediaInput,
 })
 
@@ -62,5 +82,6 @@ export const updateMediaSchema = z.object({
     .optional(),
 })
 
-export type UploadMediaSchema = z.infer<typeof uploadMediaSchema>
+export type CreateMediaSchema = z.infer<typeof createMediaSchema>
 export type UpdateMediaSchema = z.infer<typeof updateMediaSchema>
+export type MediaType = z.infer<typeof mediaType>

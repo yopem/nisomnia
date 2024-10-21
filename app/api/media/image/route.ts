@@ -7,6 +7,7 @@ import { medias } from "@/lib/db/schema/media"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
+import { type MediaType } from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,6 +20,8 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
 
     const file = formData.get("file") as Blob | null
+    const type = formData.get("type") as MediaType
+
     if (!file) {
       return NextResponse.json("File blob is required.", { status: 400 })
     }
@@ -37,14 +40,15 @@ export async function POST(request: NextRequest) {
 
     await uploadImageToR2({
       file: buffer,
-      fileName: uniqueFileName,
+      fileName: type + "/" + uniqueFileName,
       contentType: defaultFileType,
     })
 
     const data = await db.insert(medias).values({
       id: cuid(),
       name: uniqueFileName,
-      url: "https://" + env.R2_DOMAIN + "/" + uniqueFileName,
+      url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+      type: type,
       imageType: defaultFileType,
       authorId: session.user.id,
     })

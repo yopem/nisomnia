@@ -116,7 +116,9 @@ const MediaList: React.FunctionComponent<MediaListProps> = (props) => {
                   >
                     <DeleteMediaButton
                       description={media.name}
-                      onDelete={() => deleteMedia(media.name)}
+                      onDelete={() =>
+                        deleteMedia({ name: media.name, type: media.type })
+                      }
                     />
                     <CopyMediaLinkButton url={media.url} />
                     <NextLink
