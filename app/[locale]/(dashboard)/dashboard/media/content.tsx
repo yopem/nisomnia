@@ -167,7 +167,7 @@ export default function DashboardMediaContent() {
         </div>
       ) : searched && resultMedias !== undefined && resultMedias?.length > 0 ? (
         <div className="my-3">
-          <div className="mb-4 grid grid-cols-3 gap-3 lg:grid-cols-5">
+          <div className="mb-4 grid grid-cols-3 gap-3 md:grid-cols-8">
             {resultMedias?.map((media) => (
               <div
                 className="relative overflow-hidden rounded-[18px]"
