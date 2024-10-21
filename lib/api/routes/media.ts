@@ -264,7 +264,7 @@ export const mediaRouter = createTRPCRouter({
     .input(z.object({ type: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const mediaProperties = input.type + input.name
+        const mediaProperties = input.type + "/" + input.name
 
         const fileProperties = {
           Bucket: env.R2_BUCKET,
