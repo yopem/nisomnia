@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
 
     const files = formData.getAll("file") as Blob[]
     const formTypes = formData.getAll("type") as MediaType[]
-    const types = mediaType.parse(formTypes)
 
     if (files.length === 0) {
       return NextResponse.json("At least one file is required.", {
@@ -39,28 +38,30 @@ export async function POST(request: NextRequest) {
         defaultFileExtension,
       )
 
-      const mediaType = types[i] as MediaType
+      const mediaTypes = formTypes[i] as MediaType
+      const type = mediaType.parse(mediaTypes)
 
       await uploadImageToR2({
         file: buffer,
-        fileName: mediaType + "/" + uniqueFileName,
+        fileName: type + "/" + uniqueFileName,
         contentType: defaultFileType,
       })
 
       const data = await db.insert(medias).values({
         id: cuid(),
         name: uniqueFileName,
-        url: `https://${env.R2_DOMAIN}/${mediaType}/${uniqueFileName}`,
-        type: mediaType,
+        url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+        type: type,
         imageType: defaultFileType,
         authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2"
-      })
+      }).returning()
+
       uploadedFiles.push(data)
     }
 
     return NextResponse.json(uploadedFiles, { status: 200 })
   } catch (error) {
-    console.error("Upload error:", error) // Improved error logging
+    console.error("Upload error:", error)
     return NextResponse.json("Internal Server Error", { status: 500 })
   }
 }
