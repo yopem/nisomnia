@@ -80,7 +80,10 @@ const translateTopicInput = {
 
 const updateTopicInput = {
   ...topicInput,
-  id: z.string(),
+  id: z.string({
+    required_error: "Id is required",
+    invalid_type_error: "Id must be a number",
+  }),
   slug: z
     .string({
       required_error: "Slug is required",

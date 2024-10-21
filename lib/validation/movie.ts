@@ -3,6 +3,9 @@ import { z } from "zod"
 import { LANGUAGE_TYPE } from "./language"
 
 const movieInput = {
+  language: z.enum(LANGUAGE_TYPE, {
+    invalid_type_error: "only id and en are accepted",
+  }),
   imdbId: z.string({
     required_error: "IMDB ID is required",
     invalid_type_error: "IMDB ID must be a string",
@@ -25,11 +28,10 @@ const movieInput = {
       invalid_type_error: "Tagline must be a string",
     })
     .optional(),
-  overview: z
-    .string({
-      invalid_type_error: "Tagline must be a string",
-    })
-    .optional(),
+  overview: z.string({
+    required_error: "Overview is required",
+    invalid_type_error: "Tagline must be a string",
+  }),
   status: z
     .string({
       invalid_type_error: "Status must be a string",
@@ -40,11 +42,10 @@ const movieInput = {
       invalid_type_error: "Origin Country must be a string",
     })
     .optional(),
-  originalLanguage: z
-    .string({
-      invalid_type_error: "Original Language must be a string",
-    })
-    .optional(),
+  originalLanguage: z.string({
+    required_error: "Original Language is required",
+    invalid_type_error: "Original Language must be a string",
+  }),
   spokenLanguaeg: z
     .string({
       invalid_type_error: "Spoken Language must be a string",
@@ -100,9 +101,6 @@ const movieInput = {
       invalid_type_error: "Meta Description must be a string",
     })
     .optional(),
-  language: z.enum(LANGUAGE_TYPE, {
-    invalid_type_error: "only id and en are accepted",
-  }),
   genres: z
     .string({
       required_error: "Genre Id is required",
