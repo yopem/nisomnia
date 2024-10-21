@@ -4,7 +4,8 @@ import { OAuth2RequestError } from "arctic"
 import { auth, googleOAuth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { accounts, users } from "@/lib/db/schema"
-import { cuid, slugify, uniqueCharacter } from "@/lib/utils"
+import { cuid } from "@/lib/utils"
+import { generateUniqueUsername } from "@/lib/utils/slug"
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url)
@@ -74,7 +75,7 @@ export async function GET(request: Request): Promise<Response> {
         id: userId,
         email: googleUser.email,
         name: googleUser.name,
-        username: `${slugify(googleUser.name)}_${uniqueCharacter()}`,
+        username: await generateUniqueUsername(googleUser.name),
         image: googleUser.picture,
       })
 

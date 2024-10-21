@@ -17,7 +17,8 @@ import {
 } from "@/lib/db/schema/article"
 import { topics } from "@/lib/db/schema/topic"
 import { users } from "@/lib/db/schema/user"
-import { cuid, slugify, trimText } from "@/lib/utils"
+import { cuid, trimText } from "@/lib/utils"
+import { generateUniqueArticleSlug } from "@/lib/utils/slug"
 import {
   createArticleSchema,
   translateArticleSchema,
@@ -750,7 +751,8 @@ export const articleRouter = createTRPCRouter({
     .input(createArticleSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const slug = slugify(input.title)
+        const slug = await generateUniqueArticleSlug(input.title)
+
         const generatedExcerpt = !input.excerpt
           ? trimText(input.content, 160)
           : input.excerpt
@@ -939,7 +941,7 @@ export const articleRouter = createTRPCRouter({
     .input(translateArticleSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const slug = slugify(input.title)
+        const slug = await generateUniqueArticleSlug(input.title)
         const generatedExcerpt = !input.excerpt
           ? trimText(input.content, 160)
           : input.excerpt

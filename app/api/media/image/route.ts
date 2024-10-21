@@ -5,7 +5,8 @@ import { getSession } from "@/lib/auth/utils"
 import { db } from "@/lib/db"
 import { medias } from "@/lib/db/schema/media"
 import { uploadImageToR2 } from "@/lib/r2"
-import { cuid, slugifyFile, uniqueCharacter } from "@/lib/utils"
+import { cuid } from "@/lib/utils"
+import { generateUniqueMediaName } from "@/lib/utils/slug"
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,9 +30,10 @@ export async function POST(request: NextRequest) {
     const defaultFileType = "image/webp"
     const defaultFileExtension = "webp"
 
-    const uniqueFileName = `${slugifyFile(
+    const uniqueFileName = await generateUniqueMediaName(
       fileName,
-    )}_${uniqueCharacter()}.${defaultFileExtension}`
+      defaultFileExtension,
+    )
 
     await uploadImageToR2({
       file: buffer,

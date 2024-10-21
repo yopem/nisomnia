@@ -42,6 +42,7 @@ const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
     },
     onError: (error) => {
       setLoading(false)
+
       const errorData = error?.data?.zodError?.fieldErrors
 
       if (errorData) {
@@ -55,6 +56,11 @@ const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

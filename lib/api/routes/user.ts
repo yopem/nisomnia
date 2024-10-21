@@ -188,6 +188,21 @@ export const userRouter = createTRPCRouter({
           })
         }
 
+        const isUsernameTaken = await ctx.db.query.users.findFirst({
+          where: (users, { eq, and, ne }) =>
+            and(
+              eq(users.username, input.username),
+              ne(users.id, ctx.session.user.id),
+            ),
+        })
+
+        if (isUsernameTaken) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "This username is already taken.",
+          })
+        }
+
         const data = await ctx.db
           .update(users)
           .set({
