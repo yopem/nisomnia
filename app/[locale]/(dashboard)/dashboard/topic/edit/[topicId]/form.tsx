@@ -120,7 +120,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
       ...values,
-      featuredImageId: selectedFeaturedImage,
+      featuredImage: selectedFeaturedImage,
     }
 
     setTopicTranslationId(values.topicTranslationId)
@@ -138,6 +138,8 @@ export default function EditTopicForm(props: EditTopicFormProps) {
       }
     }
   }
+
+  console.log("featured ", selectedFeaturedImage)
 
   const handleUpdateMedia = (data: { url: React.SetStateAction<string> }) => {
     setSelectedFeaturedImage(data.url)
