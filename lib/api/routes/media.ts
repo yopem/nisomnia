@@ -13,7 +13,7 @@ import {
 import { medias } from "@/lib/db/schema/media"
 import { r2Client } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
-import { updateMediaSchema, uploadMediaSchema } from "@/lib/validation/media"
+import { createMediaSchema, updateMediaSchema } from "@/lib/validation/media"
 
 export const mediaRouter = createTRPCRouter({
   dashboard: adminProtectedProcedure
@@ -194,7 +194,7 @@ export const mediaRouter = createTRPCRouter({
     }
   }),
   create: protectedProcedure
-    .input(uploadMediaSchema)
+    .input(createMediaSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.insert(medias).values({
@@ -261,17 +261,21 @@ export const mediaRouter = createTRPCRouter({
       }
     }),
   deleteByName: adminProtectedProcedure
-    .input(z.string())
+    .input(z.object({ type: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const mediaProperties = input.type + input.name
+
         const fileProperties = {
           Bucket: env.R2_BUCKET,
-          Key: input,
+          Key: mediaProperties,
         }
 
         await r2Client.send(new DeleteObjectCommand(fileProperties))
 
-        const data = await ctx.db.delete(medias).where(eq(medias.name, input))
+        const data = await ctx.db
+          .delete(medias)
+          .where(eq(medias.name, input.name))
 
         return data
       } catch (error) {

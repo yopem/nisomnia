@@ -81,7 +81,9 @@ export default function DashboardMediaContent() {
               >
                 <DeleteMediaButton
                   description={media.name}
-                  onDelete={() => deleteMedia(media.name)}
+                  onDelete={() =>
+                    deleteMedia({ name: media.name, type: media.type })
+                  }
                 />
                 <CopyMediaLinkButton url={media.url} />
                 <NextLink

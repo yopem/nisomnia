@@ -1,12 +1,19 @@
 import { resizeImage } from "@/lib/utils"
+import type { MediaType } from "@/lib/validation/media"
 
-export async function uploadMultipleMediaAction(datas: Blob[]) {
+interface MediaData {
+  file: Blob
+  type: MediaType
+}
+
+export async function uploadMultipleMediaAction(datas: MediaData[]) {
   const formData = new FormData()
-  for (const file of datas) {
-    const resizedImage = await resizeImage(file)
-    formData.append("file", resizedImage)
-  }
 
+  for (const data of datas) {
+    const resizedImage = await resizeImage(data.file)
+    formData.append("file", resizedImage)
+    formData.append("type", data.type)
+  }
   try {
     const response = await fetch("/api/media/images", {
       method: "POST",

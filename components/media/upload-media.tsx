@@ -5,14 +5,30 @@ import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { DropZone } from "@/components/ui/drop-zone"
-import { Form } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { cn } from "@/lib/utils"
+import { type MediaType } from "@/lib/validation/media"
 import { uploadMultipleMediaAction } from "./action"
 
 interface FormValues {
-  files: FileList
+  files: FileList | null
+  type: MediaType
 }
 
 interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -29,7 +45,13 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
   const t = useI18n()
   const ts = useScopedI18n("media")
 
-  const form = useForm<FormValues>()
+  const form = useForm<FormValues>({
+    defaultValues: {
+      files: null,
+      type: "all",
+    },
+  })
+
   const watchedFiles = form.watch("files")
 
   React.useEffect(() => {
@@ -56,27 +78,30 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
 
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
-      const filesArray = Array.from(values.files)
+      const filesArray = values.files ? Array.from(values.files) : []
 
-      const { data, error } = await uploadMultipleMediaAction(filesArray)
+      const mediaData = filesArray.map((file) => ({
+        file,
+        type: values.type,
+      }))
 
-      startTransition(() => {
-        if (data) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          setToggleUpload && setToggleUpload((prev) => !prev)
-          setPreviewImages([])
-          form.reset()
-          toast({ variant: "success", description: ts("upload_success") })
-        } else if (error) {
-          console.log(error)
-          toast({ variant: "danger", description: ts("upload_failed") })
-        }
-      })
+      const { data, error } = await uploadMultipleMediaAction(mediaData)
+
+      if (data) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        setToggleUpload && setToggleUpload((prev) => !prev)
+        setPreviewImages([])
+        form.reset()
+        toast({ variant: "success", description: ts("upload_success") })
+      } else if (error) {
+        console.error(error)
+        toast({ variant: "danger", description: ts("upload_failed") })
+      }
     })
   }
 
   return (
-    <div className={toggleUpload === true ? "flex" : "hidden"}>
+    <div className={toggleUpload ? "flex" : "hidden"}>
       <div className="flex-1 space-y-4">
         <div aria-label="media-upload" className="space-y-4">
           <Form {...form}>
@@ -88,13 +113,14 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
                 className={cn(previewImages.length > 0 && "hidden")}
                 {...form.register("files")}
               />
+
               {previewImages.length > 0 && (
                 <div className="flex w-full items-center justify-center rounded-lg border-2 border-dashed border-border/30 bg-background/5 p-10">
                   <div className="grid grid-flow-row grid-cols-2 grid-rows-1 gap-2 md:grid-cols-6 md:grid-rows-1">
                     {previewImages.map((preview, index) => (
                       <img
-                        className="h-24 w-full cursor-pointer overflow-hidden rounded-lg object-cover md:h-48"
                         key={index}
+                        className="h-24 w-full cursor-pointer overflow-hidden rounded-lg object-cover md:h-48"
                         src={preview}
                         alt={`Selected ${index + 1}`}
                       />
@@ -107,6 +133,43 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
                   </div>
                 </div>
               )}
+
+              <div className="flex justify-center">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Image Type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="article">Article</SelectItem>
+                          <SelectItem value="topic">Topic</SelectItem>
+                          <SelectItem value="genre">Genre</SelectItem>
+                          <SelectItem value="review">Review</SelectItem>
+                          <SelectItem value="tutorial">Tutorial</SelectItem>
+                          <SelectItem value="movie">Movie</SelectItem>
+                          <SelectItem value="tv">TV</SelectItem>
+                          <SelectItem value="game">Game</SelectItem>
+                          <SelectItem value="production_company">
+                            Production Company
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
           <div className="flex justify-center">

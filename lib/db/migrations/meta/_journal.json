@@ -22,6 +22,27 @@
       "when": 1729508323662,
       "tag": "0002_military_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729508916218,
+      "tag": "0003_minor_warpath",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1729509094523,
+      "tag": "0004_empty_the_liberteens",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1729513001514,
+      "tag": "0005_misty_wolfsbane",
+      "breakpoints": true
     }
   ]
 }
