@@ -89,6 +89,11 @@ export default function EditTopicForm(props: EditTopicFormProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

@@ -67,6 +67,11 @@ export default function EditMediaForm(props: EditMediaProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

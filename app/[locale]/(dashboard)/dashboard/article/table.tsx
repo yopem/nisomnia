@@ -67,6 +67,11 @@ export default function ArticleTable(props: ArticleTableProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",
