@@ -53,6 +53,7 @@ export const moviesRelations = relations(movies, ({ one, many }) => ({
     references: [movieTranslations.id],
   }),
   genres: many(movieGenres),
+  productionCompanies: many(movieProductionCompanies),
 }))
 
 export const movieTranslationsRelations = relations(
