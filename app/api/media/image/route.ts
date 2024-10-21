@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       id: cuid(),
       name: uniqueFileName,
       url: "https://" + env.R2_DOMAIN + "/" + uniqueFileName,
-      type: defaultFileType,
+      imageType: defaultFileType,
       authorId: session.user.id,
     })
 

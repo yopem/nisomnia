@@ -22,9 +22,9 @@ export const mediaInput = {
     invalid_type_error: "Url must be a string",
     required_error: "Url Required",
   }),
-  type: z.string({
-    invalid_type_error: "Type must be a string",
-    required_error: "Type Required",
+  imageType: z.string({
+    invalid_type_error: "Image Type must be a string",
+    required_error: "Image Type Required",
   }),
 }
 

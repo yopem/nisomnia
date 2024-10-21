@@ -7,7 +7,7 @@ export const medias = pgTable("medias", {
   id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
   url: text("url").notNull(),
-  type: text("type").notNull(),
+  imageType: text("image_type").notNull(),
   description: text("description"),
   authorId: text("author_id")
     .notNull()
