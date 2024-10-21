@@ -49,7 +49,7 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
   const form = useForm<FormValues>({
     defaultValues: {
       files: null,
-      type: mediaType ?? "all",
+      type: mediaType,
     },
   })
 
@@ -133,44 +133,41 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
                   </div>
                 </div>
               )}
-              {!mediaType && (
-                <div className="flex justify-center">
-                  <FormField
-                    control={form.control}
-                    name="type"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Image Type" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            <SelectItem value="article">Article</SelectItem>
-                            <SelectItem value="topic">Topic</SelectItem>
-                            <SelectItem value="genre">Genre</SelectItem>
-                            <SelectItem value="review">Review</SelectItem>
-                            <SelectItem value="tutorial">Tutorial</SelectItem>
-                            <SelectItem value="movie">Movie</SelectItem>
-                            <SelectItem value="tv">TV</SelectItem>
-                            <SelectItem value="game">Game</SelectItem>
-                            <SelectItem value="production_company">
-                              Production Company
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              )}
+              <div className="flex justify-center">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Image Type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="article">Article</SelectItem>
+                          <SelectItem value="topic">Topic</SelectItem>
+                          <SelectItem value="genre">Genre</SelectItem>
+                          <SelectItem value="review">Review</SelectItem>
+                          <SelectItem value="tutorial">Tutorial</SelectItem>
+                          <SelectItem value="movie">Movie</SelectItem>
+                          <SelectItem value="tv">TV</SelectItem>
+                          <SelectItem value="game">Game</SelectItem>
+                          <SelectItem value="production_company">
+                            Production Company
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
           <div className="flex justify-center">

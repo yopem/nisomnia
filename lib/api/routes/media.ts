@@ -13,7 +13,11 @@ import {
 import { medias } from "@/lib/db/schema/media"
 import { r2Client } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
-import { createMediaSchema, updateMediaSchema } from "@/lib/validation/media"
+import {
+  createMediaSchema,
+  mediaType,
+  updateMediaSchema,
+} from "@/lib/validation/media"
 
 export const mediaRouter = createTRPCRouter({
   dashboard: adminProtectedProcedure
@@ -55,6 +59,55 @@ export const mediaRouter = createTRPCRouter({
             input.cursor
               ? lt(medias.updatedAt, new Date(input.cursor!))
               : undefined,
+          limit: limit + 1,
+          orderBy: (medias, { desc }) => [desc(medias.updatedAt)],
+        })
+
+        let nextCursor: Date | undefined = undefined
+
+        if (data.length > limit) {
+          const nextItem = data.pop()
+          if (nextItem?.updatedAt) {
+            nextCursor = nextItem.updatedAt
+          }
+        }
+
+        return {
+          medias: data,
+          nextCursor,
+        }
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
+  dashboardInfiniteByType: adminProtectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100),
+        cursor: z.date().optional(),
+        type: mediaType,
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const limit = input.limit ?? 50
+
+        const data = await ctx.db.query.medias.findMany({
+          where: (medias, { and, lt, eq }) =>
+            and(
+              input.cursor
+                ? lt(medias.updatedAt, new Date(input.cursor!))
+                : undefined,
+              eq(medias.type, input.type),
+            ),
           limit: limit + 1,
           orderBy: (medias, { desc }) => [desc(medias.updatedAt)],
         })
@@ -176,6 +229,37 @@ export const mediaRouter = createTRPCRouter({
       }
     }
   }),
+  searchByType: publicProcedure
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        type: mediaType,
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.medias.findMany({
+          where: (medias, { and, ilike, eq }) =>
+            and(
+              eq(medias.type, input.type),
+              ilike(medias.name, `%${input.searchQuery}%`),
+            ),
+          limit: 10,
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(medias)
