@@ -83,6 +83,64 @@ export const generateUniqueTopicSlug = async (
   return uniqueSlug
 }
 
+export const generateUniqueMovieSlug = async (
+  text: string,
+): Promise<string> => {
+  const slug = slugify(text)
+  let uniqueSlug = slug
+  let suffix = 1
+
+  while (
+    await db.query.movies.findFirst({
+      where: (movie, { eq }) => eq(movie.slug, uniqueSlug),
+    })
+  ) {
+    suffix++
+    uniqueSlug = `${slug}-${suffix}`
+  }
+
+  return uniqueSlug
+}
+
+export const generateUniqueGenreSlug = async (
+  text: string,
+): Promise<string> => {
+  const slug = slugify(text)
+  let uniqueSlug = slug
+  let suffix = 1
+
+  while (
+    await db.query.genres.findFirst({
+      where: (genre, { eq }) => eq(genre.slug, uniqueSlug),
+    })
+  ) {
+    suffix++
+    uniqueSlug = `${slug}-${suffix}`
+  }
+
+  return uniqueSlug
+}
+
+export const generateUniqueProductionCompanySlug = async (
+  text: string,
+): Promise<string> => {
+  const slug = slugify(text)
+  let uniqueSlug = slug
+  let suffix = 1
+
+  while (
+    await db.query.productionCompanies.findFirst({
+      where: (productionCompany, { eq }) =>
+        eq(productionCompany.slug, uniqueSlug),
+    })
+  ) {
+    suffix++
+    uniqueSlug = `${slug}-${suffix}`
+  }
+
+  return uniqueSlug
+}
+
 export const generateUniqueMediaName = async (
   text: string,
   fileExtension: string,
