@@ -184,6 +184,7 @@ export default function TranslateTopicForm(props: TranslateTopicFormProps) {
                   handleSelectUpdateMedia={handleUpdateMedia}
                   open={openDialog}
                   setOpen={setOpenDialog}
+                  mediaType="topic"
                 >
                   <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                     <Image
@@ -202,6 +203,7 @@ export default function TranslateTopicForm(props: TranslateTopicFormProps) {
                 handleSelectUpdateMedia={handleUpdateMedia}
                 open={openDialog}
                 setOpen={setOpenDialog}
+                mediaType="topic"
               >
                 <div
                   onClick={() => setOpenDialog(true)}

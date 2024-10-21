@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
+import type { MediaType } from "@/lib/validation/media"
 import MediaList from "./media-list"
 import UploadMedia from "./upload-media"
 
@@ -23,12 +24,13 @@ interface SelectMediaDialogProps {
   open: boolean
   setOpen: (_open: boolean) => void
   children?: React.ReactNode
+  mediaType?: MediaType
 }
 
 const SelectMediaDialog: React.FunctionComponent<SelectMediaDialogProps> = (
   props,
 ) => {
-  const { handleSelectUpdateMedia, children, open, setOpen } = props
+  const { handleSelectUpdateMedia, children, open, setOpen, mediaType } = props
 
   const ts = useScopedI18n("media")
 
@@ -69,6 +71,7 @@ const SelectMediaDialog: React.FunctionComponent<SelectMediaDialogProps> = (
                   Add New
                 </Button>
                 <UploadMedia
+                  mediaType={mediaType}
                   toggleUpload={toggleUpload}
                   setToggleUpload={setToggleUpload}
                 />

@@ -34,10 +34,11 @@ interface FormValues {
 interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
   setToggleUpload?: React.Dispatch<React.SetStateAction<boolean>>
   toggleUpload?: boolean
+  mediaType?: MediaType
 }
 
 const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
-  const { toggleUpload, setToggleUpload } = props
+  const { toggleUpload, setToggleUpload, mediaType } = props
 
   const [isPending, startTransition] = React.useTransition()
   const [previewImages, setPreviewImages] = React.useState<string[]>([])
@@ -48,7 +49,7 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
   const form = useForm<FormValues>({
     defaultValues: {
       files: null,
-      type: "all",
+      type: mediaType ?? "all",
     },
   })
 
@@ -82,7 +83,7 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
 
       const mediaData = filesArray.map((file) => ({
         file,
-        type: values.type,
+        type: mediaType ? mediaType : values.type,
       }))
 
       const { data, error } = await uploadMultipleMediaAction(mediaData)
@@ -113,7 +114,6 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
                 className={cn(previewImages.length > 0 && "hidden")}
                 {...form.register("files")}
               />
-
               {previewImages.length > 0 && (
                 <div className="flex w-full items-center justify-center rounded-lg border-2 border-dashed border-border/30 bg-background/5 p-10">
                   <div className="grid grid-flow-row grid-cols-2 grid-rows-1 gap-2 md:grid-cols-6 md:grid-rows-1">
@@ -133,43 +133,44 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
                   </div>
                 </div>
               )}
-
-              <div className="flex justify-center">
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Image Type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="all">All</SelectItem>
-                          <SelectItem value="article">Article</SelectItem>
-                          <SelectItem value="topic">Topic</SelectItem>
-                          <SelectItem value="genre">Genre</SelectItem>
-                          <SelectItem value="review">Review</SelectItem>
-                          <SelectItem value="tutorial">Tutorial</SelectItem>
-                          <SelectItem value="movie">Movie</SelectItem>
-                          <SelectItem value="tv">TV</SelectItem>
-                          <SelectItem value="game">Game</SelectItem>
-                          <SelectItem value="production_company">
-                            Production Company
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              {!mediaType && (
+                <div className="flex justify-center">
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Type</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select Image Type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="article">Article</SelectItem>
+                            <SelectItem value="topic">Topic</SelectItem>
+                            <SelectItem value="genre">Genre</SelectItem>
+                            <SelectItem value="review">Review</SelectItem>
+                            <SelectItem value="tutorial">Tutorial</SelectItem>
+                            <SelectItem value="movie">Movie</SelectItem>
+                            <SelectItem value="tv">TV</SelectItem>
+                            <SelectItem value="game">Game</SelectItem>
+                            <SelectItem value="production_company">
+                              Production Company
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </form>
           </Form>
           <div className="flex justify-center">

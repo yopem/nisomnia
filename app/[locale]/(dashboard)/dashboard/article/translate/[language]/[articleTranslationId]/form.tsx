@@ -27,7 +27,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useDisclosure } from "@/hooks/use-disclosure"
 import type { SelectArticle } from "@/lib/db/schema/article"
-import type { SelectMedia } from "@/lib/db/schema/media"
 import type { SelectUser } from "@/lib/db/schema/user"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
@@ -51,7 +50,6 @@ interface TranslateArticleFormProps {
   language: LanguageType
   initialArticleData?: Partial<
     SelectArticle & {
-      featuredImage: Pick<SelectMedia, "id" | "url">
       authors: Pick<SelectUser, "id" | "name">[]
       editors: Pick<SelectUser, "id" | "name">[]
     }
@@ -350,6 +348,7 @@ const TranslateArticleForm = (props: TranslateArticleFormProps) => {
                             handleSelectUpdateMedia={handleUpdateMedia}
                             open={openDialog}
                             setOpen={setOpenDialog}
+                            mediaType="article"
                           >
                             <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                               <Image
@@ -368,6 +367,7 @@ const TranslateArticleForm = (props: TranslateArticleFormProps) => {
                           handleSelectUpdateMedia={handleUpdateMedia}
                           open={openDialog}
                           setOpen={setOpenDialog}
+                          mediaType="article"
                         >
                           <div
                             onClick={() => setOpenDialog(true)}
