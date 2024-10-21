@@ -71,6 +71,11 @@ export default function EditAdForm(props: EditAdFormProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

@@ -66,6 +66,11 @@ const EditArticleComment: React.FunctionComponent<EditArticleCommentProps> = (
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

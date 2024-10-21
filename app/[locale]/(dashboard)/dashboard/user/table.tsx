@@ -52,6 +52,11 @@ export default function UserTable(props: UserTableProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

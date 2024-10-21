@@ -65,6 +65,11 @@ const ReplyArticleComment: React.FunctionComponent<ReplyArticleCommentProps> = (
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

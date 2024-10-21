@@ -51,6 +51,11 @@ export default function AdTable(props: AdTableProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

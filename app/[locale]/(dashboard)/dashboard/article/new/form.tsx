@@ -138,6 +138,11 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",

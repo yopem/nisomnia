@@ -100,6 +100,11 @@ const ArticleComment: React.FunctionComponent<ArticleCommentFormProps> = (
             })
           }
         }
+      } else if (error?.message) {
+        toast({
+          variant: "danger",
+          description: error.message,
+        })
       } else {
         toast({
           variant: "danger",
@@ -142,6 +147,11 @@ const ArticleComment: React.FunctionComponent<ArticleCommentFormProps> = (
               })
             }
           }
+        } else if (error?.message) {
+          toast({
+            variant: "danger",
+            description: error.message,
+          })
         } else {
           toast({
             variant: "danger",
