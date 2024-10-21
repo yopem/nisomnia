@@ -2,6 +2,7 @@ import { pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 export const productionCompanies = pgTable("production_companies", {
   id: text("id").primaryKey(),
+  tmdbId: text("tmdb_id").notNull().unique(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   logo: text("logo"),

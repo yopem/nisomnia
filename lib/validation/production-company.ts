@@ -1,6 +1,10 @@
 import { z } from "zod"
 
 const productionCompanyInput = {
+  tmdbId: z.string({
+    required_error: "TMDB ID is required",
+    invalid_type_error: "TMDB ID must be a string",
+  }),
   name: z
     .string({
       required_error: "Name is required",

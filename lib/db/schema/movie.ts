@@ -19,8 +19,8 @@ export const movieTranslations = pgTable("movie_translations", {
 
 export const movies = pgTable("movies", {
   id: text("id").primaryKey(),
-  imdbId: text("imdb_id").notNull(),
-  tmdbId: text("tmdb_id").notNull(),
+  imdbId: text("imdb_id").notNull().unique(),
+  tmdbId: text("tmdb_id").notNull().unique(),
   language: languageEnum("language").notNull().default("id"),
   title: text("title").notNull(),
   otherTitle: text("other_title"),

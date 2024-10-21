@@ -3,6 +3,10 @@ import { z } from "zod"
 import { LANGUAGE_TYPE } from "./language"
 
 const genreInput = {
+  tmdbId: z.string({
+    required_error: "TMDB ID is required",
+    invalid_type_error: "TMDB ID must be a string",
+  }),
   title: z
     .string({
       required_error: "Title is required",

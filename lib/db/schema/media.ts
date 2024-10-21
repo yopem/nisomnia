@@ -1,3 +1,5 @@
+// TODO: remove all from enum
+
 import { relations } from "drizzle-orm"
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
