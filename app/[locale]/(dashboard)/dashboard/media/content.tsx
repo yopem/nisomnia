@@ -201,7 +201,9 @@ export default function DashboardMediaContent() {
       ) : (
         searched && (
           <div className="my-64 flex items-center justify-center">
-            <p>{ts("not_found")}</p>
+            <h3 className="text-center text-4xl font-bold">
+              {ts("not_found")}
+            </h3>
           </div>
         )
       )}
