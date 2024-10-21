@@ -7,7 +7,7 @@ import { medias } from "@/lib/db/schema/media"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
-import { type MediaType } from "@/lib/validation/media"
+import { mediaType, type MediaType } from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +20,9 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
 
     const files = formData.getAll("file") as Blob[]
-    const types = formData.getAll("type") as MediaType[]
+    const formTypes = formData.getAll("type") as MediaType[]
+
+    const types = mediaType.parse(formTypes)
 
     if (files.length === 0) {
       return NextResponse.json("At least one file is required.", {
@@ -44,7 +46,7 @@ export async function POST(request: NextRequest) {
         defaultFileExtension,
       )
 
-      const mediaType = types[i] || "all"
+      const mediaType = types[i] as MediaType
 
       await uploadImageToR2({
         file: buffer,
