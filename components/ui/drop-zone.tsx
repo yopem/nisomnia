@@ -3,9 +3,12 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Icon } from "./icon"
 
-export interface DropZoneProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropZoneProps {
   placeholder?: string
   description?: string
+  onDrop?: (_files: FileList) => void
+  className?: string
+  id?: string
 }
 
 export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
@@ -15,8 +18,29 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       id,
       placeholder = "Click to upload",
       description = "JPG, JPEG, PNG or WEBP (MAX. 1280x720px)",
+      onDrop,
       ...rest
     } = props
+
+    const [isDragOver, setIsDragOver] = React.useState(false)
+
+    const handleDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
+      event.preventDefault()
+      setIsDragOver(true)
+    }
+
+    const handleDragLeave = () => {
+      setIsDragOver(false)
+    }
+
+    const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
+      event.preventDefault()
+      setIsDragOver(false)
+
+      if (event.dataTransfer.files && onDrop) {
+        onDrop(event.dataTransfer.files)
+      }
+    }
 
     return (
       <div
@@ -25,7 +49,13 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       >
         <label
           htmlFor={id ? `${id}-upload` : "file"}
-          className="flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/30 bg-background/5 hover:bg-background/10 md:h-96"
+          className={cn(
+            "flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/30 bg-background/5 hover:bg-background/10 md:h-96",
+            isDragOver ? "border-foreground/50" : "",
+          )}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
         >
           <div className="flex flex-col items-center justify-center pb-6 pt-5">
             <Icon.Upload className="mb-3 size-10 text-foreground/40" />
@@ -46,3 +76,5 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
     )
   },
 )
+
+DropZone.displayName = "DropZone"

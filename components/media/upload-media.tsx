@@ -101,6 +101,11 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
     })
   }
 
+  const handleDrop = (files: FileList) => {
+    // Update the form with the dropped files
+    form.setValue("files", files)
+  }
+
   return (
     <div className={toggleUpload ? "flex" : "hidden"}>
       <div className="flex-1 space-y-4">
@@ -112,6 +117,7 @@ const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
             >
               <DropZone
                 className={cn(previewImages.length > 0 && "hidden")}
+                onDrop={handleDrop} // Pass the handleDrop function to DropZone
                 {...form.register("files")}
               />
               {previewImages.length > 0 && (
