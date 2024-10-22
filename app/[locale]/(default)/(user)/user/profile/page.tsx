@@ -3,11 +3,11 @@ import { notFound } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { logout } from "@/lib/auth/logout"
-import { getSession } from "@/lib/auth/session"
+import { getCurrentSession } from "@/lib/auth/session"
 import { getI18n, getScopedI18n } from "@/lib/locales/server"
 
 export default async function UserProfilePage() {
-  const { session, user } = await getSession()
+  const { session, user } = await getCurrentSession()
 
   const t = await getI18n()
   const ts = await getScopedI18n("user")

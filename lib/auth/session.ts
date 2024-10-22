@@ -108,19 +108,21 @@ export type SessionValidationResult =
   | { session: SelectSession; user: SelectUser }
   | { session: null; user: null }
 
-export const getSession = cache(async (): Promise<SessionValidationResult> => {
-  const token = cookies().get("session")?.value ?? null
+export const getCurrentSession = cache(
+  async (): Promise<SessionValidationResult> => {
+    const token = cookies().get("session")?.value ?? null
 
-  if (token === null) {
-    return { session: null, user: null }
-  }
+    if (token === null) {
+      return { session: null, user: null }
+    }
 
-  const result = await validateSessionToken(token)
+    const result = await validateSessionToken(token)
 
-  return result
-})
+    return result
+  },
+)
 
-export const unCachedGetSession =
+export const unCachedGetCurrentSession =
   async (): Promise<SessionValidationResult> => {
     const token = cookies().get("session")?.value ?? null
 

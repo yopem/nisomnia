@@ -2,7 +2,7 @@ import * as React from "react"
 import dynamicFn from "next/dynamic"
 import { notFound } from "next/navigation"
 
-import { getSession } from "@/lib/auth/session"
+import { getCurrentSession } from "@/lib/auth/session"
 
 const DashboardContainer = dynamicFn(
   async () => {
@@ -21,7 +21,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user } = await getSession()
+  const { user } = await getCurrentSession()
 
   if (!user?.role.includes("admin" || "author")) {
     return notFound()

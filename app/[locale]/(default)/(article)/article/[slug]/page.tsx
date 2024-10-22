@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import env from "@/env.mjs"
-import { getSession } from "@/lib/auth/session"
+import { getCurrentSession } from "@/lib/auth/session"
 import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 import { splitReactNodes } from "@/lib/utils"
@@ -125,7 +125,7 @@ export default async function ArticleSlugPage({
 
   const t = await getI18n()
 
-  const { user } = await getSession()
+  const { user } = await getCurrentSession()
 
   const article = await api.article.bySlug(slug)
 

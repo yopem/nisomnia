@@ -2,11 +2,11 @@ import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
 
-import { unCachedGetSession } from "@/lib/auth/session"
+import { unCachedGetCurrentSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const { session, user } = await unCachedGetSession()
+  const { session, user } = await unCachedGetCurrentSession()
 
   return {
     session,

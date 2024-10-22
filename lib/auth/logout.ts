@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { globalPOSTRateLimit } from "@/lib/rate-limit"
 import {
   deleteSessionTokenCookie,
-  getSession,
+  getCurrentSession,
   invalidateSession,
 } from "./session"
 
@@ -16,7 +16,7 @@ export async function logout(): Promise<ActionResult> {
     }
   }
 
-  const { session } = await getSession()
+  const { session } = await getCurrentSession()
 
   if (session === null) {
     return {

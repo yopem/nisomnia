@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import dynamicFn from "next/dynamic"
 
 import env from "@/env.mjs"
-import { getSession } from "@/lib/auth/session"
+import { getCurrentSession } from "@/lib/auth/session"
 import type { LanguageType } from "@/lib/validation/language"
 
 const CreateArticleForm = dynamicFn(
@@ -39,7 +39,7 @@ export function generateMetadata({
 }
 
 export default async function CreateArticlesDashboard() {
-  const { user } = await getSession()
+  const { user } = await getCurrentSession()
 
   return <CreateArticleForm user={user!} />
 }
