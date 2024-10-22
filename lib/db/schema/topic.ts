@@ -3,6 +3,7 @@ import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 import { TOPIC_TYPE, TOPIC_VISIBILITY } from "@/lib/validation/topic"
 import { articleTopics } from "./article"
+import { feedTopics } from "./feed"
 import { languageEnum } from "./language"
 import { statusEnum } from "./status"
 
@@ -21,7 +22,7 @@ export const topics = pgTable("topics", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
-  type: text("type", { enum: TOPIC_TYPE }).notNull().default("all"),
+  type: topicTypeEnum("type").notNull().default("all"),
   status: statusEnum("status").notNull().default("draft"),
   visibility: topicVisibilityEnum("visibility").notNull().default("public"),
   metaTitle: text("meta_title"),
@@ -40,6 +41,7 @@ export const topicsRelations = relations(topics, ({ one, many }) => ({
     references: [topicTranslations.id],
   }),
   articles: many(articleTopics),
+  feeds: many(feedTopics),
 }))
 
 export const topicTranslationsRelations = relations(

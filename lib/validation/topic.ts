@@ -6,6 +6,7 @@ import { STATUS_TYPE } from "./status"
 export const TOPIC_TYPE = [
   "all",
   "article",
+  "feed",
   "review",
   "tutorial",
   "movie",

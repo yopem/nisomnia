@@ -1,6 +1,7 @@
 export * from "./ad"
 export * from "./article-comment"
 export * from "./article"
+export * from "./feed"
 export * from "./genre"
 export * from "./language"
 export * from "./media"

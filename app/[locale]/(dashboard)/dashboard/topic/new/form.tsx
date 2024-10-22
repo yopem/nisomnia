@@ -222,8 +222,12 @@ export default function CreateTopicForm() {
                       <SelectContent>
                         <SelectItem value="all">All</SelectItem>
                         <SelectItem value="article">Article</SelectItem>
+                        <SelectItem value="feed">Feed</SelectItem>
                         <SelectItem value="review">Review</SelectItem>
                         <SelectItem value="tutorial">Tutorial</SelectItem>
+                        <SelectItem value="movie">Movie</SelectItem>
+                        <SelectItem value="tv">TV</SelectItem>
+                        <SelectItem value="game">Game</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
