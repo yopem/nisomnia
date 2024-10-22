@@ -436,12 +436,46 @@ export const genreRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
-        const data = await ctx.db.transaction(async () => {
-          await ctx.db.delete(movieGenres).where(eq(movieGenres.genreId, input))
-          await ctx.db.delete(genres).where(eq(genres.id, input))
+        const genre = await ctx.db.query.genres.findFirst({
+          where: (genre, { eq }) => eq(genre.id, input),
         })
 
-        return data
+        if (genre) {
+          const checkIfGenreTranslationHasGenre =
+            await ctx.db.query.genreTranslations.findMany({
+              where: (genreTranslations, { eq }) =>
+                eq(genreTranslations.id, genre.genreTranslationId),
+              with: {
+                genres: true,
+              },
+            })
+
+          if (checkIfGenreTranslationHasGenre[0]?.genres.length === 1) {
+            const data = await ctx.db.transaction(async () => {
+              await ctx.db
+                .delete(movieGenres)
+                .where(eq(movieGenres.genreId, input))
+
+              await ctx.db.delete(genres).where(eq(genres.id, input))
+
+              await ctx.db
+                .delete(genreTranslations)
+                .where(eq(genreTranslations.id, genre.genreTranslationId))
+            })
+
+            return data
+          } else {
+            const data = await ctx.db.transaction(async () => {
+              await ctx.db
+                .delete(movieGenres)
+                .where(eq(movieGenres.genreId, input))
+
+              await ctx.db.delete(genres).where(eq(genres.id, input))
+            })
+
+            return data
+          }
+        }
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {
