@@ -1,7 +1,10 @@
 ## TODO: 
 - [x] add default image type when uploading image while creating article, topic, etc
-- [ ] change url with en/ for english content
 - [ ] handle not found fallback if media not yet uploaded
+- [ ] add sitemap
+- [ ] add movie amp page
+- [ ] add feed
+- [ ] ads.txt
 
 ## Perlu diperhatikan untuk automation movie
 - ID dari tmdb masukan ke tmdbId untuk setiap table (movie, genre, production company)
