@@ -27,7 +27,7 @@ const LanguageSwitcher: React.FunctionComponent = () => {
               </span>
             ) : (
               <span className="flex flex-row">
-                <Icon.USAFlag className="mr-2 size-10" />
+                <Icon.USAFlag className="mr-2 size-5" />
                 English
               </span>
             )}
