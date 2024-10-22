@@ -22,7 +22,10 @@ export default async function DashboardPage() {
 
   const ads = await api.ad.count()
   const articles = await api.article.count()
+  const genres = await api.genre.count()
   const medias = await api.media.count()
+  const movies = await api.movie.count()
+  const productionCompanies = await api.productionCompany.count()
   const topics = await api.topic.count()
   const users = await api.user.count()
 
@@ -51,6 +54,35 @@ export default async function DashboardPage() {
           <DashboardBoxCount>{medias}</DashboardBoxCount>
           <DashboardBoxDescription>{t("medias")}</DashboardBoxDescription>
         </DashboardBox>
+      </div>
+      <hr />
+      <div className="my-8 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <DashboardBox>
+          <DashboardBoxIconWrapper>
+            <Icon.Movie />
+          </DashboardBoxIconWrapper>
+          <DashboardBoxCount>{movies}</DashboardBoxCount>
+          <DashboardBoxDescription>{t("movies")}</DashboardBoxDescription>
+        </DashboardBox>
+        <DashboardBox>
+          <DashboardBoxIconWrapper>
+            <Icon.Genre />
+          </DashboardBoxIconWrapper>
+          <DashboardBoxCount>{genres}</DashboardBoxCount>
+          <DashboardBoxDescription>{t("genres")}</DashboardBoxDescription>
+        </DashboardBox>
+        <DashboardBox>
+          <DashboardBoxIconWrapper>
+            <Icon.ProductionCompany />
+          </DashboardBoxIconWrapper>
+          <DashboardBoxCount>{productionCompanies}</DashboardBoxCount>
+          <DashboardBoxDescription>
+            {t("production_companies")}
+          </DashboardBoxDescription>
+        </DashboardBox>
+      </div>
+      <hr />
+      <div className="my-8 grid grid-cols-2 gap-3 md:grid-cols-5">
         <DashboardBox>
           <DashboardBoxIconWrapper>
             <Icon.Ads />
