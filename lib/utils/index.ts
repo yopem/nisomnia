@@ -3,7 +3,6 @@ import { clsx, type ClassValue } from "clsx"
 import dayjs from "dayjs"
 import LocalizedFormat from "dayjs/plugin/localizedFormat"
 import { customAlphabet } from "nanoid"
-import Resizer from "react-image-file-resizer"
 import { twMerge } from "tailwind-merge"
 
 export function getValidChildren(children: React.ReactNode) {
@@ -20,22 +19,6 @@ export const cuid = customAlphabet(
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
   40,
 )
-
-export const resizeImage = (file: Blob): Promise<Blob> =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      1280,
-      720,
-      "webp",
-      70,
-      0,
-      (uri) => {
-        resolve(uri as Blob)
-      },
-      "file",
-    )
-  })
 
 export function getProtocol() {
   if (process.env.APP_ENV === "development") {

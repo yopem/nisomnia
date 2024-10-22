@@ -1,4 +1,3 @@
-import { resizeImage } from "@/lib/utils"
 import type { MediaType } from "@/lib/validation/media"
 
 interface MediaData {
@@ -10,8 +9,7 @@ export async function uploadMultipleMediaAction(datas: MediaData[]) {
   const formData = new FormData()
 
   for (const data of datas) {
-    const resizedImage = await resizeImage(data.file)
-    formData.append("file", resizedImage)
+    formData.append("file", data.file)
     formData.append("type", data.type)
   }
   try {
