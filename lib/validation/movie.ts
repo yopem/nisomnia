@@ -52,8 +52,8 @@ const movieInput = {
     })
     .optional(),
   releaseDate: z
-    .date({
-      invalid_type_error: "Origin Country must be a date",
+    .string({
+      invalid_type_error: "Release Date must be a string",
     })
     .optional(),
   budget: z

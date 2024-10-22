@@ -31,7 +31,7 @@ export const movies = pgTable("movies", {
   originCountry: text("origin_country"),
   originalLanguage: text("original_language").notNull(),
   spokenLanguages: text("spoken_languages"),
-  releaseDate: timestamp("release_date"),
+  releaseDate: text("release_date"),
   budget: integer("budget"),
   revenue: integer("revenue"),
   runtime: integer("runtime"),
