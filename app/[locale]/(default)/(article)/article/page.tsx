@@ -18,31 +18,20 @@ import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const Ad = dynamicFn(
-  async () => {
-    const Ad = await import("@/components/ad")
-    return Ad
-  },
-  {
-    ssr: false,
-  },
-)
+const Ad = dynamicFn(async () => {
+  const Ad = await import("@/components/ad")
+  return Ad
+})
 
-const ArticleList = dynamicFn(
-  async () => {
-    const ArticleList = await import("@/components/article/article-list")
-    return ArticleList
-  },
-  {
-    ssr: false,
-  },
-)
+const ArticleList = dynamicFn(async () => {
+  const ArticleList = await import("@/components/article/article-list")
+  return ArticleList
+})
 
-export function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType }
-}): Metadata {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
   const { locale } = params
 
   return {
@@ -60,11 +49,10 @@ export function generateMetadata({
   }
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { locale: LanguageType }
+export default async function ArticlePage(props: {
+  params: Promise<{ locale: LanguageType }>
 }) {
+  const params = await props.params
   const { locale } = params
 
   const t = await getI18n()

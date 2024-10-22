@@ -13,11 +13,10 @@ import { api } from "@/lib/trpc/server"
 import { formatDate } from "@/lib/utils"
 import type { LanguageType } from "@/lib/validation/language"
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType; username: string }
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType; username: string }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { username, locale } = params
 
   const user = await api.user.byUsername(username)
@@ -38,13 +37,14 @@ export async function generateMetadata({
 }
 
 interface UserPageProps {
-  params: {
+  params: Promise<{
     username: string
     locale: LanguageType
-  }
+  }>
 }
 
-export default async function UserPage({ params }: UserPageProps) {
+export default async function UserPage(props: UserPageProps) {
+  const params = await props.params
   const { username, locale } = params
 
   const t = await getI18n()

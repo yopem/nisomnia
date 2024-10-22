@@ -7,9 +7,9 @@ import type { LanguageType } from "@/lib/validation/language"
 interface DefaultLayoutProps {
   children: React.ReactNode
   locale: LanguageType
-  params: {
+  params: Promise<{
     locale: LanguageType
-  }
+  }>
 }
 
 export default function DefaultLayout(props: DefaultLayoutProps) {

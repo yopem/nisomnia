@@ -1,5 +1,5 @@
 import { cache } from "react"
-import { cookies } from "next/headers"
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers"
 import { sha256 } from "@oslojs/crypto/sha2"
 import {
   encodeBase32LowerCaseNoPadding,
@@ -79,7 +79,7 @@ export async function invalidateUserSession(userId: string) {
 }
 
 export function setSessionTokenCookie(token: string, expiresAt: Date) {
-  cookies().set("session", token, {
+  ;(cookies() as unknown as UnsafeUnwrappedCookies).set("session", token, {
     httpOnly: true,
     path: "/",
     secure: process.env.APP_ENV === "production",
@@ -89,7 +89,7 @@ export function setSessionTokenCookie(token: string, expiresAt: Date) {
 }
 
 export function deleteSessionTokenCookie() {
-  cookies().set("session", "", {
+  ;(cookies() as unknown as UnsafeUnwrappedCookies).set("session", "", {
     httpOnly: true,
     path: "/",
     secure: process.env.APP_ENV === "production",
@@ -110,7 +110,7 @@ export type SessionValidationResult =
 
 export const getCurrentSession = cache(
   async (): Promise<SessionValidationResult> => {
-    const token = cookies().get("session")?.value ?? null
+    const token = (await cookies()).get("session")?.value ?? null
 
     if (token === null) {
       return { session: null, user: null }
@@ -124,7 +124,7 @@ export const getCurrentSession = cache(
 
 export const unCachedGetCurrentSession =
   async (): Promise<SessionValidationResult> => {
-    const token = cookies().get("session")?.value ?? null
+    const token = (await cookies()).get("session")?.value ?? null
 
     if (token === null) {
       return { session: null, user: null }

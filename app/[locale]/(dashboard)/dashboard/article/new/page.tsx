@@ -6,21 +6,15 @@ import env from "@/env.mjs"
 import { getCurrentSession } from "@/lib/auth/session"
 import type { LanguageType } from "@/lib/validation/language"
 
-const CreateArticleForm = dynamicFn(
-  async () => {
-    const CreateArticleForm = await import("./form")
-    return CreateArticleForm
-  },
-  {
-    ssr: false,
-  },
-)
+const CreateArticleForm = dynamicFn(async () => {
+  const CreateArticleForm = await import("./form")
+  return CreateArticleForm
+})
 
-export function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType }
-}): Metadata {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
   const { locale } = params
 
   return {

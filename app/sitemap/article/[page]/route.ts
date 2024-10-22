@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
 import type { NextRequest } from "next/server"
 
 import env from "@/env.mjs"
@@ -35,8 +33,9 @@ function generateSiteMap(
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { page: string } },
+  props: { params: Promise<{ page: string }> },
 ) {
+  const params = await props.params
   const page = parseInt(params.page)
 
   const articles = await api.article.sitemap({

@@ -15,11 +15,10 @@ import type { LanguageType } from "@/lib/validation/language"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType }
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType }>
 }) {
+  const params = await props.params
   const { locale } = params
 
   return {
@@ -77,10 +76,14 @@ export function generateMetadata({
 
 interface RootLayoutProps {
   children: React.ReactNode
-  params: { locale: LanguageType }
+  params: Promise<{ locale: LanguageType }>
 }
 
-export default function RootLayout({ params, children }: RootLayoutProps) {
+export default async function RootLayout(props: RootLayoutProps) {
+  const params = await props.params
+
+  const { children } = props
+
   const { locale } = params
 
   return (

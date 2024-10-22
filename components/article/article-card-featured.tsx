@@ -23,7 +23,7 @@ const ArticleCardFeatured: React.FunctionComponent<ArticleCardFeaturedProps> = (
     <>
       <article
         className={cn(
-          "whitspace-normal relative flex h-auto min-h-[280px] w-full flex-col items-center justify-end overflow-hidden rounded-xl lg:min-h-full",
+          "whitspace-normal lg:min-h-fullll relative flex h-auto min-h-[280px] w-full flex-col items-center justify-end overflow-hidden rounded-xl",
           className,
         )}
       >

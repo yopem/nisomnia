@@ -8,27 +8,23 @@ import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 import type { TopicType } from "@/lib/validation/topic"
 
-const TranslateTopicForm = dynamicFn(
-  async () => {
-    const TranslateTopicForm = await import("./form")
-    return TranslateTopicForm
-  },
-  {
-    ssr: false,
-  },
-)
+const TranslateTopicForm = dynamicFn(async () => {
+  const TranslateTopicForm = await import("./form")
+  return TranslateTopicForm
+})
 
 interface TranslateTopicMetaDataProps {
-  params: {
+  params: Promise<{
     topicTranslationId: string
     language: LanguageType
     locale: LanguageType
-  }
+  }>
 }
 
-export async function generateMetadata({
-  params,
-}: TranslateTopicMetaDataProps): Promise<Metadata> {
+export async function generateMetadata(
+  props: TranslateTopicMetaDataProps,
+): Promise<Metadata> {
+  const params = await props.params
   const { topicTranslationId, language, locale } = params
 
   const topicTranslation =
@@ -50,17 +46,18 @@ export async function generateMetadata({
 }
 
 interface TranslateTopicDashboardProps {
-  params: {
+  params: Promise<{
     topicTranslationId: string
     language: LanguageType
     visibility: TopicType
     type: TopicType
-  }
+  }>
 }
 
-export default async function TranslateTopicDashboardPage({
-  params,
-}: TranslateTopicDashboardProps) {
+export default async function TranslateTopicDashboardPage(
+  props: TranslateTopicDashboardProps,
+) {
+  const params = await props.params
   const { topicTranslationId, language } = params
 
   const topicTranslation =

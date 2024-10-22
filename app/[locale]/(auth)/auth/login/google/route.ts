@@ -4,7 +4,6 @@ import { generateCodeVerifier, generateState } from "arctic"
 import { googleOAuth } from "@/lib/auth/oauth"
 import { globalGETRateLimit } from "@/lib/rate-limit"
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function GET(): Promise<Response> {
   if (!globalGETRateLimit()) {
     return new Response("Too many requests", {
@@ -12,15 +11,18 @@ export async function GET(): Promise<Response> {
     })
   }
 
+  const cookiesData = await cookies()
+
   const state = generateState()
   const codeVerifier = generateCodeVerifier()
+
   const url = googleOAuth.createAuthorizationURL(state, codeVerifier, [
     "openid",
     "profile",
     "email",
   ])
 
-  cookies().set("google_oauth_state", state, {
+  cookiesData.set("google_oauth_state", state, {
     path: "/",
     secure: process.env.APP_ENV === "production",
     httpOnly: true,
@@ -28,7 +30,7 @@ export async function GET(): Promise<Response> {
     sameSite: "lax",
   })
 
-  cookies().set("google_code_verifier", codeVerifier, {
+  cookiesData.set("google_code_verifier", codeVerifier, {
     path: "/",
     secure: process.env.APP_ENV === "production",
     httpOnly: true,

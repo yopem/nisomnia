@@ -7,27 +7,23 @@ import env from "@/env.mjs"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const TranslateArticleForm = dynamicFn(
-  async () => {
-    const TranslateArticleForm = await import("./form")
-    return TranslateArticleForm
-  },
-  {
-    ssr: false,
-  },
-)
+const TranslateArticleForm = dynamicFn(async () => {
+  const TranslateArticleForm = await import("./form")
+  return TranslateArticleForm
+})
 
 interface TranslateArticleMetaDataProps {
-  params: {
+  params: Promise<{
     locale: LanguageType
     articleTranslationId: string
     language: LanguageType
-  }
+  }>
 }
 
-export async function generateMetadata({
-  params,
-}: TranslateArticleMetaDataProps): Promise<Metadata> {
+export async function generateMetadata(
+  props: TranslateArticleMetaDataProps,
+): Promise<Metadata> {
+  const params = await props.params
   const { locale, articleTranslationId, language } = params
 
   const articleTranslation =
@@ -49,15 +45,16 @@ export async function generateMetadata({
 }
 
 interface TranslateArticleDashboardProps {
-  params: {
+  params: Promise<{
     articleTranslationId: string
     language: LanguageType
-  }
+  }>
 }
 
-export default async function TranslateArticleDashboardPage({
-  params,
-}: TranslateArticleDashboardProps) {
+export default async function TranslateArticleDashboardPage(
+  props: TranslateArticleDashboardProps,
+) {
+  const params = await props.params
   const { articleTranslationId, language } = params
 
   const articleTranslation =

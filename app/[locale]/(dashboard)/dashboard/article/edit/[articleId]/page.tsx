@@ -7,21 +7,15 @@ import env from "@/env.mjs"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const EditArticleForm = dynamicFn(
-  async () => {
-    const EditArticleForm = await import("./form")
-    return EditArticleForm
-  },
-  {
-    ssr: false,
-  },
-)
+const EditArticleForm = dynamicFn(async () => {
+  const EditArticleForm = await import("./form")
+  return EditArticleForm
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { articleId: string; locale: LanguageType }
+export async function generateMetadata(props: {
+  params: Promise<{ articleId: string; locale: LanguageType }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { articleId, locale } = params
 
   const article = await api.article.byId(articleId)
@@ -43,12 +37,13 @@ export async function generateMetadata({
 }
 
 interface EditArticlesDashboardProps {
-  params: { articleId: string }
+  params: Promise<{ articleId: string }>
 }
 
-export default async function CreateArticlesDashboard({
-  params,
-}: EditArticlesDashboardProps) {
+export default async function CreateArticlesDashboard(
+  props: EditArticlesDashboardProps,
+) {
+  const params = await props.params
   const { articleId } = params
 
   const article = await api.article.byId(articleId)

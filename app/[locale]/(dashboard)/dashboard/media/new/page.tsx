@@ -5,21 +5,15 @@ import dynamicFn from "next/dynamic"
 import env from "@/env.mjs"
 import type { LanguageType } from "@/lib/validation/language"
 
-const UploadMedia = dynamicFn(
-  async () => {
-    const UploadMedia = await import("@/components/media/upload-media")
-    return UploadMedia
-  },
-  {
-    ssr: false,
-  },
-)
+const UploadMedia = dynamicFn(async () => {
+  const UploadMedia = await import("@/components/media/upload-media")
+  return UploadMedia
+})
 
-export function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType }
-}): Metadata {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
   const { locale } = params
 
   return {

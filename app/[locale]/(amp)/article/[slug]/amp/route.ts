@@ -18,9 +18,9 @@ import { basecolor, htmlStyle } from "./style"
 
 export async function GET(
   _req: NextRequest,
-  params: { params: { slug: string; locale: LanguageType } },
+  params: { params: Promise<{ slug: string; locale: LanguageType }> },
 ) {
-  const { slug, locale } = params.params
+  const { slug, locale } = await params.params
 
   const article = await api.article.bySlug(slug)
 

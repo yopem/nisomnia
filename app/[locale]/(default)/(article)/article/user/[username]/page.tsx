@@ -19,33 +19,22 @@ import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const Ad = dynamicFn(
-  async () => {
-    const Ad = await import("@/components/ad")
-    return Ad
-  },
-  {
-    ssr: false,
-  },
-)
+const Ad = dynamicFn(async () => {
+  const Ad = await import("@/components/ad")
+  return Ad
+})
 
-const ArticleListByAuthor = dynamicFn(
-  async () => {
-    const ArticleListByAuthor = await import(
-      "@/components/article/article-list-by-author"
-    )
-    return ArticleListByAuthor
-  },
-  {
-    ssr: false,
-  },
-)
+const ArticleListByAuthor = dynamicFn(async () => {
+  const ArticleListByAuthor = await import(
+    "@/components/article/article-list-by-author"
+  )
+  return ArticleListByAuthor
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { username: string; locale: LanguageType }
+export async function generateMetadata(props: {
+  params: Promise<{ username: string; locale: LanguageType }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { username, locale } = params
 
   const user = await api.user.byUsername(username)
@@ -66,15 +55,16 @@ export async function generateMetadata({
 }
 
 interface AuthorArticlesPageProps {
-  params: {
+  params: Promise<{
     username: string
     locale: LanguageType
-  }
+  }>
 }
 
-export default async function AuthorArticlesPage({
-  params,
-}: AuthorArticlesPageProps) {
+export default async function AuthorArticlesPage(
+  props: AuthorArticlesPageProps,
+) {
+  const params = await props.params
   const { username, locale } = params
 
   const t = await getI18n()

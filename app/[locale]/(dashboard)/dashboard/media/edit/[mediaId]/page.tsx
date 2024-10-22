@@ -7,21 +7,15 @@ import env from "@/env.mjs"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const EditMediaForm = dynamicFn(
-  async () => {
-    const EditMediaForm = await import("./form")
-    return EditMediaForm
-  },
-  {
-    ssr: false,
-  },
-)
+const EditMediaForm = dynamicFn(async () => {
+  const EditMediaForm = await import("./form")
+  return EditMediaForm
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { mediaId: string; locale: LanguageType }
+export async function generateMetadata(props: {
+  params: Promise<{ mediaId: string; locale: LanguageType }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { mediaId, locale } = params
 
   const media = await api.media.byId(mediaId)
@@ -41,11 +35,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function MediasDashboard({
-  params,
-}: {
-  params: { mediaId: string }
+export default async function MediasDashboard(props: {
+  params: Promise<{ mediaId: string }>
 }) {
+  const params = await props.params
   const { mediaId } = params
 
   const media = await api.media.byId(mediaId)

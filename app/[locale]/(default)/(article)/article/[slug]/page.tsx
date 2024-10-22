@@ -29,43 +29,27 @@ import { api } from "@/lib/trpc/server"
 import { splitReactNodes } from "@/lib/utils"
 import type { LanguageType } from "@/lib/validation/language"
 
-const Ad = dynamicFn(
-  async () => {
-    const Ad = await import("@/components/ad")
-    return Ad
-  },
-  {
-    ssr: false,
-  },
-)
+const Ad = dynamicFn(async () => {
+  const Ad = await import("@/components/ad")
+  return Ad
+})
 
-const ArticleComment = dynamicFn(
-  async () => {
-    const Comment = await import("@/components/article/article-comment")
-    return Comment
-  },
-  {
-    ssr: false,
-  },
-)
+const ArticleComment = dynamicFn(async () => {
+  const Comment = await import("@/components/article/article-comment")
+  return Comment
+})
 
-const ArticleListRelated = dynamicFn(
-  async () => {
-    const ArticleListRelated = await import(
-      "@/components/article/article-list-related"
-    )
-    return ArticleListRelated
-  },
-  {
-    ssr: false,
-  },
-)
+const ArticleListRelated = dynamicFn(async () => {
+  const ArticleListRelated = await import(
+    "@/components/article/article-list-related"
+  )
+  return ArticleListRelated
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { slug } = params
 
   const article = await api.article.bySlug(slug)
@@ -112,15 +96,14 @@ export async function generateMetadata({
 }
 
 interface ArticleSlugPageProps {
-  params: {
+  params: Promise<{
     slug: string
     locale: LanguageType
-  }
+  }>
 }
 
-export default async function ArticleSlugPage({
-  params,
-}: ArticleSlugPageProps) {
+export default async function ArticleSlugPage(props: ArticleSlugPageProps) {
+  const params = await props.params
   const { locale, slug } = params
 
   const t = await getI18n()

@@ -5,30 +5,20 @@ import env from "@/env.mjs"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const Ad = dynamicFn(
-  async () => {
-    const Ad = await import("@/components/ad")
-    return Ad
-  },
-  {
-    ssr: false,
-  },
-)
+const Ad = dynamicFn(async () => {
+  const Ad = await import("@/components/ad")
+  return Ad
+})
 
-const ArticleList = dynamicFn(
-  async () => {
-    const ArticleList = await import("@/components/article/article-list")
-    return ArticleList
-  },
-  {
-    ssr: false,
-  },
-)
+const ArticleList = dynamicFn(async () => {
+  const ArticleList = await import("@/components/article/article-list")
+  return ArticleList
+})
 
 interface HomePageProps {
-  params: {
+  params: Promise<{
     locale: LanguageType
-  }
+  }>
 }
 
 export default async function Home(props: HomePageProps) {

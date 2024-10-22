@@ -8,15 +8,10 @@ import env from "@/env.mjs"
 import { getCurrentSession } from "@/lib/auth/session"
 import { getI18n, getScopedI18n } from "@/lib/locales/server"
 
-const UserSettingForm = dynamicFn(
-  async () => {
-    const UserSettingForm = await import("./form")
-    return UserSettingForm
-  },
-  {
-    ssr: false,
-  },
-)
+const UserSettingForm = dynamicFn(async () => {
+  const UserSettingForm = await import("./form")
+  return UserSettingForm
+})
 
 export function generateMetadata(): Metadata {
   return {

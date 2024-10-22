@@ -5,21 +5,15 @@ import dynamicFn from "next/dynamic"
 import env from "@/env.mjs"
 import type { LanguageType } from "@/lib/validation/language"
 
-const DashboardTopicContent = dynamicFn(
-  async () => {
-    const DashboardTopicContent = await import("./content")
-    return DashboardTopicContent
-  },
-  {
-    ssr: false,
-  },
-)
+const DashboardTopicContent = dynamicFn(async () => {
+  const DashboardTopicContent = await import("./content")
+  return DashboardTopicContent
+})
 
-export function generateMetadata({
-  params,
-}: {
-  params: { locale: LanguageType }
-}): Metadata {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
   const { locale } = params
 
   return {

@@ -22,21 +22,15 @@ import { getI18n, getScopedI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
-const Ad = dynamicFn(
-  async () => {
-    const Ad = await import("@/components/ad")
-    return Ad
-  },
-  {
-    ssr: false,
-  },
-)
+const Ad = dynamicFn(async () => {
+  const Ad = await import("@/components/ad")
+  return Ad
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
+  const params = await props.params
   const { slug } = params
 
   const topic = await api.topic.bySlug(slug)
@@ -57,15 +51,14 @@ export async function generateMetadata({
 }
 
 interface SingleTopicPageProps {
-  params: {
+  params: Promise<{
     slug: string
     locale: LanguageType
-  }
+  }>
 }
 
-export default async function SingleTopicPage({
-  params,
-}: SingleTopicPageProps) {
+export default async function SingleTopicPage(props: SingleTopicPageProps) {
+  const params = await props.params
   const { slug, locale } = params
 
   const t = await getI18n()
