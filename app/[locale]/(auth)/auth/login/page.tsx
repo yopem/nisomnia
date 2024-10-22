@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
-import { getSession } from "@/lib/auth/utils"
+import { getSession } from "@/lib/auth/session"
 import { getScopedI18n } from "@/lib/locales/server"
 
 export default async function Page() {

@@ -33,7 +33,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useDisclosure } from "@/hooks/use-disclosure"
-import type { AuthSession } from "@/lib/auth/utils"
+import type { SelectUser } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
@@ -51,11 +51,11 @@ interface FormValues {
 }
 
 interface CreateArticleFormProps {
-  session: AuthSession["session"] | null
+  user: SelectUser
 }
 
 export default function CreateArticleForm(props: CreateArticleFormProps) {
-  const { session } = props
+  const { user } = props
 
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)
@@ -67,20 +67,16 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
   const [selectedTopics, setSelectedTopics] = React.useState<
     { id: string; title: string }[] | []
   >([])
-  const [authors, setAuthors] = React.useState<string[]>(
-    session ? [session?.user?.id!] : [],
-  )
-  const [editors, setEditors] = React.useState<string[]>(
-    session ? [session?.user?.id!] : [],
-  )
+  const [authors, setAuthors] = React.useState<string[]>(user ? [user?.id] : [])
+  const [editors, setEditors] = React.useState<string[]>(user ? [user?.id] : [])
   const [selectedAuthors, setSelectedAuthors] = React.useState<
     { id: string; name: string }[] | []
   >(
-    session
+    user
       ? [
           {
-            id: session?.user?.id!,
-            name: session?.user?.name!,
+            id: user?.id!,
+            name: user?.name!,
           },
         ]
       : [],
@@ -88,11 +84,11 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
   const [selectedEditors, setSelectedEditors] = React.useState<
     { id: string; name: string }[] | []
   >(
-    session
+    user
       ? [
           {
-            id: session?.user?.id!,
-            name: session?.user?.name!,
+            id: user?.id!,
+            name: user?.name!,
           },
         ]
       : [],

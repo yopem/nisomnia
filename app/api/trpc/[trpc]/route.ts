@@ -5,7 +5,7 @@ import env from "@/env.mjs"
 import { appRouter } from "@/lib/api/root"
 import { createTRPCContext } from "@/lib/api/trpc"
 
-const createContext = async (req: NextRequest) => {
+const createContext = (req: NextRequest) => {
   return createTRPCContext({
     headers: req.headers,
   })

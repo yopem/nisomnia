@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation"
-
 import {
   DashboardBox,
   DashboardBoxCount,
@@ -7,17 +5,10 @@ import {
   DashboardBoxIconWrapper,
 } from "@/components/dashboard/dashboard-box"
 import { Icon } from "@/components/ui/icon"
-import { getSession } from "@/lib/auth/utils"
 import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 
 export default async function DashboardPage() {
-  const { session } = await getSession()
-
-  if (!session?.user.role.includes("admin" || "author")) {
-    return notFound()
-  }
-
   const t = await getI18n()
 
   const ads = await api.ad.count()

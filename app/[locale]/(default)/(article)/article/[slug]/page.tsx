@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import env from "@/env.mjs"
-import { getSession } from "@/lib/auth/utils"
+import { getSession } from "@/lib/auth/session"
 import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
 import { splitReactNodes } from "@/lib/utils"
@@ -125,7 +125,8 @@ export default async function ArticleSlugPage({
 
   const t = await getI18n()
 
-  const { session } = await getSession()
+  const { user } = await getSession()
+
   const article = await api.article.bySlug(slug)
 
   if (!article) {
@@ -310,7 +311,7 @@ export default async function ArticleSlugPage({
               url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
               text={article.title}
             />
-            <ArticleComment articleId={article.id} session={session} />
+            <ArticleComment articleId={article.id} user={user!} />
             <ArticleListRelated
               locale={locale}
               currentArticleId={article.id}

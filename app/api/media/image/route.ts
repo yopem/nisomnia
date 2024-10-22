@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 
 import env from "@/env.mjs"
-import { getSession } from "@/lib/auth/utils"
+import { getSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { medias } from "@/lib/db/schema/media"
 import { resizeImage } from "@/lib/image"
@@ -12,7 +12,7 @@ import { mediaType, type MediaType } from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
-    const { session } = await getSession()
+    const { session, user } = await getSession()
 
     if (!session) {
       return NextResponse.json("Unauthorized", { status: 403 })
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
       type: type,
       imageType: defaultFileType,
-      authorId: session.user.id,
+      authorId: user.id,
     })
 
     return NextResponse.json(data, { status: 200 })

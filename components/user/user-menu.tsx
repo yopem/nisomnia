@@ -11,19 +11,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { logout, type AuthSession } from "@/lib/auth/utils"
+import { logout } from "@/lib/auth/logout"
+import type { SelectUser } from "@/lib/db/schema"
 import { useI18n } from "@/lib/locales/client"
 
 export interface UserMenuProps {
-  session: AuthSession["session"] | null
+  user: SelectUser | null
 }
 
 const UserMenu: React.FunctionComponent<UserMenuProps> = (props) => {
-  const { session } = props
+  const { user } = props
 
   const t = useI18n()
-
-  const user = session?.user
 
   const itemClass =
     "relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:text-foreground/90"

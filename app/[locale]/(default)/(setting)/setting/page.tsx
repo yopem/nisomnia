@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 
 import { PageInfo } from "@/components/layout/page-info"
 import env from "@/env.mjs"
-import { getSession } from "@/lib/auth/utils"
+import { getSession } from "@/lib/auth/session"
 import { getI18n, getScopedI18n } from "@/lib/locales/server"
 
 const UserSettingForm = dynamicFn(
@@ -34,7 +34,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function EditUserProfilePage() {
-  const { session } = await getSession()
+  const { session, user } = await getSession()
 
   const t = await getI18n()
   const ts = await getScopedI18n("user")
@@ -46,7 +46,7 @@ export default async function EditUserProfilePage() {
   return (
     <div>
       <PageInfo title={t("settings")} description={ts("setting_header")} />
-      <UserSettingForm user={session.user} />
+      <UserSettingForm user={user} />
     </div>
   )
 }

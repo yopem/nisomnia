@@ -10,7 +10,7 @@ export const users = pgTable("users", {
   id: text("id").primaryKey(),
   email: text("email"),
   name: text("name"),
-  username: text("username").unique(),
+  username: text("username").notNull().unique(),
   image: text("image"),
   phoneNumber: text("phone_number"),
   about: text("about"),
@@ -50,3 +50,4 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export type InsertUser = typeof users.$inferInsert
 export type SelectUser = typeof users.$inferSelect
+export type SelectSession = typeof sessions.$inferSelect
