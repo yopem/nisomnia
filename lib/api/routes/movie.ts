@@ -950,14 +950,51 @@ export const movieRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
-        const data = await ctx.db.transaction(async () => {
-          await ctx.db.delete(movieGenres).where(eq(movieGenres.movieId, input))
-          await ctx.db
-            .delete(movieProductionCompanies)
-            .where(eq(movieProductionCompanies.movieId, input))
-          await ctx.db.delete(movies).where(eq(movies.id, input))
+        const movie = await ctx.db.query.movies.findFirst({
+          where: (movie, { eq }) => eq(movie.id, input),
         })
-        return data
+
+        if (movie) {
+          const checkIfMovieTranslationHasMovie =
+            await ctx.db.query.movieTranslations.findMany({
+              where: (movieTranslations, { eq }) =>
+                eq(movieTranslations.id, movie.movieTranslationId),
+              with: {
+                movies: true,
+              },
+            })
+
+          if (checkIfMovieTranslationHasMovie[0]?.movies.length === 1) {
+            const data = await ctx.db.transaction(async () => {
+              await ctx.db
+                .delete(movieGenres)
+                .where(eq(movieGenres.movieId, input))
+
+              await ctx.db
+                .delete(movieProductionCompanies)
+                .where(eq(movieProductionCompanies.movieId, input))
+              await ctx.db.delete(movies).where(eq(movies.id, input))
+
+              await ctx.db
+                .delete(movieTranslations)
+                .where(eq(movieTranslations.id, movie.movieTranslationId))
+            })
+
+            return data
+          } else {
+            const data = await ctx.db.transaction(async () => {
+              await ctx.db
+                .delete(movieGenres)
+                .where(eq(movieGenres.movieId, input))
+              await ctx.db
+                .delete(movieProductionCompanies)
+                .where(eq(movieProductionCompanies.movieId, input))
+              await ctx.db.delete(movies).where(eq(movies.id, input))
+            })
+
+            return data
+          }
+        }
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {
