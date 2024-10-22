@@ -32,10 +32,10 @@ export const movies = pgTable("movies", {
   originalLanguage: text("original_language").notNull(),
   spokenLanguages: text("spoken_languages"),
   releaseDate: text("release_date"),
-  budget: integer("budget"),
   revenue: integer("revenue"),
   runtime: integer("runtime"),
-  homepage: text("budget"),
+  budget: integer("budget"),
+  homepage: text("homepage"),
   backdrop: text("backdrop"),
   poster: text("poster"),
   movieTranslationId: text("movie_translation_id")
