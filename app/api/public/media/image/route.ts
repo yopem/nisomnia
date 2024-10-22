@@ -7,6 +7,7 @@ import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
 import { mediaType, type MediaType } from "@/lib/validation/media"
+import { resizeImage } from "@/lib/image"
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
     //@ts-ignore
     const [fileName, _fileType] = file?.name.split(".") || []
+    const resizedImageBuffer = await resizeImage(buffer)
 
     const defaultFileType = "image/webp"
     const defaultFileExtension = "webp"
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
     )
 
     await uploadImageToR2({
-      file: buffer,
+      file: resizedImageBuffer,
       fileName: type + "/" + uniqueFileName,
       contentType: defaultFileType,
     })

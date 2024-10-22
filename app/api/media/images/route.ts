@@ -4,6 +4,7 @@ import env from "@/env.mjs"
 import { getSession } from "@/lib/auth/utils"
 import { db } from "@/lib/db"
 import { medias } from "@/lib/db/schema/media"
+import { resizeImage } from "@/lib/image"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
       const buffer = Buffer.from(await file.arrayBuffer())
+      const resizedImageBuffer = await resizeImage(buffer)
 
       //@ts-ignore
       const [fileName, _fileType] = file?.name.split(".") || []
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest) {
       const type = mediaType.parse(mediaTypes)
 
       await uploadImageToR2({
-        file: buffer,
+        file: resizedImageBuffer,
         fileName: type + "/" + uniqueFileName,
         contentType: defaultFileType,
       })

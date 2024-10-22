@@ -7,6 +7,7 @@ import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
 import { mediaType, type MediaType } from "@/lib/validation/media"
+import { resizeImage } from "@/lib/image"
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
       const buffer = Buffer.from(await file.arrayBuffer())
+      const resizedImageBuffer = await resizeImage(buffer)
 
       //@ts-ignore
       const [fileName, _fileType] = file?.name.split(".") || []
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
       const type = mediaType.parse(mediaTypes)
 
       await uploadImageToR2({
-        file: buffer,
+        file: resizedImageBuffer,
         fileName: type + "/" + uniqueFileName,
         contentType: defaultFileType,
       })
