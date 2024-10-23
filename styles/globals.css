@@ -105,7 +105,22 @@
 
 .article-content p,
 .tiptap p {
-  @apply py-2 text-base md:text-lg;
+  @apply text-base md:text-lg;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content p,
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap p {
+  @apply py-2;
 }
 
 .article-content a,
