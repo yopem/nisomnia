@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server"
 
 import { db } from "@/lib/db"
 import { cuid } from "@/lib/utils"
-import { generateUniqueTopicSlug } from "@/lib/utils/slug"
 import { createTopicSchema } from "@/lib/validation/topic"
 import { topics, topicTranslations } from "@/lib/db/schema"
 
@@ -10,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
 
     const body = await request.json()
-    const slug = await generateUniqueTopicSlug(body.title)
+    const slug = body.title
     const parsedInput = createTopicSchema.parse(body)
 
     const generatedMetaTitle = !parsedInput.metaTitle
