@@ -1,13 +1,26 @@
 ## TODO: 
 - [x] add default image type when uploading image while creating article, topic, etc
-- [ ] handle not found fallback if media not yet uploaded
+- [x] add feed
 - [ ] add sitemap
 - [ ] add movie amp page
-- [x] add feed
 - [ ] add auto generate feed thumbnail
 - [ ] ads.txt
-
-
-## Perlu diperhatikan untuk automation movie
-- ID dari tmdb masukan ke tmdbId untuk setiap table (movie, genre, production company)
-- Tambah (Source: IMDB) di paragraf baru kolom overview
+- [ ] add more content type to search
+- [ ] add dashboard search
+- [ ] right sidebar
+- [ ] view counter
+- [ ] auto fetch featured image for feed dashboard
+- [ ] feed page
+- [ ] movie page
+- [ ] movie dashboard
+- [ ] genre page
+- [ ] genre dashboard
+- [ ] production company page
+- [ ] production company dashboard
+- [ ] create custom next-international
+- [ ] movie properties (trailer)
+- [ ] movie review
+- [ ] credits
+- [ ] person (actor, director, etc)
+- [ ] deploy umami
+- [ ] use partytown for google analytics and umami
