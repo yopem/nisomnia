@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import ArticleCardSearch from "@/components/article/article-card-search"
+import TopicCardSearch from "@/components/topic/topic-card-search"
 import {
   Dialog,
   DialogContent,
@@ -12,6 +13,7 @@ import {
 import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import UserCardSearch from "@/components/user/user-card-search"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
@@ -41,6 +43,20 @@ const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
       enabled: !!searched,
     },
   )
+
+  const { data: topics } = api.topic.search.useQuery(
+    {
+      searchQuery,
+      language: locale,
+    },
+    {
+      enabled: !!searched,
+    },
+  )
+
+  const { data: users } = api.user.search.useQuery(searchQuery, {
+    enabled: !!searched,
+  })
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -87,9 +103,31 @@ const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
                     </div>
                   </>
                 )}
-                {(!articles || articles.length === 0) && (
-                  <p className="text-lg font-semibold">{ts("not_found")}</p>
+                {topics && topics.length > 0 && (
+                  <>
+                    <h4>{t("topic")}</h4>
+                    <div className="flex flex-col">
+                      {topics.map((topic) => (
+                        <TopicCardSearch key={topic.slug} topic={topic} />
+                      ))}
+                    </div>
+                  </>
                 )}
+                {users && users.length > 0 && (
+                  <>
+                    <h4>{t("user")}</h4>
+                    <div className="flex flex-col">
+                      {users.map((user) => (
+                        <UserCardSearch key={user.username} user={user} />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {(!articles || articles.length === 0) &&
+                  (!topics || topics.length === 0) &&
+                  (!users || users.length === 0) && (
+                    <p className="text-lg font-semibold">{ts("not_found")}</p>
+                  )}
               </ScrollArea>
             </div>
           )}

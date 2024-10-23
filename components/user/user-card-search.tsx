@@ -22,16 +22,20 @@ const UserCardSearch: React.FC<UserCardSearchProps> = (props) => {
       href={`/user/${username!}`}
       className="mb-2 w-full"
     >
-      <div className="flex flex-row hover:bg-accent">
-        <div className="relative aspect-[1/1] h-[50px] w-auto max-w-[unset] overflow-hidden rounded-md">
+      <div className="flex flex-row rounded-xl p-3 hover:bg-accent">
+        <div className="relative aspect-[1/1] h-[50px] w-auto max-w-[unset] overflow-hidden">
           {image ? (
-            <Image src={image} className="object-cover" alt={name!} />
+            <Image
+              src={image}
+              className="rounded-xl object-cover"
+              alt={name!}
+            />
           ) : (
             <Icon.User />
           )}
         </div>
         <div className="ml-2 w-3/4">
-          <h3 className="mb-2 text-lg font-medium">{name}</h3>
+          <h3 className="mt-3 text-sm font-medium lg:text-lg">{name}</h3>
         </div>
       </div>
     </NextLink>

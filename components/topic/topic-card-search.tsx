@@ -3,11 +3,9 @@ import NextLink from "next/link"
 
 import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
-import type { SelectMedia, SelectTopic } from "@/lib/db/schema"
+import type { SelectTopic } from "@/lib/db/schema"
 
-type TopicDataProps = Pick<SelectTopic, "title" | "slug"> & {
-  featuredImage?: Pick<SelectMedia, "url"> | null
-}
+type TopicDataProps = Pick<SelectTopic, "title" | "slug" | "featuredImage">
 
 interface TopicCardSearchProps {
   topic: TopicDataProps
@@ -24,20 +22,20 @@ const TopicCardSearch: React.FC<TopicCardSearchProps> = (props) => {
       href={`/topic/${slug}`}
       className="mb-2 w-full"
     >
-      <div className="flex flex-row hover:bg-accent">
-        <div className="relative aspect-[1/1] h-[20px] w-auto max-w-[unset] overflow-hidden rounded-md">
+      <div className="flex flex-row rounded-xl p-1 hover:bg-accent">
+        <div className="relative aspect-[1/1] h-[50px] w-auto max-w-[unset] overflow-hidden p-3">
           {featuredImage ? (
             <Image
-              src={featuredImage?.url}
-              className="object-cover"
+              src={featuredImage}
+              className="rounded-xl object-cover"
               alt={title}
             />
           ) : (
-            <Icon.Topic className="size-5" />
+            <Icon.Topic className="size-4" />
           )}
         </div>
-        <div className="ml-2 w-3/4">
-          <h3 className="mb-2 text-lg font-medium">{title}</h3>
+        <div className="ml-1 w-3/4">
+          <h3 className="mt-2 text-sm font-medium lg:text-lg">{title}</h3>
         </div>
       </div>
     </NextLink>
