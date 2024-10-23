@@ -80,11 +80,9 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout(props: RootLayoutProps) {
-  const params = await props.params
+  const { children, params } = props
 
-  const { children } = props
-
-  const { locale } = params
+  const { locale } = await params
 
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>

@@ -46,5 +46,16 @@ export const feedsRelations = relations(feeds, ({ many }) => ({
   topics: many(feedTopics),
 }))
 
+export const feedTopicsRelations = relations(feedTopics, ({ one }) => ({
+  feed: one(feeds, {
+    fields: [feedTopics.feedId],
+    references: [feeds.id],
+  }),
+  topic: one(topics, {
+    fields: [feedTopics.topicId],
+    references: [topics.id],
+  }),
+}))
+
 export type InsertFeed = typeof feeds.$inferInsert
 export type SelectFeed = typeof feeds.$inferSelect
