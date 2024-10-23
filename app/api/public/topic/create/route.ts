@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
 
     const body = await request.json()
-    const slug = body.title
+    const slug = body.slug
     const parsedInput = createTopicSchema.parse(body)
 
     const generatedMetaTitle = !parsedInput.metaTitle
