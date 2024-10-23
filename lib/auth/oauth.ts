@@ -1,6 +1,6 @@
 import { Google } from "arctic"
 
-import env from "@/env.mjs"
+import env from "@/env"
 
 export const googleOAuth = new Google(
   env.GOOGLE_CLIENT_ID ?? "",

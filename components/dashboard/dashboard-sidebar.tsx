@@ -25,7 +25,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
 
   const ref = React.useRef(null)
 
-  useOnClickOutside(ref, onClose)
+  useOnClickOutside(ref as unknown as React.RefObject<HTMLElement>, onClose)
 
   const t = useI18n()
 

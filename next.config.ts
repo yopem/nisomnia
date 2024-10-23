@@ -45,6 +45,7 @@ const config = {
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
     return [
       {
@@ -72,6 +73,7 @@ const config = {
 }
 
 for (const plugin of plugins) {
+  // @ts-expect-error  FIX: later
   Object.assign(config, plugin(config))
 }
 

@@ -3,7 +3,7 @@
 import * as React from "react"
 import LazyLoad from "react-lazy-load"
 
-import env from "@/env.mjs"
+import env from "@/env"
 
 interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string

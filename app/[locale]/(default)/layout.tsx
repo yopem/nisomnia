@@ -12,10 +12,10 @@ interface DefaultLayoutProps {
   }>
 }
 
-export default function DefaultLayout(props: DefaultLayoutProps) {
+export default async function DefaultLayout(props: DefaultLayoutProps) {
   const { children, params } = props
 
-  const { locale } = params
+  const { locale } = await params
 
   return (
     <>

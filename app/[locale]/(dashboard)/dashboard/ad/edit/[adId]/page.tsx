@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import dynamicFn from "next/dynamic"
 import { notFound } from "next/navigation"
 
-import env from "@/env.mjs"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
@@ -41,7 +41,7 @@ interface EditAdDashboardProps {
 export default async function EditAdDashboard(props: EditAdDashboardProps) {
   const { params } = props
 
-  const { adId } = params
+  const { adId } = await params
 
   const ad = await api.ad.byId(adId)
 

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
-import env from "@/env.mjs"
+import env from "@/env"
 import { getCurrentSession } from "@/lib/auth/session"
 import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"

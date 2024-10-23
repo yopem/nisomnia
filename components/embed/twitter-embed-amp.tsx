@@ -10,8 +10,10 @@ const TwitterEmbedAMP = ({ children }: TwitterEmbedAMPProps) => {
     if (
       React.isValidElement(child) &&
       child.type === "a" &&
+      // @ts-expect-error FIX: later
       child?.props?.href?.match(regex)
     ) {
+      // @ts-expect-error FIX: later
       const { href } = child.props
       const match = href.match(regex)
       if (match?.[1]) {

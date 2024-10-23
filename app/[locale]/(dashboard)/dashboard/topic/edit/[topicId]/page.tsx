@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import dynamicFn from "next/dynamic"
 import { notFound } from "next/navigation"
 
-import env from "@/env.mjs"
+import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
 
@@ -43,7 +43,7 @@ export default async function EditTopicDashboard(
 ) {
   const { params } = props
 
-  const { topicId } = params
+  const { topicId } = await params
 
   const topic = await api.topic.byId(topicId)
 
