@@ -7,7 +7,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean
 }
 
-const Sidebar: React.FunctionComponent<SidebarProps> = (props) => {
+const Sidebar: React.FC<SidebarProps> = (props) => {
   const { isOpen, children } = props
 
   return (

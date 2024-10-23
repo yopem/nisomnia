@@ -22,9 +22,5 @@ export default async function DashboardLayout({
     return notFound()
   }
 
-  return (
-    <>
-      <DashboardContainer>{children}</DashboardContainer>
-    </>
-  )
+  return <DashboardContainer>{children}</DashboardContainer>
 }

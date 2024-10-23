@@ -307,7 +307,7 @@ export default {
   review: "Review",
   save: "Simpan",
   save_as_draft: "Simpan sebagai Draf",
-  search_game: "Cari Game ...",
+  search: "Cari",
   see_more: "Lihat Lebih Banyak",
   server_placeholder: "Masukan Server",
   server_placeholder_select: "Pilih Server",

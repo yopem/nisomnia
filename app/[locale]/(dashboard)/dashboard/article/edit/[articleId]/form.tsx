@@ -76,9 +76,7 @@ interface EditArticleFormProps {
   }
 }
 
-const EditArticleForm: React.FunctionComponent<EditArticleFormProps> = (
-  props,
-) => {
+const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
   const { article } = props
 
   const [loading, setLoading] = React.useState<boolean>(false)

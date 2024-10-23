@@ -17,9 +17,7 @@ export interface ShareButtonProps {
   title?: string
 }
 
-export const ShareButton: React.FunctionComponent<ShareButtonProps> = (
-  props,
-) => {
+export const ShareButton: React.FC<ShareButtonProps> = (props) => {
   const { onClick, title, icon, className, url } = props
   return (
     <NextLink

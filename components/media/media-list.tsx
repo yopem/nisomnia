@@ -21,7 +21,7 @@ interface MediaListProps extends React.HTMLAttributes<HTMLDivElement> {
   mediaType?: MediaType
 }
 
-const MediaList: React.FunctionComponent<MediaListProps> = (props) => {
+const MediaList: React.FC<MediaListProps> = (props) => {
   const { isLibrary, selectMedia, onSelect, toggleUpload, mediaType } = props
   const prevToggleRef = React.useRef(toggleUpload)
   const loadMoreRef = React.useRef<HTMLDivElement>(null)

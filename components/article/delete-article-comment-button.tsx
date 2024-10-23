@@ -12,9 +12,9 @@ interface DeleteArticleCommentButtonProps {
   action: () => void
 }
 
-const DeleteArticleCommentButton: React.FunctionComponent<
-  DeleteArticleCommentButtonProps
-> = (props) => {
+const DeleteArticleCommentButton: React.FC<DeleteArticleCommentButtonProps> = (
+  props,
+) => {
   const { description, action } = props
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)

@@ -39,9 +39,7 @@ interface FormValues {
   name: string
 }
 
-const DashboardAddEditors: React.FunctionComponent<DashboardAddEditorsProps> = (
-  props,
-) => {
+const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
   const { editors, addEditors, selectedEditors, addSelectedEditors } = props
 
   const [searchQuery, setSearchQuery] = React.useState<string>("")

@@ -3,9 +3,7 @@ import * as React from "react"
 import { Icon } from "@/components/ui/icon"
 import { ShareButton, type ShareButtonProps } from "./share-button"
 
-export const ShareButtonEmail: React.FunctionComponent<ShareButtonProps> = (
-  props,
-) => {
+export const ShareButtonEmail: React.FC<ShareButtonProps> = (props) => {
   const { url, onClick, subject, title, ...rest } = props
 
   return (

@@ -17,9 +17,7 @@ interface ArticleListByTopicProps extends React.HTMLAttributes<HTMLDivElement> {
   locale: LanguageType
 }
 
-const ArticleListByTopic: React.FunctionComponent<ArticleListByTopicProps> = (
-  props,
-) => {
+const ArticleListByTopic: React.FC<ArticleListByTopicProps> = (props) => {
   const { topicId, locale } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)

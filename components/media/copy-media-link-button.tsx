@@ -12,9 +12,7 @@ interface CopyMediaLinkButton {
   url: string
 }
 
-const CopyMediaLinkButton: React.FunctionComponent<CopyMediaLinkButton> = (
-  props,
-) => {
+const CopyMediaLinkButton: React.FC<CopyMediaLinkButton> = (props) => {
   const { url } = props
 
   const ts = useScopedI18n("media")

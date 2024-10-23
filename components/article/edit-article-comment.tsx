@@ -22,9 +22,7 @@ interface EditArticleCommentProps extends React.HTMLAttributes<HTMLDivElement> {
   onCancel?: () => void
 }
 
-const EditArticleComment: React.FunctionComponent<EditArticleCommentProps> = (
-  props,
-) => {
+const EditArticleComment: React.FC<EditArticleCommentProps> = (props) => {
   const { id, onSuccess, content, type = "default", onCancel } = props
 
   const t = useI18n()

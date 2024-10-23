@@ -37,7 +37,7 @@ interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
   mediaType?: MediaType
 }
 
-const UploadMedia: React.FunctionComponent<UploadMediaProps> = (props) => {
+const UploadMedia: React.FC<UploadMediaProps> = (props) => {
   const { toggleUpload, setToggleUpload, mediaType } = props
 
   const [isPending, startTransition] = React.useTransition()

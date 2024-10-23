@@ -7,9 +7,7 @@ interface ShareButtonXProps extends ShareButtonProps {
   text: string
 }
 
-export const ShareButtonX: React.FunctionComponent<ShareButtonXProps> = (
-  props,
-) => {
+export const ShareButtonX: React.FC<ShareButtonXProps> = (props) => {
   const { url, onClick, text, title, ...rest } = props
 
   return (

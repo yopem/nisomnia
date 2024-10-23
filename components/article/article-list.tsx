@@ -16,7 +16,7 @@ interface ArticleListProps extends React.HTMLAttributes<HTMLDivElement> {
   locale: LanguageType
 }
 
-const ArticleList: React.FunctionComponent<ArticleListProps> = (props) => {
+const ArticleList: React.FC<ArticleListProps> = (props) => {
   const { locale } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)

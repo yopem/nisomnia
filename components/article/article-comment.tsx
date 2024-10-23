@@ -34,9 +34,7 @@ interface FormValues {
   id: string
 }
 
-const ArticleComment: React.FunctionComponent<ArticleCommentFormProps> = (
-  props,
-) => {
+const ArticleComment: React.FC<ArticleCommentFormProps> = (props) => {
   const { articleId, user } = props
 
   const [openDeleteAction, setOpenDeleteAction] = React.useState<string | null>(

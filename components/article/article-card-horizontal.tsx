@@ -10,9 +10,7 @@ export interface ArticleCardHorizontalProps {
   article: Pick<SelectArticle, "title" | "featuredImage" | "slug" | "excerpt">
 }
 
-const ArticleCardHorizontal: React.FunctionComponent<
-  ArticleCardHorizontalProps
-> = (props) => {
+const ArticleCardHorizontal: React.FC<ArticleCardHorizontalProps> = (props) => {
   const { article } = props
   const { featuredImage, slug, excerpt, title } = article
 

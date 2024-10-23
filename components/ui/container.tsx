@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Container: React.FunctionComponent<ContainerProps> = (props) => {
+export const Container: React.FC<ContainerProps> = (props) => {
   const { className, children } = props
 
   return (

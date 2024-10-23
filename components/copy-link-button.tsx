@@ -12,7 +12,7 @@ interface CopyLinkButonProps extends React.HTMLAttributes<HTMLDivElement> {
   url: string
 }
 
-const CopyLinkButon: React.FunctionComponent<CopyLinkButonProps> = (props) => {
+const CopyLinkButon: React.FC<CopyLinkButonProps> = (props) => {
   const { url } = props
 
   const ts = useScopedI18n("article")

@@ -305,7 +305,7 @@ export default {
   review: "Review",
   save: "Save",
   save_as_draft: "Save as Draft",
-  search_game: "Search Game ...",
+  search: "Search",
   see_more: "See more",
   server_placeholder: "Enter Server",
   server_placeholder_select: "Select Server",

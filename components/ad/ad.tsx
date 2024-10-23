@@ -8,7 +8,7 @@ export interface AdProps extends React.HTMLAttributes<HTMLDivElement> {
   ad: Partial<SelectAd>
 }
 
-const Ad: React.FunctionComponent<AdProps> = (props) => {
+const Ad: React.FC<AdProps> = (props) => {
   const { ad } = props
 
   return (

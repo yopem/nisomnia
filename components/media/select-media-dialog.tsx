@@ -34,9 +34,7 @@ interface SelectMediaDialogProps {
   mediaType?: MediaType
 }
 
-const SelectMediaDialog: React.FunctionComponent<SelectMediaDialogProps> = (
-  props,
-) => {
+const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
   const { handleSelectUpdateMedia, children, open, setOpen, mediaType } = props
 
   const [toggleUpload, setToggleUpload] = React.useState<boolean>(false)

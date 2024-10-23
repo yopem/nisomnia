@@ -45,9 +45,7 @@ interface EditUserFormProps {
   user: InsertUser
 }
 
-export const EditUserForm: React.FunctionComponent<EditUserFormProps> = (
-  props,
-) => {
+export const EditUserForm: React.FC<EditUserFormProps> = (props) => {
   const { user } = props
 
   const [loading, setLoading] = React.useState<boolean>(false)

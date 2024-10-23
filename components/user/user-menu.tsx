@@ -19,7 +19,7 @@ export interface UserMenuProps {
   user: SelectUser | null
 }
 
-const UserMenu: React.FunctionComponent<UserMenuProps> = (props) => {
+const UserMenu: React.FC<UserMenuProps> = (props) => {
   const { user } = props
 
   const t = useI18n()

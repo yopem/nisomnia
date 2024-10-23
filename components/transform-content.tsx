@@ -37,9 +37,7 @@ const truncateHTMLByWords = (html: string, maxWords: number): string => {
   return plainText
 }
 
-const TransformContent: React.FunctionComponent<TransformContentProps> = (
-  props,
-) => {
+const TransformContent: React.FC<TransformContentProps> = (props) => {
   const { htmlInput, title, maxWords, readMoreLink } = props
 
   // Truncate plain text version of the HTML content if maxWords is provided

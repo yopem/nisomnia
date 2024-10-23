@@ -105,7 +105,7 @@
 
 .article-content p,
 .tiptap p {
-  @apply text-base md:text-lg;
+  @apply py-2 text-base md:text-lg;
 }
 
 .article-content a,
@@ -143,27 +143,27 @@
   @apply bg-[none] p-0 text-xs text-[inherit];
 }
 
-.article-body table th,
+.article-content table th,
 .tiptap table th {
   @apply bg-[#f1f3f5] text-left font-bold;
 }
 
-.article-body table td,
-.article-body table th,
+.article-content table td,
+.article-content table th,
 .tiptap table td,
 .tiptap table th {
   @apply relative box-border min-w-[1em] border-2 border-[#ced4da] px-[5px] py-[3px] align-top;
 }
 
-.article-body table .selectedCell:after {
+.article-content table .selectedCell:after {
   @apply pointer-events-none absolute bottom-0 left-0 right-0 top-0 z-20 bg-[#c8c8ff66];
 }
 
-.article-body table .column-resize-handle {
+.article-content table .column-resize-handle {
   @apply pointer-events-none absolute bottom-[-2px] right-[-2px] top-0 w-1 bg-[#adf];
 }
 
-.article-body table,
+.article-content table,
 .tiptap table {
   @apply m-0 w-full max-w-[calc(100%-10px)] table-fixed border-collapse overflow-hidden;
 }

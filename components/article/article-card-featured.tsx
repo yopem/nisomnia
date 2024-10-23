@@ -12,9 +12,7 @@ export interface ArticleCardFeaturedProps
   article: Pick<SelectArticle, "title" | "featuredImage" | "slug">
 }
 
-const ArticleCardFeatured: React.FunctionComponent<ArticleCardFeaturedProps> = (
-  props,
-) => {
+const ArticleCardFeatured: React.FC<ArticleCardFeaturedProps> = (props) => {
   const { article, className } = props
 
   const { title, featuredImage, slug } = article

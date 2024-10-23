@@ -14,7 +14,7 @@ interface ShareProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string
 }
 
-const Share: React.FunctionComponent<ShareProps> = async (props) => {
+const Share: React.FC<ShareProps> = async (props) => {
   const { text, url } = props
 
   const t = await getI18n()

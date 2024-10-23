@@ -22,9 +22,7 @@ interface AlertDeleteProps extends React.HTMLAttributes<HTMLDivElement> {
   onDelete: () => void
 }
 
-export const AlertDelete: React.FunctionComponent<AlertDeleteProps> = (
-  props,
-) => {
+export const AlertDelete: React.FC<AlertDeleteProps> = (props) => {
   const { description, isOpen, onClose, className, onDelete } = props
 
   const t = useI18n()

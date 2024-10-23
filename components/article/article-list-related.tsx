@@ -19,9 +19,7 @@ interface ArticleListRelatedProps extends React.HTMLAttributes<HTMLDivElement> {
   topicId: string
 }
 
-const ArticleListRelated: React.FunctionComponent<ArticleListRelatedProps> = (
-  props,
-) => {
+const ArticleListRelated: React.FC<ArticleListRelatedProps> = (props) => {
   const { locale, currentArticleId, topicId } = props
 
   const ts = useScopedI18n("article")

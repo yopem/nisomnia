@@ -12,9 +12,7 @@ interface ArticleCardVerticalProps
   article: Pick<SelectArticle, "title" | "featuredImage" | "slug">
 }
 
-const ArticleCardVertical: React.FunctionComponent<ArticleCardVerticalProps> = (
-  props,
-) => {
+const ArticleCardVertical: React.FC<ArticleCardVerticalProps> = (props) => {
   const { article, className } = props
 
   const { featuredImage, slug, title } = article

@@ -4,7 +4,7 @@ interface PlainSelectAd extends React.HTMLAttributes<HTMLDivElement> {
   content: string
 }
 
-const PlainAd: React.FunctionComponent<PlainSelectAd> = (props) => {
+const PlainAd: React.FC<PlainSelectAd> = (props) => {
   const { content } = props
 
   return (

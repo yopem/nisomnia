@@ -4,7 +4,7 @@ interface IconProps extends React.HtmlHTMLAttributes<SVGSVGElement> {
   className?: string
 }
 
-export const LampIcon: React.FunctionComponent<IconProps> = (props) => {
+export const LampIcon: React.FC<IconProps> = (props) => {
   const { className } = props
 
   return (
@@ -24,7 +24,7 @@ export const LampIcon: React.FunctionComponent<IconProps> = (props) => {
   )
 }
 
-export const VerifiedIcon: React.FunctionComponent<IconProps> = (props) => {
+export const VerifiedIcon: React.FC<IconProps> = (props) => {
   const { className } = props
 
   return (

@@ -99,9 +99,9 @@ const HIGHLIGHT_COLORS: BubbleColorMenuItem[] = [
   },
 ]
 
-export const TextEditorColorSelector: React.FunctionComponent<
-  TextEditorColorSelectorProps
-> = (props) => {
+export const TextEditorColorSelector: React.FC<TextEditorColorSelectorProps> = (
+  props,
+) => {
   const { editor } = props
 
   const activeColorItem = TEXT_COLORS.find(({ color }) =>

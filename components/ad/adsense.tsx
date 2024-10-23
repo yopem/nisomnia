@@ -9,7 +9,7 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
 }
 
-const Adsense: React.FunctionComponent<AdsenseProps> = (props) => {
+const Adsense: React.FC<AdsenseProps> = (props) => {
   const { content } = props
 
   const [isHydrated, setIsHydrated] = React.useState(false)

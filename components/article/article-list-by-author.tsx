@@ -19,9 +19,7 @@ interface ArticleListByAuthorProps
   locale: LanguageType
 }
 
-const ArticleListByAuthor: React.FunctionComponent<ArticleListByAuthorProps> = (
-  props,
-) => {
+const ArticleListByAuthor: React.FC<ArticleListByAuthorProps> = (props) => {
   const { authorId, locale } = props
 
   const loadMoreRef = React.useRef<HTMLDivElement>(null)

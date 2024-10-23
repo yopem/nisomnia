@@ -25,9 +25,7 @@ interface ReplyArticleCommentProps
   onCancel: () => void
 }
 
-const ReplyArticleComment: React.FunctionComponent<ReplyArticleCommentProps> = (
-  props,
-) => {
+const ReplyArticleComment: React.FC<ReplyArticleCommentProps> = (props) => {
   const { articleId, onSuccess, avatar, username, replyToId, onCancel } = props
 
   const t = useI18n()

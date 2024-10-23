@@ -7,9 +7,9 @@ interface ShareButtonWhatsAppProps extends ShareButtonProps {
   text: string
 }
 
-export const ShareButtonWhatsApp: React.FunctionComponent<
-  ShareButtonWhatsAppProps
-> = (props) => {
+export const ShareButtonWhatsApp: React.FC<ShareButtonWhatsAppProps> = (
+  props,
+) => {
   const { url, onClick, title, text, ...rest } = props
 
   return (

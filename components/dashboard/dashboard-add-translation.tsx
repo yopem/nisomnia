@@ -19,9 +19,9 @@ interface DashboardAddTranslationProps extends TooltipProps {
   language: LanguageType
 }
 
-const DashboardAddTranslation: React.FunctionComponent<
-  DashboardAddTranslationProps
-> = (props) => {
+const DashboardAddTranslation: React.FC<DashboardAddTranslationProps> = (
+  props,
+) => {
   const { triggerLink, content, language } = props
 
   return (

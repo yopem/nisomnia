@@ -41,9 +41,7 @@ interface DashboardAddTopicsProps<
   fieldName: string
 }
 
-const DashboardAddTopics: React.FunctionComponent<DashboardAddTopicsProps> = (
-  props,
-) => {
+const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   const {
     topics,
     topicType,

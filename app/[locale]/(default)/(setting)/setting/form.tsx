@@ -26,9 +26,7 @@ interface UserSettingFormProps {
   user: Omit<InsertUser, "role">
 }
 
-const UserSettingForm: React.FunctionComponent<UserSettingFormProps> = (
-  props,
-) => {
+const UserSettingForm: React.FC<UserSettingFormProps> = (props) => {
   const { user } = props
 
   const t = useI18n()

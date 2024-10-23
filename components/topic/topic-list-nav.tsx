@@ -10,9 +10,7 @@ interface TopicListNavProps extends React.HTMLAttributes<HTMLDivElement> {
   locale: LanguageType
 }
 
-const TopicListNav: React.FunctionComponent<TopicListNavProps> = async (
-  props,
-) => {
+const TopicListNav: React.FC<TopicListNavProps> = async (props) => {
   const { locale, className } = props
 
   const topics = await api.topic.byArticleCount({

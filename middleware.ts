@@ -1,14 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { createI18nMiddleware } from "next-international/middleware"
 
-const I18nMiddleware = createI18nMiddleware({
-  locales: ["id", "en"],
-  defaultLocale: "id",
-  urlMappingStrategy: "rewrite",
-})
-
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const I18nMiddleware = createI18nMiddleware({
+    locales: ["id", "en"],
+    defaultLocale: "id",
+    urlMappingStrategy: "rewrite",
+  })
+
   if (request.method === "GET") {
     const token = request.cookies.get("session")?.value ?? null
     const response = I18nMiddleware(request)

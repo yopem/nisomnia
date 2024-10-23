@@ -1,31 +1,26 @@
 import * as React from "react"
 
-import Footer from "@/components/layout/footer"
-import TopNav from "@/components/layout/top-nav"
+import GlobalContainer from "@/components/layout/global-container"
+import { getCurrentSession } from "@/lib/auth/session"
 import type { LanguageType } from "@/lib/validation/language"
 
 interface DefaultLayoutProps {
   children: React.ReactNode
-  locale: LanguageType
-  params: Promise<{
-    locale: LanguageType
-  }>
+  params: Promise<{ locale: LanguageType }>
 }
 
 export default async function DefaultLayout(props: DefaultLayoutProps) {
-  const { children, params } = props
+  const { params, children } = props
 
   const { locale } = await params
 
+  const { user } = await getCurrentSession()
+
   return (
     <>
-      <TopNav locale={locale} />
-      <div className="flex">
-        <main className="container mx-auto my-20 flex-1 overflow-y-auto px-2 pt-2 md:px-24 lg:px-48 xl:px-80">
-          {children}
-        </main>
-      </div>
-      <Footer />
+      <GlobalContainer user={user} locale={locale}>
+        {children}
+      </GlobalContainer>
     </>
   )
 }

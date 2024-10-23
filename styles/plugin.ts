@@ -73,6 +73,22 @@ export const stylePlugin = plugin(
       h3: { "@apply text-lg font-bold md:text-2xl": {} },
       h4: { "@apply text-base font-bold md:text-xl": {} },
       h5: { "@apply text-base font-bold md:text-lg": {} },
+      ".scrollbar-hide": {
+        scrollbarWidth: "none",
+      },
+      ".scrollbar::-webkit-scrollbar-track": {
+        background: "transparent",
+      },
+      ".scrollbar::-webkit-scrollbar-thumb": {
+        background: "#555",
+      },
+
+      ".scrollbar::-webkit-scrollbar-thumb:hover": {
+        background: "#555",
+      },
+      ".scrollbar::-webkit-scrollbar-track:hover": {
+        background: "transparent",
+      },
     })
   },
   {

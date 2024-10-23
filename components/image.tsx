@@ -15,7 +15,7 @@ const rgbDataURL = (r: number, g: number, b: number) =>
     triplet(0, r, g) + triplet(b, 255, 255)
   }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`
 
-const Image: React.FunctionComponent<ImageProps> = (props) => {
+const Image: React.FC<ImageProps> = (props) => {
   const {
     src,
     alt,

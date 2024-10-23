@@ -20,9 +20,7 @@ interface DashboardPaginationProps
   onPageChange?: (_page: number) => void
 }
 
-const DashboardPagination: React.FunctionComponent<DashboardPaginationProps> = (
-  props,
-) => {
+const DashboardPagination: React.FC<DashboardPaginationProps> = (props) => {
   const { currentPage, lastPage, paramsName = "page" } = props
 
   const searchParams = useSearchParams()

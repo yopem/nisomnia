@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Icon } from "@/components/ui/icon"
 
-const ThemeSwitcher: React.FunctionComponent = () => {
+const ThemeSwitcher: React.FC = () => {
   const { setTheme } = useTheme()
 
   return (
