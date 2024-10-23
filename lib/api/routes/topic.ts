@@ -344,17 +344,14 @@ export const topicRouter = createTRPCRouter({
       }
     }),
   searchDashboard: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(z.string())
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.topics.findMany({
-          where: (topics, { eq, and, or, ilike }) =>
-            and(
-              eq(topics.language, input.language),
-              or(
-                ilike(topics.title, `%${input.searchQuery}%`),
-                ilike(topics.slug, `%${input.searchQuery}%`),
-              ),
+          where: (topics, { or, ilike }) =>
+            or(
+              ilike(topics.title, `%${input}%`),
+              ilike(topics.slug, `%${input}%`),
             ),
           with: {
             topicTranslation: {

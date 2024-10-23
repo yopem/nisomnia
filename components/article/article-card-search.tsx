@@ -7,18 +7,19 @@ import Image from "@/components/image"
 import type { SelectArticle } from "@/lib/db/schema"
 
 interface ArticleCardSearchProps {
-  article: Pick<SelectArticle, "title" | "featuredImage" | "slug">
+  article: Pick<SelectArticle, "id" | "title" | "featuredImage" | "slug">
+  isDashboard?: boolean
 }
 
 const ArticleCardSearch: React.FC<ArticleCardSearchProps> = (props) => {
-  const { article } = props
+  const { article, isDashboard } = props
 
-  const { title, slug, featuredImage } = article
+  const { id, title, slug, featuredImage } = article
 
   return (
     <NextLink
       aria-label={title}
-      href={`/article/${slug}`}
+      href={isDashboard ? `/dashboard/article/edit/${id}` : `/article/${slug}`}
       className="mb-2 w-full"
     >
       <div className="flex flex-row rounded-xl p-3 hover:bg-accent">

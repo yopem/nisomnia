@@ -5,21 +5,25 @@ import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
 import type { SelectTopic } from "@/lib/db/schema"
 
-type TopicDataProps = Pick<SelectTopic, "title" | "slug" | "featuredImage">
+type TopicDataProps = Pick<
+  SelectTopic,
+  "id" | "title" | "slug" | "featuredImage"
+>
 
 interface TopicCardSearchProps {
   topic: TopicDataProps
+  isDashboard?: boolean
 }
 
 const TopicCardSearch: React.FC<TopicCardSearchProps> = (props) => {
-  const { topic } = props
+  const { topic, isDashboard } = props
 
-  const { title, slug, featuredImage } = topic
+  const { id, title, slug, featuredImage } = topic
 
   return (
     <NextLink
       aria-label={title}
-      href={`/topic/${slug}`}
+      href={isDashboard ? `/dashboard/topic/edit/${id}` : `/topic/${slug}`}
       className="mb-2 w-full"
     >
       <div className="flex flex-row rounded-xl p-1 hover:bg-accent">

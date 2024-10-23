@@ -13,6 +13,7 @@ import { Icon } from "@/components/ui/icon"
 import { useOnClickOutside } from "@/hooks/use-on-click-outside"
 import { logout } from "@/lib/auth/logout"
 import { useI18n } from "@/lib/locales/client"
+import DashboardSearchSidebar from "./dashboard-search-sidebar"
 
 interface DashboardSidebarProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -64,6 +65,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
             <SidebarItem href="/" icon={<Icon.Home />}>
               {t("home")}
             </SidebarItem>
+            <DashboardSearchSidebar />
             <SidebarItem href="/dashboard" icon={<Icon.Dashboard />}>
               {t("overview")}
             </SidebarItem>

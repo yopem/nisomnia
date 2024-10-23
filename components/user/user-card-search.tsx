@@ -5,21 +5,22 @@ import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
 import type { SelectUser } from "@/lib/db/schema"
 
-type UserDataProps = Pick<SelectUser, "name" | "username" | "image">
+type UserDataProps = Pick<SelectUser, "id" | "name" | "username" | "image">
 
 interface UserCardSearchProps {
   user: UserDataProps
+  isDashboard?: boolean
 }
 
 const UserCardSearch: React.FC<UserCardSearchProps> = (props) => {
-  const { user } = props
+  const { user, isDashboard } = props
 
-  const { name, username, image } = user
+  const { id, name, username, image } = user
 
   return (
     <NextLink
       aria-label={username!}
-      href={`/user/${username!}`}
+      href={isDashboard ? `/dashboard/user/edit/${id}` : `/user/${username}`}
       className="mb-2 w-full"
     >
       <div className="flex flex-row rounded-xl p-3 hover:bg-accent">
