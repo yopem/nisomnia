@@ -6,7 +6,7 @@ import LoadingProgress from "@/components/loading-progress"
 import type { SelectArticle } from "@/lib/db/schema"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
-import ArticleCardHorizontal from "./article-card-horizontal"
+import ArticleCardVertical from "./article-card-vertical"
 
 export type ArticleListDataProps = Pick<
   SelectArticle,
@@ -25,7 +25,7 @@ const ArticleList: React.FC<ArticleListProps> = (props) => {
     api.article.byLanguageInfinite.useInfiniteQuery(
       {
         language: locale,
-        limit: 10,
+        limit: 24,
       },
       {
         initialCursor: null,
@@ -55,11 +55,13 @@ const ArticleList: React.FC<ArticleListProps> = (props) => {
 
   return (
     <div>
-      {data?.pages.map((page) => {
-        return page.articles.map((article) => {
-          return <ArticleCardHorizontal article={article} key={article.id} />
-        })
-      })}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        {data?.pages.map((page) => {
+          return page.articles.map((article) => {
+            return <ArticleCardVertical article={article} key={article.id} />
+          })
+        })}
+      </div>
       {hasNextPage && (
         <div ref={loadMoreRef}>
           <div className="text-center">
