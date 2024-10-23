@@ -24,3 +24,7 @@
 - [ ] person (actor, director, etc)
 - [ ] deploy umami
 - [ ] use partytown for google analytics and umami
+
+
+# FIX: 
+- [ ] close global search and dashboard search dialog after result clicked
