@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server"
 
 import { db } from "@/lib/db"
 import { cuid, trimText } from "@/lib/utils"
-import { generateUniqueArticleSlug } from "@/lib/utils/slug"
 import { createArticleSchema } from "@/lib/validation/article"
 import { articleTopics, articles, articleTranslations, articleAuthors, articleEditors } from "@/lib/db/schema"
 
@@ -11,7 +10,6 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const parsedInput = createArticleSchema.parse(body)
-    const slug = await generateUniqueArticleSlug(parsedInput.title)
 
     const generatedExcerpt = !parsedInput.excerpt
       ? trimText(parsedInput.content, 160)
@@ -37,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     const data = await db.insert(articles).values({
       id: articleId,
-      slug: slug,
+      slug: body.slug,
       excerpt: generatedExcerpt,
       metaTitle: generatedMetaTitle,
       metaDescription: generatedMetaDescription,
