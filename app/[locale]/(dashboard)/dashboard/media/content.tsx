@@ -101,6 +101,7 @@ export default function DashboardMediaContent() {
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="article">Article</SelectItem>
               <SelectItem value="topic">Topic</SelectItem>
+              <SelectItem value="feed">Feed</SelectItem>
               <SelectItem value="genre">Genre</SelectItem>
               <SelectItem value="review">Review</SelectItem>
               <SelectItem value="tutorial">Tutorial</SelectItem>

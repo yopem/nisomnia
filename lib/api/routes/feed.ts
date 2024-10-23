@@ -7,7 +7,7 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { feeds, feedTopics } from "@/lib/db/schema"
+import { feeds, feedTopics, topics } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueFeedSlug } from "@/lib/utils/slug"
 import { createFeedSchema, updateFeedSchema } from "@/lib/validation/feed"
@@ -18,11 +18,25 @@ export const feedRouter = createTRPCRouter({
     .input(z.string())
     .query(async ({ ctx, input }) => {
       try {
-        const data = await ctx.db.query.feeds.findFirst({
-          where: (feed, { eq }) => eq(feed.id, input),
-        })
+        const feedData = await ctx.db
+          .select()
+          .from(feeds)
+          .where(eq(feeds.id, input))
+          .limit(1)
 
-        return data
+        const feedTopicsData = await ctx.db
+          .select({ id: topics.id, title: topics.title })
+          .from(feedTopics)
+          .leftJoin(feeds, eq(feedTopics.feedId, feeds.id))
+          .leftJoin(topics, eq(feedTopics.topicId, topics.id))
+          .where(eq(feeds.id, input))
+
+        const data = feedData.map((item) => ({
+          ...item,
+          topics: feedTopicsData,
+        }))
+
+        return data[0]
       } catch (error) {
         if (error instanceof TRPCError) {
           throw error
@@ -357,7 +371,6 @@ export const feedRouter = createTRPCRouter({
   dashboard: adminProtectedProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -365,7 +378,6 @@ export const feedRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.feeds.findMany({
-          where: (feeds, { eq }) => eq(feeds.language, input.language),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],

@@ -13,6 +13,7 @@ export default async function DashboardPage() {
 
   const ads = await api.ad.count()
   const articles = await api.article.count()
+  const feeds = await api.feed.count()
   const genres = await api.genre.count()
   const medias = await api.media.count()
   const movies = await api.movie.count()
@@ -37,6 +38,13 @@ export default async function DashboardPage() {
           </DashboardBoxIconWrapper>
           <DashboardBoxCount>{topics}</DashboardBoxCount>
           <DashboardBoxDescription>{t("topics")}</DashboardBoxDescription>
+        </DashboardBox>
+        <DashboardBox>
+          <DashboardBoxIconWrapper>
+            <Icon.Feed />
+          </DashboardBoxIconWrapper>
+          <DashboardBoxCount>{feeds}</DashboardBoxCount>
+          <DashboardBoxDescription>{t("feeds")}</DashboardBoxDescription>
         </DashboardBox>
         <DashboardBox>
           <DashboardBoxIconWrapper>

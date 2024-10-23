@@ -328,6 +328,7 @@ const TranslateArticleForm = (props: TranslateArticleFormProps) => {
                             mode="edit"
                             fieldName="topics"
                             locale={valueLanguage}
+                            //@ts-expect-error FIX: later
                             control={form.control}
                             topics={topics}
                             addTopics={setTopics}

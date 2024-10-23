@@ -84,7 +84,7 @@ export default function CreateTopicForm() {
       } else {
         toast({
           variant: "danger",
-          description: ts("update_failed"),
+          description: ts("create_failed"),
         })
       }
     },

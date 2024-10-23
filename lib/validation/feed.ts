@@ -12,8 +12,7 @@ const feedInput = {
       required_error: "Title is required",
       invalid_type_error: "Title must be a string",
     })
-    .min(2)
-    .max(32),
+    .min(2),
   type: z
     .enum(FEED_TYPE, {
       invalid_type_error: "only website, tiktok, x, facebook are accepted",

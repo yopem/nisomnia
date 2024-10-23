@@ -348,6 +348,7 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
                           <DashboardAddTopics
                             locale={valueLanguage}
                             fieldName="topics"
+                            //@ts-expect-error FIX: later
                             control={form.control}
                             topics={topics}
                             addTopics={setTopics}

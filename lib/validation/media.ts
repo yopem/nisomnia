@@ -10,6 +10,7 @@ const ACCEPTED_IMAGE_TYPES = [
 export const MEDIA_TYPE = [
   "all",
   "article",
+  "feed",
   "topic",
   "genre",
   "review",

@@ -3,7 +3,7 @@
 "use client"
 
 import * as React from "react"
-import { useController } from "react-hook-form"
+import { useController, type Control, type FieldValues } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { FormLabel, FormMessage } from "@/components/ui/form"
@@ -17,7 +17,9 @@ import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
 import type { TopicType } from "@/lib/validation/topic"
 
-interface DashboardAddTopicsProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DashboardAddTopicsProps<
+  TFieldValues extends FieldValues = FieldValues,
+> {
   topics: string[]
   topicType: TopicType
   locale: LanguageType
@@ -35,8 +37,7 @@ interface DashboardAddTopicsProps extends React.HTMLAttributes<HTMLDivElement> {
       }[]
     >
   >
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: any
+  control: Control<TFieldValues>
   fieldName: string
 }
 

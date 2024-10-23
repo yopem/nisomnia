@@ -81,6 +81,7 @@ import {
   LuX,
   LuYoutube,
 } from "react-icons/lu"
+import { MdOutlineRssFeed } from "react-icons/md"
 import { RiTwitterXLine } from "react-icons/ri"
 
 import { IndonesiaFlag, USAFlag } from "./icon-flag"
@@ -118,6 +119,7 @@ export const Icon = {
   ExternalLink: LuExternalLink,
   USAFlag: USAFlag,
   Facebook: LuFacebook,
+  Feed: MdOutlineRssFeed,
   Film: LuFilm,
   Folder: LuFolder,
   FormatBold: LuBold,

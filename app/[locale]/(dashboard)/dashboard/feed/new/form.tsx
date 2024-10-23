@@ -4,6 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
+import DashboardAddTopics from "@/components/dashboard/dashboard-add-topics"
 import Image from "@/components/image"
 import DeleteMediaButton from "@/components/media/delete-media-button"
 import SelectMediaDialog from "@/components/media/select-media-dialog"
@@ -24,55 +25,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectTopic } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
+import type { FeedType } from "@/lib/validation/feed"
 import type { LanguageType } from "@/lib/validation/language"
-import type { StatusType } from "@/lib/validation/status"
-import type { TopicType, TopicVisibility } from "@/lib/validation/topic"
 
 interface FormValues {
-  id: string
   title: string
-  slug: string
-  description?: string
-  metaTitle?: string
-  metaDescription?: string
   language: LanguageType
-  visibility: TopicVisibility
-  type: TopicType
-  status: StatusType
-  topicTranslationId: string
+  link?: string
+  type: FeedType
+  owner?: string
+  topics: string[]
 }
 
-interface EditTopicFormProps {
-  topic: SelectTopic & {
-    language: LanguageType | string
-  }
-}
-
-export default function EditTopicForm(props: EditTopicFormProps) {
-  const { topic } = props
-
+export default function CreateFeedForm() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)
   const [selectedFeaturedImage, setSelectedFeaturedImage] =
-    React.useState<string>(topic?.featuredImage ?? "")
-  const [topicTranslationId, setTopicTranslationId] = React.useState<string>("")
-  const [showMetaData, setShowMetaData] = React.useState<boolean>(false)
+    React.useState<string>("")
+  const [topics, setTopics] = React.useState<string[]>([])
+  const [selectedTopics, setSelectedTopics] = React.useState<
+    { id: string; title: string }[] | []
+  >([])
 
   const t = useI18n()
-  const ts = useScopedI18n("topic")
+  const ts = useScopedI18n("feed")
 
   const router = useRouter()
 
-  const { mutate: updateTopic } = api.topic.update.useMutation({
+  const { mutate: createFeed } = api.feed.create.useMutation({
     onSuccess: () => {
       form.reset()
-      router.push("/dashboard/topic")
-      toast({ variant: "success", description: ts("update_success") })
+      router.push("/dashboard/feed")
+      toast({ variant: "success", description: ts("create_success") })
     },
     onError: (error) => {
       setLoading(false)
@@ -97,54 +84,25 @@ export default function EditTopicForm(props: EditTopicFormProps) {
       } else {
         toast({
           variant: "danger",
-          description: ts("create_failed"),
+          description: ts("update_failed"),
         })
       }
     },
   })
 
-  const form = useForm<FormValues>({
-    defaultValues: {
-      id: topic.id,
-      title: topic.title ?? "",
-      slug: topic.slug ?? "",
-      description: topic.description ?? "",
-      metaTitle: topic.metaTitle ?? "",
-      metaDescription: topic?.metaDescription ?? "",
-      language: topic.language ?? "id",
-      visibility: topic.visibility ?? "public",
-      type: topic.type ?? "all",
-      status: topic.status ?? "published",
-      topicTranslationId: topic.topicTranslationId || "",
-    },
-  })
+  const form = useForm<FormValues>()
 
-  const { data: topicTranslation } =
-    api.topic.topicTranslationById.useQuery(topicTranslationId)
+  const valueLanguage = form.watch("language")
 
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
       ...values,
       featuredImage: selectedFeaturedImage,
     }
-
-    setTopicTranslationId(values.topicTranslationId)
-
-    if (topicTranslation) {
-      const otherLangTopic = topicTranslation?.topics.find(
-        (topicData) => topicData.id !== topic.id,
-      )
-
-      if (otherLangTopic?.language !== values.language) {
-        setLoading(true)
-        updateTopic(selectedFeaturedImage ? mergedValues : values)
-        setLoading(false)
-        router.push("/dashboard/topic")
-      }
-    }
+    setLoading(true)
+    createFeed(selectedFeaturedImage ? mergedValues : values)
+    setLoading(false)
   }
-
-  console.log("featured ", selectedFeaturedImage)
 
   const handleUpdateMedia = (data: { url: React.SetStateAction<string> }) => {
     setSelectedFeaturedImage(data.url)
@@ -168,7 +126,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
             e.preventDefault()
           }}
         >
-          <h1 className="pb-2 lg:pb-5">{ts("edit")}</h1>
+          <h1 className="pb-2 lg:pb-5">{ts("add")}</h1>
           <div className="flex flex-col lg:flex-row lg:space-x-4">
             <div className="w-full lg:w-6/12 lg:space-y-4">
               <FormField
@@ -182,22 +140,6 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                     <FormLabel>{t("title")}</FormLabel>
                     <FormControl>
                       <Input placeholder={t("title_placeholder")} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="slug"
-                rules={{
-                  required: t("slug_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("slug")}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t("slug_placeholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,46 +166,29 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={topic.language}>
-                          {topic.language === "id"
-                            ? "Indonesia"
-                            : topic.language === "en" && "English"}
-                        </SelectItem>
+                        <SelectItem value="id">Indonesia</SelectItem>
+                        <SelectItem value="en">English</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="visibility"
-                rules={{
-                  required: t("visibility_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("visibility")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t("visibility_placeholder")}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
-                        <SelectItem value="internal">Internal</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {valueLanguage && (
+                <div className="my-2 max-w-xl">
+                  <DashboardAddTopics
+                    locale={valueLanguage}
+                    fieldName="topics"
+                    //@ts-expect-error FIX: later
+                    control={form.control}
+                    topics={topics}
+                    addTopics={setTopics}
+                    selectedTopics={selectedTopics}
+                    addSelectedTopics={setSelectedTopics}
+                    topicType="feed"
+                  />
+                </div>
+              )}
               <FormField
                 control={form.control}
                 name="type"
@@ -283,14 +208,10 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="feed">Feed</SelectItem>
-                        <SelectItem value="review">Review</SelectItem>
-                        <SelectItem value="tutorial">Tutorial</SelectItem>
-                        <SelectItem value="movie">Movie</SelectItem>
-                        <SelectItem value="tv">TV</SelectItem>
-                        <SelectItem value="game">Game</SelectItem>
+                        <SelectItem value="website">Website</SelectItem>
+                        <SelectItem value="tiktok">Tiktok</SelectItem>
+                        <SelectItem value="x">X</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -299,15 +220,25 @@ export default function EditTopicForm(props: EditTopicFormProps) {
               />
               <FormField
                 control={form.control}
-                name="description"
+                name="link"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("description")}</FormLabel>
+                    <FormLabel>{t("link")}</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder={t("description_placeholder")}
-                        {...field}
-                      />
+                      <Input placeholder={t("link_placeholder")} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="owner"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("owner")}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t("owner_placeholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -326,7 +257,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                     handleSelectUpdateMedia={handleUpdateMedia}
                     open={openDialog}
                     setOpen={setOpenDialog}
-                    mediaType="topic"
+                    mediaType="feed"
                   >
                     <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                       <Image
@@ -345,7 +276,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                   handleSelectUpdateMedia={handleUpdateMedia}
                   open={openDialog}
                   setOpen={setOpenDialog}
-                  mediaType="topic"
+                  mediaType="feed"
                 >
                   <div
                     onClick={() => setOpenDialog(true)}
@@ -357,80 +288,16 @@ export default function EditTopicForm(props: EditTopicFormProps) {
               )}
             </div>
           </div>
-          <div className="my-4 rounded-lg bg-muted p-3 lg:p-5">
-            <div className="flex justify-between">
-              <div className={showMetaData ? "pb-4" : "pb-0"}>
-                <span className="flex align-top text-base font-semibold">
-                  Meta Data
-                </span>
-                <span className="text-xs">
-                  {t("extra_content_search_engine")}
-                </span>
-              </div>
-              <Button
-                variant="outline"
-                onClick={() => setShowMetaData(!showMetaData)}
-              >
-                {showMetaData ? t("close") : t("expand")}
-              </Button>
-            </div>
-            <div className={showMetaData ? "flex flex-col" : "hidden"}>
-              <FormField
-                control={form.control}
-                name="metaTitle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("meta_title")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("meta_title_placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="metaDescription"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("meta_description")}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t("meta_description_placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex space-x-2">
+          <div className="mt-4">
             <Button
-              aria-label={t("save")}
+              aria-label={t("submit")}
               type="submit"
               onClick={() => {
-                form.setValue("status", "published")
                 form.handleSubmit(onSubmit)()
               }}
               loading={loading}
             >
-              {t("save")}
-            </Button>
-            <Button
-              aria-label={t("save_as_draft")}
-              type="submit"
-              onClick={() => {
-                form.setValue("status", "draft")
-                form.handleSubmit(onSubmit)()
-              }}
-              loading={loading}
-            >
-              {t("save_as_draft")}
+              {t("submit")}
             </Button>
           </div>
         </form>
