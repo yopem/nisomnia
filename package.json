@@ -6,7 +6,7 @@
     "analyze": "cross-env ANALYZE=true pnpm next build",
     "clean": "git clean -xdf .next node_modules",
     "dev": "next dev --turbo",
-    "dev:turbo": "next dev --turbo",
+    "dev:webpack": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
