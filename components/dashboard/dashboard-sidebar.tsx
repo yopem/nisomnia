@@ -32,19 +32,27 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
 
   return (
     <>
-      <Button
-        ref={ref}
-        data-drawer-target="dashboard-sidebar"
-        data-drawer-toggle="dashboard-sidebar"
-        aria-controls="dashboard-sidebar"
-        variant="ghost"
-        size="icon"
-        className="m-3 flex lg:hidden"
-        onClick={onToggle}
-      >
-        <span className="sr-only">Open sidebar</span>
-        <Icon.Menu className="size-6" />
-      </Button>
+      <div className="flex items-center justify-between border-b border-border bg-slate-100 dark:bg-slate-950 lg:hidden">
+        <Button
+          ref={ref}
+          data-drawer-target="global-sidebar"
+          data-drawer-toggle="global-sidebar"
+          aria-controls="global-sidebar"
+          variant="ghost"
+          size="icon"
+          className="m-3 flex lg:hidden"
+          onClick={onToggle}
+        >
+          <span className="sr-only">Open sidebar</span>
+          <Icon.Menu className="size-6" />
+        </Button>
+        <NextLink href="/">
+          <Logo />
+        </NextLink>
+        <div className="m-3">
+          <ThemeSwitcher />
+        </div>
+      </div>
       <Sidebar isOpen={isOpen}>
         <div className="h-full overflow-y-auto border-r border-border bg-slate-100 px-3 py-5 dark:bg-slate-950">
           <div className="mb-4 hidden lg:flex">
