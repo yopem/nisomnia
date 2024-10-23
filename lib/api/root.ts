@@ -1,6 +1,7 @@
 import { adRouter } from "./routes/ad"
 import { articleRouter } from "./routes/article"
 import { articleCommentRouter } from "./routes/article-comment"
+import { feedRouter } from "./routes/feed"
 import { genreRouter } from "./routes/genre"
 import { mediaRouter } from "./routes/media"
 import { movieRouter } from "./routes/movie"
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   ad: adRouter,
   article: articleRouter,
   articleComment: articleCommentRouter,
+  feed: feedRouter,
   genre: genreRouter,
   media: mediaRouter,
   movie: movieRouter,

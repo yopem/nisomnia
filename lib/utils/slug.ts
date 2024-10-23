@@ -83,6 +83,23 @@ export const generateUniqueTopicSlug = async (
   return uniqueSlug
 }
 
+export const generateUniqueFeedSlug = async (text: string): Promise<string> => {
+  const slug = slugify(text)
+  let uniqueSlug = slug
+  let suffix = 1
+
+  while (
+    await db.query.feeds.findFirst({
+      where: (feed, { eq }) => eq(feed.slug, uniqueSlug),
+    })
+  ) {
+    suffix++
+    uniqueSlug = `${slug}-${suffix}`
+  }
+
+  return uniqueSlug
+}
+
 export const generateUniqueMovieSlug = async (
   text: string,
 ): Promise<string> => {

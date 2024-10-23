@@ -21,6 +21,7 @@ export const feeds = pgTable("feeds", {
   featuredImage: text("featured_image"),
   link: text("link"),
   type: feedTypeEnum("type").notNull().default("website"),
+  owner: text("owner"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 })

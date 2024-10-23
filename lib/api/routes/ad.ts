@@ -40,7 +40,7 @@ export const adRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.ads.findFirst({
-          where: (ads, { eq }) => eq(ads.id, input),
+          where: (ad, { eq }) => eq(ad.id, input),
         })
 
         return data

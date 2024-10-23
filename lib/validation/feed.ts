@@ -36,6 +36,11 @@ const feedInput = {
       invalid_type_error: "Link must be a string",
     })
     .optional(),
+  owner: z
+    .string({
+      invalid_type_error: "Owner must be a string",
+    })
+    .optional(),
   language: z.enum(LANGUAGE_TYPE, {
     invalid_type_error: "only id and en are accepted",
   }),
