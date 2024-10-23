@@ -57,7 +57,7 @@ const ArticleListByTopic: React.FC<ArticleListByTopicProps> = (props) => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 2xl:grid-cols-4">
         {data?.pages.map((page) => {
           return page.articles.map((article) => {
             return <ArticleCardVertical article={article} key={article.id} />
