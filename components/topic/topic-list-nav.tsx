@@ -18,7 +18,7 @@ const TopicListNav: React.FunctionComponent<TopicListNavProps> = async (
   const topics = await api.topic.byArticleCount({
     language: locale,
     page: 1,
-    perPage: 10,
+    perPage: 5,
   })
 
   return (
