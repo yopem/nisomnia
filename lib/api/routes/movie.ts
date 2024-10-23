@@ -7,14 +7,14 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { productionCompanies } from "@/lib/db/schema"
-import { genres } from "@/lib/db/schema/genre"
 import {
+  genres,
   movieGenres,
   movieProductionCompanies,
   movies,
   movieTranslations,
-} from "@/lib/db/schema/movie"
+  productionCompanies,
+} from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMovieSlug } from "@/lib/utils/slug"
 import { languageType } from "@/lib/validation/language"

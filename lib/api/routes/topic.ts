@@ -7,8 +7,7 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { articleTopics } from "@/lib/db/schema/article"
-import { topics, topicTranslations } from "@/lib/db/schema/topic"
+import { articleTopics, topics, topicTranslations } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueTopicSlug } from "@/lib/utils/slug"
 import { languageType } from "@/lib/validation/language"

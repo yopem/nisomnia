@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectUser } from "@/lib/db/schema/user"
+import type { SelectUser } from "@/lib/db/schema"
 import { useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import { formatDate } from "@/lib/utils"

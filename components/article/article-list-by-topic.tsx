@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import LoadingProgress from "@/components/loading-progress"
-import type { SelectArticle } from "@/lib/db/schema/article"
+import type { SelectArticle } from "@/lib/db/schema"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
 import ArticleCardHorizontal from "./article-card-horizontal"

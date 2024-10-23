@@ -7,8 +7,7 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { genres, genreTranslations } from "@/lib/db/schema/genre"
-import { movieGenres } from "@/lib/db/schema/movie"
+import { genres, genreTranslations, movieGenres } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueGenreSlug } from "@/lib/utils/slug"
 import {

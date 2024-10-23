@@ -4,7 +4,7 @@ import * as React from "react"
 import NextLink from "next/link"
 
 import Image from "@/components/image"
-import type { SelectArticle } from "@/lib/db/schema/article"
+import type { SelectArticle } from "@/lib/db/schema"
 
 interface ArticleCardSearchProps {
   article: Pick<SelectArticle, "title" | "featuredImage" | "slug">

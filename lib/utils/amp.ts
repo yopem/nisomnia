@@ -3,7 +3,7 @@ import Amperize from "amperize"
 import sanitizeHtml from "sanitize-html"
 
 import TransformContentAMP from "@/components/transform-content-amp"
-import type { SelectArticle } from "@/lib/db/schema/article"
+import type { SelectArticle } from "@/lib/db/schema"
 import { splitReactNodes } from "."
 
 const allowedAMPTags = [

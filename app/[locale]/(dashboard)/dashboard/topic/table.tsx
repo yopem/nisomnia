@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectTopic } from "@/lib/db/schema/topic"
+import type { SelectTopic } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import { formatDate } from "@/lib/utils"

@@ -3,7 +3,7 @@ import NextLink from "next/link"
 
 import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
-import type { SelectUser } from "@/lib/db/schema/user"
+import type { SelectUser } from "@/lib/db/schema"
 
 type UserDataProps = Pick<SelectUser, "name" | "username" | "image">
 

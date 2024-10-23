@@ -2,16 +2,15 @@ import { NextResponse, type NextRequest } from "next/server"
 
 import env from "@/env"
 import { db } from "@/lib/db"
-import { medias } from "@/lib/db/schema/media"
+import { medias } from "@/lib/db/schema"
+import { resizeImage } from "@/lib/image"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
 import { mediaType, type MediaType } from "@/lib/validation/media"
-import { resizeImage } from "@/lib/image"
 
 export async function POST(request: NextRequest) {
   try {
-
     const formData = await request.formData()
 
     const files = formData.getAll("file") as Blob[]
@@ -49,14 +48,17 @@ export async function POST(request: NextRequest) {
         contentType: defaultFileType,
       })
 
-      const data = await db.insert(medias).values({
-        id: cuid(),
-        name: uniqueFileName,
-        url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
-        type: type,
-        imageType: defaultFileType,
-        authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2"
-      }).returning()
+      const data = await db
+        .insert(medias)
+        .values({
+          id: cuid(),
+          name: uniqueFileName,
+          url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+          type: type,
+          imageType: defaultFileType,
+          authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2",
+        })
+        .returning()
 
       uploadedFiles.push(data)
     }
@@ -67,4 +69,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json("Internal Server Error", { status: 500 })
   }
 }
-

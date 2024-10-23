@@ -3,8 +3,7 @@ import NextLink from "next/link"
 
 import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
-import type { SelectMedia } from "@/lib/db/schema/media"
-import type { SelectTopic } from "@/lib/db/schema/topic"
+import type { SelectMedia, SelectTopic } from "@/lib/db/schema"
 
 type TopicDataProps = Pick<SelectTopic, "title" | "slug"> & {
   featuredImage?: Pick<SelectMedia, "url"> | null

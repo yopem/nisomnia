@@ -8,7 +8,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { articleComments } from "@/lib/db/schema/article-comment"
+import { articleComments } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import {
   createArticleCommentSchema,

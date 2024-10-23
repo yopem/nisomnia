@@ -14,9 +14,9 @@ import {
   articles,
   articleTopics,
   articleTranslations,
-} from "@/lib/db/schema/article"
-import { topics } from "@/lib/db/schema/topic"
-import { users } from "@/lib/db/schema/user"
+  topics,
+  users,
+} from "@/lib/db/schema"
 import { cuid, trimText } from "@/lib/utils"
 import { generateUniqueArticleSlug } from "@/lib/utils/slug"
 import {

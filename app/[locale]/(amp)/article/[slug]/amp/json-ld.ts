@@ -1,7 +1,5 @@
 import env from "@/env"
-import type { SelectArticle } from "@/lib/db/schema/article"
-import type { SelectTopic } from "@/lib/db/schema/topic"
-import type { SelectUser } from "@/lib/db/schema/user"
+import type { SelectArticle, SelectTopic, SelectUser } from "@/lib/db/schema"
 
 interface ArticleProps extends SelectArticle {
   topics: Pick<SelectTopic, "title" | "slug">[]

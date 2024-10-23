@@ -7,7 +7,7 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { ads } from "@/lib/db/schema/ad"
+import { ads } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { adPosition, createAdSchema, updateAdSchema } from "@/lib/validation/ad"
 

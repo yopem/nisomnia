@@ -7,7 +7,7 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { productionCompanies } from "@/lib/db/schema/production-company"
+import { productionCompanies } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueProductionCompanySlug } from "@/lib/utils/slug"
 import {

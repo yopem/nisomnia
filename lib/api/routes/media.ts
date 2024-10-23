@@ -10,7 +10,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { medias } from "@/lib/db/schema/media"
+import { medias } from "@/lib/db/schema"
 import { r2Client } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import {

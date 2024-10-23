@@ -23,7 +23,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { InsertAd } from "@/lib/db/schema/ad"
+import type { InsertAd } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { AdPosition, AdType } from "@/lib/validation/ad"

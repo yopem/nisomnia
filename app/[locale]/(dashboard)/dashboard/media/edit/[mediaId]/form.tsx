@@ -17,7 +17,7 @@ import {
 import { Icon } from "@/components/ui/icon"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { InsertMedia } from "@/lib/db/schema/media"
+import type { InsertMedia } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import { copyToClipboard } from "@/lib/utils"

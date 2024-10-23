@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { InsertUser } from "@/lib/db/schema/user"
+import type { InsertUser } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import { formatDate } from "@/lib/utils"
