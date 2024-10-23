@@ -28,7 +28,7 @@ const GlobalContainer: React.FC<GlobalContainerProps> = (props) => {
         onClose={onClose}
         isOpen={isOpen}
       />
-      <main className="flex-1 p-4 sm:ml-64 lg:px-24 xl:px-56 xl:py-8">
+      <main className="flex-1 p-4 sm:ml-64 lg:px-24 xl:px-36 xl:py-8 2xl:px-56">
         {children}
       </main>
     </>
