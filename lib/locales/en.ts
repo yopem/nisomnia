@@ -98,6 +98,22 @@ export default {
   "page.translate_success": "Page is successfully translated",
   "page.update_failed": "Failed to update page! Please try again later",
   "page.update_success": "Page is successfully updated",
+  "production_company.add": "Add New Production Company",
+  "production_company.all": "All Production Companies",
+  "production_company.create_failed":
+    "Failed to create production company! Please try again later",
+  "production_company.create_success":
+    "Production Company is successfully created",
+  "production_company.delete_failed":
+    "Failed to delete production company! Please try again later",
+  "production_company.delete_success":
+    "Production Company is successfully deleted",
+  "production_company.edit": "Edit Production Company",
+  "production_company.not_found": "Production Company not found",
+  "production_company.update_failed":
+    "Failed to update production company! Please try again later",
+  "production company.update_success":
+    "Production Company is successfully updated",
   "search.not_found": "Results not found!",
   "search.placeholder": "Search ...",
   "setting.facebook_username": "Facebook Username",
@@ -287,6 +303,7 @@ export default {
   official_website_placeholder: "Enter Official Website",
   operating_system: "Operating System",
   operating_system_placeholder: "Enter Operating System",
+  origin_country: "Origin Country",
   overview: "Overview",
   owner: "Owner",
   owner_placeholder: "Enter Owner",
