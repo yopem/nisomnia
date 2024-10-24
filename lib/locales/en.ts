@@ -112,7 +112,7 @@ export default {
   "production_company.not_found": "Production Company not found",
   "production_company.update_failed":
     "Failed to update production company! Please try again later",
-  "production company.update_success":
+  "production_company.update_success":
     "Production Company is successfully updated",
   "search.not_found": "Results not found!",
   "search.placeholder": "Search ...",
@@ -282,6 +282,10 @@ export default {
   link_placeholder: "Enter Link",
   load_more: "Load More",
   login: "Login",
+  logo: "Logo",
+  logo_deleted: "Logo has been deleted",
+  logo_placeholder: "Add Logo",
+  logo_selected: "Logo has been selected",
   logout: "Logout",
   made_with: "Made with",
   media: "Media",
@@ -304,6 +308,7 @@ export default {
   operating_system: "Operating System",
   operating_system_placeholder: "Enter Operating System",
   origin_country: "Origin Country",
+  origin_country_placeholder: "Enter Origin Country (Optional)",
   overview: "Overview",
   owner: "Owner",
   owner_placeholder: "Enter Owner",
@@ -347,6 +352,7 @@ export default {
   title: "Title",
   title_placeholder: "Enter Title",
   title_required: "Title is Required",
+  tmdb_id_placeholder: "Enter TMDB ID",
   topic: "Topic",
   topics: "Topics",
   transaction: "Transaction",
