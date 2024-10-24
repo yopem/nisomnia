@@ -12,7 +12,7 @@ const Ad: React.FC<AdProps> = (props) => {
   const { ad } = props
 
   return (
-    <div className="w-full" key={ad.id}>
+    <div className="w-full">
       {ad.type === "plain_ad" ? (
         <PlainAd content={ad.content!} />
       ) : (
