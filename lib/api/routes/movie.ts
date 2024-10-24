@@ -765,12 +765,14 @@ export const movieRouter = createTRPCRouter({
             .values(productionCompanyValues)
         }
 
-        const genreValues = input.genres.map((genre) => ({
-          movieId: data[0].id,
-          genreId: genre,
-        }))
+        if (input.genres) {
+          const genreValues = input.genres.map((genre) => ({
+            movieId: data[0].id,
+            genreId: genre,
+          }))
 
-        await ctx.db.insert(movieGenres).values(genreValues)
+          await ctx.db.insert(movieGenres).values(genreValues)
+        }
 
         return data
       } catch (error) {
@@ -820,12 +822,13 @@ export const movieRouter = createTRPCRouter({
             .values(productionCompanyValues)
         }
 
-        const genreValues = input.genres.map((genre) => ({
-          movieId: data[0].id,
-          genreId: genre,
-        }))
-
-        await ctx.db.insert(movieGenres).values(genreValues)
+        if (input.genres) {
+          const genreValues = input.genres.map((genre) => ({
+            movieId: data[0].id,
+            genreId: genre,
+          }))
+          await ctx.db.insert(movieGenres).values(genreValues)
+        }
 
         return data
       } catch (error) {
@@ -874,12 +877,14 @@ export const movieRouter = createTRPCRouter({
             .values(productionCompanyValues)
         }
 
-        const genreValues = input.genres.map((genre) => ({
-          movieId: data[0].id,
-          genreId: genre,
-        }))
+        if (input.genres) {
+          const genreValues = input.genres.map((genre) => ({
+            movieId: data[0].id,
+            genreId: genre,
+          }))
 
-        await ctx.db.insert(movieGenres).values(genreValues)
+          await ctx.db.insert(movieGenres).values(genreValues)
+        }
 
         return data
       } catch (error) {
@@ -930,12 +935,14 @@ export const movieRouter = createTRPCRouter({
             .values(productionCompanyValues)
         }
 
-        const genreValues = input.genres.map((genre) => ({
-          movieId: data[0].id,
-          genreId: genre,
-        }))
+        if (input.genres) {
+          const genreValues = input.genres.map((genre) => ({
+            movieId: data[0].id,
+            genreId: genre,
+          }))
 
-        await ctx.db.insert(movieGenres).values(genreValues)
+          await ctx.db.insert(movieGenres).values(genreValues)
+        }
 
         return data
       } catch (error) {

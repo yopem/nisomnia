@@ -54,12 +54,14 @@ export async function POST(request: NextRequest) {
         .values(productionCompanyValues)
     }
 
-    const genreValues = parsedInput.genres.map((genre) => ({
-      movieId: data[0].id,
-      genreId: genre,
-    }))
+    if (parsedInput.genres) {
+      const genreValues = parsedInput.genres.map((genre) => ({
+        movieId: data[0].id,
+        genreId: genre,
+      }))
 
-    await db.insert(movieGenres).values(genreValues)
+      await db.insert(movieGenres).values(genreValues)
+    }
 
     return NextResponse.json(data, { status: 200 })
   } catch (error) {

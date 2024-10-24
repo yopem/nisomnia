@@ -103,10 +103,10 @@ const movieInput = {
     .optional(),
   genres: z
     .string({
-      required_error: "Genre Id is required",
       invalid_type_error: "Genre Id must be a string",
     })
-    .array(),
+    .array()
+    .optional(),
   productionCompanies: z
     .string({
       invalid_type_error: "Production Company Id must be a string",
