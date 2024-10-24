@@ -141,7 +141,7 @@ export default function ProductionCompanyTable(
                       void deleteProductionCompany(productionCompany.id)
                     }}
                     editUrl={`/dashboard/production-company/edit/${productionCompany.id}`}
-                    viewUrl={productionCompany.slug}
+                    viewUrl={`/production-company/${productionCompany.slug}`}
                     description={productionCompany.name}
                   />
                 </TableCell>
