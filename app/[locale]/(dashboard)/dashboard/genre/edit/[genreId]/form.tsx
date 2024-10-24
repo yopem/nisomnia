@@ -26,52 +26,48 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectTopic } from "@/lib/db/schema"
+import type { SelectGenre } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
-import type { StatusType } from "@/lib/validation/status"
-import type { TopicType, TopicVisibility } from "@/lib/validation/topic"
 
 interface FormValues {
   id: string
-  title: string
   slug: string
+  title: string
+  tmdbId: string
   description?: string
   metaTitle?: string
   metaDescription?: string
   language: LanguageType
-  visibility: TopicVisibility
-  type: TopicType
-  status: StatusType
-  topicTranslationId: string
+  genreTranslationId: string
 }
 
-interface EditTopicFormProps {
-  topic: SelectTopic & {
+interface EditGenreFormProps {
+  genre: SelectGenre & {
     language: LanguageType | string
   }
 }
 
-export default function EditTopicForm(props: EditTopicFormProps) {
-  const { topic } = props
+export default function EditGenreForm(props: EditGenreFormProps) {
+  const { genre } = props
 
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)
   const [selectedFeaturedImage, setSelectedFeaturedImage] =
-    React.useState<string>(topic?.featuredImage ?? "")
-  const [topicTranslationId, setTopicTranslationId] = React.useState<string>("")
+    React.useState<string>(genre?.featuredImage ?? "")
+  const [genreTranslationId, setGenreTranslationId] = React.useState<string>("")
   const [showMetaData, setShowMetaData] = React.useState<boolean>(false)
 
   const t = useI18n()
-  const ts = useScopedI18n("topic")
+  const ts = useScopedI18n("genre")
 
   const router = useRouter()
 
-  const { mutate: updateTopic } = api.topic.update.useMutation({
+  const { mutate: updateGenre } = api.genre.update.useMutation({
     onSuccess: () => {
       form.reset()
-      router.push("/dashboard/topic")
+      router.push("/dashboard/genre")
       toast({ variant: "success", description: ts("update_success") })
     },
     onError: (error) => {
@@ -105,22 +101,20 @@ export default function EditTopicForm(props: EditTopicFormProps) {
 
   const form = useForm<FormValues>({
     defaultValues: {
-      id: topic.id,
-      title: topic.title,
-      slug: topic.slug,
-      description: topic.description ?? "",
-      metaTitle: topic.metaTitle ?? "",
-      metaDescription: topic?.metaDescription ?? "",
-      language: topic.language,
-      visibility: topic.visibility,
-      type: topic.type,
-      status: topic.status,
-      topicTranslationId: topic.topicTranslationId,
+      id: genre.id,
+      title: genre.title,
+      tmdbId: genre.tmdbId ?? "",
+      slug: genre.slug,
+      description: genre.description ?? "",
+      metaTitle: genre.metaTitle ?? "",
+      metaDescription: genre?.metaDescription ?? "",
+      language: genre.language,
+      genreTranslationId: genre.genreTranslationId,
     },
   })
 
-  const { data: topicTranslation } =
-    api.topic.topicTranslationById.useQuery(topicTranslationId)
+  const { data: genreTranslation } =
+    api.genre.genreTranslationById.useQuery(genreTranslationId)
 
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
@@ -128,18 +122,18 @@ export default function EditTopicForm(props: EditTopicFormProps) {
       featuredImage: selectedFeaturedImage,
     }
 
-    setTopicTranslationId(values.topicTranslationId)
+    setGenreTranslationId(values.genreTranslationId)
 
-    if (topicTranslation) {
-      const otherLangTopic = topicTranslation?.topics.find(
-        (topicData) => topicData.id !== topic.id,
+    if (genreTranslation) {
+      const otherLangGenre = genreTranslation?.genres.find(
+        (genreData) => genreData.id !== genre.id,
       )
 
-      if (otherLangTopic?.language !== values.language) {
+      if (otherLangGenre?.language !== values.language) {
         setLoading(true)
-        updateTopic(selectedFeaturedImage ? mergedValues : values)
+        updateGenre(selectedFeaturedImage ? mergedValues : values)
         setLoading(false)
-        router.push("/dashboard/topic")
+        router.push("/dashboard/genre")
       }
     }
   }
@@ -168,7 +162,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
             e.preventDefault()
           }}
         >
-          <h1 className="pb-2 lg:pb-5">{ts("edit")}</h1>
+          <h1 className="pb-2 lg:pb-5">{ts("add")}</h1>
           <div className="flex flex-col lg:flex-row lg:space-x-4">
             <div className="w-full lg:w-6/12 lg:space-y-4">
               <FormField
@@ -182,6 +176,22 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                     <FormLabel>{t("title")}</FormLabel>
                     <FormControl>
                       <Input placeholder={t("title_placeholder")} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="tmdbId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>TMDB ID</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t("tmdb_id_placeholder")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,73 +234,8 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={topic.language}>
-                          {topic.language === "id"
-                            ? "Indonesia"
-                            : topic.language === "en" && "English"}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="visibility"
-                rules={{
-                  required: t("visibility_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("visibility")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t("visibility_placeholder")}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
-                        <SelectItem value="internal">Internal</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="type"
-                rules={{
-                  required: t("type_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("type")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("type_placeholder")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="feed">Feed</SelectItem>
-                        <SelectItem value="review">Review</SelectItem>
-                        <SelectItem value="tutorial">Tutorial</SelectItem>
-                        <SelectItem value="movie">Movie</SelectItem>
-                        <SelectItem value="tv">TV</SelectItem>
-                        <SelectItem value="game">Game</SelectItem>
+                        <SelectItem value="id">Indonesia</SelectItem>
+                        <SelectItem value="en">English</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -326,7 +271,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                     handleSelectUpdateMedia={handleUpdateMedia}
                     open={openDialog}
                     setOpen={setOpenDialog}
-                    mediaType="topic"
+                    mediaType="genre"
                   >
                     <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                       <Image
@@ -345,7 +290,7 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                   handleSelectUpdateMedia={handleUpdateMedia}
                   open={openDialog}
                   setOpen={setOpenDialog}
-                  mediaType="topic"
+                  mediaType="genre"
                 >
                   <div
                     onClick={() => setOpenDialog(true)}
@@ -411,26 +356,14 @@ export default function EditTopicForm(props: EditTopicFormProps) {
           </div>
           <div className="flex space-x-2">
             <Button
-              aria-label={t("save")}
+              aria-label={t("submit")}
               type="submit"
               onClick={() => {
-                form.setValue("status", "published")
                 form.handleSubmit(onSubmit)()
               }}
               loading={loading}
             >
-              {t("save")}
-            </Button>
-            <Button
-              aria-label={t("save_as_draft")}
-              type="submit"
-              onClick={() => {
-                form.setValue("status", "draft")
-                form.handleSubmit(onSubmit)()
-              }}
-              loading={loading}
-            >
-              {t("save_as_draft")}
+              {t("submit")}
             </Button>
           </div>
         </form>

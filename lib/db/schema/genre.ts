@@ -12,7 +12,7 @@ export const genreTranslations = pgTable("genre_translations", {
 
 export const genres = pgTable("genres", {
   id: text("id").primaryKey(),
-  tmdbId: text("tmdb_id").notNull().unique(),
+  tmdbId: text("tmdb_id"),
   language: languageEnum("language").notNull().default("id"),
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),

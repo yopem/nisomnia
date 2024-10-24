@@ -27,7 +27,6 @@
 - [ ] use partytown for google analytics and umami
 - [ ] make tmdbid and imdbid optional (with translation too)
 
-
 # FIX: 
 - [ ] close global search and dashboard search dialog after result clicked
 - [ ] text editor facebook embed not working
@@ -35,3 +34,4 @@
 
 # IMPROVMENT:
 - [ ] add limit / perPage option to search route
+- [ ] remove topic type

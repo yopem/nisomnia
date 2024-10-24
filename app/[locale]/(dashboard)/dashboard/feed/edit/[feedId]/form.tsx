@@ -179,6 +179,22 @@ export default function EditFeedForm(props: EditFeedFormProps) {
               />
               <FormField
                 control={form.control}
+                name="slug"
+                rules={{
+                  required: t("slug_required"),
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("slug")}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t("slug_placeholder")} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="language"
                 rules={{
                   required: t("language_required"),
