@@ -175,7 +175,7 @@ export default function CreateFeedForm() {
                 )}
               />
               {valueLanguage && (
-                <div className="my-2 max-w-xl">
+                <div className="my-2">
                   <DashboardAddTopics
                     locale={valueLanguage}
                     fieldName="topics"

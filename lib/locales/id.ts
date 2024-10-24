@@ -228,6 +228,7 @@ export default {
   ads: "Iklan",
   all: "Semua",
   already_used: "Sudah digunakan",
+  already_selected: "Sudah dipilih",
   article: "Artikel",
   articles: "Artikel",
   author: "Penulis",

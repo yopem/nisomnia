@@ -229,6 +229,7 @@ export default {
   ads: "Ads",
   all: "All",
   already_used: "Already used",
+  already_selected: "Already selected",
   article: "Article",
   articles: "Articles",
   author: "Author",

@@ -397,7 +397,7 @@ const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
                         )}
                       />
                       {valueLanguage && (
-                        <div className="my-2 max-w-xl">
+                        <div className="my-2">
                           <DashboardAddTopics
                             mode="edit"
                             fieldName="topics"

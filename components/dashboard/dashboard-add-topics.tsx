@@ -111,14 +111,18 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
       },
     )
 
-  const { data, error, isSuccess, isError } =
-    api.topic.topicTranslationById.useQuery(topicId, {
-      enabled: !!topicId && !!searchQuery,
-    })
+  const {
+    data: topicTranslation,
+    error,
+    isSuccess,
+    isError,
+  } = api.topic.topicTranslationById.useQuery(topicId, {
+    enabled: !!topicId && !!searchQuery,
+  })
 
   React.useEffect(() => {
-    if (isSuccess && data) {
-      const topicById = data?.topics.find(
+    if (isSuccess && topicTranslation) {
+      const topicById = topicTranslation?.topics.find(
         (topicData) => topicData.language === locale,
       ) as SelectTopic
       if (topicById?.id) {
@@ -128,7 +132,6 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
         ])
         addTopics((prev: string[]) => [...prev, topicById?.id])
         onChange([...topics, topicById?.id])
-        toast({ variant: "success", description: ts("create_success") })
       } else {
         toast({ variant: "danger", description: t("something_went_wrong") })
       }
@@ -139,13 +142,15 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
     }
     setLoadingCreate(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, isError, data, error])
+  }, [isSuccess, isError, topicTranslation, error])
 
   const { mutate: createTopic } = api.topic.create.useMutation({
     onSuccess: (data) => {
       if (data) {
         setTopicId(data[0]?.id)
+        handleSelectandAssign(data[0])
       }
+      toast({ variant: "success", description: ts("create_success") })
     },
     onError: (error) => {
       setLoadingCreate(false)
@@ -195,8 +200,8 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
           addSelectedTopics((prev) => [...prev, resultValue])
         } else {
           toast({
-            variant: "danger",
-            description: searchQuery + ` ${t("already_used")}`,
+            variant: "warning",
+            description: searchQuery + ` ${t("already_selected")}`,
           })
           setSearchQuery("")
         }
@@ -244,8 +249,8 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
       addSelectedTopics((prev) => [...prev, value])
     } else {
       toast({
-        variant: "danger",
-        description: value.title + ` ${t("already_used")}`,
+        variant: "warning",
+        description: value.title + ` ${t("already_selected")}`,
       })
       setSearchQuery("")
     }
@@ -262,13 +267,13 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   return (
     <div className="space-y-2">
       <FormLabel>{t("topics")}</FormLabel>
-      <div className="rounded-md border border-muted/30 bg-muted/100">
-        <div className="flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
+      <div className="rounded-md border bg-muted/100">
+        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 p-2">
           {selectedTopics.length > 0 &&
             selectedTopics.map((topic) => {
               return (
                 <div
-                  className="flex items-center gap-2 bg-muted/20 px-2 py-1 text-[14px] text-foreground"
+                  className="flex items-center gap-2 rounded-full bg-background px-3 py-1 text-[14px] text-foreground"
                   key={topic.id}
                 >
                   <span>{topic.title}</span>
@@ -285,7 +290,7 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
             })}
           <Input
             type="text"
-            className="h-auto w-full min-w-[50px] max-w-full shrink grow basis-0 border-none !bg-transparent p-0 focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="h-auto min-h-6 w-full min-w-[50px] shrink grow basis-0 border-none !bg-transparent px-2 py-0 focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             name="topicTitle"
             onKeyDown={handleEnter}
             id="searchTopic"
@@ -306,14 +311,17 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
         !loadingCreate &&
         searchResults !== undefined &&
         searchResults.length > 0 ? (
-          <ul className="border-t border-muted/30">
+          <ul className="border-t">
             {searchResults.map((searchTopic) => {
               const topicsData = {
                 id: searchTopic.id,
                 title: searchTopic.title,
               }
               return (
-                <li key={searchTopic.id} className="p-2 hover:bg-muted/50">
+                <li
+                  key={searchTopic.id}
+                  className="bg-background p-2 hover:bg-muted/50"
+                >
                   <Button
                     variant="ghost"
                     type="button"

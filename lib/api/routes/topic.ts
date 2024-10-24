@@ -31,7 +31,7 @@ export const topicRouter = createTRPCRouter({
           },
         })
 
-        return data
+        return data ?? null
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {
