@@ -25,6 +25,7 @@
 - [ ] person (actor, director, etc)
 - [ ] deploy umami
 - [ ] use partytown for google analytics and umami
+- [ ] make tmdbid and imdbid optional (with translation too)
 
 
 # FIX: 
