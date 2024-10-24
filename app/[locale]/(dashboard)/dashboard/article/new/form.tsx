@@ -112,8 +112,6 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
     onSuccess: () => {
       form.reset()
       setClearContent((prev) => !prev)
-      setSelectedTopics([])
-      setSelectedFeaturedImage("")
       toast({
         variant: "success",
         description: ts("create_success"),

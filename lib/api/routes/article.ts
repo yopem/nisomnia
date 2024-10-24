@@ -36,14 +36,7 @@ export const articleRouter = createTRPCRouter({
             where: (articleTranslations, { eq }) =>
               eq(articleTranslations.id, input),
             with: {
-              articles: {
-                columns: {
-                  id: true,
-                  title: true,
-                  language: true,
-                  featuredImage: true,
-                },
-              },
+              articles: true,
             },
           })
 
@@ -552,18 +545,8 @@ export const articleRouter = createTRPCRouter({
           orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
           with: {
             articleTranslation: {
-              columns: {
-                id: true,
-              },
               with: {
-                articles: {
-                  columns: {
-                    id: true,
-                    title: true,
-                    language: true,
-                    featuredImage: true,
-                  },
-                },
+                articles: true,
               },
             },
           },

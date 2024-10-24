@@ -251,42 +251,6 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
-  searchDashboard: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db.query.genres.findMany({
-          where: (genres, { eq, and, or, ilike }) =>
-            and(
-              eq(genres.language, input.language),
-              or(
-                ilike(genres.title, `%${input.searchQuery}%`),
-                ilike(genres.slug, `%${input.searchQuery}%`),
-              ),
-            ),
-          with: {
-            genreTranslation: {
-              with: {
-                genres: true,
-              },
-            },
-          },
-          limit: 10,
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(genres)

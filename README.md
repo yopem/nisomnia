@@ -1,3 +1,9 @@
+## URGENT
+- [ ] fix dashboard add production companies search problem
+- [ ] change all movie meta description to overview value
+- [ ] update pulic api movie meta description default value to overview
+- [ ] test movie dashboard
+
 ## TODO: 
 - [x] add default image type when uploading image while creating article, topic, etc
 - [x] add feed
@@ -35,3 +41,6 @@
 # IMPROVMENT:
 - [ ] add limit / perPage option to search route
 - [ ] remove topic type
+- [ ] make movie release date not optional
+- [ ] add red * to all required label
+- [ ] fix dashboard-add-* component types

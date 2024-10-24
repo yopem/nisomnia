@@ -138,8 +138,6 @@ export default function EditGenreForm(props: EditGenreFormProps) {
     }
   }
 
-  console.log("featured ", selectedFeaturedImage)
-
   const handleUpdateMedia = (data: { url: React.SetStateAction<string> }) => {
     setSelectedFeaturedImage(data.url)
     setOpenDialog(false)

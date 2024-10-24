@@ -11,25 +11,23 @@ import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectTopic } from "@/lib/db/schema"
+import type { SelectGenre } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
-import type { TopicType } from "@/lib/validation/topic"
 
-interface DashboardAddTopicsProps<
+interface DashboardAddGenresProps<
   TFieldValues extends FieldValues = FieldValues,
 > {
-  topics: string[]
-  topicType: TopicType
+  genres: string[]
   locale: LanguageType
-  addTopics: React.Dispatch<React.SetStateAction<string[]>>
+  addGenres: React.Dispatch<React.SetStateAction<string[]>>
   mode?: "create" | "edit"
-  selectedTopics: {
+  selectedGenres: {
     id: string
     title: string
   }[]
-  addSelectedTopics: React.Dispatch<
+  addSelectedGenres: React.Dispatch<
     React.SetStateAction<
       {
         id: string
@@ -41,25 +39,24 @@ interface DashboardAddTopicsProps<
   fieldName: string
 }
 
-const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
+const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
   const {
-    topics,
-    topicType,
+    genres,
     mode = "create",
-    addTopics,
-    selectedTopics,
-    addSelectedTopics,
+    addGenres,
+    selectedGenres,
+    addSelectedGenres,
     locale,
     control,
     fieldName,
   } = props
 
-  const [topicId, setTopicId] = React.useState<string>("")
+  const [genreId, setGenreId] = React.useState<string>("")
   const [searchQuery, setSearchQuery] = React.useState<string>("")
   const [loadingCreate, setLoadingCreate] = React.useState(false)
 
   const t = useI18n()
-  const ts = useScopedI18n("topic")
+  const ts = useScopedI18n("genre")
 
   const {
     field: { onChange },
@@ -72,9 +69,9 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   const handleLocaleChange = React.useCallback(() => {
     if (mode === "create") {
       setSearchQuery("")
-      addTopics([])
+      addGenres([])
       onChange([])
-      addSelectedTopics([])
+      addSelectedGenres([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode])
@@ -83,27 +80,26 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
     handleLocaleChange()
   }, [handleLocaleChange, locale])
 
-  const assignTopic = React.useCallback(
+  const assignGenre = React.useCallback(
     (id: string | never) => {
-      const checkedTopics = [...topics]
-      const index = checkedTopics.indexOf(id as never)
+      const checkedGenres = [...genres]
+      const index = checkedGenres.indexOf(id as never)
       if (index === -1) {
-        checkedTopics.push(id as never)
+        checkedGenres.push(id as never)
       } else {
-        checkedTopics.splice(index, 1)
+        checkedGenres.splice(index, 1)
       }
-      addTopics(checkedTopics)
-      onChange(checkedTopics)
+      addGenres(checkedGenres)
+      onChange(checkedGenres)
     },
-    [addTopics, onChange, topics],
+    [addGenres, onChange, genres],
   )
 
   const { data: searchResults, isFetching: searchResultsIsLoading } =
-    api.topic.searchByType.useQuery(
+    api.genre.search.useQuery(
       {
         searchQuery: searchQuery,
         language: locale,
-        type: topicType,
       },
       {
         enabled: !!searchQuery,
@@ -112,42 +108,42 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
     )
 
   const {
-    data: topicTranslation,
+    data: genreTranslation,
     error,
     isSuccess,
     isError,
-  } = api.topic.topicTranslationById.useQuery(topicId, {
-    enabled: !!topicId && !!searchQuery,
+  } = api.genre.genreTranslationById.useQuery(genreId, {
+    enabled: !!genreId && !!searchQuery,
   })
 
   React.useEffect(() => {
-    if (isSuccess && topicTranslation) {
-      const topicById = topicTranslation?.topics.find(
-        (topicData) => topicData.language === locale,
-      ) as SelectTopic
-      if (topicById?.id) {
-        addSelectedTopics((prev) => [
+    if (isSuccess && genreTranslation) {
+      const genreById = genreTranslation?.genres.find(
+        (genreData) => genreData.language === locale,
+      ) as SelectGenre
+      if (genreById?.id) {
+        addSelectedGenres((prev) => [
           ...prev,
-          { ...topicById, title: searchQuery },
+          { ...genreById, title: searchQuery },
         ])
-        addTopics((prev: string[]) => [...prev, topicById?.id])
-        onChange([...topics, topicById?.id])
+        addGenres((prev: string[]) => [...prev, genreById?.id])
+        onChange([...genres, genreById?.id])
       } else {
         toast({ variant: "danger", description: t("something_went_wrong") })
       }
-      setTopicId("")
+      setGenreId("")
       setSearchQuery("")
     } else if (isError && error) {
       toast({ variant: "danger", description: ts("find_failed") })
     }
     setLoadingCreate(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, isError, topicTranslation, error])
+  }, [isSuccess, isError, genreTranslation, error])
 
-  const { mutate: createTopic } = api.topic.create.useMutation({
+  const { mutate: createGenre } = api.genre.create.useMutation({
     onSuccess: (data) => {
       if (data) {
-        setTopicId(data[0]?.id)
+        setGenreId(data[0]?.id)
         handleSelectandAssign(data[0])
       }
       toast({ variant: "success", description: ts("create_success") })
@@ -184,20 +180,20 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   const onSubmit = React.useCallback(() => {
     if (searchResults) {
       const searchResult = searchResults?.find(
-        (topic) => topic.title === searchQuery,
+        (genre) => genre.title === searchQuery,
       )
 
       if (searchResult) {
         if (
-          !selectedTopics.some((topic) => topic.title === searchResult.title)
+          !selectedGenres.some((genre) => genre.title === searchResult.title)
         ) {
           const resultValue = {
             id: searchResult.id,
             title: searchResult.title,
           }
 
-          assignTopic(searchResult.id)
-          addSelectedTopics((prev) => [...prev, resultValue])
+          assignGenre(searchResult.id)
+          addSelectedGenres((prev) => [...prev, resultValue])
         } else {
           toast({
             variant: "warning",
@@ -208,25 +204,21 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
         setSearchQuery("")
       } else {
         setLoadingCreate(true)
-        createTopic({
+        createGenre({
           title: searchQuery,
-          type: topicType,
           language: locale,
-          visibility: "public",
-          status: "published",
         })
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    addSelectedTopics,
-    assignTopic,
-    createTopic,
+    addSelectedGenres,
+    assignGenre,
+    createGenre,
     locale,
     searchQuery,
     searchResults,
-    selectedTopics,
-    topicType,
+    selectedGenres,
   ])
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -242,10 +234,10 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   }
 
   const handleSelectandAssign = (value: { id: string; title: string }) => {
-    if (!selectedTopics.some((topic) => topic.title === value.title)) {
+    if (!selectedGenres.some((genre) => genre.title === value.title)) {
       setSearchQuery("")
-      assignTopic(value.id)
-      addSelectedTopics((prev) => [...prev, value])
+      assignGenre(value.id)
+      addSelectedGenres((prev) => [...prev, value])
     } else {
       toast({
         variant: "warning",
@@ -256,29 +248,29 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   }
 
   const handleRemoveValue = (value: { id: string }) => {
-    const filteredResult = selectedTopics.filter((item) => item.id !== value.id)
-    const filteredData = topics.filter((item) => item !== value.id)
-    addSelectedTopics(filteredResult)
-    addTopics(filteredData)
+    const filteredResult = selectedGenres.filter((item) => item.id !== value.id)
+    const filteredData = genres.filter((item) => item !== value.id)
+    addSelectedGenres(filteredResult)
+    addGenres(filteredData)
     onChange(filteredData)
   }
 
   return (
     <div className="space-y-2">
-      <FormLabel>{t("topics")}</FormLabel>
+      <FormLabel>{t("genres")}</FormLabel>
       <div className="rounded-md border bg-muted/100">
         <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 p-2">
-          {selectedTopics.length > 0 &&
-            selectedTopics.map((topic) => {
+          {selectedGenres.length > 0 &&
+            selectedGenres.map((genre) => {
               return (
                 <div
                   className="flex items-center gap-2 rounded-full bg-background px-3 py-1 text-[14px] text-foreground"
-                  key={topic.id}
+                  key={genre.id}
                 >
-                  <span>{topic.title}</span>
+                  <span>{genre.title}</span>
                   <Button
                     aria-label={t("delete")}
-                    onClick={() => handleRemoveValue(topic)}
+                    onClick={() => handleRemoveValue(genre)}
                     className="size-5 min-w-0 rounded-full bg-transparent text-foreground hover:bg-danger hover:text-white"
                     size="icon"
                   >
@@ -290,9 +282,9 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
           <Input
             type="text"
             className="h-auto min-h-6 w-full min-w-[50px] shrink grow basis-0 border-none !bg-transparent px-2 py-0 focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-            name="topicTitle"
+            name="genreTitle"
             onKeyDown={handleEnter}
-            id="searchTopic"
+            id="searchGenre"
             value={searchQuery}
             placeholder={ts("enter")}
             onChange={handleSearchChange}
@@ -311,23 +303,23 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
         searchResults !== undefined &&
         searchResults.length > 0 ? (
           <ul className="border-t">
-            {searchResults.map((searchTopic) => {
-              const topicsData = {
-                id: searchTopic.id,
-                title: searchTopic.title,
+            {searchResults.map((searchGenre) => {
+              const genresData = {
+                id: searchGenre.id,
+                title: searchGenre.title,
               }
               return (
                 <li
-                  key={searchTopic.id}
+                  key={searchGenre.id}
                   className="bg-background p-2 hover:bg-muted/50"
                 >
                   <Button
                     variant="ghost"
                     type="button"
-                    aria-label={searchTopic.title}
-                    onClick={() => handleSelectandAssign(topicsData)}
+                    aria-label={searchGenre.title}
+                    onClick={() => handleSelectandAssign(genresData)}
                   >
-                    {searchTopic.title}
+                    {searchGenre.title}
                   </Button>
                 </li>
               )
@@ -349,4 +341,4 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   )
 }
 
-export default DashboardAddTopics
+export default DashboardAddGenres

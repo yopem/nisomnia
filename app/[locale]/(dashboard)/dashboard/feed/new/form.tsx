@@ -177,6 +177,7 @@ export default function CreateFeedForm() {
               {valueLanguage && (
                 <div className="my-2">
                   <DashboardAddTopics
+                    mode="edit"
                     locale={valueLanguage}
                     fieldName="topics"
                     //@ts-expect-error FIX: later

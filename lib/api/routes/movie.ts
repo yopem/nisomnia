@@ -34,15 +34,7 @@ export const movieRouter = createTRPCRouter({
             where: (movieTranslations, { eq }) =>
               eq(movieTranslations.id, input),
             with: {
-              movies: {
-                columns: {
-                  id: true,
-                  title: true,
-                  language: true,
-                  poster: true,
-                  backdrop: true,
-                },
-              },
+              movies: true,
             },
           })
 
@@ -552,15 +544,7 @@ export const movieRouter = createTRPCRouter({
                 id: true,
               },
               with: {
-                movies: {
-                  columns: {
-                    id: true,
-                    title: true,
-                    language: true,
-                    poster: true,
-                    backdrop: true,
-                  },
-                },
+                movies: true,
               },
             },
           },

@@ -60,7 +60,6 @@ export default function EditTopicForm(props: EditTopicFormProps) {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)
   const [selectedFeaturedImage, setSelectedFeaturedImage] =
     React.useState<string>(topic?.featuredImage ?? "")
-  const [topicTranslationId, setTopicTranslationId] = React.useState<string>("")
   const [showMetaData, setShowMetaData] = React.useState<boolean>(false)
 
   const t = useI18n()
@@ -119,16 +118,15 @@ export default function EditTopicForm(props: EditTopicFormProps) {
     },
   })
 
-  const { data: topicTranslation } =
-    api.topic.topicTranslationById.useQuery(topicTranslationId)
+  const { data: topicTranslation } = api.topic.topicTranslationById.useQuery(
+    topic.topicTranslationId,
+  )
 
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
       ...values,
       featuredImage: selectedFeaturedImage,
     }
-
-    setTopicTranslationId(values.topicTranslationId)
 
     if (topicTranslation) {
       const otherLangTopic = topicTranslation?.topics.find(
@@ -143,8 +141,6 @@ export default function EditTopicForm(props: EditTopicFormProps) {
       }
     }
   }
-
-  console.log("featured ", selectedFeaturedImage)
 
   const handleUpdateMedia = (data: { url: React.SetStateAction<string> }) => {
     setSelectedFeaturedImage(data.url)
