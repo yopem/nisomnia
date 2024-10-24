@@ -32,7 +32,7 @@ const MediaList: React.FC<MediaListProps> = (props) => {
     fetchNextPage,
     refetch: updateMedias,
   } = api.media.dashboardInfinite.useInfiniteQuery(
-    { limit: 10 },
+    { limit: 24 },
     {
       staleTime: 0,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,
@@ -46,7 +46,7 @@ const MediaList: React.FC<MediaListProps> = (props) => {
     fetchNextPage: fetchNextPageByType,
     refetch: updateMediasByType,
   } = api.media.dashboardInfiniteByType.useInfiniteQuery(
-    { limit: 10, type: mediaType! },
+    { limit: 24, type: mediaType! },
     {
       staleTime: 0,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,

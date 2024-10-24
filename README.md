@@ -31,3 +31,6 @@
 - [ ] close global search and dashboard search dialog after result clicked
 - [ ] text editor facebook embed not working
 - [ ] text editor x embed not working
+
+# IMPROVMENT:
+- [ ] add limit / perPage option to search route

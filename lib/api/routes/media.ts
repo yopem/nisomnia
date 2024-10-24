@@ -213,7 +213,7 @@ export const mediaRouter = createTRPCRouter({
     try {
       const data = await ctx.db.query.medias.findMany({
         where: (medias, { ilike }) => ilike(medias.name, `%${input}%`),
-        limit: 10,
+        limit: 24,
       })
 
       return data
@@ -244,7 +244,7 @@ export const mediaRouter = createTRPCRouter({
               eq(medias.type, input.type),
               ilike(medias.name, `%${input.searchQuery}%`),
             ),
-          limit: 10,
+          limit: 24,
         })
 
         return data
