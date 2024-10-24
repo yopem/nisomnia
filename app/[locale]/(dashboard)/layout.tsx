@@ -18,7 +18,7 @@ export default async function DashboardLayout({
 }) {
   const { user } = await getCurrentSession()
 
-  if (!user?.role.includes("admin" || "author")) {
+  if (!user?.role.includes("author") || !user?.role.includes("admin")) {
     return notFound()
   }
 

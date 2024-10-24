@@ -10,7 +10,7 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
   useEventListener(eventType, (event) => {
     const target = event.target as Node
 
-    if (!target ?? !target.isConnected) {
+    if (!target.isConnected) {
       return
     }
 

@@ -78,11 +78,12 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = (props) => {
                 {t("profile")}
               </SidebarItem>
             )}
-            {user && user.role.includes("admin" || "author") && (
-              <SidebarItem href="/dashboard" icon={<Icon.Dashboard />}>
-                {t("dashboard")}
-              </SidebarItem>
-            )}
+            {user &&
+              (user.role.includes("admin") || user.role.includes("author")) && (
+                <SidebarItem href="/dashboard" icon={<Icon.Dashboard />}>
+                  {t("dashboard")}
+                </SidebarItem>
+              )}
             <SidebarItem href="/article" icon={<Icon.Article />}>
               {t("articles")}
             </SidebarItem>

@@ -26,6 +26,7 @@ export const TextEditorFacebookEmbed = Node.create({
     return ["text-editor-facebook-embed", mergeAttributes(HTMLAttributes), 1]
   },
   addNodeView() {
+    //@ts-expect-error FIX: ASAP
     return ReactNodeViewRenderer(TextEditorFacebookWrapper)
   },
 })
@@ -39,6 +40,7 @@ const TextEditorFacebookWrapper = (
   props: TextEditorFacebookEmbedWrapperProps,
 ) => {
   const { node, editor } = props
+
   const handleClick = () => {
     editor.chain().focus().run()
   }

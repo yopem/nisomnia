@@ -74,11 +74,16 @@ const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
 })
 
 const enforceUserIsAuthorOrAdmin = t.middleware(({ ctx, next }) => {
-  if (ctx.session && !ctx.user?.role?.includes("author" || "admin")) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be an author or admin",
-    })
+  if (ctx.session) {
+    if (
+      !ctx.user?.role?.includes("author") ||
+      !ctx.user?.role?.includes("admin")
+    ) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You must be an author or admin",
+      })
+    }
   }
   return next({
     ctx: {

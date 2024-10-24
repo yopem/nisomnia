@@ -26,6 +26,7 @@ export const TextEditorXEmbed = Node.create({
     return ["text-editor-x-embed", mergeAttributes(HTMLAttributes), 0]
   },
   addNodeView() {
+    //@ts-expect-error FIX: ASAP
     return ReactNodeViewRenderer(TextEditorXEmbedWrapper)
   },
 })

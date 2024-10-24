@@ -30,11 +30,12 @@ export default async function UserProfilePage() {
             <div className="mt-2 w-[calc(100%-130px)]">{user?.email}</div>
           </div>
           <div className="flex justify-start space-x-2">
-            {user?.role.includes("admin" || "author") && (
-              <Button asChild variant="cool" className="rounded-full">
-                <NextLink href="/dashboard">{t("dashboard")}</NextLink>
-              </Button>
-            )}
+            {user?.role.includes("author") ||
+              (user?.role.includes("admin") && (
+                <Button asChild variant="cool" className="rounded-full">
+                  <NextLink href="/dashboard">{t("dashboard")}</NextLink>
+                </Button>
+              ))}
             <form action={logout}>
               <Button variant="danger" className="rounded-full">
                 {t("logout")}

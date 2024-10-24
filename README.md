@@ -1,6 +1,7 @@
 ## TODO: 
 - [x] add default image type when uploading image while creating article, topic, etc
 - [x] add feed
+- [ ] upgrade to eslint 9
 - [ ] add sitemap
 - [ ] add movie amp page
 - [ ] add auto generate feed thumbnail
@@ -28,3 +29,5 @@
 
 # FIX: 
 - [ ] close global search and dashboard search dialog after result clicked
+- [ ] text editor facebook embed not working
+- [ ] text editor x embed not working
