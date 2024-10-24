@@ -109,10 +109,10 @@ const movieInput = {
     .array(),
   productionCompanies: z
     .string({
-      required_error: "Production Company Id is required",
       invalid_type_error: "Production Company Id must be a string",
     })
-    .array(),
+    .array()
+    .optional(),
 }
 
 const translateMovieInput = {

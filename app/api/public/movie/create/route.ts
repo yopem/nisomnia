@@ -41,20 +41,25 @@ export async function POST(request: NextRequest) {
       ...parsedInput
     }).returning()
 
+    if (parsedInput.productionCompanies) {
+      const productionCompanyValues = parsedInput.productionCompanies.map(
+        (productionCompany) => ({
+          movieId: data[0].id,
+          productionCompanyId: productionCompany,
+        }),
+      )
+
+      await db
+        .insert(movieProductionCompanies)
+        .values(productionCompanyValues)
+    }
+
     const genreValues = parsedInput.genres.map((genre) => ({
       movieId: data[0].id,
       genreId: genre,
     }))
 
-    const productionCompnayValues = parsedInput.productionCompanies.map((p) => ({
-      movieId: data[0].id,
-      productionCompanyId: p,
-    }))
-
-    await db.transaction(async () => {
-      await db.insert(movieGenres).values(genreValues)
-      await db.insert(movieProductionCompanies).values(productionCompnayValues)
-    })
+    await db.insert(movieGenres).values(genreValues)
 
     return NextResponse.json(data, { status: 200 })
   } catch (error) {

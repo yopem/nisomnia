@@ -752,24 +752,25 @@ export const movieRouter = createTRPCRouter({
           })
           .returning()
 
+        if (input.productionCompanies) {
+          const productionCompanyValues = input.productionCompanies.map(
+            (productionCompany) => ({
+              movieId: data[0].id,
+              productionCompanyId: productionCompany,
+            }),
+          )
+
+          await ctx.db
+            .insert(movieProductionCompanies)
+            .values(productionCompanyValues)
+        }
+
         const genreValues = input.genres.map((genre) => ({
           movieId: data[0].id,
           genreId: genre,
         }))
 
-        const productionCompanyValues = input.productionCompanies.map(
-          (productionCompany) => ({
-            movieId: data[0].id,
-            productionCompanyId: productionCompany,
-          }),
-        )
-
-        await ctx.db.transaction(async () => {
-          await ctx.db.insert(movieGenres).values(genreValues)
-          await ctx.db
-            .insert(movieProductionCompanies)
-            .values(productionCompanyValues)
-        })
+        await ctx.db.insert(movieGenres).values(genreValues)
 
         return data
       } catch (error) {
@@ -806,24 +807,25 @@ export const movieRouter = createTRPCRouter({
             .where(eq(movieProductionCompanies.movieId, input.id))
         })
 
+        if (input.productionCompanies) {
+          const productionCompanyValues = input.productionCompanies.map(
+            (productionCompany) => ({
+              movieId: data[0].id,
+              productionCompanyId: productionCompany,
+            }),
+          )
+
+          await ctx.db
+            .insert(movieProductionCompanies)
+            .values(productionCompanyValues)
+        }
+
         const genreValues = input.genres.map((genre) => ({
           movieId: data[0].id,
           genreId: genre,
         }))
 
-        const productionCompanyValues = input.productionCompanies.map(
-          (productionCompany) => ({
-            movieId: data[0].id,
-            productionCompanyId: productionCompany,
-          }),
-        )
-
-        await ctx.db.transaction(async () => {
-          await ctx.db
-            .insert(movieProductionCompanies)
-            .values(productionCompanyValues)
-          await ctx.db.insert(movieGenres).values(genreValues)
-        })
+        await ctx.db.insert(movieGenres).values(genreValues)
 
         return data
       } catch (error) {
@@ -859,24 +861,25 @@ export const movieRouter = createTRPCRouter({
             .where(eq(movieProductionCompanies.movieId, input.id))
         })
 
+        if (input.productionCompanies) {
+          const productionCompanyValues = input.productionCompanies.map(
+            (productionCompany) => ({
+              movieId: data[0].id,
+              productionCompanyId: productionCompany,
+            }),
+          )
+
+          await ctx.db
+            .insert(movieProductionCompanies)
+            .values(productionCompanyValues)
+        }
+
         const genreValues = input.genres.map((genre) => ({
           movieId: data[0].id,
           genreId: genre,
         }))
 
-        const productionCompanyValues = input.productionCompanies.map(
-          (productionCompany) => ({
-            movieId: data[0].id,
-            productionCompanyId: productionCompany,
-          }),
-        )
-
-        await ctx.db.transaction(async () => {
-          await ctx.db
-            .insert(movieProductionCompanies)
-            .values(productionCompanyValues)
-          await ctx.db.insert(movieGenres).values(genreValues)
-        })
+        await ctx.db.insert(movieGenres).values(genreValues)
 
         return data
       } catch (error) {
@@ -914,24 +917,25 @@ export const movieRouter = createTRPCRouter({
           })
           .returning()
 
+        if (input.productionCompanies) {
+          const productionCompanyValues = input.productionCompanies.map(
+            (productionCompany) => ({
+              movieId: data[0].id,
+              productionCompanyId: productionCompany,
+            }),
+          )
+
+          await ctx.db
+            .insert(movieProductionCompanies)
+            .values(productionCompanyValues)
+        }
+
         const genreValues = input.genres.map((genre) => ({
           movieId: data[0].id,
           genreId: genre,
         }))
 
-        const productionCompanyValues = input.productionCompanies.map(
-          (productionCompany) => ({
-            movieId: data[0].id,
-            productionCompanyId: productionCompany,
-          }),
-        )
-
-        await ctx.db.transaction(async () => {
-          await ctx.db
-            .insert(movieProductionCompanies)
-            .values(productionCompanyValues)
-          await ctx.db.insert(movieGenres).values(genreValues)
-        })
+        await ctx.db.insert(movieGenres).values(genreValues)
 
         return data
       } catch (error) {
