@@ -1,5 +1,5 @@
 import { cache } from "react"
-import { cookies, type UnsafeUnwrappedCookies } from "next/headers"
+import { cookies } from "next/headers"
 import { sha256 } from "@oslojs/crypto/sha2"
 import {
   encodeBase32LowerCaseNoPadding,
@@ -78,8 +78,10 @@ export async function invalidateUserSession(userId: string) {
   await db.delete(sessions).where(eq(sessions.userId, userId))
 }
 
-export function setSessionTokenCookie(token: string, expiresAt: Date) {
-  ;(cookies() as unknown as UnsafeUnwrappedCookies).set("session", token, {
+export async function setSessionTokenCookie(token: string, expiresAt: Date) {
+  const nextCookies = await cookies()
+
+  nextCookies.set("session", token, {
     httpOnly: true,
     path: "/",
     secure: process.env.APP_ENV === "production",
@@ -88,8 +90,10 @@ export function setSessionTokenCookie(token: string, expiresAt: Date) {
   })
 }
 
-export function deleteSessionTokenCookie() {
-  ;(cookies() as unknown as UnsafeUnwrappedCookies).set("session", "", {
+export async function deleteSessionTokenCookie() {
+  const nextCookies = await cookies()
+
+  nextCookies.set("session", "", {
     httpOnly: true,
     path: "/",
     secure: process.env.APP_ENV === "production",

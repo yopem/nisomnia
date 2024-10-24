@@ -1,4 +1,4 @@
-import { headers, type UnsafeUnwrappedHeaders } from "next/headers"
+import { headers } from "next/headers"
 
 export class TokenBucket<_Key> {
   public max: number
@@ -61,11 +61,10 @@ interface Bucket {
 
 export const globalBucket = new TokenBucket<string>(100, 1)
 
-export function globalGETRateLimit(): boolean {
+export async function globalGETRateLimit(): Promise<boolean> {
   // Note: Assumes X-Forwarded-For will always be defined.
-  const clientIP = (headers() as unknown as UnsafeUnwrappedHeaders).get(
-    "X-Forwarded-For",
-  )
+  const headersData = await headers()
+  const clientIP = headersData.get("X-Forwarded-For")
 
   if (clientIP === null) {
     return true
@@ -74,11 +73,10 @@ export function globalGETRateLimit(): boolean {
   return globalBucket.consume(clientIP, 1)
 }
 
-export function globalPOSTRateLimit(): boolean {
+export async function globalPOSTRateLimit(): Promise<boolean> {
   // Note: Assumes X-Forwarded-For will always be defined.
-  const clientIP = (headers() as unknown as UnsafeUnwrappedHeaders).get(
-    "X-Forwarded-For",
-  )
+  const headersData = await headers()
+  const clientIP = headersData.get("X-Forwarded-For")
 
   if (clientIP === null) {
     return true

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { createI18nMiddleware } from "next-international/middleware"
+import { createI18nMiddleware } from "@karyana-yandi/next-international/middleware"
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function middleware(request: NextRequest): Promise<NextResponse> {

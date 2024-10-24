@@ -1,6 +1,6 @@
 "use client"
 
-import { createI18nClient } from "next-international/client"
+import { createI18nClient } from "@karyana-yandi/next-international/client"
 
 export const {
   useI18n,
