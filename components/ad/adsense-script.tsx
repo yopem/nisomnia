@@ -9,120 +9,74 @@ const AdsenseScript = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [hasScrolled, setHasScrolled] = React.useState(false)
+  const [isAdLoaded, setIsAdLoaded] = React.useState(false)
 
   React.useEffect(() => {
-    const scriptElement = document.querySelector(
-      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
-    )
+    const scriptElement = document.createElement("script")
+    scriptElement.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`
+    scriptElement.async = true
+    scriptElement.crossOrigin = "anonymous"
+    document.body.appendChild(scriptElement)
 
-    const handleAdLoad = () => {
-      try {
-        const insElements = Array.from(
-          document.querySelectorAll("ins.manual-placed"),
-        )
-        const insWithoutIframe = insElements.filter(
-          (ins) => !ins.querySelector("iframe"),
-        )
-        if (!hasScrolled && insWithoutIframe.length > 0) {
-          //@ts-ignore
-          if (window?.adsbygoogle) {
-            setHasScrolled(true)
-            insWithoutIframe.forEach((el) => {
-              if (!el.querySelector("iframe")) {
-                //@ts-ignore
-                ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-              }
-            })
-            window.removeEventListener("scroll", handleAdScroll)
-          } else {
-            scriptElement?.addEventListener("load", handleAdLoad)
-          }
-        }
-      } catch (err) {
-        console.log("Err", err)
+    // Handle script load event
+    const handleScriptLoad = () => {
+      setIsAdLoaded(true)
+      // If ads are to be shown immediately upon scrolling, push ads here if already scrolled
+      if (hasScrolled) {
+        pushAds()
       }
+    }
+
+    scriptElement.addEventListener("load", handleScriptLoad)
+
+    // Clean up the script element
+    return () => {
+      scriptElement.removeEventListener("load", handleScriptLoad)
+      document.body.removeChild(scriptElement)
+    }
+  }, [hasScrolled])
+
+  React.useEffect(() => {
+    const handleAdLoad = () => {
+      if (!isAdLoaded) return
+      pushAds()
     }
 
     const handleAdScroll = () => {
-      const insElements = Array.from(
-        document.querySelectorAll("ins.manual-placed"),
-      )
-      const insWithoutIframe = insElements.filter(
-        (ins) => !ins.querySelector("iframe"),
-      )
-      if (!hasScrolled && insWithoutIframe.length > 0) {
-        //@ts-ignore
-        if (window?.adsbygoogle) {
-          setHasScrolled(true)
-
-          insWithoutIframe.forEach((el) => {
-            if (!el.querySelector("iframe")) {
-              //@ts-ignore
-              ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-            }
-            window.removeEventListener("scroll", handleAdScroll)
-          })
-        }
-      }
+      setHasScrolled(true)
+      pushAds()
+      window.removeEventListener("scroll", handleAdScroll) // Remove after first scroll
     }
 
     // Push ad after 8 seconds
-    const timeoutId = setTimeout(handleAdLoad, 9000)
+    const timeoutId = setTimeout(handleAdLoad, 8000)
 
     // Push ad when scrolled
     window.addEventListener("scroll", handleAdScroll)
 
     return () => {
       clearTimeout(timeoutId)
-      if (scriptElement) {
-        scriptElement.removeEventListener("load", handleAdLoad)
-      }
       window.removeEventListener("scroll", handleAdScroll)
     }
-  }, [hasScrolled, pathname, searchParams])
+  }, [isAdLoaded, hasScrolled])
 
+  const pushAds = () => {
+    const insElements = Array.from(
+      document.querySelectorAll("ins.manual-placed"),
+    )
+    const insWithoutIframe = insElements.filter(
+      (ins) => !ins.querySelector("iframe"),
+    )
+    if (insWithoutIframe.length > 0) {
+      //@ts-ignore
+      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+    }
+  }
+
+  // Reset hasScrolled when pathname or searchParams change
   React.useEffect(() => {
     setHasScrolled(false)
   }, [pathname, searchParams])
-
-  React.useEffect(() => {
-    const scriptElement = document.querySelector(
-      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
-    )
-    const handleScriptLoad = () => {
-      if (!scriptElement) {
-        const script = document.createElement("script")
-        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`
-        script.async = true
-        script.crossOrigin = "anonymous"
-        document.body.appendChild(script)
-      }
-    }
-
-    const handleLoad = () => {
-      clearTimeout(timeoutId)
-      handleScriptLoad()
-    }
-
-    const handleScroll = () => {
-      handleScriptLoad()
-
-      // Remove event listener after script is loaded
-      window.removeEventListener("scroll", handleScroll)
-    }
-
-    // Push ad after 8 seconds
-    const timeoutId = setTimeout(handleLoad, 7000)
-
-    // Push ad when scrolled
-    window.addEventListener("scroll", handleScroll)
-
-    // Clean up event listener on component unmount
-    return () => {
-      clearTimeout(timeoutId)
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
 
   return null
 }
