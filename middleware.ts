@@ -1,15 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { createI18nMiddleware } from "@karyana-yandi/next-international/middleware"
 
+const I18nMiddleware = createI18nMiddleware({
+  locales: ["id", "en"],
+  defaultLocale: "id",
+  urlMappingStrategy: "rewrite",
+})
+
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function middleware(request: NextRequest): Promise<NextResponse> {
-  const I18nMiddleware = createI18nMiddleware({
-    locales: ["id", "en"],
-    defaultLocale: "id",
-    urlMappingStrategy: "rewrite",
-  })
-
   const url = request.nextUrl
+
   if (url.hostname === "beta.nsmna.co" && !url.pathname.startsWith("/api")) {
     const redirectUrl = new URL(url.href)
     redirectUrl.hostname = "nisomnia.com"
@@ -52,7 +53,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  // matcher: "/((?!_next/static|favicon|favicon.ico|robots.txt|sw.js).*)",
-  matcher:
-    "/((?!api/|_next/|_proxy/|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|.well-known).*)",
+  matcher: [
+    "/((?!api|static|.*\\..*|_next|favicon|favicon.ico|sw.js|feed|sitemap|icon|robots.txt).*)",
+  ],
 }
