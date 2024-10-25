@@ -87,9 +87,6 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = (props) => {
             <SidebarItem href="/article" icon={<Icon.Article />}>
               {t("articles")}
             </SidebarItem>
-            <SidebarItem href="/feed" icon={<Icon.Feed />}>
-              {t("feeds")}
-            </SidebarItem>
             <SidebarItem href="/movie" icon={<Icon.Movie />}>
               {t("movies")}
             </SidebarItem>
