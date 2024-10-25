@@ -1,4 +1,4 @@
-import { GoogleAnalytics } from "@next/third-parties/google"
+import Script from "next/script"
 
 import env from "@/env"
 import AdsenseScript from "./ad/adsense-script"
@@ -8,7 +8,20 @@ const Scripts = () => {
     return (
       <>
         <AdsenseScript />
-        <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+          strategy="worker"
+        />
+        <script type="text/partytown">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${env.NEXT_PUBLIC_GA_ID}');
+          `}
+          `
+        </script>
       </>
     )
   }
