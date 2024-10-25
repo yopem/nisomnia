@@ -9,6 +9,13 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     urlMappingStrategy: "rewrite",
   })
 
+  const url = request.nextUrl
+  if (url.hostname === "beta.nsmna.co" && !url.pathname.startsWith("/api")) {
+    const redirectUrl = new URL(url.href)
+    redirectUrl.hostname = "nisomnia.com"
+    return NextResponse.redirect(redirectUrl)
+  }
+
   if (request.method === "GET") {
     const token = request.cookies.get("session")?.value ?? null
     const response = I18nMiddleware(request)
@@ -45,7 +52,5 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|static|.*\\..*|_next|favicon|favicon.ico|sw.js|feed|sitemap|icon|robots.txt).*)",
-  ],
+  matcher: "/((?!_next/static|favicon|favicon.ico|robots.txt|sw.js).*)",
 }
