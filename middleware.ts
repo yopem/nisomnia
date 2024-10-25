@@ -11,7 +11,7 @@ const I18nMiddleware = createI18nMiddleware({
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const url = request.nextUrl
 
-  if (url.hostname === "beta.nsmna.co" && !url.pathname.startsWith("/api")) {
+  if (url.hostname === "nsmna.co" && !url.pathname.startsWith("/api")) {
     const redirectUrl = new URL(url.href)
     redirectUrl.hostname = "nisomnia.com"
     return NextResponse.redirect(redirectUrl)
