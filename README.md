@@ -48,3 +48,4 @@
 - [ ] add red * to all required label
 - [ ] fix dashboard-add-* component types
 - [ ] rename movie.status to movie.ariringStatus and add status to all post type
+- [ ] change | in meta title with -
