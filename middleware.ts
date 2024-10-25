@@ -17,6 +17,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(redirectUrl)
   }
 
+  if (url.hostname === "www.nisomnia.com") {
+    const redirectUrl = new URL(url.href)
+    redirectUrl.hostname = "nisomnia.com"
+    return NextResponse.redirect(redirectUrl)
+  }
+
   if (request.method === "GET") {
     const token = request.cookies.get("session")?.value ?? null
     const response = I18nMiddleware(request)
