@@ -39,6 +39,7 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = (props) => {
       <div className="flex items-center justify-between border-b border-border bg-background lg:hidden">
         <Button
           ref={ref}
+          aria-label="Open sidebar"
           data-drawer-target="global-sidebar"
           data-drawer-toggle="global-sidebar"
           aria-controls="global-sidebar"
@@ -50,7 +51,7 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = (props) => {
           <span className="sr-only">Open sidebar</span>
           <Icon.Menu className="size-6" />
         </Button>
-        <NextLink href="/">
+        <NextLink href="/" ari-label="Home">
           <Logo />
         </NextLink>
         <div className="m-3">

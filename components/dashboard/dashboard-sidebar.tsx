@@ -35,6 +35,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
     <>
       <div className="flex items-center justify-between border-b border-border bg-slate-100 dark:bg-slate-950 lg:hidden">
         <Button
+          aria-label="Open sidebar"
           ref={ref}
           data-drawer-target="global-sidebar"
           data-drawer-toggle="global-sidebar"
@@ -47,7 +48,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
           <span className="sr-only">Open sidebar</span>
           <Icon.Menu className="size-6" />
         </Button>
-        <NextLink href="/">
+        <NextLink href="/" aria-label="Home">
           <Logo />
         </NextLink>
         <div className="m-3">

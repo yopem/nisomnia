@@ -120,7 +120,7 @@ export default async function MovieSlugPage(props: MovieSlugPageProps) {
         name={movie.title}
         contentRating={randomContentRating}
         duration={movie.runtime?.toString() ?? ""}
-        dateCreated={movie.releaseDate!}
+        dateCreated={movie?.updatedAt?.toString()!}
         description={movie.overview}
         image={movie.poster ?? movie.backdrop ?? ""}
         // authorName="Nisomnia"
