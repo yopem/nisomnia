@@ -31,7 +31,7 @@ const Adsense: React.FC<AdsenseProps> = (props) => {
       <div className="my-[5px] flex h-auto w-screen min-w-full justify-center overflow-hidden sm:w-full">
         <ins
           // eslint-disable-next-line tailwindcss/no-custom-classname
-          className="adsbygoogle h-auto w-screen min-w-full sm:w-full"
+          className="adsbygoogle loaded-adsense h-auto w-screen min-w-full sm:w-full"
           style={{ display: "block" }}
           data-ad-client={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
           data-ad-slot={content}
