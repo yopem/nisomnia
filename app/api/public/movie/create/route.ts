@@ -17,9 +17,8 @@ export async function POST(request: NextRequest) {
       ? parsedInput.title
       : parsedInput.metaTitle
     const generatedMetaDescription = !parsedInput.metaDescription
-      ? generatedMetaTitle
+      ? parsedInput.overview
       : parsedInput.metaDescription
-
 
     const movieTranslationId = cuid()
     const movieId = cuid()
