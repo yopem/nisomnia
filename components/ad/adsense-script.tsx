@@ -16,7 +16,7 @@ const AdsenseScript = () => {
     const handleAdLoad = () => {
       try {
         const insElements = Array.from(
-          document.querySelectorAll("ins.loaded-adsense"),
+          document.querySelectorAll("ins.manual-adsense"),
         )
         const insWithoutIframe = insElements.filter(
           (ins) => !ins.querySelector("iframe"),
@@ -43,7 +43,7 @@ const AdsenseScript = () => {
 
     const handleAdScroll = () => {
       const insElements = Array.from(
-        document.querySelectorAll("ins.loaded-adsense"),
+        document.querySelectorAll("ins.manual-adsense"),
       )
       const insWithoutIframe = insElements.filter(
         (ins) => !ins.querySelector("iframe"),
