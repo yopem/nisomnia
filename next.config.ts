@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/require-await */
+
 import withBundleAnalyzer from "@next/bundle-analyzer"
+
+import redirects from "./redirects"
 
 const plugins = [withBundleAnalyzer]
 
@@ -45,7 +49,6 @@ const config = {
       },
     ],
   },
-  // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
     return [
       {
@@ -69,6 +72,9 @@ const config = {
         ],
       },
     ]
+  },
+  async redirects() {
+    return redirects
   },
 }
 
