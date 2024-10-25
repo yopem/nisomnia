@@ -1,4 +1,5 @@
 ## URGENT
+- [ ] analytics and adsense not working
 - [ ] fix dashboard add production companies search problem
 - [ ] change all movie meta description to overview value
 - [ ] update pulic api movie meta description default value to overview
