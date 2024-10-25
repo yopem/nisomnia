@@ -29,6 +29,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const topicEnPageCount = Math.ceil(topicsEnCount! / perPage)
   const topicsEn: RouteProps[] = []
 
+  const moviesCount = await api.movie.countByLanguage("id")
+  const moviePageCount = Math.ceil(moviesCount! / perPage)
+  const movies: RouteProps[] = []
+
+  const moviesEnCount = await api.movie.countByLanguage("en")
+  const movieEnPageCount = Math.ceil(moviesEnCount! / perPage)
+  const moviesEn: RouteProps[] = []
+
   const genresCount = await api.genre.countByLanguage("id")
   const genrePageCount = Math.ceil(genresCount! / perPage)
   const genres: RouteProps[] = []
@@ -85,6 +93,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  if (typeof moviePageCount === "number") {
+    for (let i = 0; i < moviePageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/movie/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      movies.push(obj)
+    }
+  }
+
+  if (typeof movieEnPageCount === "number") {
+    for (let i = 0; i < movieEnPageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/movie/en/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      moviesEn.push(obj)
+    }
+  }
+
   if (typeof genrePageCount === "number") {
     for (let i = 0; i < genrePageCount; i++) {
       const obj = {
@@ -120,6 +152,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...articlesEn,
     ...topics,
     ...topicsEn,
+    ...movies,
+    ...moviesEn,
     ...genres,
     ...genresEn,
   ]
