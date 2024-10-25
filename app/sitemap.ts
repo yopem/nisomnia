@@ -29,6 +29,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const topicEnPageCount = Math.ceil(topicsEnCount! / perPage)
   const topicsEn: RouteProps[] = []
 
+  const genresCount = await api.genre.countByLanguage("id")
+  const genrePageCount = Math.ceil(genresCount! / perPage)
+  const genres: RouteProps[] = []
+
+  const genresEnCount = await api.genre.countByLanguage("en")
+  const genreEnPageCount = Math.ceil(genresEnCount! / perPage)
+  const genresEn: RouteProps[] = []
+
   if (typeof articlePageCount === "number") {
     for (let i = 0; i < articlePageCount; i++) {
       const obj = {
@@ -77,12 +85,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const routes = ["", "/article", "/topic"].map((route) => ({
+  if (typeof genrePageCount === "number") {
+    for (let i = 0; i < genrePageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/genre/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      genres.push(obj)
+    }
+  }
+
+  if (typeof genreEnPageCount === "number") {
+    for (let i = 0; i < genreEnPageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/genre/en/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      genresEn.push(obj)
+    }
+  }
+
+  const routes = ["", "/article", "/topic", "/genre"].map((route) => ({
     url: `${env.NEXT_PUBLIC_SITE_URL}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))
 
-  return [...routes, ...articles, ...articlesEn, ...topics, ...topicsEn]
+  return [
+    ...routes,
+    ...articles,
+    ...articlesEn,
+    ...topics,
+    ...topicsEn,
+    ...genres,
+    ...genresEn,
+  ]
 }
-
-export const dynamic = "force-dynamic"
