@@ -653,9 +653,10 @@ export const feedRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
-        const data = await ctx.db.delete(feeds).where(eq(feeds.id, input))
-
-        await ctx.db.delete(feedTopics).where(eq(feedTopics.feedId, input))
+        const data = await ctx.db.transaction(async (tx) => {
+          await tx.delete(feedTopics).where(eq(feedTopics.feedId, input))
+          await tx.delete(feeds).where(eq(feeds.id, input))
+        })
 
         return data
       } catch (error) {

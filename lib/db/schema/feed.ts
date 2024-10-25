@@ -26,6 +26,10 @@ export const feeds = pgTable("feeds", {
   updatedAt: timestamp("updated_at").defaultNow(),
 })
 
+export const feedsRelations = relations(feeds, ({ many }) => ({
+  topics: many(feedTopics),
+}))
+
 export const feedTopics = pgTable(
   "_feed_topics",
   {
@@ -42,10 +46,6 @@ export const feedTopics = pgTable(
     }),
   }),
 )
-
-export const feedsRelations = relations(feeds, ({ many }) => ({
-  topics: many(feedTopics),
-}))
 
 export const feedTopicsRelations = relations(feedTopics, ({ one }) => ({
   feed: one(feeds, {
