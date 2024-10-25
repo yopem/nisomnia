@@ -1,4 +1,4 @@
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 import env from "@/env"
 import AdsenseScript from "./ad/adsense-script"
@@ -8,8 +8,7 @@ const Scripts = () => {
     return (
       <>
         <AdsenseScript />
-        <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
-        <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
       </>
     )
   }
