@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 export default [
+  // ARTICLE
   {
     source: "/article/alasan-iphone-lebih-baik-dari-android_l0qo8",
     destination: "/article/alasan-iphone-lebih-baik-dari-android",
@@ -819,6 +820,182 @@ export default [
   {
     source: "/article/build-alucard-mobile-legends_4j6n0",
     destination: "/article/build-alucard-mobile-legends",
+    permanent: true,
+  },
+  // TOPIC
+  {
+    source: "/topic/serial_ferxn",
+    destination: "/topic/serial",
+    permanent: true,
+  },
+  {
+    source: "/topic/aplikasi_47v8b",
+    destination: "/topic/aplikasi",
+    permanent: true,
+  },
+  {
+    source: "/topic/periferal_8eh7w",
+    destination: "/topic/periferal",
+    permanent: true,
+  },
+  {
+    source: "/topic/sinopsis_pdh6f",
+    destination: "/topic/sinopsis",
+    permanent: true,
+  },
+  {
+    source: "/topic/rekomendasi_3mryj",
+    destination: "/topic/rekomendasi",
+    permanent: true,
+  },
+  {
+    source: "/topic/resensi_actin",
+    destination: "/topic/resensi",
+    permanent: true,
+  },
+  {
+    source: "/topic/komputer_9arck",
+    destination: "/topic/komputer",
+    permanent: true,
+  },
+  {
+    source: "/topic/kunci-jawaban_he36k",
+    destination: "/topic/kunci-jawaban",
+    permanent: true,
+  },
+  {
+    source: "/topic/ponsel_44jeu",
+    destination: "/topic/ponsel",
+    permanent: true,
+  },
+  {
+    source: "/topic/drama-korea_vb4km",
+    destination: "/topic/drama-korea",
+    permanent: true,
+  },
+  {
+    source: "/topic/multimedia_szgmm",
+    destination: "/topic/multimedia",
+    permanent: true,
+  },
+  {
+    source: "/topic/iphone_d4c6f",
+    destination: "/topic/iphone",
+    permanent: true,
+  },
+  {
+    source: "/topic/musik_1yorx",
+    destination: "/topic/musik",
+    permanent: true,
+  },
+  {
+    source: "/topic/laptop_xo49d",
+    destination: "/topic/laptop",
+    permanent: true,
+  },
+  {
+    source: "/topic/aktor_gbpw5",
+    destination: "/topic/aktor",
+    permanent: true,
+  },
+  {
+    source: "/topic/film_kjud5",
+    destination: "/topic/film",
+    permanent: true,
+  },
+  {
+    source: "/topic/novel_e9szh",
+    destination: "/topic/novel",
+    permanent: true,
+  },
+  {
+    source: "/topic/penulis_tnfti",
+    destination: "/topic/penulis",
+    permanent: true,
+  },
+  {
+    source: "/topic/tutorial_jamls",
+    destination: "/topic/tutorial",
+    permanent: true,
+  },
+  {
+    source: "/topic/esport_1yib1",
+    destination: "/topic/esport",
+    permanent: true,
+  },
+  {
+    source: "/topic/anime_izghk",
+    destination: "/topic/anime",
+    permanent: true,
+  },
+  {
+    source: "/topic/hardware_e0c8v",
+    destination: "/topic/hardware",
+    permanent: true,
+  },
+  {
+    source: "/topic/windows_0av60",
+    destination: "/topic/windows",
+    permanent: true,
+  },
+  {
+    source: "/topic/tv_4x6j0",
+    destination: "/topic/tv",
+    permanent: true,
+  },
+  {
+    source: "/topic/kpop_xvckd",
+    destination: "/topic/kpop",
+    permanent: true,
+  },
+  {
+    source: "/topic/internet_166wt",
+    destination: "/topic/internet",
+    permanent: true,
+  },
+  {
+    source: "/topic/game_srjgj",
+    destination: "/topic/game",
+    permanent: true,
+  },
+  {
+    source: "/topic/manga_xsdil",
+    destination: "/topic/manga",
+    permanent: true,
+  },
+  {
+    source: "/topic/fakta_sxfw2",
+    destination: "/topic/fakta",
+    permanent: true,
+  },
+  {
+    source: "/topic/media-sosial_0d5sn",
+    destination: "/topic/media-sosial",
+    permanent: true,
+  },
+  {
+    source: "/topic/android_hpf3x",
+    destination: "/topic/android",
+    permanent: true,
+  },
+  {
+    source: "/topic/teknologi_3ince",
+    destination: "/topic/teknologi",
+    permanent: true,
+  },
+  {
+    source: "/topic/fyi_a88fg",
+    destination: "/topic/fyi",
+    permanent: true,
+  },
+  {
+    source: "/topic/nostalgia_7r4zx",
+    destination: "/topic/nostalgia",
+    permanent: true,
+  },
+  {
+    source: "/topic/emulator_eyq4t",
+    destination: "/topic/emulator",
     permanent: true,
   },
 ]
