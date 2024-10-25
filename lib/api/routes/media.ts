@@ -260,6 +260,38 @@ export const mediaRouter = createTRPCRouter({
         }
       }
     }),
+  sitemap: publicProcedure
+    .input(
+      z.object({
+        page: z.number(),
+        perPage: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.medias.findMany({
+          columns: {
+            url: true,
+            updatedAt: true,
+          },
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          orderBy: (medias, { desc }) => [desc(medias.id)],
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(medias)

@@ -51,6 +51,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
   const productionCompanies: RouteProps[] = []
 
+  const mediasCount = await api.media.count()
+  const mediaPageCount = Math.ceil(mediasCount! / perPage)
+  const medias: RouteProps[] = []
+
   if (typeof articlePageCount === "number") {
     for (let i = 0; i < articlePageCount; i++) {
       const obj = {
@@ -159,6 +163,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  if (typeof mediaPageCount === "number") {
+    for (let i = 0; i < mediaPageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/media/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      medias.push(obj)
+    }
+  }
+
   const routes = [
     "",
     "/article",
@@ -182,5 +198,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...genres,
     ...genresEn,
     ...productionCompanies,
+    ...medias,
   ]
 }
