@@ -20,11 +20,9 @@ const AdsenseScript = () => {
         const insWithoutIframe = insElements.filter(
           (ins) => !ins.querySelector("iframe"),
         )
-        //@ts-expect-error
         if (!hasScrolled && insWithoutIframe.length > 0 && window.adsbygoogle) {
           setHasScrolled(true)
           insWithoutIframe.forEach(() =>
-            //@ts-expect-error
             (window.adsbygoogle = window.adsbygoogle || []).push({}),
           )
           window.removeEventListener("scroll", handleAdScroll)
@@ -55,7 +53,6 @@ const AdsenseScript = () => {
             document.querySelectorAll("ins.manual-adsense"),
           )
           insElements.forEach(() =>
-            //@ts-expect-error
             (window.adsbygoogle = window.adsbygoogle || []).push({}),
           )
         }}

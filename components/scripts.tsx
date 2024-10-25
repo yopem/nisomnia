@@ -1,4 +1,5 @@
 import Script from "next/script"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 import env from "@/env"
 import AdsenseScript from "./ad/adsense-script"
@@ -8,23 +9,12 @@ const Scripts = () => {
     return (
       <>
         <AdsenseScript />
+        <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+          defer
+          src="https://data.dafunda.com/script.js"
+          data-website-id="433dc72b-94a6-4fcd-92f2-3403a60f47c7"
           strategy="worker"
-        />
-        <script
-          type="text/partytown"
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function gtag(){window.dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', '${env.NEXT_PUBLIC_GA_ID}', { 
-                page_path: window.location.pathname,
-            });
-        `,
-          }}
         />
       </>
     )
