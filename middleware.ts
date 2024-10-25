@@ -52,5 +52,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: "/((?!_next/static|favicon|favicon.ico|robots.txt|sw.js).*)",
+  // matcher: "/((?!_next/static|favicon|favicon.ico|robots.txt|sw.js).*)",
+  matcher:
+    "/((?!api/|_next/|_proxy/|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|.well-known).*)",
 }
