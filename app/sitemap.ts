@@ -45,6 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const genreEnPageCount = Math.ceil(genresEnCount! / perPage)
   const genresEn: RouteProps[] = []
 
+  const productionCompaniesCount = await api.productionCompany.count()
+  const productionCompanyPageCount = Math.ceil(
+    productionCompaniesCount! / perPage,
+  )
+  const productionCompanies: RouteProps[] = []
+
   if (typeof articlePageCount === "number") {
     for (let i = 0; i < articlePageCount; i++) {
       const obj = {
@@ -141,7 +147,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const routes = ["", "/article", "/topic", "/genre"].map((route) => ({
+  if (typeof productionCompanyPageCount === "number") {
+    for (let i = 0; i < productionCompanyPageCount; i++) {
+      const obj = {
+        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/production-company/${i + 1}/data.xml`}`,
+        lastModified: new Date()
+          .toISOString()
+          .split("T")[0] as unknown as string,
+      }
+      productionCompanies.push(obj)
+    }
+  }
+
+  const routes = [
+    "",
+    "/article",
+    "/topic",
+    "/movie",
+    "/genre",
+    "/production-company",
+  ].map((route) => ({
     url: `${env.NEXT_PUBLIC_SITE_URL}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))
@@ -156,5 +181,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...moviesEn,
     ...genres,
     ...genresEn,
+    ...productionCompanies,
   ]
 }

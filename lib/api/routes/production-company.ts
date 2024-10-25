@@ -86,6 +86,40 @@ export const productionCompanyRouter = createTRPCRouter({
       }
     }
   }),
+  sitemap: publicProcedure
+    .input(
+      z.object({
+        page: z.number(),
+        perPage: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.productionCompanies.findMany({
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          orderBy: (productionCompanies, { desc }) => [
+            desc(productionCompanies.updatedAt),
+          ],
+          columns: {
+            slug: true,
+            updatedAt: true,
+          },
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
