@@ -12,7 +12,7 @@ const AdsenseScript = () => {
 
   React.useEffect(() => {
     const scriptElement = document.querySelector(
-      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
+      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
 
     const handleAdLoad = () => {
@@ -24,12 +24,12 @@ const AdsenseScript = () => {
           (ins) => !ins.querySelector("iframe"),
         )
         if (!hasScrolled && insWithoutIframe.length > 0) {
-          // @ts-expect-error
-          if (window.adsbygoogle) {
+          //@ts-expect-error
+          if (window?.adsbygoogle) {
             setHasScrolled(true)
             insWithoutIframe.forEach((el) => {
               if (!el.querySelector("iframe")) {
-                // @ts-expect-error
+                //@ts-expect-error
                 ;(window.adsbygoogle = window.adsbygoogle || []).push({})
               }
             })
@@ -39,7 +39,7 @@ const AdsenseScript = () => {
           }
         }
       } catch (err) {
-        console.log(err)
+        console.log("Err", err)
       }
     }
 
@@ -51,13 +51,13 @@ const AdsenseScript = () => {
         (ins) => !ins.querySelector("iframe"),
       )
       if (!hasScrolled && insWithoutIframe.length > 0) {
-        // @ts-expect-error
+        //@ts-expect-error
         if (window?.adsbygoogle) {
           setHasScrolled(true)
 
           insWithoutIframe.forEach((el) => {
             if (!el.querySelector("iframe")) {
-              // @ts-expect-error
+              //@ts-expect-error
               ;(window.adsbygoogle = window.adsbygoogle || []).push({})
             }
             window.removeEventListener("scroll", handleAdScroll)
@@ -112,7 +112,7 @@ const AdsenseScript = () => {
     }
 
     // Push ad after 8 seconds
-    const timeoutId = setTimeout(handleLoad, 8000)
+    const timeoutId = setTimeout(handleLoad, 7000)
 
     // Push ad when scrolled
     window.addEventListener("scroll", handleScroll)
