@@ -45,13 +45,12 @@ export async function generateMetadata(props: {
       locale: locale,
       type: "website",
     },
-    // TODO: remove false after going to production
     robots: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
       googleBot: {
-        index: false,
-        follow: false,
+        index: true,
+        follow: true,
         "max-video-preview": -1,
         "max-image-preview": "large",
         "max-snippet": -1,
