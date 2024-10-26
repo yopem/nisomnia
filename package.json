@@ -7,7 +7,7 @@
     "clean": "git clean -xdf .next node_modules",
     "dev": "next dev --turbo",
     "dev:webpack": "next dev",
-    "build": "next build",
+    "build": "pnpm partytown && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "pnpm lint --fix",
@@ -21,7 +21,8 @@
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md,mdx}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,css,md,mdx}\"",
     "test": "tsc --noEmit && next lint && prettier --check \"**/*.{ts,tsx,js,jsx,css,md,mdx}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "partytown": "partytown copylib public/~partytown"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.679.0",

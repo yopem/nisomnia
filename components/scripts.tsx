@@ -1,3 +1,4 @@
+import { Partytown } from "@builder.io/partytown/react"
 import { GoogleAnalytics } from "@next/third-parties/google"
 
 import env from "@/env"
@@ -7,6 +8,7 @@ const Scripts = () => {
   if (process.env.APP_ENV === "production") {
     return (
       <>
+        <Partytown debug={true} forward={["dataLayer.push"]} />
         <AdsenseScript />
         <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
         <script
