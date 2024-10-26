@@ -13,7 +13,6 @@ const Scripts = () => {
           defer
           src="https://analytic.nisomnia.com/script.js"
           data-website-id="fce06352-f464-4337-a716-b78f9f0b46c3"
-          strategy="worker"
         />
         <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
       </>
