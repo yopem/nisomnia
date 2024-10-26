@@ -19,7 +19,6 @@ const AdsenseScript = () => {
   const [hasScrolled, setHasScrolled] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    if (process.env.APP_ENV !== "production") return
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
@@ -91,8 +90,6 @@ const AdsenseScript = () => {
   }, [pathname, searchParams])
 
   React.useEffect(() => {
-    if (process.env.APP_ENV !== "production") return
-
     const scriptElement = document.querySelector(
       `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
     )
