@@ -14,7 +14,6 @@ const Scripts = () => {
           defer
           src="https://data.dafunda.com/script.js"
           data-website-id="433dc72b-94a6-4fcd-92f2-3403a60f47c7"
-          strategy="worker"
         />
       </>
     )
