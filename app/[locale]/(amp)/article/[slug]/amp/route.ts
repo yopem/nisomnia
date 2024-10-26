@@ -207,11 +207,8 @@ darkButton.addEventListener('click', () => {
           custom-element="amp-twitter"
           src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js"
         ></script>
-        <script
-          async
-          custom-element="amp-auto-ads"
-          src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"
-        ></script>
+        <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+        <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
         <script
           async
           custom-element="amp-bind"
@@ -292,7 +289,6 @@ darkButton.addEventListener('click', () => {
         />
         <link rel="dns-prefetch" href="${env.NEXT_PUBLIC_SITE_URL}" />
         <link rel="dns-prefetch" href="https://cdn.ampproject.org" />
-        <link rel="dns-prefetch" href="https://secure.gravatar.com" />
         ${ampBoilerplateStyle}
         <style amp-custom>
            ${basecolor}
@@ -306,6 +302,19 @@ darkButton.addEventListener('click', () => {
         </script>
       </head>
       <body>
+      <amp-analytics type="gtag" data-credentials="include">
+      <script type="application/json">
+      {
+        "vars" : {
+          "gtag_id": "${env.NEXT_PUBLIC_GA_ID}",
+          "config" : {
+            "<TARGET_ID>": { "groups": "default" }
+          }
+        }
+      }
+      </script>
+      </amp-analytics>
+        <amp-auto-ads type="adsense" data-ad-client="${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"></amp-auto-ads>
         <div id="amp-dark-mode-wrapper" class="ligth-mode" [class]="darkClass">
           <header id="#top" class="amp-header-container">
             <div class="amp-container">
