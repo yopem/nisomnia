@@ -5,6 +5,14 @@ import { usePathname, useSearchParams } from "next/navigation"
 
 import env from "@/env"
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any
+  }
+}
+
 const AdsenseScript = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
