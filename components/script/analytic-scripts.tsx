@@ -2,13 +2,11 @@ import Script from "next/script"
 import { GoogleAnalytics } from "@next/third-parties/google"
 
 import env from "@/env"
-import AdsenseScript from "./ad/adsense-script"
 
-const Scripts = () => {
+const AnalyticScripts = () => {
   if (process.env.APP_ENV === "production") {
     return (
       <>
-        <AdsenseScript />
         <Script
           defer
           src="https://analytic.nisomnia.com/script.js"
@@ -22,4 +20,4 @@ const Scripts = () => {
   return null
 }
 
-export default Scripts
+export default AnalyticScripts

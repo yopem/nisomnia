@@ -5,7 +5,6 @@ import "@/styles/globals.css"
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
-import Scripts from "@/components/scripts"
 import ThemeProvider from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/toast/toaster"
 import env from "@/env"
@@ -94,7 +93,6 @@ export default async function RootLayout(props: RootLayoutProps) {
               {children}
             </TRPCReactProvider>
           </ThemeProvider>
-          <Scripts />
         </I18nProviderClient>
       </body>
     </html>

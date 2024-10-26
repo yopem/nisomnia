@@ -1,6 +1,8 @@
 import * as React from "react"
 
+import AdsenseScript from "@/components/ad/adsense-script"
 import GlobalContainer from "@/components/layout/global-container"
+import AnalyticScripts from "@/components/script/analytic-scripts"
 import { getCurrentSession } from "@/lib/auth/session"
 import type { LanguageType } from "@/lib/validation/language"
 
@@ -18,6 +20,8 @@ export default async function DefaultLayout(props: DefaultLayoutProps) {
 
   return (
     <>
+      <AdsenseScript />
+      <AnalyticScripts />
       <GlobalContainer user={user} locale={locale}>
         {children}
       </GlobalContainer>
