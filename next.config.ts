@@ -36,6 +36,9 @@ const securityHeaders = [
 
 const config = {
   reactStrictMode: true,
+  experimental: {
+    nextScriptWorkers: true,
+  },
   serverExternalPackages: ["@node-rs/argon2"],
   images: {
     remotePatterns: [

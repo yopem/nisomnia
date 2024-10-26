@@ -1,4 +1,4 @@
-import { Partytown } from "@builder.io/partytown/react"
+import Script from "next/script"
 import { GoogleAnalytics } from "@next/third-parties/google"
 
 import env from "@/env"
@@ -9,13 +9,12 @@ const Scripts = () => {
     return (
       <>
         <AdsenseScript />
-        <Partytown debug={true} forward={["dataLayer.push"]} />
-        <script
+        <Script
           defer
           src="https://analytic.nisomnia.com/script.js"
           data-website-id="fce06352-f464-4337-a716-b78f9f0b46c3"
-          type="text/partytown"
-        ></script>
+          strategy="worker"
+        />
         <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
       </>
     )
