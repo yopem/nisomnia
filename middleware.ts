@@ -5,6 +5,9 @@ const I18nMiddleware = createI18nMiddleware({
   locales: ["id", "en"],
   defaultLocale: "id",
   urlMappingStrategy: "rewrite",
+  resolveLocaleFromRequest: (_request) => {
+    return "id"
+  },
 })
 
 // eslint-disable-next-line @typescript-eslint/require-await
