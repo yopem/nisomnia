@@ -29,6 +29,13 @@
       "when": 1730032734518,
       "tag": "0003_friendly_arclight",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1730050018489,
+      "tag": "0004_rich_warhawk",
+      "breakpoints": true
     }
   ]
 }

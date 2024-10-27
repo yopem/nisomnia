@@ -550,7 +550,6 @@ export default function EditMovieForm(props: EditMovieFormProps) {
                   addGenres={setGenres}
                   selectedGenres={selectedGenres}
                   addSelectedGenres={setSelectedGenres}
-                  topicType="feed"
                 />
               </div>
               <div className="my-2">

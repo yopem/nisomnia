@@ -13,7 +13,6 @@ import { generateUniqueTopicSlug } from "@/lib/utils/slug"
 import { languageType } from "@/lib/validation/language"
 import {
   createTopicSchema,
-  topicType,
   topicVisibility,
   translateTopicSchema,
   updateTopicSchema,
@@ -221,42 +220,6 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
-  byType: publicProcedure
-    .input(
-      z.object({
-        type: topicType,
-        language: languageType,
-        page: z.number(),
-        perPage: z.number(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db.query.topics.findMany({
-          where: (topics, { eq, and }) =>
-            and(
-              eq(topics.type, input.type),
-              eq(topics.language, input.language),
-              eq(topics.status, "published"),
-            ),
-          limit: input.perPage,
-          offset: (input.page - 1) * input.perPage,
-          orderBy: (topics, { desc }) => [desc(topics.updatedAt)],
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   byVisibility: publicProcedure
     .input(
       z.object({
@@ -360,44 +323,6 @@ export const topicRouter = createTRPCRouter({
               },
             },
           },
-          limit: 10,
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
-  searchByType: publicProcedure
-    .input(
-      z.object({
-        type: topicType,
-        language: languageType,
-        searchQuery: z.string(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db.query.topics.findMany({
-          where: (topics, { eq, and, or, ilike }) =>
-            and(
-              eq(topics.type, input.type),
-              eq(topics.language, input.language),
-              eq(topics.visibility, "public"),
-              eq(topics.status, "published"),
-              or(
-                ilike(topics.title, `%${input.searchQuery}%`),
-                ilike(topics.slug, `%${input.searchQuery}%`),
-              ),
-            ),
           limit: 10,
         })
 

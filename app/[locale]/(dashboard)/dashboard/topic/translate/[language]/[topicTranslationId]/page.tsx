@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 import env from "@/env"
 import { api } from "@/lib/trpc/server"
 import type { LanguageType } from "@/lib/validation/language"
-import type { TopicType } from "@/lib/validation/topic"
+import type { TopicVisibility } from "@/lib/validation/topic"
 
 const TranslateTopicForm = dynamicFn(async () => {
   const TranslateTopicForm = await import("./form")
@@ -49,8 +49,7 @@ interface TranslateTopicDashboardProps {
   params: Promise<{
     topicTranslationId: string
     language: LanguageType
-    visibility: TopicType
-    type: TopicType
+    visibility: TopicVisibility
   }>
 }
 
@@ -80,7 +79,6 @@ export default async function TranslateTopicDashboardPage(
       topicTranslationId={topicTranslationId}
       language={language}
       visibility={beforeTranslatedTopic?.visibility}
-      type={beforeTranslatedTopic?.type}
     />
   )
 }

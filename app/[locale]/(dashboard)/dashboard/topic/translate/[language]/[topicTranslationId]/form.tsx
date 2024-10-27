@@ -23,7 +23,7 @@ import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
 import type { StatusType } from "@/lib/validation/status"
-import type { TopicType, TopicVisibility } from "@/lib/validation/topic"
+import type { TopicVisibility } from "@/lib/validation/topic"
 
 interface FormValues {
   id: string
@@ -33,7 +33,6 @@ interface FormValues {
   metaDescription?: string
   language: LanguageType
   visibility: TopicVisibility
-  type: TopicType
   status: StatusType
   topicTranslationId: string
 }
@@ -42,11 +41,10 @@ interface TranslateTopicFormProps {
   topicTranslationId: string
   language: LanguageType
   visibility?: TopicVisibility
-  type?: TopicType
 }
 
 export default function TranslateTopicForm(props: TranslateTopicFormProps) {
-  const { topicTranslationId, language, visibility, type } = props
+  const { topicTranslationId, language, visibility } = props
 
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openDialog, setOpenDialog] = React.useState<boolean>(false)
@@ -98,7 +96,6 @@ export default function TranslateTopicForm(props: TranslateTopicFormProps) {
     defaultValues: {
       language: language,
       visibility: visibility,
-      type: type,
       topicTranslationId: topicTranslationId,
     },
   })

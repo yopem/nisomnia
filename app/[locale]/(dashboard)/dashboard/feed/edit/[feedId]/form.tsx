@@ -234,7 +234,6 @@ export default function EditFeedForm(props: EditFeedFormProps) {
                     addTopics={setTopics}
                     selectedTopics={selectedTopics}
                     addSelectedTopics={setSelectedTopics}
-                    topicType="feed"
                   />
                 </div>
               )}

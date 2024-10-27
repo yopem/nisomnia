@@ -3,20 +3,7 @@ import { z } from "zod"
 import { LANGUAGE_TYPE } from "./language"
 import { STATUS_TYPE } from "./status"
 
-export const TOPIC_TYPE = [
-  "all",
-  "article",
-  "feed",
-  "review",
-  "tutorial",
-  "movie",
-  "tv",
-  "game",
-] as const
-
 export const TOPIC_VISIBILITY = ["public", "internal"] as const
-
-export const topicType = z.enum(TOPIC_TYPE)
 
 export const topicVisibility = z.enum(TOPIC_VISIBILITY)
 
@@ -41,12 +28,6 @@ const topicInput = {
   metaDescription: z
     .string({
       invalid_type_error: "Meta Description must be a string",
-    })
-    .optional(),
-  type: z
-    .enum(TOPIC_TYPE, {
-      invalid_type_error:
-        "only all, article, review ,tutorial, movie, tv, game are accepted",
     })
     .optional(),
   visibility: z
@@ -109,5 +90,4 @@ export const updateTopicSchema = z.object({
 
 export type CreateTopicSchema = z.infer<typeof createTopicSchema>
 export type UpdateTopicSchema = z.infer<typeof updateTopicSchema>
-export type TopicType = z.infer<typeof topicType>
 export type TopicVisibility = z.infer<typeof topicVisibility>

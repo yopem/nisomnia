@@ -1,13 +1,12 @@
 import { relations } from "drizzle-orm"
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
-import { TOPIC_TYPE, TOPIC_VISIBILITY } from "@/lib/validation/topic"
+import { TOPIC_VISIBILITY } from "@/lib/validation/topic"
 import { articleTopics } from "./article"
 import { feedTopics } from "./feed"
 import { languageEnum } from "./language"
 import { statusEnum } from "./status"
 
-export const topicTypeEnum = pgEnum("topic_type", TOPIC_TYPE)
 export const topicVisibilityEnum = pgEnum("topic_visibility", TOPIC_VISIBILITY)
 
 export const topicTranslations = pgTable("topic_translations", {
@@ -22,7 +21,6 @@ export const topics = pgTable("topics", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
-  type: topicTypeEnum("type").notNull().default("all"),
   status: statusEnum("status").notNull().default("draft"),
   visibility: topicVisibilityEnum("visibility").notNull().default("public"),
   metaTitle: text("meta_title"),

@@ -234,6 +234,7 @@ export const mediaRouter = createTRPCRouter({
       try {
         const data = await ctx.db.query.medias.findMany({
           where: (medias, { eq }) => eq(medias.category, input),
+          limit: 1000,
         })
 
         return data

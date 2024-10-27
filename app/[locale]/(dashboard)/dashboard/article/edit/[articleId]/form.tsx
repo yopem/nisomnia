@@ -406,7 +406,6 @@ const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
                             addTopics={setTopics}
                             selectedTopics={selectedTopics}
                             addSelectedTopics={setSelectedTopics}
-                            topicType="article"
                           />
                         </div>
                       )}

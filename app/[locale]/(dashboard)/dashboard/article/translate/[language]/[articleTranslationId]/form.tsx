@@ -334,7 +334,6 @@ const TranslateArticleForm = (props: TranslateArticleFormProps) => {
                             addTopics={setTopics}
                             selectedTopics={selectedTopics}
                             addSelectedTopics={setSelectedTopics}
-                            topicType="article"
                           />
                         </div>
                       )}

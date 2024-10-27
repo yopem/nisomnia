@@ -31,7 +31,7 @@ import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
 import type { StatusType } from "@/lib/validation/status"
-import type { TopicType, TopicVisibility } from "@/lib/validation/topic"
+import type { TopicVisibility } from "@/lib/validation/topic"
 
 interface FormValues {
   id: string
@@ -42,7 +42,6 @@ interface FormValues {
   metaDescription?: string
   language: LanguageType
   visibility: TopicVisibility
-  type: TopicType
   status: StatusType
   topicTranslationId: string
 }
@@ -112,7 +111,6 @@ export default function EditTopicForm(props: EditTopicFormProps) {
       metaDescription: topic?.metaDescription ?? "",
       language: topic.language,
       visibility: topic.visibility,
-      type: topic.type,
       status: topic.status,
       topicTranslationId: topic.topicTranslationId,
     },
@@ -254,39 +252,6 @@ export default function EditTopicForm(props: EditTopicFormProps) {
                       <SelectContent>
                         <SelectItem value="public">Public</SelectItem>
                         <SelectItem value="internal">Internal</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="type"
-                rules={{
-                  required: t("type_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("type")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("type_placeholder")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="feed">Feed</SelectItem>
-                        <SelectItem value="review">Review</SelectItem>
-                        <SelectItem value="tutorial">Tutorial</SelectItem>
-                        <SelectItem value="movie">Movie</SelectItem>
-                        <SelectItem value="tv">TV</SelectItem>
-                        <SelectItem value="game">Game</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

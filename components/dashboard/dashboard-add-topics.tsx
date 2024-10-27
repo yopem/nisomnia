@@ -15,13 +15,11 @@ import type { SelectTopic } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
-import type { TopicType } from "@/lib/validation/topic"
 
 interface DashboardAddTopicsProps<
   TFieldValues extends FieldValues = FieldValues,
 > {
   topics: string[]
-  topicType: TopicType
   locale: LanguageType
   addTopics: React.Dispatch<React.SetStateAction<string[]>>
   mode?: "create" | "edit"
@@ -44,7 +42,6 @@ interface DashboardAddTopicsProps<
 const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   const {
     topics,
-    topicType,
     mode = "create",
     addTopics,
     selectedTopics,
@@ -99,11 +96,10 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
   )
 
   const { data: searchResults, isFetching: searchResultsIsLoading } =
-    api.topic.searchByType.useQuery(
+    api.topic.search.useQuery(
       {
         searchQuery: searchQuery,
         language: locale,
-        type: topicType,
       },
       {
         enabled: !!searchQuery,
@@ -210,7 +206,6 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
         setLoadingCreate(true)
         createTopic({
           title: searchQuery,
-          type: topicType,
           language: locale,
           visibility: "public",
           status: "published",
@@ -226,7 +221,6 @@ const DashboardAddTopics: React.FC<DashboardAddTopicsProps> = (props) => {
     searchQuery,
     searchResults,
     selectedTopics,
-    topicType,
   ])
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {

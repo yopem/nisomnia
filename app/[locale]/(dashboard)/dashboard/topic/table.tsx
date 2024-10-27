@@ -4,7 +4,6 @@ import DashboardPagination from "@/components/dashboard/dashboard-pagination"
 import DashboardShowOptions from "@/components/dashboard/dashboard-show-options"
 import DashboardStatusBadge from "@/components/dashboard/dashboard-status-badge"
 import DashboardTopicVisibilityBadge from "@/components/dashboard/dashboard-topic-visibility-badge"
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -91,9 +90,6 @@ export default function TopicTable(props: TopicTableProps) {
               {t("slug")}
             </TableHead>
             <TableHead className="hidden whitespace-nowrap lg:table-cell">
-              {t("type")}
-            </TableHead>
-            <TableHead className="hidden whitespace-nowrap lg:table-cell">
               Status
             </TableHead>
             <TableHead className="hidden whitespace-nowrap lg:table-cell">
@@ -116,8 +112,6 @@ export default function TopicTable(props: TopicTableProps) {
                     <span className="table-cell text-[10px] text-muted-foreground lg:hidden">
                       <span>{topic.slug}</span>
                       <span className="pr-1">,</span>
-                      <span className="uppercase">{topic.type}</span>
-                      <span className="pr-1">,</span>
                       <span>{topic.visibility}</span>
                       <span className="pr-1">,</span>
                       <span>{topic.language}</span>
@@ -129,13 +123,6 @@ export default function TopicTable(props: TopicTableProps) {
                     <span className="overflow-hidden text-ellipsis font-medium">
                       {topic.slug}
                     </span>
-                  </div>
-                </TableCell>
-                <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">
-                  <div className="flex">
-                    <Badge variant="outline" className="uppercase">
-                      {topic.type}
-                    </Badge>
                   </div>
                 </TableCell>
                 <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">

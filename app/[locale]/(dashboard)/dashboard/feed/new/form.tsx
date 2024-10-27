@@ -186,7 +186,6 @@ export default function CreateFeedForm() {
                     addTopics={setTopics}
                     selectedTopics={selectedTopics}
                     addSelectedTopics={setSelectedTopics}
-                    topicType="feed"
                   />
                 </div>
               )}

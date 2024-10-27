@@ -482,7 +482,6 @@ export default function CreateMovieForm() {
                   addGenres={setGenres}
                   selectedGenres={selectedGenres}
                   addSelectedGenres={setSelectedGenres}
-                  topicType="feed"
                 />
               </div>
               <div className="my-2">

@@ -352,7 +352,6 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
                             addTopics={setTopics}
                             selectedTopics={selectedTopics}
                             addSelectedTopics={setSelectedTopics}
-                            topicType="article"
                           />
                         </div>
                       )}
