@@ -366,7 +366,7 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
                             handleSelectUpdateMedia={handleUpdateMedia}
                             open={openDialog}
                             setOpen={setOpenDialog}
-                            mediaType="article"
+                            category="article"
                           >
                             <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                               <Image
@@ -385,7 +385,7 @@ export default function CreateArticleForm(props: CreateArticleFormProps) {
                           handleSelectUpdateMedia={handleUpdateMedia}
                           open={openDialog}
                           setOpen={setOpenDialog}
-                          mediaType="article"
+                          category="article"
                         >
                           <div
                             onClick={() => setOpenDialog(true)}

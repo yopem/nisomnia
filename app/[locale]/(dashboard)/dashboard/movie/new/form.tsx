@@ -533,7 +533,7 @@ export default function CreateMovieForm() {
                         setOpenDialog(isOpen)
                         if (isOpen) setImageType("poster")
                       }}
-                      mediaType="movie"
+                      category="movie"
                     >
                       <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                         <Image
@@ -558,7 +558,7 @@ export default function CreateMovieForm() {
                       setOpenDialog(isOpen)
                       if (isOpen) setImageType("poster")
                     }}
-                    mediaType="movie"
+                    category="movie"
                   >
                     <div
                       onClick={() => setOpenDialog(true)}
@@ -584,7 +584,7 @@ export default function CreateMovieForm() {
                         setOpenDialog(isOpen)
                         if (isOpen) setImageType("backdrop")
                       }}
-                      mediaType="movie"
+                      category="movie"
                     >
                       <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                         <Image
@@ -609,7 +609,7 @@ export default function CreateMovieForm() {
                       setOpenDialog(isOpen)
                       if (isOpen) setImageType("backdrop")
                     }}
-                    mediaType="movie"
+                    category="movie"
                   >
                     <div
                       onClick={() => setOpenDialog(true)}

@@ -8,7 +8,12 @@ import { resizeImage } from "@/lib/image"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
-import { mediaType, type MediaType } from "@/lib/validation/media"
+import {
+  mediaCategory,
+  mediaType,
+  type MediaCategory,
+  type MediaType,
+} from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +27,9 @@ export async function POST(request: NextRequest) {
 
     const file = formData.get("file") as Blob | null
     const formType = formData.get("type") as MediaType
+    const formCategory = formData.get("category") as MediaCategory
 
+    const category = mediaCategory.parse(formCategory)
     const type = mediaType.parse(formType)
 
     if (!file) {
@@ -52,8 +59,9 @@ export async function POST(request: NextRequest) {
       id: cuid(),
       name: uniqueFileName,
       url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+      category: category,
       type: type,
-      imageType: defaultFileType,
+      fileType: defaultFileType,
       authorId: user.id,
     })
 

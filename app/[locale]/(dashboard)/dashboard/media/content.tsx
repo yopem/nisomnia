@@ -16,26 +16,34 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/toast/use-toast"
-import { useScopedI18n } from "@/lib/locales/client"
+import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { MediaType } from "@/lib/validation/media"
+import type { MediaCategory } from "@/lib/validation/media"
 import DashboardMediaHeader from "./header"
 
 export default function DashboardMediaContent() {
   const [searched, setSearched] = React.useState<boolean>(false)
   const [searchQuery, setSearchQuery] = React.useState<string>("")
-  const [selectedMediaType, setSelectedMediaType] = React.useState<
-    MediaType | undefined
+  const [selectedMediaCategory, setSelectedMediaCategory] = React.useState<
+    MediaCategory | undefined
   >(undefined)
 
+  const t = useI18n()
   const ts = useScopedI18n("media")
 
   const { data: resultMedias, refetch: updateMedias } =
-    api.media.search.useQuery(searchQuery)
-  const { data: resultMediasByType } = api.media.searchByType.useQuery({
-    type: selectedMediaType!,
-    searchQuery: searchQuery,
-  })
+    api.media.search.useQuery(searchQuery, {
+      enabled: searched && !selectedMediaCategory,
+    })
+  const { data: resultsByCategory } = api.media.searchByCategory.useQuery(
+    {
+      category: selectedMediaCategory!,
+      searchQuery: searchQuery,
+    },
+    {
+      enabled: searched && selectedMediaCategory !== "all",
+    },
+  )
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -48,8 +56,8 @@ export default function DashboardMediaContent() {
     }
   }
 
-  const handleMediaTypeChange = (value: MediaType) => {
-    setSelectedMediaType(value === "all" ? undefined : value)
+  const handleMediaCategoryChange = (value: MediaCategory) => {
+    setSelectedMediaCategory(value === "all" ? undefined : value)
   }
 
   const { mutate: deleteMedia } = api.media.deleteByName.useMutation({
@@ -91,11 +99,11 @@ export default function DashboardMediaContent() {
       <div className="mt-4 flex flex-col justify-start space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0">
         <div className="w-full lg:w-2/12">
           <Select
-            value={selectedMediaType ?? "all"}
-            onValueChange={handleMediaTypeChange}
+            value={selectedMediaCategory ?? "all"}
+            onValueChange={handleMediaCategoryChange}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Choose Media Type" />
+              <SelectValue placeholder={t("category_placeholder")} />
             </SelectTrigger>
             <SelectContent className="w-10/12">
               <SelectItem value="all">All</SelectItem>
@@ -126,17 +134,17 @@ export default function DashboardMediaContent() {
       </div>
       {!searched && (
         <div className="my-3">
-          <MediaList isLibrary={true} mediaType={selectedMediaType} />
+          <MediaList isLibrary={true} category={selectedMediaCategory!} />
         </div>
       )}
       {searched &&
-      selectedMediaType &&
-      selectedMediaType !== "all" &&
-      resultMediasByType !== undefined &&
-      resultMediasByType?.length > 0 ? (
+      selectedMediaCategory &&
+      selectedMediaCategory !== "all" &&
+      resultsByCategory !== undefined &&
+      resultsByCategory?.length > 0 ? (
         <div className="my-3">
           <div className="mb-4 grid grid-cols-3 gap-3 md:grid-cols-8">
-            {resultMediasByType?.map((media) => (
+            {resultsByCategory?.map((media) => (
               <div
                 className="relative overflow-hidden rounded-[18px]"
                 key={media.id}

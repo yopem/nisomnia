@@ -23,22 +23,24 @@ import {
 import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { cn } from "@/lib/utils"
-import { type MediaType } from "@/lib/validation/media"
+import type { MediaCategory, MediaType } from "@/lib/validation/media"
 import { uploadMultipleMediaAction } from "./action"
 
 interface FormValues {
   files: FileList | null
   type: MediaType
+  category: MediaCategory
 }
 
 interface UploadMediaProps extends React.HTMLAttributes<HTMLDivElement> {
   setToggleUpload?: React.Dispatch<React.SetStateAction<boolean>>
   toggleUpload?: boolean
-  mediaType?: MediaType
+  type: MediaType
+  category?: MediaCategory
 }
 
 const UploadMedia: React.FC<UploadMediaProps> = (props) => {
-  const { toggleUpload, setToggleUpload, mediaType } = props
+  const { toggleUpload, setToggleUpload, type, category } = props
 
   const [isPending, startTransition] = React.useTransition()
   const [previewImages, setPreviewImages] = React.useState<string[]>([])
@@ -49,7 +51,8 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
   const form = useForm<FormValues>({
     defaultValues: {
       files: null,
-      type: mediaType,
+      type: type,
+      category: category,
     },
   })
 
@@ -58,7 +61,6 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
   React.useEffect(() => {
     if (watchedFiles instanceof FileList) {
       const imagePreviews: string[] = []
-
       ;(async () => {
         for (const file of watchedFiles) {
           const reader = new FileReader()
@@ -83,7 +85,8 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
 
       const mediaData = filesArray.map((file) => ({
         file,
-        type: mediaType ? mediaType : values.type,
+        type: type ?? values.type,
+        category: category ?? values.category,
       }))
 
       const { data, error } = await uploadMultipleMediaAction(mediaData)
@@ -102,7 +105,6 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
   }
 
   const handleDrop = (files: FileList) => {
-    // Update the form with the dropped files
     form.setValue("files", files)
   }
 
@@ -117,7 +119,7 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
             >
               <DropZone
                 className={cn(previewImages.length > 0 && "hidden")}
-                onDrop={handleDrop} // Pass the handleDrop function to DropZone
+                onDrop={handleDrop}
                 {...form.register("files")}
               />
               {previewImages.length > 0 && (
@@ -142,17 +144,20 @@ const UploadMedia: React.FC<UploadMediaProps> = (props) => {
               <div className="flex justify-center">
                 <FormField
                   control={form.control}
-                  name="type"
+                  name="category"
+                  rules={{ required: t("category_required") }}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Type</FormLabel>
+                      <FormLabel>{t("category")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select Image Type" />
+                            <SelectValue
+                              placeholder={t("category_placeholder")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>

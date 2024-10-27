@@ -15,6 +15,7 @@ import { r2Client } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import {
   createMediaSchema,
+  mediaCategory,
   mediaType,
   updateMediaSchema,
 } from "@/lib/validation/media"
@@ -88,33 +89,31 @@ export const mediaRouter = createTRPCRouter({
         }
       }
     }),
-  dashboardInfiniteByType: adminProtectedProcedure
+  dashboardInfiniteByCategory: adminProtectedProcedure
     .input(
       z.object({
-        limit: z.number().min(1).max(100),
+        limit: z.number().min(1).max(100).optional().default(50),
         cursor: z.date().optional(),
-        type: mediaType,
+        category: mediaCategory,
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.medias.findMany({
           where: (medias, { and, lt, eq }) =>
             and(
               input.cursor
                 ? lt(medias.updatedAt, new Date(input.cursor!))
                 : undefined,
-              eq(medias.type, input.type),
+              eq(medias.category, input.category),
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (medias, { desc }) => [desc(medias.updatedAt)],
         })
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -229,11 +228,12 @@ export const mediaRouter = createTRPCRouter({
       }
     }
   }),
-  searchByType: publicProcedure
+  searchByCategory: publicProcedure
     .input(
       z.object({
         searchQuery: z.string(),
-        type: mediaType,
+        category: mediaCategory,
+        limit: z.number().optional().default(24),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -241,10 +241,10 @@ export const mediaRouter = createTRPCRouter({
         const data = await ctx.db.query.medias.findMany({
           where: (medias, { and, ilike, eq }) =>
             and(
-              eq(medias.type, input.type),
+              eq(medias.category, input.category),
               ilike(medias.name, `%${input.searchQuery}%`),
             ),
-          limit: 24,
+          limit: input.limit,
         })
 
         return data
@@ -377,7 +377,7 @@ export const mediaRouter = createTRPCRouter({
       }
     }),
   deleteByName: adminProtectedProcedure
-    .input(z.object({ type: z.string(), name: z.string() }))
+    .input(z.object({ type: mediaType, name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
         const mediaProperties = input.type + "/" + input.name

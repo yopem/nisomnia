@@ -3,17 +3,19 @@
 import { relations } from "drizzle-orm"
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
-import { MEDIA_TYPE } from "@/lib/validation/media"
+import { MEDIA_CATEGORY, MEDIA_TYPE } from "@/lib/validation/media"
 import { users } from "./user"
 
-export const mediaTypeEnum = pgEnum("media_types", MEDIA_TYPE)
+export const mediaCategoryEnum = pgEnum("media_category", MEDIA_CATEGORY)
+export const mediaTypeEnum = pgEnum("media_type", MEDIA_TYPE)
 
 export const medias = pgTable("medias", {
   id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
   url: text("url").notNull(),
-  imageType: text("image_type").notNull(),
-  type: mediaTypeEnum("type").notNull().default("all"),
+  fileType: text("file_type").notNull(),
+  category: mediaCategoryEnum("category").notNull().default("article"),
+  type: mediaTypeEnum("type").notNull().default("image"),
   description: text("description"),
   authorId: text("author_id")
     .notNull()

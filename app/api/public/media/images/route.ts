@@ -7,7 +7,12 @@ import { resizeImage } from "@/lib/image"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
-import { mediaType, type MediaType } from "@/lib/validation/media"
+import {
+  mediaCategory,
+  mediaType,
+  type MediaCategory,
+  type MediaType,
+} from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,6 +20,7 @@ export async function POST(request: NextRequest) {
 
     const files = formData.getAll("file") as Blob[]
     const formTypes = formData.getAll("type") as MediaType[]
+    const formCategories = formData.getAll("category") as MediaCategory[]
 
     if (files.length === 0) {
       return NextResponse.json("At least one file is required.", {
@@ -42,23 +48,24 @@ export async function POST(request: NextRequest) {
       const mediaTypes = formTypes[i] as MediaType
       const type = mediaType.parse(mediaTypes)
 
+      const mediaCategories = formCategories[i] as MediaCategory
+      const category = mediaCategory.parse(mediaCategories)
+
       await uploadImageToR2({
         file: resizedImageBuffer,
         fileName: type + "/" + uniqueFileName,
         contentType: defaultFileType,
       })
 
-      const data = await db
-        .insert(medias)
-        .values({
-          id: cuid(),
-          name: uniqueFileName,
-          url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
-          type: type,
-          imageType: defaultFileType,
-          authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2",
-        })
-        .returning()
+      const data = await db.insert(medias).values({
+        id: cuid(),
+        name: uniqueFileName,
+        url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+        category: category,
+        type: type,
+        fileType: defaultFileType,
+        authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2"
+      })
 
       uploadedFiles.push(data)
     }
@@ -69,3 +76,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json("Internal Server Error", { status: 500 })
   }
 }
+

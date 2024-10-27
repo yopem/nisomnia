@@ -227,7 +227,7 @@ export default function EditProductionCompanyForm(
                     handleSelectUpdateMedia={handleUpdateMedia}
                     open={openDialog}
                     setOpen={setOpenDialog}
-                    mediaType="production_company"
+                    category="production_company"
                   >
                     <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                       <Image
@@ -246,7 +246,7 @@ export default function EditProductionCompanyForm(
                   handleSelectUpdateMedia={handleUpdateMedia}
                   open={openDialog}
                   setOpen={setOpenDialog}
-                  mediaType="production_company"
+                  category="production_company"
                 >
                   <div
                     onClick={() => setOpenDialog(true)}

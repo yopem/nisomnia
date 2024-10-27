@@ -32,5 +32,5 @@ export async function generateMetadata(props: {
 }
 
 export default function UploadMediasDashboardPage() {
-  return <UploadMedia toggleUpload={true} />
+  return <UploadMedia toggleUpload={true} type="image" />
 }

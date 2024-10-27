@@ -1,8 +1,9 @@
-import type { MediaType } from "@/lib/validation/media"
+import type { MediaCategory, MediaType } from "@/lib/validation/media"
 
 interface MediaData {
   file: Blob
   type: MediaType
+  category: MediaCategory
 }
 
 export async function uploadMultipleMediaAction(datas: MediaData[]) {
@@ -11,7 +12,9 @@ export async function uploadMultipleMediaAction(datas: MediaData[]) {
   for (const data of datas) {
     formData.append("file", data.file)
     formData.append("type", data.type)
+    formData.append("category", data.category)
   }
+
   try {
     const response = await fetch("/api/media/images", {
       method: "POST",

@@ -1,13 +1,14 @@
 import { z } from "zod"
 
 const MAX_FILE_SIZE = 500000
+
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
   "image/png",
   "image/webp",
 ]
-export const MEDIA_TYPE = [
+export const MEDIA_CATEGORY = [
   "all",
   "article",
   "feed",
@@ -21,6 +22,15 @@ export const MEDIA_TYPE = [
   "production_company",
 ] as const
 
+export const MEDIA_TYPE = [
+  "image",
+  "audio",
+  "video",
+  "document",
+  "other",
+] as const
+
+export const mediaCategory = z.enum(MEDIA_CATEGORY)
 export const mediaType = z.enum(MEDIA_TYPE)
 
 export const mediaInput = {
@@ -37,15 +47,15 @@ export const mediaInput = {
     invalid_type_error: "Url must be a string",
     required_error: "Url Required",
   }),
-  type: z
-    .enum(MEDIA_TYPE, {
+  category: z
+    .enum(MEDIA_CATEGORY, {
       invalid_type_error:
-        "only all, article, topic, review ,tutorial, movie, tv, game, genre, production_company, are accepted",
+        "only article, topic, review ,tutorial, movie, tv, game, genre, production_company, are accepted",
     })
     .optional(),
-  imageType: z.string({
-    invalid_type_error: "Image Type must be a string",
-    required_error: "Image Type Required",
+  fileType: z.string({
+    invalid_type_error: "FileType must be a string",
+    required_error: "FileType Required",
   }),
 }
 
@@ -85,4 +95,5 @@ export const updateMediaSchema = z.object({
 
 export type CreateMediaSchema = z.infer<typeof createMediaSchema>
 export type UpdateMediaSchema = z.infer<typeof updateMediaSchema>
+export type MediaCategory = z.infer<typeof mediaCategory>
 export type MediaType = z.infer<typeof mediaType>

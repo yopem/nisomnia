@@ -7,7 +7,12 @@ import { resizeImage } from "@/lib/image"
 import { uploadImageToR2 } from "@/lib/r2"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMediaName } from "@/lib/utils/slug"
-import { mediaType, type MediaType } from "@/lib/validation/media"
+import {
+  mediaCategory,
+  mediaType,
+  type MediaCategory,
+  type MediaType,
+} from "@/lib/validation/media"
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,6 +20,9 @@ export async function POST(request: NextRequest) {
 
     const file = formData.get("file") as Blob | null
     const formType = formData.get("type") as MediaType
+    const formCategory = formData.get("category") as MediaCategory
+
+    const category = mediaCategory.parse(formCategory)
     const type = mediaType.parse(formType)
 
     if (!file) {
@@ -40,17 +48,15 @@ export async function POST(request: NextRequest) {
       contentType: defaultFileType,
     })
 
-    const data = await db
-      .insert(medias)
-      .values({
-        id: cuid(),
-        name: uniqueFileName,
-        url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
-        type: type,
-        imageType: defaultFileType,
-        authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2",
-      })
-      .returning()
+    const data = await db.insert(medias).values({
+      id: cuid(),
+      name: uniqueFileName,
+      url: `https://${env.R2_DOMAIN}/${type}/${uniqueFileName}`,
+      category: category,
+      type: type,
+      fileType: defaultFileType,
+      authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2",
+    })
 
     return NextResponse.json(data, { status: 200 })
   } catch (error) {
@@ -58,3 +64,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json("Internal Server Error", { status: 500 })
   }
 }
+

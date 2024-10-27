@@ -15,6 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Icon } from "@/components/ui/icon"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import type { InsertMedia } from "@/lib/db/schema"
@@ -25,6 +32,7 @@ import { copyToClipboard } from "@/lib/utils"
 interface FormValues {
   name: string
   description?: string
+  category: string
 }
 
 interface EditMediaProps {
@@ -43,7 +51,8 @@ export default function EditMediaForm(props: EditMediaProps) {
 
   const form = useForm<FormValues>({
     defaultValues: {
-      name: media?.name || "",
+      name: media.name,
+      category: media.category,
       description: media?.description ?? "",
     },
   })
@@ -134,6 +143,43 @@ export default function EditMediaForm(props: EditMediaProps) {
                   </Button>
                 </div>
               </div>
+              <FormField
+                control={form.control}
+                name="category"
+                rules={{ required: t("category_required") }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("category")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t("category_placeholder")}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="article">Article</SelectItem>
+                        <SelectItem value="topic">Topic</SelectItem>
+                        <SelectItem value="feed">Feed</SelectItem>
+                        <SelectItem value="genre">Genre</SelectItem>
+                        <SelectItem value="review">Review</SelectItem>
+                        <SelectItem value="tutorial">Tutorial</SelectItem>
+                        <SelectItem value="movie">Movie</SelectItem>
+                        <SelectItem value="tv">TV</SelectItem>
+                        <SelectItem value="game">Game</SelectItem>
+                        <SelectItem value="production_company">
+                          Production Company
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="description"

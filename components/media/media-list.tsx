@@ -8,7 +8,7 @@ import LoadingProgress from "@/components/loading-progress"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { MediaType } from "@/lib/validation/media"
+import type { MediaCategory } from "@/lib/validation/media"
 import CopyMediaLinkButton from "./copy-media-link-button"
 import DeleteMediaButton from "./delete-media-button"
 
@@ -18,11 +18,11 @@ interface MediaListProps extends React.HTMLAttributes<HTMLDivElement> {
   deleteMedia?: () => void
   toggleUpload?: boolean
   onSelect?: () => void
-  mediaType?: MediaType
+  category: MediaCategory
 }
 
 const MediaList: React.FC<MediaListProps> = (props) => {
-  const { isLibrary, selectMedia, onSelect, toggleUpload, mediaType } = props
+  const { isLibrary, selectMedia, onSelect, toggleUpload, category } = props
   const prevToggleRef = React.useRef(toggleUpload)
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
 
@@ -36,43 +36,43 @@ const MediaList: React.FC<MediaListProps> = (props) => {
     {
       staleTime: 0,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,
-      enabled: !mediaType,
+      enabled: !category,
     },
   )
 
   const {
-    data: mediasByType,
-    hasNextPage: hasNextPageByType,
-    fetchNextPage: fetchNextPageByType,
-    refetch: updateMediasByType,
-  } = api.media.dashboardInfiniteByType.useInfiniteQuery(
-    { limit: 24, type: mediaType! },
+    data: mediasByCategory,
+    hasNextPage: hasNextPageByCategory,
+    fetchNextPage: fetchNextPageByCategory,
+    refetch: updateMediasByCategory,
+  } = api.media.dashboardInfiniteByCategory.useInfiniteQuery(
+    { limit: 24, category: category! },
     {
       staleTime: 0,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,
-      enabled: !!mediaType,
+      enabled: !!category,
     },
   )
 
   React.useEffect(() => {
     if (prevToggleRef.current !== toggleUpload) {
-      if (mediaType) {
-        updateMediasByType()
+      if (category) {
+        updateMediasByCategory()
       } else {
         updateMedias()
       }
     }
 
     prevToggleRef.current = toggleUpload
-  }, [toggleUpload, updateMedias, updateMediasByType, mediaType])
+  }, [toggleUpload, updateMedias, updateMediasByCategory, category])
 
   const handleObserver = React.useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries
       if (target?.isIntersecting) {
-        if (mediaType && hasNextPageByType) {
-          setTimeout(() => fetchNextPageByType(), 2)
-        } else if (!mediaType && hasNextPage) {
+        if (category && hasNextPageByCategory) {
+          setTimeout(() => fetchNextPageByCategory(), 2)
+        } else if (!category && hasNextPage) {
           setTimeout(() => fetchNextPage(), 2)
         }
       }
@@ -80,9 +80,9 @@ const MediaList: React.FC<MediaListProps> = (props) => {
     [
       fetchNextPage,
       hasNextPage,
-      fetchNextPageByType,
-      hasNextPageByType,
-      mediaType,
+      fetchNextPageByCategory,
+      hasNextPageByCategory,
+      category,
     ],
   )
 
@@ -102,8 +102,8 @@ const MediaList: React.FC<MediaListProps> = (props) => {
 
   const { mutate: deleteMedia } = api.media.deleteByName.useMutation({
     onSuccess: () => {
-      if (mediaType) {
-        updateMediasByType()
+      if (category) {
+        updateMediasByCategory()
       } else {
         updateMedias()
       }
@@ -136,7 +136,7 @@ const MediaList: React.FC<MediaListProps> = (props) => {
     },
   })
 
-  const mediaData = mediaType ? mediasByType : medias
+  const mediaData = category ? mediasByCategory : medias
 
   return (
     <div>
@@ -196,7 +196,7 @@ const MediaList: React.FC<MediaListProps> = (props) => {
               )),
             )}
       </div>
-      {(hasNextPage || hasNextPageByType) && (
+      {(hasNextPage || hasNextPageByCategory) && (
         <div ref={loadMoreRef}>
           <div className="text-center">
             <LoadingProgress />

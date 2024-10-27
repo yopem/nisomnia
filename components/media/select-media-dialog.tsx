@@ -20,9 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useScopedI18n } from "@/lib/locales/client"
+import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { MediaType } from "@/lib/validation/media"
+import type { MediaCategory } from "@/lib/validation/media"
 import MediaList from "./media-list"
 import UploadMedia from "./upload-media"
 
@@ -31,26 +31,34 @@ interface SelectMediaDialogProps {
   open: boolean
   setOpen: (_open: boolean) => void
   children?: React.ReactNode
-  mediaType?: MediaType
+  category?: MediaCategory
 }
 
 const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
-  const { handleSelectUpdateMedia, children, open, setOpen, mediaType } = props
+  const { handleSelectUpdateMedia, children, open, setOpen, category } = props
 
   const [toggleUpload, setToggleUpload] = React.useState<boolean>(false)
   const [searched, setSearched] = React.useState<boolean>(false)
   const [searchQuery, setSearchQuery] = React.useState<string>("")
-  const [selectedMediaType, setSelectedMediaType] = React.useState<
-    MediaType | undefined
-  >(mediaType)
+  const [selectedMediaCategory, setSelectedMediaCategory] = React.useState<
+    MediaCategory | undefined
+  >(category)
 
+  const t = useI18n()
   const ts = useScopedI18n("media")
 
-  const { data: resultMedias } = api.media.search.useQuery(searchQuery)
-  const { data: resultMediasByType } = api.media.searchByType.useQuery({
-    type: selectedMediaType!,
-    searchQuery: searchQuery,
+  const { data: resultMedias } = api.media.search.useQuery(searchQuery, {
+    enabled: searched && !selectedMediaCategory,
   })
+  const { data: resultMediasByCategory } = api.media.searchByCategory.useQuery(
+    {
+      category: selectedMediaCategory!,
+      searchQuery: searchQuery,
+    },
+    {
+      enabled: searched && selectedMediaCategory !== "all",
+    },
+  )
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -63,8 +71,8 @@ const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
     }
   }
 
-  const handleMediaTypeChange = (value: MediaType) => {
-    setSelectedMediaType(value === "all" ? undefined : value)
+  const handleMediaCategoryChange = (value: MediaCategory) => {
+    setSelectedMediaCategory(value === "all" ? undefined : value)
   }
 
   return (
@@ -87,19 +95,20 @@ const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
                   Add New
                 </Button>
                 <UploadMedia
-                  mediaType={selectedMediaType}
+                  category={selectedMediaCategory!}
                   toggleUpload={toggleUpload}
+                  type="image"
                   setToggleUpload={setToggleUpload}
                 />
               </div>
               <div className="flex flex-col justify-start space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0">
                 <div className="w-full lg:w-2/12">
                   <Select
-                    value={selectedMediaType ?? "all"}
-                    onValueChange={handleMediaTypeChange}
+                    value={selectedMediaCategory ?? "all"}
+                    onValueChange={handleMediaCategoryChange}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Choose Media Type" />
+                      <SelectValue placeholder={t("category_placeholder")} />
                     </SelectTrigger>
                     <SelectContent className="w-10/12">
                       <SelectItem value="all">All</SelectItem>
@@ -134,17 +143,17 @@ const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
                 <MediaList
                   toggleUpload={toggleUpload}
                   selectMedia={handleSelectUpdateMedia}
-                  mediaType={selectedMediaType}
+                  category={selectedMediaCategory!}
                 />
               )}
 
               {searched &&
-              selectedMediaType &&
-              selectedMediaType !== "all" &&
-              resultMediasByType !== undefined &&
-              resultMediasByType?.length > 0 ? (
+              selectedMediaCategory &&
+              selectedMediaCategory !== "all" &&
+              resultMediasByCategory !== undefined &&
+              resultMediasByCategory?.length > 0 ? (
                 <div className="mb-4 grid grid-cols-3 gap-3 lg:grid-cols-5">
-                  {resultMediasByType?.map((media) => (
+                  {resultMediasByCategory?.map((media) => (
                     <Image
                       key={media.id}
                       src={media.url}

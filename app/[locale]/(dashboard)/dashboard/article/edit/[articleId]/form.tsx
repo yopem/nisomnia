@@ -1,5 +1,3 @@
-//FIX: change topic type article or all not only article type
-
 "use client"
 
 import * as React from "react"
@@ -422,7 +420,7 @@ const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
                             handleSelectUpdateMedia={handleUpdateMedia}
                             open={openDialog}
                             setOpen={setOpenDialog}
-                            mediaType="article"
+                            category="article"
                           >
                             <div className="relative aspect-video h-[150px] w-full cursor-pointer rounded-sm border-2 border-muted/30 lg:h-full lg:max-h-[400px]">
                               <Image
@@ -441,7 +439,7 @@ const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
                           handleSelectUpdateMedia={handleUpdateMedia}
                           open={openDialog}
                           setOpen={setOpenDialog}
-                          mediaType="article"
+                          category="article"
                         >
                           <div
                             onClick={() => setOpenDialog(true)}
