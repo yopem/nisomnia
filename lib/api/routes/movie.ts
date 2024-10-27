@@ -881,24 +881,25 @@ export const movieRouter = createTRPCRouter({
             },
           )
 
-          if (movieOverviewsData.length > 0) {
-            for (const overview of movieOverviewsData) {
-              await ctx.db
-                .delete(overviews)
-                .where(eq(overviews.id, overview.overviewId))
-            }
-          }
+          const overviewIdsToDelete = movieOverviewsData.map(
+            (overview) => overview.overviewId,
+          )
 
           await ctx.db
             .delete(movieOverviews)
             .where(eq(movieOverviews.movieId, input))
+
+          for (const overviewId of overviewIdsToDelete) {
+            await ctx.db.delete(overviews).where(eq(overviews.id, overviewId))
+          }
+
           await ctx.db.delete(movieGenres).where(eq(movieGenres.movieId, input))
           await ctx.db
             .delete(movieProductionCompanies)
             .where(eq(movieProductionCompanies.movieId, input))
+
           await ctx.db.delete(movies).where(eq(movies.id, input))
         })
-
         return data
       } catch (error) {
         console.error("Error:", error)
