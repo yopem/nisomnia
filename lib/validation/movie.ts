@@ -49,9 +49,9 @@ const movieInput = {
     required_error: "Original Language is required",
     invalid_type_error: "Original Language must be a string",
   }),
-  spokenLanguage: z
+  spokenLanguages: z
     .string({
-      invalid_type_error: "Spoken Language must be a string",
+      invalid_type_error: "Spoken Languages must be a string",
     })
     .optional(),
   releaseDate: z
