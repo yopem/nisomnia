@@ -49,7 +49,7 @@ const movieInput = {
     required_error: "Original Language is required",
     invalid_type_error: "Original Language must be a string",
   }),
-  spokenLanguaeg: z
+  spokenLanguage: z
     .string({
       invalid_type_error: "Spoken Language must be a string",
     })
