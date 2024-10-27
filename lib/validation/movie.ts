@@ -7,10 +7,11 @@ export const MOVIE_AIRING_STATUS = ["released", "upcoming"] as const
 export const movieAiringStatus = z.enum(MOVIE_AIRING_STATUS)
 
 const movieInput = {
-  imdbId: z.string({
-    required_error: "IMDB ID is required",
-    invalid_type_error: "IMDB ID must be a string",
-  }),
+  imdbId: z
+    .string({
+      invalid_type_error: "IMDB ID must be a string",
+    })
+    .optional(),
   tmdbId: z.string({
     required_error: "TMDB ID is required",
     invalid_type_error: "TMDB ID must be a string",
