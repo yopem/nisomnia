@@ -2,8 +2,28 @@
 
 import { db } from "@/lib/db"
 
+// Mapping of words to replace with their Latin equivalents
+const languageMappings: Record<string, string> = {
+  japanese: "latinus-japan",
+  korean: "latinus-korea",
+  india: "latinus-india",
+  russian: "latinus-russia",
+  chinese: "latinus-china",
+  french: "latinus-france",
+  spanish: "latinus-spain",
+  german: "latinus-germany",
+  italian: "latinus-italy",
+  arabic: "latinus-arabia",
+}
+
+function replaceLanguages(text: string) {
+  return Object.entries(languageMappings).reduce((acc, [key, value]) => {
+    return acc.replace(new RegExp(`\\b${key}\\b`, "gi"), value)
+  }, text)
+}
+
 export function slugify(text: string) {
-  return text
+  return replaceLanguages(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
@@ -17,7 +37,7 @@ export function slugify(text: string) {
 }
 
 export function slugifyUsername(text: string) {
-  return text
+  return replaceLanguages(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
@@ -32,14 +52,14 @@ export function slugifyUsername(text: string) {
 }
 
 export function slugifyFile(text: string) {
-  return text
+  return replaceLanguages(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
     .toLowerCase() // Convert the string to lowercase letters
     .trim() // Remove whitespace from both sides of a string (optional)
     .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/[^\w\-.]+/g, "") // Remove all non-word chars execpt dots
+    .replace(/[^\w\-.]+/g, "") // Remove all non-word chars except dots
     .replace(/\_/g, "-") // Replace _ with -
     .replace(/\-\-+/g, "-") // Replace multiple - with single -
     .replace(/\-$/g, "") // Remove trailing -
