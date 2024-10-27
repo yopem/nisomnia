@@ -12,13 +12,13 @@ export default async function DashboardPage() {
   const t = await getI18n()
 
   const ads = await api.ad.count()
-  const articles = await api.article.count()
-  const feeds = await api.feed.count()
-  const genres = await api.genre.count()
+  const articles = await api.article.countDashboard()
+  const feeds = await api.feed.countDashboard()
+  const genres = await api.genre.countDashboard()
   const medias = await api.media.count()
-  const movies = await api.movie.count()
+  const movies = await api.movie.countDashboard()
   const productionCompanies = await api.productionCompany.count()
-  const topics = await api.topic.count()
+  const topics = await api.topic.countDashboard()
   const users = await api.user.count()
 
   return (

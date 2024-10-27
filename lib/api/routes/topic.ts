@@ -416,6 +416,26 @@ export const topicRouter = createTRPCRouter({
     }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
+      const data = await ctx.db
+        .select({ value: count() })
+        .from(topics)
+        .where(eq(topics.status, "published"))
+
+      return data[0].value
+    } catch (error) {
+      console.error("Error:", error)
+      if (error instanceof TRPCError) {
+        throw error
+      } else {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An internal error occurred",
+        })
+      }
+    }
+  }),
+  countDashboard: publicProcedure.query(async ({ ctx }) => {
+    try {
       const data = await ctx.db.select({ value: count() }).from(topics)
 
       return data[0].value
