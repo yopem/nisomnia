@@ -29,21 +29,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const topicEnPageCount = Math.ceil(topicsEnCount! / perPage)
   const topicsEn: RouteProps[] = []
 
-  const moviesCount = await api.movie.countByLanguage("id")
+  const moviesCount = await api.movie.count()
   const moviePageCount = Math.ceil(moviesCount! / perPage)
   const movies: RouteProps[] = []
 
-  const moviesEnCount = await api.movie.countByLanguage("en")
-  const movieEnPageCount = Math.ceil(moviesEnCount! / perPage)
-  const moviesEn: RouteProps[] = []
-
-  const genresCount = await api.genre.countByLanguage("id")
+  const genresCount = await api.genre.count()
   const genrePageCount = Math.ceil(genresCount! / perPage)
   const genres: RouteProps[] = []
-
-  const genresEnCount = await api.genre.countByLanguage("en")
-  const genreEnPageCount = Math.ceil(genresEnCount! / perPage)
-  const genresEn: RouteProps[] = []
 
   const productionCompaniesCount = await api.productionCompany.count()
   const productionCompanyPageCount = Math.ceil(
@@ -115,18 +107,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  if (typeof movieEnPageCount === "number") {
-    for (let i = 0; i < movieEnPageCount; i++) {
-      const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/movie/en/${i + 1}/data.xml`}`,
-        lastModified: new Date()
-          .toISOString()
-          .split("T")[0] as unknown as string,
-      }
-      moviesEn.push(obj)
-    }
-  }
-
   if (typeof genrePageCount === "number") {
     for (let i = 0; i < genrePageCount; i++) {
       const obj = {
@@ -136,18 +116,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           .split("T")[0] as unknown as string,
       }
       genres.push(obj)
-    }
-  }
-
-  if (typeof genreEnPageCount === "number") {
-    for (let i = 0; i < genreEnPageCount; i++) {
-      const obj = {
-        url: `https://${`${env.NEXT_PUBLIC_DOMAIN}/sitemap/genre/en/${i + 1}/data.xml`}`,
-        lastModified: new Date()
-          .toISOString()
-          .split("T")[0] as unknown as string,
-      }
-      genresEn.push(obj)
     }
   }
 
@@ -194,9 +162,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...topics,
     ...topicsEn,
     ...movies,
-    ...moviesEn,
     ...genres,
-    ...genresEn,
     ...productionCompanies,
     ...medias,
   ]

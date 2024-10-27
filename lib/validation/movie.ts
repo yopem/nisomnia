@@ -1,11 +1,12 @@
 import { z } from "zod"
 
-import { LANGUAGE_TYPE } from "./language"
+import { STATUS_TYPE } from "./status"
+
+export const MOVIE_AIRING_STATUS = ["released", "upcoming"] as const
+
+export const movieAiringStatus = z.enum(MOVIE_AIRING_STATUS)
 
 const movieInput = {
-  language: z.enum(LANGUAGE_TYPE, {
-    invalid_type_error: "only id and en are accepted",
-  }),
   imdbId: z.string({
     required_error: "IMDB ID is required",
     invalid_type_error: "IMDB ID must be a string",
@@ -28,13 +29,14 @@ const movieInput = {
       invalid_type_error: "Tagline must be a string",
     })
     .optional(),
-  overview: z.string({
-    required_error: "Overview is required",
-    invalid_type_error: "Tagline must be a string",
-  }),
-  status: z
+  overview: z
     .string({
-      invalid_type_error: "Status must be a string",
+      invalid_type_error: "Tagline must be a string",
+    })
+    .optional(),
+  airingStatus: z
+    .enum(MOVIE_AIRING_STATUS, {
+      invalid_type_error: "only released and upcoming are accepted",
     })
     .optional(),
   originCountry: z
@@ -86,11 +88,6 @@ const movieInput = {
       invalid_type_error: "Poster must be a string",
     })
     .optional(),
-  description: z
-    .string({
-      invalid_type_error: "Description must be a string",
-    })
-    .optional(),
   metaTitle: z
     .string({
       invalid_type_error: "Meta Title must be a string",
@@ -113,14 +110,12 @@ const movieInput = {
     })
     .array()
     .optional(),
-}
-
-const translateMovieInput = {
-  ...movieInput,
-  movieTranslationId: z.string({
-    required_error: "Movie Translation ID is required",
-    invalid_type_error: "Movie Traslation Primary ID must be a string",
-  }),
+  status: z
+    .enum(STATUS_TYPE, {
+      invalid_type_error:
+        "only published, draft, rejected and in_review are accepted",
+    })
+    .optional(),
 }
 
 const updateMovieInput = {
@@ -140,13 +135,10 @@ export const createMovieSchema = z.object({
   ...movieInput,
 })
 
-export const translateMovieSchema = z.object({
-  ...translateMovieInput,
-})
-
 export const updateMovieSchema = z.object({
   ...updateMovieInput,
 })
 
+export type MovieAiringStatus = z.infer<typeof movieAiringStatus>
 export type CreateMovieSchema = z.infer<typeof createMovieSchema>
 export type UpdateMovieSchema = z.infer<typeof updateMovieSchema>

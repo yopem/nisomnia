@@ -41,7 +41,6 @@ export async function GET(
   const page = parseInt(params.page)
 
   const genres = await api.genre.sitemap({
-    language: "id",
     page: page,
     perPage: 1000,
   })

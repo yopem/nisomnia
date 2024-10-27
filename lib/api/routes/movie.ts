@@ -10,81 +10,18 @@ import {
 import {
   genres,
   movieGenres,
+  movieOverviews,
   movieProductionCompanies,
   movies,
-  movieTranslations,
+  overviews,
   productionCompanies,
 } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMovieSlug } from "@/lib/utils/slug"
 import { languageType } from "@/lib/validation/language"
-import {
-  createMovieSchema,
-  translateMovieSchema,
-  updateMovieSchema,
-} from "@/lib/validation/movie"
+import { createMovieSchema, updateMovieSchema } from "@/lib/validation/movie"
 
 export const movieRouter = createTRPCRouter({
-  movieTranslationById: publicProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      try {
-        const movieTranslationData =
-          await ctx.db.query.movieTranslations.findFirst({
-            where: (movieTranslations, { eq }) =>
-              eq(movieTranslations.id, input),
-            with: {
-              movies: true,
-            },
-          })
-
-        const movieGenresData = await ctx.db
-          .select({ id: genres.id, title: genres.title })
-          .from(movieGenres)
-          .leftJoin(movies, eq(movieGenres.movieId, movies.id))
-          .leftJoin(genres, eq(movieGenres.genreId, genres.id))
-          .where(eq(movies.id, movieTranslationData?.movies[0].id!))
-
-        const movieProductionCompaniesData = await ctx.db
-          .select({
-            id: productionCompanies.id,
-            name: productionCompanies.name,
-          })
-          .from(movieProductionCompanies)
-          .leftJoin(movies, eq(movieProductionCompanies.movieId, movies.id))
-          .leftJoin(
-            productionCompanies,
-            eq(
-              movieProductionCompanies.productionCompanyId,
-              productionCompanies.id,
-            ),
-          )
-          .where(eq(movies.id, movieTranslationData?.movies[0].id!))
-
-        const movieData = movieTranslationData?.movies.map((item) => ({
-          ...item,
-          genres: movieGenresData,
-          productionCompanies: movieProductionCompaniesData,
-        }))
-
-        const data = {
-          ...movieTranslationData,
-          movies: movieData,
-        }
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -94,6 +31,18 @@ export const movieRouter = createTRPCRouter({
           .from(movies)
           .where(eq(movies.id, input))
           .limit(1)
+
+        const movieOverviewsData = await ctx.db
+          .select({
+            id: overviews.id,
+            title: overviews.title,
+            language: overviews.language,
+            content: overviews.content,
+          })
+          .from(movieOverviews)
+          .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
+          .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
+          .where(eq(movies.id, input))
 
         const movieGenresData = await ctx.db
           .select({ id: genres.id, title: genres.title })
@@ -120,6 +69,7 @@ export const movieRouter = createTRPCRouter({
 
         const data = movieData.map((item) => ({
           ...item,
+          overview: movieOverviewsData[0].content,
           genres: movieGenresData,
           productionCompanies: movieProductionCompaniesData,
         }))
@@ -151,6 +101,17 @@ export const movieRouter = createTRPCRouter({
         .leftJoin(genres, eq(movieGenres.genreId, genres.id))
         .where(eq(movies.id, movieData[0].id))
 
+      const movieOverviewsData = await ctx.db
+        .select({
+          id: overviews.id,
+          content: overviews.content,
+          language: overviews.language,
+        })
+        .from(movieOverviews)
+        .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
+        .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
+        .where(eq(movies.id, movieData[0].id))
+
       const movieProductionCompaniesData = await ctx.db
         .select({
           id: productionCompanies.id,
@@ -170,6 +131,7 @@ export const movieRouter = createTRPCRouter({
 
       const data = movieData.map((item) => ({
         ...item,
+        overview: movieOverviewsData[0].content,
         genres: movieGenresData,
         productionCompanies: movieProductionCompaniesData,
       }))
@@ -186,10 +148,9 @@ export const movieRouter = createTRPCRouter({
       }
     }
   }),
-  byLanguage: publicProcedure
+  latest: publicProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -197,7 +158,7 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq }) => eq(movies.language, input.language),
+          where: (movies, { eq }) => eq(movies.status, "published"),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
@@ -216,10 +177,9 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
-  byLanguageInfinite: publicProcedure
+  latestInfinite: publicProcedure
     .input(
       z.object({
-        language: languageType,
         limit: z.number().min(1).max(100).nullable(),
         cursor: z.date().optional().nullable(),
       }),
@@ -229,9 +189,9 @@ export const movieRouter = createTRPCRouter({
         const limit = input.limit ?? 50
 
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and, lt }) =>
+          where: (movies, { and, eq, lt }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               input.cursor
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
@@ -269,7 +229,6 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         genreId: z.string(),
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -277,7 +236,7 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const movies = await ctx.db.query.movies.findMany({
-          where: (movies, { eq }) => eq(movies.language, input.language),
+          where: (movies, { eq }) => eq(movies.status, "published"),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
@@ -307,7 +266,6 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         genreId: z.string(),
-        language: languageType,
         limit: z.number().min(1).max(100).nullable(),
         cursor: z.date().optional().nullable(),
       }),
@@ -317,9 +275,9 @@ export const movieRouter = createTRPCRouter({
         const limit = input.limit ?? 50
 
         const movies = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and, lt }) =>
+          where: (movies, { and, eq, lt }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               input.cursor
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
@@ -364,7 +322,6 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         productionCompanyId: z.string(),
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -372,8 +329,7 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const movies = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and }) =>
-            and(eq(movies.language, input.language)),
+          where: (movies, { eq }) => eq(movies.status, "published"),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
@@ -407,7 +363,6 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         productionCompanyId: z.string(),
-        language: languageType,
         limit: z.number().min(1).max(100).nullable(),
         cursor: z.date().optional().nullable(),
       }),
@@ -417,9 +372,9 @@ export const movieRouter = createTRPCRouter({
         const limit = input.limit ?? 50
 
         const movies = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and, lt }) =>
+          where: (movies, { and, eq, lt }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               input.cursor
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
@@ -469,7 +424,6 @@ export const movieRouter = createTRPCRouter({
       z.object({
         genreId: z.string(),
         currentMovieId: z.string(),
-        language: languageType,
         limit: z.number().min(1).max(100).nullable(),
         cursor: z.date().optional().nullable(),
       }),
@@ -481,7 +435,7 @@ export const movieRouter = createTRPCRouter({
         const movies = await ctx.db.query.movies.findMany({
           where: (movies, { eq, and, not, lt }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               input.cursor
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
@@ -526,7 +480,6 @@ export const movieRouter = createTRPCRouter({
   dashboard: adminProtectedProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -534,20 +487,9 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq }) => eq(movies.language, input.language),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
-          with: {
-            movieTranslation: {
-              columns: {
-                id: true,
-              },
-              with: {
-                movies: true,
-              },
-            },
-          },
         })
 
         return data
@@ -566,7 +508,6 @@ export const movieRouter = createTRPCRouter({
   sitemap: publicProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -574,7 +515,7 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq }) => eq(movies.language, input.language),
+          where: (movies, { eq }) => eq(movies.status, "published"),
           columns: {
             slug: true,
             updatedAt: true,
@@ -599,6 +540,26 @@ export const movieRouter = createTRPCRouter({
     }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
+      const data = await ctx.db
+        .select({ value: count() })
+        .from(movies)
+        .where(eq(movies.status, "published"))
+
+      return data[0].value
+    } catch (error) {
+      console.error("Error:", error)
+      if (error instanceof TRPCError) {
+        throw error
+      } else {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An internal error occurred",
+        })
+      }
+    }
+  }),
+  countDashboard: publicProcedure.query(async ({ ctx }) => {
+    try {
       const data = await ctx.db.select({ value: count() }).from(movies)
 
       return data[0].value
@@ -614,36 +575,14 @@ export const movieRouter = createTRPCRouter({
       }
     }
   }),
-  countByLanguage: publicProcedure
-    .input(languageType)
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db
-          .select({ values: count() })
-          .from(movies)
-          .where(eq(movies.language, input))
-
-        return data[0].values
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   search: publicProcedure
     .input(z.object({ language: languageType, searchQuery: z.string() }))
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and, or, ilike }) =>
+          where: (movies, { and, or, ilike }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               or(
                 ilike(movies.title, `%${input.searchQuery}%`),
                 ilike(movies.slug, `%${input.searchQuery}%`),
@@ -670,21 +609,14 @@ export const movieRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
-          where: (movies, { eq, and, or, ilike }) =>
+          where: (movies, { and, eq, or, ilike }) =>
             and(
-              eq(movies.language, input.language),
+              eq(movies.status, "published"),
               or(
                 ilike(movies.title, `%${input.searchQuery}%`),
                 ilike(movies.slug, `%${input.searchQuery}%`),
               ),
             ),
-          with: {
-            movieTranslation: {
-              with: {
-                movies: true,
-              },
-            },
-          },
           limit: 10,
         })
 
@@ -711,18 +643,10 @@ export const movieRouter = createTRPCRouter({
           ? input.title
           : input.metaTitle
         const generatedMetaDescription = !input.metaDescription
-          ? input.overview
+          ? (input.overview ?? input.title)
           : input.metaDescription
 
-        const movieTranslationId = cuid()
         const movieId = cuid()
-
-        const movieTranslation = await ctx.db
-          .insert(movieTranslations)
-          .values({
-            id: movieTranslationId,
-          })
-          .returning()
 
         const data = await ctx.db
           .insert(movies)
@@ -732,9 +656,27 @@ export const movieRouter = createTRPCRouter({
             slug: slug,
             metaTitle: generatedMetaTitle,
             metaDescription: generatedMetaDescription,
-            movieTranslationId: movieTranslation[0].id,
           })
           .returning()
+
+        if (input.overview) {
+          const overview = await ctx.db
+            .insert(overviews)
+            .values({
+              id: cuid(),
+              title: input.title,
+              type: "movie",
+              content: input.overview,
+              // change if we have multiple languages
+              language: "en",
+            })
+            .returning()
+
+          await ctx.db.insert(movieOverviews).values({
+            movieId: movieId,
+            overviewId: overview[0].id,
+          })
+        }
 
         if (input.productionCompanies) {
           const productionCompanyValues = input.productionCompanies.map(
@@ -786,12 +728,34 @@ export const movieRouter = createTRPCRouter({
 
         await ctx.db.transaction(async () => {
           await ctx.db
+            .delete(movieOverviews)
+            .where(eq(movieOverviews.movieId, input.id))
+          await ctx.db
             .delete(movieGenres)
             .where(eq(movieGenres.movieId, input.id))
           await ctx.db
             .delete(movieProductionCompanies)
             .where(eq(movieProductionCompanies.movieId, input.id))
         })
+
+        if (input.overview) {
+          const overview = await ctx.db
+            .insert(overviews)
+            .values({
+              id: cuid(),
+              title: input.title,
+              type: "movie",
+              content: input.overview,
+              // change if we have multiple languages
+              language: "en",
+            })
+            .returning()
+
+          await ctx.db.insert(movieOverviews).values({
+            movieId: input.id,
+            overviewId: overview[0].id,
+          })
+        }
 
         if (input.productionCompanies) {
           const productionCompanyValues = input.productionCompanies.map(
@@ -841,6 +805,9 @@ export const movieRouter = createTRPCRouter({
 
         await ctx.db.transaction(async () => {
           await ctx.db
+            .delete(movieOverviews)
+            .where(eq(movieOverviews.movieId, input.id))
+          await ctx.db
             .delete(movieGenres)
             .where(eq(movieGenres.movieId, input.id))
           await ctx.db
@@ -848,63 +815,24 @@ export const movieRouter = createTRPCRouter({
             .where(eq(movieProductionCompanies.movieId, input.id))
         })
 
-        if (input.productionCompanies) {
-          const productionCompanyValues = input.productionCompanies.map(
-            (productionCompany) => ({
-              movieId: data[0].id,
-              productionCompanyId: productionCompany,
-            }),
-          )
+        if (input.overview) {
+          const overview = await ctx.db
+            .insert(overviews)
+            .values({
+              id: cuid(),
+              title: input.title,
+              type: "movie",
+              content: input.overview,
+              // change if we have multiple languages
+              language: "en",
+            })
+            .returning()
 
-          await ctx.db
-            .insert(movieProductionCompanies)
-            .values(productionCompanyValues)
-        }
-
-        if (input.genres) {
-          const genreValues = input.genres.map((genre) => ({
-            movieId: data[0].id,
-            genreId: genre,
-          }))
-
-          await ctx.db.insert(movieGenres).values(genreValues)
-        }
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
+          await ctx.db.insert(movieOverviews).values({
+            movieId: input.id,
+            overviewId: overview[0].id,
           })
         }
-      }
-    }),
-  translate: adminProtectedProcedure
-    .input(translateMovieSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const slug = await generateUniqueMovieSlug(input.title)
-        const generatedMetaTitle = !input.metaTitle
-          ? input.title
-          : input.metaTitle
-        const generatedMetaDescription = !input.metaDescription
-          ? input.overview
-          : input.metaDescription
-
-        const data = await ctx.db
-          .insert(movies)
-          .values({
-            id: cuid(),
-            slug: slug,
-            metaTitle: generatedMetaTitle,
-            metaDescription: generatedMetaDescription,
-            ...input,
-          })
-          .returning()
 
         if (input.productionCompanies) {
           const productionCompanyValues = input.productionCompanies.map(
@@ -945,51 +873,18 @@ export const movieRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
-        const movie = await ctx.db.query.movies.findFirst({
-          where: (movie, { eq }) => eq(movie.id, input),
+        const data = await ctx.db.transaction(async () => {
+          await ctx.db
+            .delete(movieOverviews)
+            .where(eq(movieOverviews.movieId, input))
+          await ctx.db.delete(movieGenres).where(eq(movieGenres.movieId, input))
+          await ctx.db
+            .delete(movieProductionCompanies)
+            .where(eq(movieProductionCompanies.movieId, input))
+          await ctx.db.delete(movies).where(eq(movies.id, input))
         })
 
-        if (movie) {
-          const checkIfMovieTranslationHasMovie =
-            await ctx.db.query.movieTranslations.findMany({
-              where: (movieTranslations, { eq }) =>
-                eq(movieTranslations.id, movie.movieTranslationId),
-              with: {
-                movies: true,
-              },
-            })
-
-          if (checkIfMovieTranslationHasMovie[0]?.movies.length === 1) {
-            const data = await ctx.db.transaction(async () => {
-              await ctx.db
-                .delete(movieGenres)
-                .where(eq(movieGenres.movieId, input))
-
-              await ctx.db
-                .delete(movieProductionCompanies)
-                .where(eq(movieProductionCompanies.movieId, input))
-              await ctx.db.delete(movies).where(eq(movies.id, input))
-
-              await ctx.db
-                .delete(movieTranslations)
-                .where(eq(movieTranslations.id, movie.movieTranslationId))
-            })
-
-            return data
-          } else {
-            const data = await ctx.db.transaction(async () => {
-              await ctx.db
-                .delete(movieGenres)
-                .where(eq(movieGenres.movieId, input))
-              await ctx.db
-                .delete(movieProductionCompanies)
-                .where(eq(movieProductionCompanies.movieId, input))
-              await ctx.db.delete(movies).where(eq(movies.id, input))
-            })
-
-            return data
-          }
-        }
+        return data
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {

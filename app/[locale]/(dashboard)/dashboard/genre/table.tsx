@@ -17,14 +17,8 @@ import type { SelectGenre } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 
-interface GenresProps extends SelectGenre {
-  genreTranslation: {
-    genres: SelectGenre[]
-  }
-}
-
 interface GenreTableProps {
-  genres: GenresProps[]
+  genres: SelectGenre[]
   paramsName: string
   page: number
   lastPage: number
@@ -104,8 +98,6 @@ export default function GenreTable(props: GenreTableProps) {
                     </span>
                     <span className="table-cell text-[10px] text-muted-foreground lg:hidden">
                       <span>{genre.slug}</span>
-                      <span className="pr-1">,</span>
-                      <span>{genre.language}</span>
                     </span>
                   </div>
                 </TableCell>
@@ -133,30 +125,14 @@ export default function GenreTable(props: GenreTableProps) {
                   </div>
                 </TableCell>
                 <TableCell className="p-4 align-middle">
-                  {genre.genreTranslation.genres.length > 1 ? (
-                    <DashboardShowOptions
-                      onDelete={() => {
-                        void deleteGenre(genre.id)
-                      }}
-                      editUrl={`/dashboard/genre/edit/${genre.id}`}
-                      viewUrl={`/genre/${genre.slug}`}
-                      description={genre.title}
-                    />
-                  ) : (
-                    <DashboardShowOptions
-                      onDelete={() => {
-                        void deleteGenre(genre.id)
-                      }}
-                      editUrl={`/dashboard/genre/edit/${genre.id}`}
-                      translateUrl={
-                        genre.language === "id"
-                          ? `/dashboard/genre/translate/en/${genre.genreTranslationId}`
-                          : `/dashboard/genre/translate/id/${genre.genreTranslationId}`
-                      }
-                      viewUrl={`/genre/${genre.slug}`}
-                      description={genre.title}
-                    />
-                  )}
+                  <DashboardShowOptions
+                    onDelete={() => {
+                      void deleteGenre(genre.id)
+                    }}
+                    editUrl={`/dashboard/genre/edit/${genre.id}`}
+                    viewUrl={`/genre/${genre.slug}`}
+                    description={genre.title}
+                  />
                 </TableCell>
               </TableRow>
             )

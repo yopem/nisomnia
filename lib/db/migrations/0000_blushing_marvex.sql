@@ -1,51 +1,3 @@
-DO $$ BEGIN
- CREATE TYPE "public"."ad_position" AS ENUM('home_below_header', 'article_below_header', 'topic_below_header', 'single_article_above_content', 'single_article_middle_content', 'single_article_below_content', 'single_article_pop_up', 'article_below_header_amp', 'single_article_above_content_amp', 'single_article_middle_content_amp', 'single_article_below_content_amp');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."ad_type" AS ENUM('plain_ad', 'adsense');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."article_visibility" AS ENUM('public', 'member');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."language" AS ENUM('id', 'en');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('published', 'draft', 'rejected', 'in_review');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."topic_type" AS ENUM('all', 'article', 'review', 'tutorial', 'movie', 'tv', 'game');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."topic_visibility" AS ENUM('public', 'internal');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."user_role" AS ENUM('user', 'member', 'author', 'admin');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ads" (
 	"id" text PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
@@ -110,16 +62,124 @@ CREATE TABLE IF NOT EXISTS "articles" (
 	CONSTRAINT "articles_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "_feed_topics" (
+	"feed_id" text NOT NULL,
+	"topic_id" text NOT NULL,
+	CONSTRAINT "_feed_topics_feed_id_topic_id_pk" PRIMARY KEY("feed_id","topic_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "feeds" (
+	"id" text PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"slug" text NOT NULL,
+	"language" "language" DEFAULT 'id' NOT NULL,
+	"featured_image" text,
+	"link" text,
+	"type" "feed_type" DEFAULT 'website' NOT NULL,
+	"owner" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "feeds_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "genres" (
+	"id" text PRIMARY KEY NOT NULL,
+	"tmdb_id" text,
+	"title" text NOT NULL,
+	"slug" text NOT NULL,
+	"description" text,
+	"meta_title" text,
+	"meta_description" text,
+	"featured_image" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "genres_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "medias" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"url" text NOT NULL,
-	"type" text NOT NULL,
+	"file_type" text NOT NULL,
+	"category" "media_category" DEFAULT 'article' NOT NULL,
+	"type" "media_type" DEFAULT 'image' NOT NULL,
 	"description" text,
 	"author_id" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "medias_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "_movie_genres" (
+	"movie_id" text NOT NULL,
+	"genre_id" text NOT NULL,
+	CONSTRAINT "_movie_genres_movie_id_genre_id_pk" PRIMARY KEY("movie_id","genre_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "_movie_overviews" (
+	"movie_id" text NOT NULL,
+	"overview_id" text NOT NULL,
+	CONSTRAINT "_movie_overviews_movie_id_overview_id_pk" PRIMARY KEY("movie_id","overview_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "_movie_production_companies" (
+	"movie_id" text NOT NULL,
+	"production_company_id" text NOT NULL,
+	CONSTRAINT "_movie_production_companies_movie_id_production_company_id_pk" PRIMARY KEY("movie_id","production_company_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "movies" (
+	"id" text PRIMARY KEY NOT NULL,
+	"imdb_id" text,
+	"tmdb_id" text NOT NULL,
+	"title" text NOT NULL,
+	"other_title" text,
+	"tagline" text,
+	"slug" text NOT NULL,
+	"overview" text NOT NULL,
+	"airing_status" "movie_airing_status" DEFAULT 'released',
+	"origin_country" text,
+	"original_language" text NOT NULL,
+	"spoken_languages" text,
+	"release_date" text,
+	"revenue" integer,
+	"runtime" integer,
+	"budget" integer,
+	"homepage" text,
+	"backdrop" text,
+	"poster" text,
+	"meta_title" text,
+	"meta_description" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "movies_tmdb_id_unique" UNIQUE("tmdb_id"),
+	CONSTRAINT "movies_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "overviews" (
+	"id" text PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"content" text NOT NULL,
+	"type" "overview_type" DEFAULT 'game' NOT NULL,
+	"language" "language" DEFAULT 'en' NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "production_companies" (
+	"id" text PRIMARY KEY NOT NULL,
+	"tmdb_id" text NOT NULL,
+	"name" text NOT NULL,
+	"slug" text NOT NULL,
+	"logo" text,
+	"origin_country" text,
+	"description" text,
+	"meta_title" text,
+	"meta_description" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "production_companies_tmdb_id_unique" UNIQUE("tmdb_id"),
+	CONSTRAINT "production_companies_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "topic_translations" (
@@ -134,7 +194,7 @@ CREATE TABLE IF NOT EXISTS "topics" (
 	"title" text NOT NULL,
 	"slug" text NOT NULL,
 	"description" text,
-	"type" text DEFAULT 'all' NOT NULL,
+	"type" "topic_type" DEFAULT 'all' NOT NULL,
 	"status" "status" DEFAULT 'draft' NOT NULL,
 	"visibility" "topic_visibility" DEFAULT 'public' NOT NULL,
 	"meta_title" text,
@@ -165,7 +225,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"email" text,
 	"name" text,
-	"username" text,
+	"username" text NOT NULL,
 	"image" text,
 	"phone_number" text,
 	"about" text,
@@ -230,7 +290,55 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "_feed_topics" ADD CONSTRAINT "_feed_topics_feed_id_feeds_id_fk" FOREIGN KEY ("feed_id") REFERENCES "public"."feeds"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_feed_topics" ADD CONSTRAINT "_feed_topics_topic_id_topics_id_fk" FOREIGN KEY ("topic_id") REFERENCES "public"."topics"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "medias" ADD CONSTRAINT "medias_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_genres" ADD CONSTRAINT "_movie_genres_movie_id_movies_id_fk" FOREIGN KEY ("movie_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_genres" ADD CONSTRAINT "_movie_genres_genre_id_genres_id_fk" FOREIGN KEY ("genre_id") REFERENCES "public"."genres"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_overviews" ADD CONSTRAINT "_movie_overviews_movie_id_movies_id_fk" FOREIGN KEY ("movie_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_overviews" ADD CONSTRAINT "_movie_overviews_overview_id_overviews_id_fk" FOREIGN KEY ("overview_id") REFERENCES "public"."overviews"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_production_companies" ADD CONSTRAINT "_movie_production_companies_movie_id_movies_id_fk" FOREIGN KEY ("movie_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "_movie_production_companies" ADD CONSTRAINT "_movie_production_companies_production_company_id_production_companies_id_fk" FOREIGN KEY ("production_company_id") REFERENCES "public"."production_companies"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -1,1 +1,0 @@
-ALTER TABLE "movies" ALTER COLUMN "release_date" SET DATA TYPE text;

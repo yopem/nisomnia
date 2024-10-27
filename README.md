@@ -1,4 +1,6 @@
 ## URGENT
+- [ ] check and make all count on dashboard use countDashboard
+- [ ] add save as draft to all data type
 - [ ] analytics and adsense not working
 - [ ] fix dashboard add production companies search problem
 - [ ] change all movie meta description to overview value

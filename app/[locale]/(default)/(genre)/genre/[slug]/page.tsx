@@ -26,7 +26,6 @@ export async function generateMetadata(props: {
       title: genre?.title,
       description: genre?.metaDescription! ?? genre?.description!,
       url: `${env.NEXT_PUBLIC_SITE_URL}/genre/${genre?.slug}`,
-      locale: genre?.language,
     },
   }
 }

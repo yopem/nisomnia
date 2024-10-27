@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMovieSlug } from "@/lib/utils/slug"
 import { createMovieSchema } from "@/lib/validation/movie"
-import { movieGenres, movieProductionCompanies, movies, movieTranslations } from "@/lib/db/schema"
+import { movieGenres, movieOverviews, movieProductionCompanies, movies, overviews } from "@/lib/db/schema"
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,28 +17,37 @@ export async function POST(request: NextRequest) {
       ? parsedInput.title
       : parsedInput.metaTitle
     const generatedMetaDescription = !parsedInput.metaDescription
-      ? parsedInput.overview
+      ? (parsedInput.overview ?? parsedInput.title)
       : parsedInput.metaDescription
 
-    const movieTranslationId = cuid()
     const movieId = cuid()
-
-
-    const movieTranslation = await db
-      .insert(movieTranslations)
-      .values({
-        id: movieTranslationId,
-      })
-      .returning()
 
     const data = await db.insert(movies).values({
       id: movieId,
       slug: slug,
       metaTitle: generatedMetaTitle,
       metaDescription: generatedMetaDescription,
-      movieTranslationId: movieTranslation[0].id,
       ...parsedInput
     }).returning()
+
+    if (parsedInput.overview) {
+      const overview = await db
+        .insert(overviews)
+        .values({
+          id: cuid(),
+          title: parsedInput.title,
+          type: "movie",
+          content: parsedInput.overview,
+          // change if we have multiple languages
+          language: "en",
+        })
+        .returning()
+
+      await db.insert(movieOverviews).values({
+        movieId: movieId,
+        overviewId: overview[0].id,
+      })
+    }
 
     if (parsedInput.productionCompanies) {
       const productionCompanyValues = parsedInput.productionCompanies.map(

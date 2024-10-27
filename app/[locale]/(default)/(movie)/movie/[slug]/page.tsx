@@ -11,8 +11,8 @@ import { getRandomNumber } from "@/lib/utils/random"
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const params = await props.params
-  const { slug } = params
+  const { params } = props
+  const { slug } = await params
 
   const movie = await api.movie.bySlug(slug)
 
@@ -24,7 +24,7 @@ export async function generateMetadata(props: {
     },
     openGraph: {
       title: movie.title,
-      description: movie?.metaDescription ?? movie?.overview,
+      description: movie?.metaDescription ?? movie?.overview!,
       images: [
         {
           url: movie.backdrop!,
@@ -33,7 +33,6 @@ export async function generateMetadata(props: {
         },
       ],
       url: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}`,
-      locale: movie?.language,
     },
     twitter: {
       title: env.NEXT_PUBLIC_X_USERNAME,
@@ -121,7 +120,7 @@ export default async function MovieSlugPage(props: MovieSlugPageProps) {
         contentRating={randomContentRating}
         duration={movie.runtime?.toString() ?? ""}
         dateCreated={movie?.updatedAt?.toString()!}
-        description={movie.overview}
+        description={movie?.overview! ?? `Overview ${movie.title}`}
         image={movie.poster ?? movie.backdrop ?? ""}
         // authorName="Nisomnia"
         // directorName={movie.credits.crew.find((crew) => crew.job === "Director")?.name!}

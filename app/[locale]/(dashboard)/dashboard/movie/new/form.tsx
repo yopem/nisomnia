@@ -30,7 +30,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { LanguageType } from "@/lib/validation/language"
+import type { MovieAiringStatus } from "@/lib/validation/movie"
+import type { StatusType } from "@/lib/validation/status"
 
 interface FormValues {
   id: string
@@ -41,7 +42,7 @@ interface FormValues {
   tagline: string
   overview: string
   slug: string
-  status: string
+  airingStatus: MovieAiringStatus
   originCountry: string
   originalLanguage: string
   spokenLanguages: string
@@ -52,9 +53,9 @@ interface FormValues {
   homepage: string
   metaTitle?: string
   metaDescription?: string
-  language: LanguageType
   productionCompanies?: string[]
   genres: string[]
+  status?: StatusType
 }
 
 export default function CreateMovieForm() {
@@ -125,12 +126,7 @@ export default function CreateMovieForm() {
 
   const form = useForm<FormValues>({
     mode: "onChange",
-    defaultValues: {
-      language: "id",
-    },
   })
-
-  const valueLanguage = form.watch("language")
 
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
@@ -198,35 +194,6 @@ export default function CreateMovieForm() {
           <h1 className="pb-2 lg:pb-5">{ts("edit")}</h1>
           <div className="flex flex-col lg:flex-row lg:space-x-4">
             <div className="w-full lg:w-6/12 lg:space-y-4">
-              <FormField
-                control={form.control}
-                name="language"
-                rules={{
-                  required: t("language_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("language")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t("language_placeholder")}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="id">Indonesia</SelectItem>
-                        <SelectItem value="en">English</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="title"
@@ -325,13 +292,29 @@ export default function CreateMovieForm() {
               />
               <FormField
                 control={form.control}
-                name="status"
+                name="airingStatus"
+                rules={{
+                  required: ts("airing_status_required"),
+                }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t("status_placeholder")} {...field} />
-                    </FormControl>
+                    <FormLabel>{ts("airing_status")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={ts("airing_status_placeholder")}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="released">Reseleased</SelectItem>
+                        <SelectItem value="upcoming">Upcoming</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -489,22 +472,19 @@ export default function CreateMovieForm() {
               />
             </div>
             <div className="w-full lg:w-6/12 lg:space-y-4">
-              {valueLanguage && (
-                <div className="my-2">
-                  <DashboardAddGenres
-                    mode="edit"
-                    locale={valueLanguage}
-                    fieldName="genres"
-                    //@ts-expect-error FIX: later
-                    control={form.control}
-                    genres={genres}
-                    addGenres={setGenres}
-                    selectedGenres={selectedGenres}
-                    addSelectedGenres={setSelectedGenres}
-                    topicType="feed"
-                  />
-                </div>
-              )}
+              <div className="my-2">
+                <DashboardAddGenres
+                  mode="edit"
+                  fieldName="genres"
+                  //@ts-expect-error FIX: later
+                  control={form.control}
+                  genres={genres}
+                  addGenres={setGenres}
+                  selectedGenres={selectedGenres}
+                  addSelectedGenres={setSelectedGenres}
+                  topicType="feed"
+                />
+              </div>
               <div className="my-2">
                 <DashboardAddProductionCompanies
                   fieldName="productionCompanies"

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { LANGUAGE_TYPE } from "./language"
+import { STATUS_TYPE } from "./status"
 
 const genreInput = {
   tmdbId: z
@@ -36,17 +36,12 @@ const genreInput = {
     })
     .optional()
     .nullish(),
-  language: z.enum(LANGUAGE_TYPE, {
-    invalid_type_error: "only id and en are accepted",
-  }),
-}
-
-const translateGenreInput = {
-  ...genreInput,
-  genreTranslationId: z.string({
-    required_error: "Genre Translation ID is required",
-    invalid_type_error: "Genre Traslation Primary ID must be a string",
-  }),
+  status: z
+    .enum(STATUS_TYPE, {
+      invalid_type_error:
+        "only published, draft, rejected and in_review are accepted",
+    })
+    .optional(),
 }
 
 const updateGenreInput = {
@@ -64,10 +59,6 @@ const updateGenreInput = {
 
 export const createGenreSchema = z.object({
   ...genreInput,
-})
-
-export const translateGenreSchema = z.object({
-  ...translateGenreInput,
 })
 
 export const updateGenreSchema = z.object({

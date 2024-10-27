@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { cuid } from "@/lib/utils"
 import { generateUniqueGenreSlug } from "@/lib/utils/slug"
 import { createGenreSchema } from "@/lib/validation/genre"
-import { genres, genreTranslations } from "@/lib/db/schema"
+import { genres } from "@/lib/db/schema"
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,22 +21,11 @@ export async function POST(request: NextRequest) {
       : parsedInput.metaDescription
 
 
-    const genreTranslationId = cuid()
-    const genreId = cuid()
-
-    const genreTranslation = await db
-      .insert(genreTranslations)
-      .values({
-        id: genreTranslationId,
-      })
-      .returning()
-
     const data = await db.insert(genres).values({
-      id: genreId,
+      id: cuid(),
       slug: slug,
       metaTitle: generatedMetaTitle,
       metaDescription: generatedMetaDescription,
-      genreTranslationId: genreTranslation[0].id,
       ...parsedInput
     }).returning()
 

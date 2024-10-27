@@ -36,6 +36,8 @@ import type {
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
+import type { MovieAiringStatus } from "@/lib/validation/movie"
+import type { StatusType } from "@/lib/validation/status"
 
 interface FormValues {
   id: string
@@ -46,7 +48,7 @@ interface FormValues {
   tagline: string
   overview: string
   slug: string
-  status: string
+  airingStatus: MovieAiringStatus
   originCountry: string
   originalLanguage: string
   spokenLanguages: string
@@ -61,13 +63,14 @@ interface FormValues {
   movieTranslationId: string
   productionCompanies?: string[]
   genres: string[]
+  status?: StatusType
 }
 
 interface EditMovieFormProps {
   movie: SelectMovie & {
+    overview: string
     genres: Pick<SelectGenre, "id" | "title">[]
     productionCompanies: Pick<SelectProductionCompany, "id" | "name">[]
-    language: LanguageType | string
   }
 }
 
@@ -183,16 +186,8 @@ export default function EditMovieForm(props: EditMovieFormProps) {
       releaseDate: movie.releaseDate ?? "",
       metaTitle: movie.metaTitle ?? "",
       metaDescription: movie?.metaDescription ?? "",
-      language: movie.language,
-      movieTranslationId: movie.movieTranslationId,
     },
   })
-
-  const valueLanguage = form.watch("language")
-
-  const { data: movieTranslation } = api.movie.movieTranslationById.useQuery(
-    movie.movieTranslationId,
-  )
 
   const onSubmit = (values: FormValues) => {
     const mergedValues = {
@@ -204,18 +199,10 @@ export default function EditMovieForm(props: EditMovieFormProps) {
       budget: parseInt(values.budget.toString()),
     }
 
-    if (movieTranslation) {
-      const otherLangMovie = movieTranslation?.movies?.find(
-        (movieData) => movieData.id !== movie.id,
-      )
-
-      if (otherLangMovie?.language !== values.language) {
-        setLoading(true)
-        updateMovie(selectedPoster ? mergedValues : values)
-        setLoading(false)
-        router.push("/dashboard/movie")
-      }
-    }
+    setLoading(true)
+    updateMovie(mergedValues)
+    setLoading(false)
+    router.push("/dashboard/movie")
   }
 
   const handleUpdateImage = (data: {
@@ -271,38 +258,6 @@ export default function EditMovieForm(props: EditMovieFormProps) {
           <h1 className="pb-2 lg:pb-5">{ts("edit")}</h1>
           <div className="flex flex-col lg:flex-row lg:space-x-4">
             <div className="w-full lg:w-6/12 lg:space-y-4">
-              <FormField
-                control={form.control}
-                name="language"
-                rules={{
-                  required: t("language_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("language")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t("language_placeholder")}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={movie.language}>
-                          {movie.language === "id"
-                            ? "Indonesia"
-                            : movie.language === "en" && "English"}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="title"
@@ -401,13 +356,29 @@ export default function EditMovieForm(props: EditMovieFormProps) {
               />
               <FormField
                 control={form.control}
-                name="status"
+                name="airingStatus"
+                rules={{
+                  required: ts("airing_status_required"),
+                }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t("status_placeholder")} {...field} />
-                    </FormControl>
+                    <FormLabel>{ts("airing_status")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={ts("airing_status_placeholder")}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="released">Reseleased</SelectItem>
+                        <SelectItem value="upcoming">Upcoming</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -570,22 +541,18 @@ export default function EditMovieForm(props: EditMovieFormProps) {
               />
             </div>
             <div className="w-full lg:w-6/12 lg:space-y-4">
-              {valueLanguage && (
-                <div className="my-2">
-                  <DashboardAddGenres
-                    mode="edit"
-                    locale={valueLanguage}
-                    fieldName="genres"
-                    //@ts-expect-error FIX: later
-                    control={form.control}
-                    genres={genres}
-                    addGenres={setGenres}
-                    selectedGenres={selectedGenres}
-                    addSelectedGenres={setSelectedGenres}
-                    topicType="feed"
-                  />
-                </div>
-              )}
+              <div className="my-2">
+                <DashboardAddGenres
+                  fieldName="genres"
+                  //@ts-expect-error FIX: later
+                  control={form.control}
+                  genres={genres}
+                  addGenres={setGenres}
+                  selectedGenres={selectedGenres}
+                  addSelectedGenres={setSelectedGenres}
+                  topicType="feed"
+                />
+              </div>
               <div className="my-2">
                 <DashboardAddProductionCompanies
                   fieldName="productionCompanies"

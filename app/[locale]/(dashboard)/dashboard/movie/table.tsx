@@ -19,14 +19,8 @@ import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import { formatDate } from "@/lib/utils"
 
-interface MoviesProps extends SelectMovie {
-  movieTranslation: {
-    movies: SelectMovie[]
-  }
-}
-
 interface MovieTableProps {
-  movies: MoviesProps[]
+  movies: SelectMovie[]
   paramsName: string
   page: number
   lastPage: number
@@ -149,30 +143,14 @@ export default function MovieTable(props: MovieTableProps) {
                   </div>
                 </TableCell>
                 <TableCell className="p-4 align-middle">
-                  {movie.movieTranslation.movies.length > 1 ? (
-                    <DashboardShowOptions
-                      onDelete={() => {
-                        void deleteMovie(movie.id)
-                      }}
-                      editUrl={`/dashboard/movie/edit/${movie.id}`}
-                      viewUrl={`/movie/${movie.slug}`}
-                      description={movie.title}
-                    />
-                  ) : (
-                    <DashboardShowOptions
-                      onDelete={() => {
-                        void deleteMovie(movie.id)
-                      }}
-                      editUrl={`/dashboard/movie/edit/${movie.id}`}
-                      translateUrl={
-                        movie.language === "id"
-                          ? `/dashboard/movie/translate/en/${movie.movieTranslationId}`
-                          : `/dashboard/movie/translate/id/${movie.movieTranslationId}`
-                      }
-                      viewUrl={`/movie/${movie.slug}`}
-                      description={movie.title}
-                    />
-                  )}
+                  <DashboardShowOptions
+                    onDelete={() => {
+                      void deleteMovie(movie.id)
+                    }}
+                    editUrl={`/dashboard/movie/edit/${movie.id}`}
+                    viewUrl={`/movie/${movie.slug}`}
+                    description={movie.title}
+                  />
                 </TableCell>
               </TableRow>
             )

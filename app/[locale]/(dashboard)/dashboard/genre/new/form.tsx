@@ -17,18 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { LanguageType } from "@/lib/validation/language"
 
 interface FormValues {
   title: string
@@ -36,7 +28,6 @@ interface FormValues {
   description?: string
   metaTitle?: string
   metaDescription?: string
-  language: LanguageType
 }
 
 export default function CreateGenreForm() {
@@ -151,35 +142,6 @@ export default function CreateGenreForm() {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="language"
-                rules={{
-                  required: t("language_required"),
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("language")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={t("language_placeholder")}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="id">Indonesia</SelectItem>
-                        <SelectItem value="en">English</SelectItem>
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

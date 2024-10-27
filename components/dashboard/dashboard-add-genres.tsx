@@ -11,16 +11,13 @@ import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast/use-toast"
-import type { SelectGenre } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
-import type { LanguageType } from "@/lib/validation/language"
 
 interface DashboardAddGenresProps<
   TFieldValues extends FieldValues = FieldValues,
 > {
   genres: string[]
-  locale: LanguageType
   addGenres: React.Dispatch<React.SetStateAction<string[]>>
   mode?: "create" | "edit"
   selectedGenres: {
@@ -42,16 +39,13 @@ interface DashboardAddGenresProps<
 const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
   const {
     genres,
-    mode = "create",
     addGenres,
     selectedGenres,
     addSelectedGenres,
-    locale,
     control,
     fieldName,
   } = props
 
-  const [genreId, setGenreId] = React.useState<string>("")
   const [searchQuery, setSearchQuery] = React.useState<string>("")
   const [loadingCreate, setLoadingCreate] = React.useState(false)
 
@@ -65,20 +59,6 @@ const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
     name: fieldName,
     rules: { required: ts("required") },
   })
-
-  const handleLocaleChange = React.useCallback(() => {
-    if (mode === "create") {
-      setSearchQuery("")
-      addGenres([])
-      onChange([])
-      addSelectedGenres([])
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode])
-
-  React.useEffect(() => {
-    handleLocaleChange()
-  }, [handleLocaleChange, locale])
 
   const assignGenre = React.useCallback(
     (id: string | never) => {
@@ -99,7 +79,7 @@ const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
     api.genre.search.useQuery(
       {
         searchQuery: searchQuery,
-        language: locale,
+        limit: 10,
       },
       {
         enabled: !!searchQuery,
@@ -107,43 +87,10 @@ const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
       },
     )
 
-  const {
-    data: genreTranslation,
-    error,
-    isSuccess,
-    isError,
-  } = api.genre.genreTranslationById.useQuery(genreId, {
-    enabled: !!genreId && !!searchQuery,
-  })
-
-  React.useEffect(() => {
-    if (isSuccess && genreTranslation) {
-      const genreById = genreTranslation?.genres.find(
-        (genreData) => genreData.language === locale,
-      ) as SelectGenre
-      if (genreById?.id) {
-        addSelectedGenres((prev) => [
-          ...prev,
-          { ...genreById, title: searchQuery },
-        ])
-        addGenres((prev: string[]) => [...prev, genreById?.id])
-        onChange([...genres, genreById?.id])
-      } else {
-        toast({ variant: "danger", description: t("something_went_wrong") })
-      }
-      setGenreId("")
-      setSearchQuery("")
-    } else if (isError && error) {
-      toast({ variant: "danger", description: ts("find_failed") })
-    }
-    setLoadingCreate(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, isError, genreTranslation, error])
-
   const { mutate: createGenre } = api.genre.create.useMutation({
     onSuccess: (data) => {
       if (data) {
-        setGenreId(data[0]?.id)
+        assignGenre(data[0]?.id)
         handleSelectandAssign(data[0])
       }
       toast({ variant: "success", description: ts("create_success") })
@@ -206,7 +153,6 @@ const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
         setLoadingCreate(true)
         createGenre({
           title: searchQuery,
-          language: locale,
         })
       }
     }
@@ -215,7 +161,6 @@ const DashboardAddGenres: React.FC<DashboardAddGenresProps> = (props) => {
     addSelectedGenres,
     assignGenre,
     createGenre,
-    locale,
     searchQuery,
     searchResults,
     selectedGenres,

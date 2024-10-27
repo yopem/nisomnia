@@ -1,6 +1,6 @@
 {
-  "id": "e478faba-9088-467f-8f53-988989f99384",
-  "prevId": "da18d263-1730-43c9-be06-ab8114632bf1",
+  "id": "babe96ae-158e-4399-a9e8-d0b48eae447b",
+  "prevId": "e5b57848-6d99-4fd4-8201-35e15a783bc3",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -75,7 +75,8 @@
             "title"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.article_comments": {
       "name": "article_comments",
@@ -156,7 +157,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public._article_authors": {
       "name": "_article_authors",
@@ -213,7 +215,8 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public._article_editors": {
       "name": "_article_editors",
@@ -270,7 +273,8 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public._article_topics": {
       "name": "_article_topics",
@@ -327,7 +331,8 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.article_translations": {
       "name": "article_translations",
@@ -357,7 +362,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.articles": {
       "name": "articles",
@@ -481,10 +487,69 @@
             "slug"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
-    "public.genre_translations": {
-      "name": "genre_translations",
+    "public._feed_topics": {
+      "name": "_feed_topics",
+      "schema": "",
+      "columns": {
+        "feed_id": {
+          "name": "feed_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "topic_id": {
+          "name": "topic_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "_feed_topics_feed_id_feeds_id_fk": {
+          "name": "_feed_topics_feed_id_feeds_id_fk",
+          "tableFrom": "_feed_topics",
+          "tableTo": "feeds",
+          "columnsFrom": [
+            "feed_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "_feed_topics_topic_id_topics_id_fk": {
+          "name": "_feed_topics_topic_id_topics_id_fk",
+          "tableFrom": "_feed_topics",
+          "tableTo": "topics",
+          "columnsFrom": [
+            "topic_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "_feed_topics_feed_id_topic_id_pk": {
+          "name": "_feed_topics_feed_id_topic_id_pk",
+          "columns": [
+            "feed_id",
+            "topic_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.feeds": {
+      "name": "feeds",
       "schema": "",
       "columns": {
         "id": {
@@ -492,6 +557,52 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language": {
+          "name": "language",
+          "type": "language",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'id'"
+        },
+        "featured_image": {
+          "name": "featured_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "link": {
+          "name": "link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "feed_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'website'"
+        },
+        "owner": {
+          "name": "owner",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -511,7 +622,16 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "feeds_slug_unique": {
+          "name": "feeds_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "checkConstraints": {}
     },
     "public.genres": {
       "name": "genres",
@@ -523,13 +643,11 @@
           "primaryKey": true,
           "notNull": true
         },
-        "language": {
-          "name": "language",
-          "type": "language",
-          "typeSchema": "public",
+        "tmdb_id": {
+          "name": "tmdb_id",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'id'"
+          "notNull": false
         },
         "title": {
           "name": "title",
@@ -561,17 +679,19 @@
           "primaryKey": false,
           "notNull": false
         },
-        "genre_translation_id": {
-          "name": "genre_translation_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "featured_image": {
           "name": "featured_image",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'draft'"
         },
         "created_at": {
           "name": "created_at",
@@ -589,21 +709,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "genres_genre_translation_id_genre_translations_id_fk": {
-          "name": "genres_genre_translation_id_genre_translations_id_fk",
-          "tableFrom": "genres",
-          "tableTo": "genre_translations",
-          "columnsFrom": [
-            "genre_translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "genres_slug_unique": {
@@ -613,7 +719,8 @@
             "slug"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.medias": {
       "name": "medias",
@@ -637,19 +744,27 @@
           "primaryKey": false,
           "notNull": true
         },
-        "image_type": {
-          "name": "image_type",
+        "file_type": {
+          "name": "file_type",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "type": {
-          "name": "type",
-          "type": "media_types",
+        "category": {
+          "name": "category",
+          "type": "media_category",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'all'"
+          "default": "'article'"
+        },
+        "type": {
+          "name": "type",
+          "type": "media_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'image'"
         },
         "description": {
           "name": "description",
@@ -703,7 +818,8 @@
             "name"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public._movie_genres": {
       "name": "_movie_genres",
@@ -760,7 +876,66 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public._movie_overviews": {
+      "name": "_movie_overviews",
+      "schema": "",
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "overview_id": {
+          "name": "overview_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "_movie_overviews_movie_id_movies_id_fk": {
+          "name": "_movie_overviews_movie_id_movies_id_fk",
+          "tableFrom": "_movie_overviews",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "_movie_overviews_overview_id_overviews_id_fk": {
+          "name": "_movie_overviews_overview_id_overviews_id_fk",
+          "tableFrom": "_movie_overviews",
+          "tableTo": "overviews",
+          "columnsFrom": [
+            "overview_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "_movie_overviews_movie_id_overview_id_pk": {
+          "name": "_movie_overviews_movie_id_overview_id_pk",
+          "columns": [
+            "movie_id",
+            "overview_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public._movie_production_companies": {
       "name": "_movie_production_companies",
@@ -817,37 +992,8 @@
           ]
         }
       },
-      "uniqueConstraints": {}
-    },
-    "public.movie_translations": {
-      "name": "movie_translations",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.movies": {
       "name": "movies",
@@ -863,21 +1009,13 @@
           "name": "imdb_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "tmdb_id": {
           "name": "tmdb_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "language": {
-          "name": "language",
-          "type": "language",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'id'"
         },
         "title": {
           "name": "title",
@@ -903,17 +1041,13 @@
           "primaryKey": false,
           "notNull": true
         },
-        "overview": {
-          "name": "overview",
-          "type": "text",
+        "airing_status": {
+          "name": "airing_status",
+          "type": "movie_airing_status",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'released'"
         },
         "origin_country": {
           "name": "origin_country",
@@ -935,12 +1069,6 @@
         },
         "release_date": {
           "name": "release_date",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "budget": {
-          "name": "budget",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -957,6 +1085,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "budget": {
+          "name": "budget",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "homepage": {
+          "name": "homepage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "backdrop": {
           "name": "backdrop",
           "type": "text",
@@ -969,12 +1109,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "movie_translation_id": {
-          "name": "movie_translation_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "meta_title": {
           "name": "meta_title",
           "type": "text",
@@ -986,6 +1120,14 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'draft'"
         },
         "created_at": {
           "name": "created_at",
@@ -1003,23 +1145,16 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "movies_movie_translation_id_movie_translations_id_fk": {
-          "name": "movies_movie_translation_id_movie_translations_id_fk",
-          "tableFrom": "movies",
-          "tableTo": "movie_translations",
-          "columnsFrom": [
-            "movie_translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "movies_tmdb_id_unique": {
+          "name": "movies_tmdb_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "tmdb_id"
+          ]
+        },
         "movies_slug_unique": {
           "name": "movies_slug_unique",
           "nullsNotDistinct": false,
@@ -1027,7 +1162,67 @@
             "slug"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
+    },
+    "public.overviews": {
+      "name": "overviews",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "overview_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'game'"
+        },
+        "language": {
+          "name": "language",
+          "type": "language",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.production_companies": {
       "name": "production_companies",
@@ -1037,6 +1232,12 @@
           "name": "id",
           "type": "text",
           "primaryKey": true,
+          "notNull": true
+        },
+        "tmdb_id": {
+          "name": "tmdb_id",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -1057,6 +1258,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "origin_country": {
+          "name": "origin_country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -1071,12 +1278,6 @@
         },
         "meta_description": {
           "name": "meta_description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "origin_country": {
-          "name": "origin_country",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1100,6 +1301,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "production_companies_tmdb_id_unique": {
+          "name": "production_companies_tmdb_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "tmdb_id"
+          ]
+        },
         "production_companies_slug_unique": {
           "name": "production_companies_slug_unique",
           "nullsNotDistinct": false,
@@ -1107,7 +1315,8 @@
             "slug"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.topic_translations": {
       "name": "topic_translations",
@@ -1137,7 +1346,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.topics": {
       "name": "topics",
@@ -1177,7 +1387,8 @@
         },
         "type": {
           "name": "type",
-          "type": "text",
+          "type": "topic_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'all'"
@@ -1262,7 +1473,8 @@
             "slug"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.accounts": {
       "name": "accounts",
@@ -1326,7 +1538,8 @@
             "provider_account_id"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.sessions": {
       "name": "sessions",
@@ -1368,7 +1581,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.users": {
       "name": "users",
@@ -1396,7 +1610,7 @@
           "name": "username",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "image": {
           "name": "image",
@@ -1450,7 +1664,8 @@
             "username"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     }
   },
   "enums": {
@@ -1487,6 +1702,16 @@
         "member"
       ]
     },
+    "public.feed_type": {
+      "name": "feed_type",
+      "schema": "public",
+      "values": [
+        "website",
+        "tiktok",
+        "x",
+        "facebook"
+      ]
+    },
     "public.language": {
       "name": "language",
       "schema": "public",
@@ -1495,19 +1720,49 @@
         "en"
       ]
     },
-    "public.media_types": {
-      "name": "media_types",
+    "public.media_category": {
+      "name": "media_category",
       "schema": "public",
       "values": [
         "all",
         "article",
+        "feed",
         "topic",
-        "genere",
+        "genre",
         "review",
         "tutorial",
         "movie",
         "tv",
-        "game"
+        "game",
+        "production_company"
+      ]
+    },
+    "public.media_type": {
+      "name": "media_type",
+      "schema": "public",
+      "values": [
+        "image",
+        "audio",
+        "video",
+        "document",
+        "other"
+      ]
+    },
+    "public.movie_airing_status": {
+      "name": "movie_airing_status",
+      "schema": "public",
+      "values": [
+        "released",
+        "upcoming"
+      ]
+    },
+    "public.overview_type": {
+      "name": "overview_type",
+      "schema": "public",
+      "values": [
+        "game",
+        "movie",
+        "tv"
       ]
     },
     "public.status": {
@@ -1526,6 +1781,7 @@
       "values": [
         "all",
         "article",
+        "feed",
         "review",
         "tutorial",
         "movie",
@@ -1554,6 +1810,7 @@
   },
   "schemas": {},
   "sequences": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

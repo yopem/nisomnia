@@ -7,45 +7,15 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "@/lib/api/trpc"
-import { genres, genreTranslations, movieGenres } from "@/lib/db/schema"
+import { genres, movieGenres } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueGenreSlug } from "@/lib/utils/slug"
-import {
-  createGenreSchema,
-  translateGenreSchema,
-  updateGenreSchema,
-} from "@/lib/validation/genre"
-import { languageType } from "@/lib/validation/language"
+import { createGenreSchema, updateGenreSchema } from "@/lib/validation/genre"
 
 export const genreRouter = createTRPCRouter({
-  genreTranslationById: publicProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db.query.genreTranslations.findFirst({
-          where: (genreTranslations, { eq }) => eq(genreTranslations.id, input),
-          with: {
-            genres: true,
-          },
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   dashboard: adminProtectedProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -53,17 +23,9 @@ export const genreRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.genres.findMany({
-          where: (genres, { eq }) => eq(genres.language, input.language),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (users, { desc }) => [desc(users.updatedAt)],
-          with: {
-            genreTranslation: {
-              with: {
-                genres: true,
-              },
-            },
-          },
         })
 
         return data
@@ -100,40 +62,9 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
-  byLanguage: publicProcedure
-    .input(
-      z.object({
-        language: languageType,
-        page: z.number(),
-        perPage: z.number(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db.query.genres.findMany({
-          where: (genres, { eq }) => eq(genres.language, input.language),
-          limit: input.perPage,
-          offset: (input.page - 1) * input.perPage,
-          orderBy: (genres, { desc }) => [desc(genres.createdAt)],
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   byMovieCount: publicProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -145,11 +76,10 @@ export const genreRouter = createTRPCRouter({
             id: genres.id,
             title: genres.title,
             slug: genres.slug,
-            language: genres.language,
             count: sql<number>`count(${movieGenres.movieId})`.mapWith(Number),
           })
           .from(genres)
-          .where(eq(genres.language, input.language))
+          .where(eq(genres.status, "published"))
           .leftJoin(movieGenres, eq(movieGenres.genreId, genres.id))
           .limit(input.perPage)
           .offset((input.page - 1) * input.perPage)
@@ -172,7 +102,6 @@ export const genreRouter = createTRPCRouter({
   sitemap: publicProcedure
     .input(
       z.object({
-        language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
@@ -180,7 +109,7 @@ export const genreRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.genres.findMany({
-          where: (genres, { eq }) => eq(genres.language, input.language),
+          where: (genres, { eq }) => eq(genres.status, "published"),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (genres, { desc }) => [desc(genres.updatedAt)],
@@ -223,19 +152,21 @@ export const genreRouter = createTRPCRouter({
     }
   }),
   search: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        limit: z.number().optional().default(10),
+        searchQuery: z.string(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.genres.findMany({
-          where: (genres, { eq, and, or, ilike }) =>
-            and(
-              eq(genres.language, input.language),
-              or(
-                ilike(genres.title, `%${input.searchQuery}%`),
-                ilike(genres.slug, `%${input.searchQuery}%`),
-              ),
+          where: (genres, { or, ilike }) =>
+            or(
+              ilike(genres.title, `%${input.searchQuery}%`),
+              ilike(genres.slug, `%${input.searchQuery}%`),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -253,6 +184,26 @@ export const genreRouter = createTRPCRouter({
     }),
   count: publicProcedure.query(async ({ ctx }) => {
     try {
+      const data = await ctx.db
+        .select({ value: count() })
+        .from(genres)
+        .where(eq(genres.status, "published"))
+
+      return data[0].value
+    } catch (error) {
+      console.error("Error:", error)
+      if (error instanceof TRPCError) {
+        throw error
+      } else {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An internal error occurred",
+        })
+      }
+    }
+  }),
+  countDashboard: publicProcedure.query(async ({ ctx }) => {
+    try {
       const data = await ctx.db.select({ value: count() }).from(genres)
 
       return data[0].value
@@ -268,28 +219,6 @@ export const genreRouter = createTRPCRouter({
       }
     }
   }),
-  countByLanguage: publicProcedure
-    .input(languageType)
-    .query(async ({ ctx, input }) => {
-      try {
-        const data = await ctx.db
-          .select({ values: count() })
-          .from(genres)
-          .where(eq(genres.language, input))
-
-        return data[0].values
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   create: adminProtectedProcedure
     .input(createGenreSchema)
     .mutation(async ({ ctx, input }) => {
@@ -302,24 +231,13 @@ export const genreRouter = createTRPCRouter({
           ? input.description
           : input.metaDescription
 
-        const genreTranslationId = cuid()
-        const genreId = cuid()
-
-        const genreTranslation = await ctx.db
-          .insert(genreTranslations)
-          .values({
-            id: genreTranslationId,
-          })
-          .returning()
-
         const data = await ctx.db
           .insert(genres)
           .values({
-            id: genreId,
+            id: cuid(),
             slug: slug,
             metaTitle: generatedMetaTitle,
             metaDescription: generatedMetaDescription,
-            genreTranslationId: genreTranslation[0].id,
             ...input,
           })
           .returning()
@@ -362,83 +280,16 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
-  translate: adminProtectedProcedure
-    .input(translateGenreSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const slug = await generateUniqueGenreSlug(input.title)
-        const generatedMetaTitle = !input.metaTitle
-          ? input.title
-          : input.metaTitle
-        const generatedMetaDescription = !input.metaDescription
-          ? input.description
-          : input.metaDescription
-
-        const data = await ctx.db.insert(genres).values({
-          id: cuid(),
-          slug: slug,
-          metaTitle: generatedMetaTitle,
-          metaDescription: generatedMetaDescription,
-          ...input,
-        })
-
-        return data
-      } catch (error) {
-        console.error("Error:", error)
-        if (error instanceof TRPCError) {
-          throw error
-        } else {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An internal error occurred",
-          })
-        }
-      }
-    }),
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       try {
-        const genre = await ctx.db.query.genres.findFirst({
-          where: (genre, { eq }) => eq(genre.id, input),
+        const data = await ctx.db.transaction(async () => {
+          await ctx.db.delete(movieGenres).where(eq(movieGenres.genreId, input))
+          await ctx.db.delete(genres).where(eq(genres.id, input))
         })
 
-        if (genre) {
-          const checkIfGenreTranslationHasGenre =
-            await ctx.db.query.genreTranslations.findMany({
-              where: (genreTranslations, { eq }) =>
-                eq(genreTranslations.id, genre.genreTranslationId),
-              with: {
-                genres: true,
-              },
-            })
-
-          if (checkIfGenreTranslationHasGenre[0]?.genres.length === 1) {
-            const data = await ctx.db.transaction(async () => {
-              await ctx.db
-                .delete(movieGenres)
-                .where(eq(movieGenres.genreId, input))
-
-              await ctx.db.delete(genres).where(eq(genres.id, input))
-
-              await ctx.db
-                .delete(genreTranslations)
-                .where(eq(genreTranslations.id, genre.genreTranslationId))
-            })
-
-            return data
-          } else {
-            const data = await ctx.db.transaction(async () => {
-              await ctx.db
-                .delete(movieGenres)
-                .where(eq(movieGenres.genreId, input))
-
-              await ctx.db.delete(genres).where(eq(genres.id, input))
-            })
-
-            return data
-          }
-        }
+        return data
       } catch (error) {
         console.error("Error:", error)
         if (error instanceof TRPCError) {
