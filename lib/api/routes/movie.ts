@@ -882,6 +882,17 @@ export const movieRouter = createTRPCRouter({
             .delete(movieProductionCompanies)
             .where(eq(movieProductionCompanies.movieId, input))
           await ctx.db.delete(movies).where(eq(movies.id, input))
+
+          const movieOverviewsData = await ctx.db.query.movieOverviews.findMany(
+            {
+              where: (movieOverviews, { eq }) =>
+                eq(movieOverviews.movieId, input),
+            },
+          )
+
+          await ctx.db
+            .delete(overviews)
+            .where(eq(overviews.id, movieOverviewsData[0].overviewId))
         })
 
         return data
