@@ -1,29 +1,12 @@
 /* eslint-disable no-useless-escape */
 
+import { transliterate as tr } from "transliteration"
+
 import { db } from "@/lib/db"
 
 // Mapping of words to replace with their Latin equivalents
-const languageMappings: Record<string, string> = {
-  japanese: "latinus-japan",
-  korean: "latinus-korea",
-  india: "latinus-india",
-  russian: "latinus-russia",
-  chinese: "latinus-china",
-  french: "latinus-france",
-  spanish: "latinus-spain",
-  german: "latinus-germany",
-  italian: "latinus-italy",
-  arabic: "latinus-arabia",
-}
-
-function replaceLanguages(text: string) {
-  return Object.entries(languageMappings).reduce((acc, [key, value]) => {
-    return acc.replace(new RegExp(`\\b${key}\\b`, "gi"), value)
-  }, text)
-}
-
 export function slugify(text: string) {
-  return replaceLanguages(text)
+  return tr(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
@@ -37,7 +20,7 @@ export function slugify(text: string) {
 }
 
 export function slugifyUsername(text: string) {
-  return replaceLanguages(text)
+  return tr(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
@@ -52,7 +35,7 @@ export function slugifyUsername(text: string) {
 }
 
 export function slugifyFile(text: string) {
-  return replaceLanguages(text)
+  return tr(text)
     .toString() // Cast to string (optional)
     .normalize("NFKD") // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
     .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
