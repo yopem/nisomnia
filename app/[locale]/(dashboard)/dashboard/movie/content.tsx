@@ -43,7 +43,7 @@ export default function DashboardMovieContent() {
       {!isLoading && movies !== undefined && movies.length > 0 ? (
         <MovieTable
           movies={movies}
-          paramsName="movieLangIdPage"
+          paramsName="page"
           page={page ? parseInt(page) : 1}
           lastPage={lastPage ?? 2}
           updateMovies={upateMovies}

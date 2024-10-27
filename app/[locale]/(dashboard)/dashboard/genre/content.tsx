@@ -13,12 +13,12 @@ export default function DashboardGenreContent() {
 
   const page = searchParams.get("page")
 
+  const perPage = 10
+
   const ts = useScopedI18n("genre")
 
   const { data: genresCount, refetch: updateGenresCount } =
     api.genre.countDashboard.useQuery()
-
-  const perPage = 10
 
   const lastPage = genresCount && Math.ceil(genresCount / perPage)
 
@@ -43,7 +43,7 @@ export default function DashboardGenreContent() {
       {!isLoading && genres !== undefined && genres.length > 0 ? (
         <GenreTable
           genres={genres ?? 1}
-          paramsName="genreLangIdPage"
+          paramsName="page"
           page={page ? parseInt(page) : 1}
           lastPage={lastPage ?? 2}
           updateGenres={updateGenres}
