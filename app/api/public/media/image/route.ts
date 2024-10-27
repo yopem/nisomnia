@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       type: type,
       fileType: defaultFileType,
       authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2",
-    })
+    }).returning()
 
     return NextResponse.json(data, { status: 200 })
   } catch (error) {
