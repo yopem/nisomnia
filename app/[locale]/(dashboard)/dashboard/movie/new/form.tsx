@@ -311,7 +311,7 @@ export default function CreateMovieForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="released">Reseleased</SelectItem>
+                        <SelectItem value="released">Released</SelectItem>
                         <SelectItem value="upcoming">Upcoming</SelectItem>
                       </SelectContent>
                     </Select>

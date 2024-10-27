@@ -175,7 +175,7 @@ export default function EditMovieForm(props: EditMovieFormProps) {
       tagline: movie.tagline ?? "",
       overview: movie.overview ?? "",
       slug: movie.slug,
-      status: movie.status ?? "",
+      airingStatus: movie.airingStatus ?? "",
       originCountry: movie.originCountry ?? "",
       originalLanguage: movie.originalLanguage ?? "",
       spokenLanguages: movie.spokenLanguages ?? "",
@@ -375,7 +375,7 @@ export default function EditMovieForm(props: EditMovieFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="released">Reseleased</SelectItem>
+                        <SelectItem value="released">Released</SelectItem>
                         <SelectItem value="upcoming">Upcoming</SelectItem>
                       </SelectContent>
                     </Select>
