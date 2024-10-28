@@ -2,7 +2,12 @@ import { z } from "zod"
 
 import { STATUS_TYPE } from "./status"
 
-export const MOVIE_AIRING_STATUS = ["released", "upcoming"] as const
+export const MOVIE_AIRING_STATUS = [
+  "released",
+  "upcoming",
+  "canceled",
+  "in_production",
+] as const
 
 export const movieAiringStatus = z.enum(MOVIE_AIRING_STATUS)
 
