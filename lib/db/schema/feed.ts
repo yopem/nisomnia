@@ -9,6 +9,7 @@ import {
 
 import { FEED_TYPE } from "@/lib/validation/feed"
 import { languageEnum } from "./language"
+import { statusEnum } from "./status"
 import { topics } from "./topic"
 
 export const feedTypeEnum = pgEnum("feed_type", FEED_TYPE)
@@ -22,6 +23,7 @@ export const feeds = pgTable("feeds", {
   link: text("link"),
   type: feedTypeEnum("type").notNull().default("website"),
   owner: text("owner"),
+  status: statusEnum("status").notNull().default("draft"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 })

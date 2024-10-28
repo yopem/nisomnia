@@ -161,6 +161,40 @@ export const genreRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.genres.findMany({
+          where: (genres, { and, eq, or, ilike }) =>
+            and(
+              eq(genres.status, "published"),
+              or(
+                ilike(genres.title, `%${input.searchQuery}%`),
+                ilike(genres.slug, `%${input.searchQuery}%`),
+              ),
+            ),
+          limit: input.limit,
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
+  searchDashboard: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().optional().default(10),
+        searchQuery: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.genres.findMany({
           where: (genres, { or, ilike }) =>
             or(
               ilike(genres.title, `%${input.searchQuery}%`),

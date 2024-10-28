@@ -17,7 +17,7 @@ export default async function DashboardPage() {
   const genres = await api.genre.countDashboard()
   const medias = await api.media.count()
   const movies = await api.movie.countDashboard()
-  const productionCompanies = await api.productionCompany.count()
+  const productionCompanies = await api.productionCompany.countDashboard()
   const topics = await api.topic.countDashboard()
   const users = await api.user.count()
 

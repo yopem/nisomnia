@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+import { STATUS_TYPE } from "./status"
+
 const productionCompanyInput = {
   tmdbId: z.string({
     required_error: "TMDB ID is required",
@@ -24,6 +26,12 @@ const productionCompanyInput = {
   description: z
     .string({
       invalid_type_error: "Description must be a string",
+    })
+    .optional(),
+  status: z
+    .enum(STATUS_TYPE, {
+      invalid_type_error:
+        "only published, draft, rejected and in_review are accepted",
     })
     .optional(),
   metaTitle: z

@@ -96,6 +96,8 @@ export const productionCompanyRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.productionCompanies.findMany({
+          where: (productionCompanies, { eq }) =>
+            eq(productionCompanies.status, "published"),
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (productionCompanies, { desc }) => [
@@ -125,6 +127,26 @@ export const productionCompanyRouter = createTRPCRouter({
       const data = await ctx.db
         .select({ value: count() })
         .from(productionCompanies)
+        .where(eq(productionCompanies.status, "published"))
+
+      return data[0].value
+    } catch (error) {
+      console.error("Error:", error)
+      if (error instanceof TRPCError) {
+        throw error
+      } else {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An internal error occurred",
+        })
+      }
+    }
+  }),
+  countDashboard: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const data = await ctx.db
+        .select({ value: count() })
+        .from(productionCompanies)
 
       return data[0].value
     } catch (error) {
@@ -144,12 +166,38 @@ export const productionCompanyRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       try {
         const data = await ctx.db.query.productionCompanies.findMany({
-          where: (productionCompanies, { and, or, ilike }) =>
+          where: (productionCompanies, { and, eq, or, ilike }) =>
             and(
+              eq(productionCompanies.status, "published"),
               or(
                 ilike(productionCompanies.name, `%${input}%`),
                 ilike(productionCompanies.slug, `%${input}%`),
               ),
+            ),
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
+  searchDashboard: adminProtectedProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      try {
+        const data = await ctx.db.query.productionCompanies.findMany({
+          where: (productionCompanies, { or, ilike }) =>
+            or(
+              ilike(productionCompanies.name, `%${input}%`),
+              ilike(productionCompanies.slug, `%${input}%`),
             ),
         })
 
