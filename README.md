@@ -46,11 +46,11 @@
 # IMPROVMENT:
 - [ ] add limit / perPage option to search route
 - [x] remove topic type
-- [ ] make movie release date not optional
+- [x] make movie release date not optional
 - [ ] add red * to all required label
 - [ ] fix dashboard-add-* component types
 - [x] rename movie.status to movie.ariringStatus 
-- [ ] add status to all post type
+- [x] add status to all post type
 - [ ] change | in meta title with -
 - [ ] remove all Source: IMDB and only add for movie that have sourced by IMDB
       ID
