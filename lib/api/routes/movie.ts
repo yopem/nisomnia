@@ -26,55 +26,55 @@ export const movieRouter = createTRPCRouter({
     .input(z.string())
     .query(async ({ ctx, input }) => {
       try {
-        const movieData = await ctx.db
-          .select()
-          .from(movies)
-          .where(eq(movies.id, input))
-          .limit(1)
+        const movieData = await ctx.db.query.movies.findFirst({
+          where: (movie, { eq }) => eq(movie.id, input),
+        })
 
-        const movieOverviewsData = await ctx.db
-          .select({
-            id: overviews.id,
-            title: overviews.title,
-            language: overviews.language,
-            content: overviews.content,
-          })
-          .from(movieOverviews)
-          .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
-          .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
-          .where(eq(movies.id, input))
+        if (movieData) {
+          const movieOverviewsData = await ctx.db
+            .select({
+              id: overviews.id,
+              title: overviews.title,
+              language: overviews.language,
+              content: overviews.content,
+            })
+            .from(movieOverviews)
+            .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
+            .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
+            .where(eq(movies.id, input))
 
-        const movieGenresData = await ctx.db
-          .select({ id: genres.id, title: genres.title })
-          .from(movieGenres)
-          .leftJoin(movies, eq(movieGenres.movieId, movies.id))
-          .leftJoin(genres, eq(movieGenres.genreId, genres.id))
-          .where(eq(movies.id, input))
+          const movieGenresData = await ctx.db
+            .select({ id: genres.id, title: genres.title })
+            .from(movieGenres)
+            .leftJoin(movies, eq(movieGenres.movieId, movies.id))
+            .leftJoin(genres, eq(movieGenres.genreId, genres.id))
+            .where(eq(movies.id, input))
 
-        const movieProductionCompaniesData = await ctx.db
-          .select({
-            id: productionCompanies.id,
-            name: productionCompanies.name,
-          })
-          .from(movieProductionCompanies)
-          .leftJoin(movies, eq(movieProductionCompanies.movieId, movies.id))
-          .leftJoin(
-            productionCompanies,
-            eq(
-              movieProductionCompanies.productionCompanyId,
-              productionCompanies.id,
-            ),
-          )
-          .where(eq(movies.id, input))
+          const movieProductionCompaniesData = await ctx.db
+            .select({
+              id: productionCompanies.id,
+              name: productionCompanies.name,
+            })
+            .from(movieProductionCompanies)
+            .leftJoin(movies, eq(movieProductionCompanies.movieId, movies.id))
+            .leftJoin(
+              productionCompanies,
+              eq(
+                movieProductionCompanies.productionCompanyId,
+                productionCompanies.id,
+              ),
+            )
+            .where(eq(movies.id, input))
 
-        const data = movieData.map((item) => ({
-          ...item,
-          overview: movieOverviewsData[0].content,
-          genres: movieGenresData,
-          productionCompanies: movieProductionCompaniesData,
-        }))
+          const data = {
+            ...movieData,
+            overview: movieOverviewsData[0].content,
+            genres: movieGenresData,
+            productionCompanies: movieProductionCompaniesData,
+          }
 
-        return data[0]
+          return data
+        }
       } catch (error) {
         if (error instanceof TRPCError) {
           throw error
@@ -86,57 +86,58 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
-      const movieData = await ctx.db
-        .select()
-        .from(movies)
-        .where(eq(movies.slug, input))
-        .limit(1)
+      const movieData = await ctx.db.query.movies.findFirst({
+        where: (movie, { eq }) => eq(movie.slug, input),
+      })
 
-      const movieGenresData = await ctx.db
-        .select({ id: genres.id, title: genres.title, slug: genres.slug })
-        .from(movieGenres)
-        .leftJoin(movies, eq(movieGenres.movieId, movies.id))
-        .leftJoin(genres, eq(movieGenres.genreId, genres.id))
-        .where(eq(movies.id, movieData[0].id))
+      if (movieData) {
+        const movieGenresData = await ctx.db
+          .select({ id: genres.id, title: genres.title, slug: genres.slug })
+          .from(movieGenres)
+          .leftJoin(movies, eq(movieGenres.movieId, movies.id))
+          .leftJoin(genres, eq(movieGenres.genreId, genres.id))
+          .where(eq(movies.id, movieData.id))
 
-      const movieOverviewsData = await ctx.db
-        .select({
-          id: overviews.id,
-          content: overviews.content,
-          language: overviews.language,
-        })
-        .from(movieOverviews)
-        .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
-        .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
-        .where(eq(movies.id, movieData[0].id))
+        const movieOverviewsData = await ctx.db
+          .select({
+            id: overviews.id,
+            content: overviews.content,
+            language: overviews.language,
+          })
+          .from(movieOverviews)
+          .leftJoin(movies, eq(movieOverviews.movieId, movies.id))
+          .leftJoin(overviews, eq(movieOverviews.overviewId, overviews.id))
+          .where(eq(movies.id, movieData.id))
 
-      const movieProductionCompaniesData = await ctx.db
-        .select({
-          id: productionCompanies.id,
-          name: productionCompanies.name,
-          logo: productionCompanies.logo,
-        })
-        .from(movieProductionCompanies)
-        .leftJoin(movies, eq(movieProductionCompanies.movieId, movies.id))
-        .leftJoin(
-          productionCompanies,
-          eq(
-            movieProductionCompanies.productionCompanyId,
-            productionCompanies.id,
-          ),
-        )
-        .where(eq(movies.id, movieData[0].id))
+        const movieProductionCompaniesData = await ctx.db
+          .select({
+            id: productionCompanies.id,
+            name: productionCompanies.name,
+            logo: productionCompanies.logo,
+          })
+          .from(movieProductionCompanies)
+          .leftJoin(movies, eq(movieProductionCompanies.movieId, movies.id))
+          .leftJoin(
+            productionCompanies,
+            eq(
+              movieProductionCompanies.productionCompanyId,
+              productionCompanies.id,
+            ),
+          )
+          .where(eq(movies.id, movieData.id))
 
-      const data = movieData.map((item) => ({
-        ...item,
-        overview: movieOverviewsData[0].content,
-        genres: movieGenresData,
-        productionCompanies: movieProductionCompaniesData,
-      }))
+        const data = {
+          ...movieData,
+          overview: movieOverviewsData[0].content,
+          genres: movieGenresData,
+          productionCompanies: movieProductionCompaniesData,
+        }
 
-      return data[0]
+        return data
+      }
     } catch (error) {
       if (error instanceof TRPCError) {
         throw error
@@ -148,6 +149,7 @@ export const movieRouter = createTRPCRouter({
       }
     }
   }),
+
   latest: publicProcedure
     .input(
       z.object({
@@ -177,6 +179,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   latestInfinite: publicProcedure
     .input(
       z.object({
@@ -225,6 +228,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   byGenreId: publicProcedure
     .input(
       z.object({
@@ -262,6 +266,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   byGenreIdInfinite: publicProcedure
     .input(
       z.object({
@@ -318,6 +323,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   byProductionCompanyId: publicProcedure
     .input(
       z.object({
@@ -359,6 +365,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   byProductionCompanyIdInfinite: publicProcedure
     .input(
       z.object({
@@ -419,6 +426,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   relatedInfinite: publicProcedure
     .input(
       z.object({
@@ -477,6 +485,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   dashboard: adminProtectedProcedure
     .input(
       z.object({
@@ -505,6 +514,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   sitemap: publicProcedure
     .input(
       z.object({
@@ -538,6 +548,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
@@ -558,6 +569,7 @@ export const movieRouter = createTRPCRouter({
       }
     }
   }),
+
   countDashboard: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(movies)
@@ -575,6 +587,7 @@ export const movieRouter = createTRPCRouter({
       }
     }
   }),
+
   search: publicProcedure
     .input(z.object({ language: languageType, searchQuery: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -604,6 +617,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   searchDashboard: publicProcedure
     .input(z.object({ language: languageType, searchQuery: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -633,6 +647,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   create: adminProtectedProcedure
     .input(createMovieSchema)
     .mutation(async ({ ctx, input }) => {
@@ -713,6 +728,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateMovieSchema)
     .mutation(async ({ ctx, input }) => {
@@ -791,6 +807,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   updateWithoutChangeUpdatedDate: adminProtectedProcedure
     .input(updateMovieSchema)
     .mutation(async ({ ctx, input }) => {
@@ -869,6 +886,7 @@ export const movieRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

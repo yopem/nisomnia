@@ -16,8 +16,8 @@ import type { LanguageType } from "@/lib/validation/language"
 export async function generateMetadata(props: {
   params: Promise<{ locale: LanguageType; username: string }>
 }): Promise<Metadata> {
-  const params = await props.params
-  const { username, locale } = params
+  const { params } = props
+  const { username, locale } = await params
 
   const user = await api.user.byUsername(username)
 
@@ -44,24 +44,25 @@ interface UserPageProps {
 }
 
 export default async function UserPage(props: UserPageProps) {
-  const params = await props.params
-  const { username, locale } = params
+  const { params } = props
+  const { username, locale } = await params
 
   const t = await getI18n()
   const ts = await getScopedI18n("user")
   const tsa = await getScopedI18n("article")
 
   const user = await api.user.byUsername(username)
+
+  if (!user) {
+    return notFound()
+  }
+
   const articles = await api.article.byAuthorId({
     authorId: user?.id!,
     language: locale,
     page: 1,
     perPage: 6,
   })
-
-  if (!user) {
-    return notFound()
-  }
 
   return (
     <>

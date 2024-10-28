@@ -49,8 +49,8 @@ const ArticleListRelated = dynamicFn(async () => {
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const params = await props.params
-  const { slug } = params
+  const { params } = props
+  const { slug } = await params
 
   const article = await api.article.bySlug(slug)
 
@@ -61,11 +61,11 @@ export async function generateMetadata(props: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/article/${article?.slug}/`,
     },
     openGraph: {
-      title: article.title,
+      title: article?.metaTitle ?? article?.title,
       description: article?.metaDescription ?? article?.excerpt,
       images: [
         {
-          url: article.featuredImage,
+          url: article?.featuredImage!,
           width: 1280,
           height: 720,
         },
@@ -78,7 +78,7 @@ export async function generateMetadata(props: {
       card: "summary_large_image",
       images: [
         {
-          url: article.featuredImage,
+          url: article?.featuredImage!,
           width: 1280,
           height: 720,
         },
@@ -88,7 +88,7 @@ export async function generateMetadata(props: {
       other: [
         {
           rel: "amphtml",
-          url: `${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}/amp`,
+          url: `${env.NEXT_PUBLIC_SITE_URL}/article/${article?.slug}/amp`,
         },
       ],
     },
@@ -108,13 +108,13 @@ export default async function ArticleSlugPage(props: ArticleSlugPageProps) {
 
   const t = await getI18n()
 
-  const { user } = await getCurrentSession()
-
   const article = await api.article.bySlug(slug)
 
   if (!article) {
     notFound()
   }
+
+  const { user } = await getCurrentSession()
 
   const adsBelowHeader = await api.ad.byPosition("article_below_header")
   const adsSingleArticleAboveContent = await api.ad.byPosition(

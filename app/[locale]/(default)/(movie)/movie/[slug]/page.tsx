@@ -23,13 +23,18 @@ export async function generateMetadata(props: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}/`,
     },
     openGraph: {
-      title: movie.title,
+      title: movie?.metaTitle ?? movie?.title,
       description: movie?.metaDescription ?? movie?.overview!,
       images: [
         {
-          url: movie.backdrop!,
+          url: movie?.poster!,
           width: 1280,
           height: 720,
+        },
+        {
+          url: movie?.backdrop!,
+          width: 600,
+          height: 900,
         },
       ],
       url: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}`,
@@ -39,7 +44,7 @@ export async function generateMetadata(props: {
       card: "summary_large_image",
       images: [
         {
-          url: movie.backdrop!,
+          url: movie?.backdrop!,
           width: 1280,
           height: 720,
         },
