@@ -2,54 +2,17 @@
 
 import * as React from "react"
 import { usePathname, useSearchParams } from "next/navigation"
+import Script from "next/script"
 
 import env from "@/env"
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any
-  }
-}
 
 const AdsenseScript = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [hasScrolled, setHasScrolled] = React.useState<boolean>(false)
 
-  React.useEffect(() => {
-    const scriptElement = document.querySelector(
-      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
-    )
-
-    const handleAdLoad = () => {
-      try {
-        const insElements = Array.from(
-          document.querySelectorAll("ins.manual-adsense"),
-        )
-        const insWithoutIframe = insElements.filter(
-          (ins) => !ins.querySelector("iframe"),
-        )
-        if (!hasScrolled && insWithoutIframe.length > 0) {
-          if (window?.adsbygoogle) {
-            setHasScrolled(true)
-            insWithoutIframe.forEach((el) => {
-              if (!el.querySelector("iframe")) {
-                ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-              }
-            })
-            window.removeEventListener("scroll", handleAdScroll)
-          } else {
-            scriptElement?.addEventListener("load", handleAdLoad)
-          }
-        }
-      } catch (err) {
-        console.log("Err", err)
-      }
-    }
-
-    const handleAdScroll = () => {
+  const handleAdLoad = () => {
+    try {
       const insElements = Array.from(
         document.querySelectorAll("ins.manual-adsense"),
       )
@@ -57,78 +20,61 @@ const AdsenseScript = () => {
         (ins) => !ins.querySelector("iframe"),
       )
       if (!hasScrolled && insWithoutIframe.length > 0) {
-        if (window?.adsbygoogle) {
+        if (window.adsbygoogle) {
           setHasScrolled(true)
-
           insWithoutIframe.forEach((el) => {
             if (!el.querySelector("iframe")) {
               ;(window.adsbygoogle = window.adsbygoogle || []).push({})
             }
-            window.removeEventListener("scroll", handleAdScroll)
           })
         }
       }
+    } catch (err) {
+      console.log("Err", err)
     }
+  }
 
-    // Push ad after 8 seconds
+  const handleAdScroll = () => {
+    const insElements = Array.from(
+      document.querySelectorAll("ins.manual-adsense"),
+    )
+    const insWithoutIframe = insElements.filter(
+      (ins) => !ins.querySelector("iframe"),
+    )
+    if (!hasScrolled && insWithoutIframe.length > 0) {
+      if (window.adsbygoogle) {
+        setHasScrolled(true)
+        insWithoutIframe.forEach((el) => {
+          if (!el.querySelector("iframe")) {
+            ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+          }
+        })
+      }
+    }
+  }
+
+  React.useEffect(() => {
     const timeoutId = setTimeout(handleAdLoad, 9000)
-
-    // Push ad when scrolled
     window.addEventListener("scroll", handleAdScroll)
 
     return () => {
       clearTimeout(timeoutId)
-      if (scriptElement) {
-        scriptElement.removeEventListener("load", handleAdLoad)
-      }
       window.removeEventListener("scroll", handleAdScroll)
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasScrolled, pathname, searchParams])
 
   React.useEffect(() => {
     setHasScrolled(false)
   }, [pathname, searchParams])
 
-  React.useEffect(() => {
-    const scriptElement = document.querySelector(
-      `script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"]`,
-    )
-    const handleScriptLoad = () => {
-      if (!scriptElement) {
-        const script = document.createElement("script")
-        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`
-        script.async = true
-        script.crossOrigin = "anonymous"
-        document.body.appendChild(script)
-      }
-    }
-
-    const handleLoad = () => {
-      clearTimeout(timeoutId)
-      handleScriptLoad()
-    }
-
-    const handleScroll = () => {
-      handleScriptLoad()
-
-      // Remove event listener after script is loaded
-      window.removeEventListener("scroll", handleScroll)
-    }
-
-    // Push ad after 8 seconds
-    const timeoutId = setTimeout(handleLoad, 7000)
-
-    // Push ad when scrolled
-    window.addEventListener("scroll", handleScroll)
-
-    // Clean up event listener on component unmount
-    return () => {
-      clearTimeout(timeoutId)
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
-
-  return <></>
+  return (
+    <Script
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+      strategy="afterInteractive"
+      onLoad={handleAdLoad}
+    />
+  )
 }
 
 export default AdsenseScript
