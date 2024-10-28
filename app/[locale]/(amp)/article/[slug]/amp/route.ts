@@ -302,19 +302,19 @@ darkButton.addEventListener('click', () => {
         </script>
       </head>
       <body>
+      <amp-auto-ads type="adsense" data-ad-client="${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"></amp-auto-ads>
       <amp-analytics type="gtag" data-credentials="include">
       <script type="application/json">
       {
         "vars" : {
           "gtag_id": "${env.NEXT_PUBLIC_GA_ID}",
           "config" : {
-            "<TARGET_ID>": { "groups": "default" }
+            "${env.NEXT_PUBLIC_GA_ID}": { "groups": "default" }
           }
         }
       }
       </script>
       </amp-analytics>
-        <amp-auto-ads type="adsense" data-ad-client="${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"></amp-auto-ads>
         <div id="amp-dark-mode-wrapper" class="ligth-mode" [class]="darkClass">
           <header id="#top" class="amp-header-container">
             <div class="amp-container">
