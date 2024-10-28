@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import { Skeleton } from "@/components/ui/skeleton"
 import env from "@/env"
@@ -12,19 +13,66 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
 const Adsense: React.FC<AdsenseProps> = (props) => {
   const { content } = props
 
-  const [isHydrated, setIsHydrated] = React.useState(false)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const [hasScrolled, setHasScrolled] = React.useState<boolean>(false)
+
+  const handleAdLoad = () => {
+    try {
+      const insElements = Array.from(
+        document.querySelectorAll("ins.manual-adsense"),
+      )
+      const insWithoutIframe = insElements.filter(
+        (ins) => !ins.querySelector("iframe"),
+      )
+      if (!hasScrolled && insWithoutIframe.length > 0) {
+        if (window.adsbygoogle) {
+          setHasScrolled(true)
+          insWithoutIframe.forEach((el) => {
+            if (!el.querySelector("iframe")) {
+              ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+            }
+          })
+        }
+      }
+    } catch (err) {
+      console.log("Err", err)
+    }
+  }
+
+  const handleAdScroll = () => {
+    const insElements = Array.from(
+      document.querySelectorAll("ins.manual-adsense"),
+    )
+    const insWithoutIframe = insElements.filter(
+      (ins) => !ins.querySelector("iframe"),
+    )
+    if (!hasScrolled && insWithoutIframe.length > 0) {
+      if (window.adsbygoogle) {
+        setHasScrolled(true)
+        insWithoutIframe.forEach((el) => {
+          if (!el.querySelector("iframe")) {
+            ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+          }
+        })
+      }
+    }
+  }
 
   React.useEffect(() => {
-    setIsHydrated(true)
-  }, [])
+    const timeoutId = setTimeout(handleAdLoad, 9000)
+    window.addEventListener("scroll", handleAdScroll)
 
-  if (process.env.APP_ENV === "development") {
-    return null
-  }
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener("scroll", handleAdScroll)
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasScrolled, pathname, searchParams])
 
-  if (!isHydrated) {
-    return null
-  }
+  React.useEffect(() => {
+    setHasScrolled(false)
+  }, [pathname, searchParams])
 
   return (
     <React.Suspense
