@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { AdUnit } from "next-google-adsense"
 
 import { Skeleton } from "@/components/ui/skeleton"
 import env from "@/env"
@@ -13,6 +12,20 @@ interface AdsenseProps extends React.HTMLAttributes<HTMLDivElement> {
 const Adsense: React.FC<AdsenseProps> = (props) => {
   const { content } = props
 
+  const [isHydrated, setIsHydrated] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  if (process.env.APP_ENV === "development") {
+    return null
+  }
+
+  if (!isHydrated) {
+    return null
+  }
+
   return (
     <React.Suspense
       fallback={
@@ -20,11 +33,15 @@ const Adsense: React.FC<AdsenseProps> = (props) => {
       }
     >
       <div className="my-[5px] flex h-auto w-screen min-w-full justify-center overflow-hidden sm:w-full">
-        <AdUnit
-          publisherId={env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
-          slotId={content}
-          layout="display"
-        />
+        <ins
+          // eslint-disable-next-line tailwindcss/no-custom-classname
+          className="adsbygoogle manual-adsense h-auto w-screen min-w-full sm:w-full"
+          style={{ display: "block" }}
+          data-ad-client={`ca-${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+          data-ad-slot={content}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
       </div>
     </React.Suspense>
   )
