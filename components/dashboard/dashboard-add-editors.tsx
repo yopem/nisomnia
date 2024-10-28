@@ -72,7 +72,7 @@ const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
       setSearchQuery(values.name)
       if (searchResults) {
         const searchResult = searchResults?.find(
-          (topic) => topic.name === values.name,
+          (editor) => editor.name === values.name,
         )
         if (searchResult) {
           if (
@@ -133,18 +133,18 @@ const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
   return (
     <div className="my-2 flex max-w-xl flex-col space-y-2">
       <FormLabel>{t("editors")}</FormLabel>
-      <div className="rounded-md border border-muted/30 bg-muted/100">
-        <div className="flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
+      <div className="rounded-md border bg-muted/100">
+        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 p-2">
           {selectedEditors.length > 0 &&
             selectedEditors.map((editor) => {
               return (
                 <div
-                  className="flex items-center gap-2 bg-muted/20 px-2 py-1 text-[14px] text-foreground"
+                  className="flex items-center gap-2 rounded-full bg-background px-3 py-1 text-[14px] text-foreground"
                   key={editor.id}
                 >
                   <span>{editor.name}</span>
                   <Button
-                    // disabled={selectedAuthors.length === 1}
+                    // disabled={selectedEditors.length === 1}
                     aria-label="Delete Editor"
                     onClick={() => handleRemoveValue(editor)}
                     size="icon"
@@ -160,7 +160,7 @@ const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
             {...form.register("name", {
               required: selectedEditors.length === 0 && ts("editor_required"),
             })}
-            className="h-auto w-full min-w-[50px] max-w-full shrink grow basis-0 border-none !bg-transparent p-0 focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="h-auto min-h-6 w-full min-w-[50px] shrink grow basis-0 border-none !bg-transparent px-2 py-0 focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             name="name"
             id="searchEditor"
             value={searchQuery}
@@ -171,7 +171,7 @@ const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
           <FormMessage />
         </div>
         {searchResults && searchResults.length > 0 && (
-          <ul className="border-t border-muted/30">
+          <ul className="border-t">
             {searchResults.map((searchEditor) => {
               const editorsData = {
                 id: searchEditor.id,
