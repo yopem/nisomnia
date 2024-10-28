@@ -207,7 +207,6 @@ darkButton.addEventListener('click', () => {
           custom-element="amp-twitter"
           src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js"
         ></script>
-        <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
         <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
         <script
           async
@@ -218,6 +217,7 @@ darkButton.addEventListener('click', () => {
           name="amp-script-src"
           content="sha384-HLjhGFoQL5ruBX6qnMC1eyKy-QVvXvGLwT0Pe55bKhv3Ov21f0S15eWC0gwkcxHg"
         />
+        <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
         <title>${article.title}</title>
         <link
           rel="canonical"
@@ -302,7 +302,7 @@ darkButton.addEventListener('click', () => {
         </script>
       </head>
       <body>
-      <amp-auto-ads type="adsense" data-ad-client="${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"></amp-auto-ads>
+      <amp-auto-ads type="adsense" data-ad-client="ca-${env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}"></amp-auto-ads>
       <amp-analytics type="gtag" data-credentials="include">
       <script type="application/json">
       {
