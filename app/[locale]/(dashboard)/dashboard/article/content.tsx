@@ -19,9 +19,9 @@ export default function DashboardArticleContent() {
   const ts = useScopedI18n("article")
 
   const { data: articlesCountLangId, refetch: updateArticlesCountLangId } =
-    api.article.countByLanguage.useQuery("id")
+    api.article.countByLanguageDashboard.useQuery("id")
   const { data: articlesCountLangEn, refetch: updateArticlesCountLangEn } =
-    api.article.countByLanguage.useQuery("en")
+    api.article.countByLanguageDashboard.useQuery("en")
 
   const perPage = 10
 

@@ -19,9 +19,9 @@ export default function DashboardTopicContent() {
   const ts = useScopedI18n("topic")
 
   const { data: topicsCountLangId, refetch: updateTopicsCountLangId } =
-    api.topic.countByLanguage.useQuery("id")
+    api.topic.countByLanguageDashboard.useQuery("id")
   const { data: topicsCountLangEn, refetch: updateTopicsCountLangEn } =
-    api.topic.countByLanguage.useQuery("en")
+    api.topic.countByLanguageDashboard.useQuery("en")
 
   const perPage = 10
 

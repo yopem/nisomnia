@@ -664,6 +664,28 @@ export const articleRouter = createTRPCRouter({
         }
       }
     }),
+  countByLanguageDashboard: publicProcedure
+    .input(languageType)
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db
+          .select({ values: count() })
+          .from(articles)
+          .where(eq(articles.language, input))
+
+        return data[0].values
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   search: publicProcedure
     .input(z.object({ language: languageType, searchQuery: z.string() }))
     .query(async ({ ctx, input }) => {

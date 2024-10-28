@@ -400,6 +400,28 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+  countByLanguageDashboard: publicProcedure
+    .input(languageType)
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db
+          .select({ values: count() })
+          .from(topics)
+          .where(eq(topics.language, input))
+
+        return data[0].values
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
   create: adminProtectedProcedure
     .input(createTopicSchema)
     .mutation(async ({ ctx, input }) => {
