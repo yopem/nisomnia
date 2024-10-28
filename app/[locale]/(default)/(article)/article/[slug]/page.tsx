@@ -168,8 +168,8 @@ export default async function ArticleSlugPage(props: ArticleSlugPageProps) {
         url={`${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}`}
         title={article.metaTitle ?? article.title}
         images={[article.featuredImage]}
-        datePublished={JSON.stringify(article.createdAt)}
-        dateModified={JSON.stringify(article.createdAt)}
+        datePublished={JSON.stringify(article?.createdAt?.toISOString())}
+        dateModified={JSON.stringify(article?.createdAt?.toISOString())}
         authorName={[
           {
             name: article?.authors[0]?.name,
