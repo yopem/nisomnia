@@ -2,6 +2,7 @@ import * as React from "react"
 
 import DashboardPagination from "@/components/dashboard/dashboard-pagination"
 import DashboardShowOptions from "@/components/dashboard/dashboard-show-options"
+import DashboardStatusBadge from "@/components/dashboard/dashboard-status-badge"
 import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
 import {
@@ -83,6 +84,9 @@ export default function GenreTable(props: GenreTableProps) {
               {t("slug")}
             </TableHead>
             <TableHead className="hidden whitespace-nowrap lg:table-cell">
+              Status
+            </TableHead>
+            <TableHead className="hidden whitespace-nowrap lg:table-cell">
               {t("featured_image")}
             </TableHead>
           </TableRow>
@@ -106,6 +110,13 @@ export default function GenreTable(props: GenreTableProps) {
                     <span className="overflow-hidden text-ellipsis font-medium">
                       {genre.slug}
                     </span>
+                  </div>
+                </TableCell>
+                <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">
+                  <div className="flex">
+                    <DashboardStatusBadge status={genre.status}>
+                      {genre.status}
+                    </DashboardStatusBadge>
                   </div>
                 </TableCell>
                 <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">

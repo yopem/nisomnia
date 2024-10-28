@@ -22,6 +22,7 @@ import { toast } from "@/components/ui/toast/use-toast"
 import type { SelectGenre } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
+import type { StatusType } from "@/lib/validation/status"
 
 interface FormValues {
   id: string
@@ -31,6 +32,7 @@ interface FormValues {
   description?: string
   metaTitle?: string
   metaDescription?: string
+  status: StatusType
 }
 
 interface EditGenreFormProps {
@@ -93,6 +95,7 @@ export default function EditGenreForm(props: EditGenreFormProps) {
       tmdbId: genre.tmdbId ?? "",
       slug: genre.slug,
       description: genre.description ?? "",
+      status: genre.status,
       metaTitle: genre.metaTitle ?? "",
       metaDescription: genre?.metaDescription ?? "",
     },
@@ -300,11 +303,23 @@ export default function EditGenreForm(props: EditGenreFormProps) {
               aria-label={t("submit")}
               type="submit"
               onClick={() => {
+                form.setValue("status", "published")
                 form.handleSubmit(onSubmit)()
               }}
               loading={loading}
             >
               {t("submit")}
+            </Button>
+            <Button
+              aria-label={t("save_as_draft")}
+              type="submit"
+              onClick={() => {
+                form.setValue("status", "draft")
+                form.handleSubmit(onSubmit)()
+              }}
+              loading={loading}
+            >
+              {t("save_as_draft")}
             </Button>
           </div>
         </form>

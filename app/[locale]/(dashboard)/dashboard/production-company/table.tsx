@@ -2,6 +2,7 @@ import * as React from "react"
 
 import DashboardPagination from "@/components/dashboard/dashboard-pagination"
 import DashboardShowOptions from "@/components/dashboard/dashboard-show-options"
+import DashboardStatusBadge from "@/components/dashboard/dashboard-status-badge"
 import Image from "@/components/image"
 import { Badge } from "@/components/ui/badge"
 import { Icon } from "@/components/ui/icon"
@@ -87,6 +88,9 @@ export default function ProductionCompanyTable(
               {t("origin_country")}
             </TableHead>
             <TableHead className="hidden whitespace-nowrap lg:table-cell">
+              Status
+            </TableHead>
+            <TableHead className="hidden whitespace-nowrap lg:table-cell">
               Logo
             </TableHead>
           </TableRow>
@@ -117,6 +121,13 @@ export default function ProductionCompanyTable(
                     >
                       {productionCompany.originCountry ?? "N/A"}
                     </Badge>
+                  </div>
+                </TableCell>
+                <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">
+                  <div className="flex">
+                    <DashboardStatusBadge status={productionCompany.status}>
+                      {productionCompany.status}
+                    </DashboardStatusBadge>
                   </div>
                 </TableCell>
                 <TableCell className="hidden whitespace-nowrap align-middle lg:table-cell">

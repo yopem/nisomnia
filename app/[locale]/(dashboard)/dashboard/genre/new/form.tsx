@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
+import type { StatusType } from "@/lib/validation/status"
 
 interface FormValues {
   title: string
@@ -28,6 +29,7 @@ interface FormValues {
   description?: string
   metaTitle?: string
   metaDescription?: string
+  status: StatusType
 }
 
 export default function CreateGenreForm() {
@@ -263,11 +265,23 @@ export default function CreateGenreForm() {
               aria-label={t("submit")}
               type="submit"
               onClick={() => {
+                form.setValue("status", "published")
                 form.handleSubmit(onSubmit)()
               }}
               loading={loading}
             >
               {t("submit")}
+            </Button>
+            <Button
+              aria-label={t("save_as_draft")}
+              type="submit"
+              onClick={() => {
+                form.setValue("status", "draft")
+                form.handleSubmit(onSubmit)()
+              }}
+              loading={loading}
+            >
+              {t("save_as_draft")}
             </Button>
           </div>
         </form>

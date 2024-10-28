@@ -22,6 +22,7 @@ import { toast } from "@/components/ui/toast/use-toast"
 import type { SelectProductionCompany } from "@/lib/db/schema"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
+import type { StatusType } from "@/lib/validation/status"
 
 interface FormValues {
   id: string
@@ -30,6 +31,7 @@ interface FormValues {
   tmdbId: string
   originCountry?: string
   description?: string
+  status: StatusType
 }
 
 interface EditProductionCompanyFormProps {
@@ -96,6 +98,7 @@ export default function EditProductionCompanyForm(
       slug: productionCompany.slug,
       originCountry: productionCompany.originCountry ?? "",
       description: productionCompany.description ?? "",
+      status: productionCompany.status,
     },
   })
 
@@ -258,16 +261,28 @@ export default function EditProductionCompanyForm(
               )}
             </div>
           </div>
-          <div className="mt-4">
+          <div className="flex space-x-2">
             <Button
               aria-label={t("submit")}
               type="submit"
               onClick={() => {
+                form.setValue("status", "published")
                 form.handleSubmit(onSubmit)()
               }}
               loading={loading}
             >
               {t("submit")}
+            </Button>
+            <Button
+              aria-label={t("save_as_draft")}
+              type="submit"
+              onClick={() => {
+                form.setValue("status", "draft")
+                form.handleSubmit(onSubmit)()
+              }}
+              loading={loading}
+            >
+              {t("save_as_draft")}
             </Button>
           </div>
         </form>
