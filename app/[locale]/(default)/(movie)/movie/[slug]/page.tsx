@@ -74,7 +74,7 @@ export default async function MovieSlugPage(props: MovieSlugPageProps) {
   const movie = await api.movie.bySlug(slug)
 
   if (!movie) {
-    notFound()
+    return notFound()
   }
 
   return (
