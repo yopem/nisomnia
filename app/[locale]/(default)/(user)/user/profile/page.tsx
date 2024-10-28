@@ -1,3 +1,5 @@
+// TODO: add seo for user profile
+
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 

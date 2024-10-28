@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import env from "@/env"
 import { getI18n } from "@/lib/locales/server"
@@ -28,5 +29,34 @@ export async function generateMetadata(props: {
 export default async function Movie() {
   const t = await getI18n()
 
-  return <h1>{t("movies")}</h1>
+  return (
+    <>
+      <BreadcrumbJsonLd
+        useAppDir={true}
+        itemListElements={[
+          {
+            position: 1,
+            name: env.NEXT_PUBLIC_DOMAIN,
+            item: env.NEXT_PUBLIC_SITE_URL,
+          },
+          {
+            position: 2,
+            name: "Movie",
+            item: `${env.NEXT_PUBLIC_SITE_URL}/movie`,
+          },
+        ]}
+      />
+      <SiteLinksSearchBoxJsonLd
+        useAppDir={true}
+        url={env.NEXT_PUBLIC_SITE_URL}
+        potentialActions={[
+          {
+            target: `${env.NEXT_PUBLIC_SITE_URL}/search?q`,
+            queryInput: "search_term_string",
+          },
+        ]}
+      />
+      <h1>{t("movies")}</h1>
+    </>
+  )
 }
