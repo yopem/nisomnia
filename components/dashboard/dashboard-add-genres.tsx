@@ -3,7 +3,7 @@
 "use client"
 
 import * as React from "react"
-import { useController, type Control, type FieldValues } from "react-hook-form"
+import { useController, type Control } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { FormLabel, FormMessage } from "@/components/ui/form"
@@ -14,9 +14,7 @@ import { toast } from "@/components/ui/toast/use-toast"
 import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 
-interface DashboardAddGenresProps<
-  TFieldValues extends FieldValues = FieldValues,
-> {
+interface DashboardAddGenresProps {
   genres: string[]
   addGenres: React.Dispatch<React.SetStateAction<string[]>>
   mode?: "create" | "edit"
@@ -32,7 +30,8 @@ interface DashboardAddGenresProps<
       }[]
     >
   >
-  control: Control<TFieldValues>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>
   fieldName: string
 }
 

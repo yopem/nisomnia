@@ -180,7 +180,6 @@ export default function CreateFeedForm() {
                     mode="edit"
                     locale={valueLanguage}
                     fieldName="topics"
-                    //@ts-expect-error FIX: later
                     control={form.control}
                     topics={topics}
                     addTopics={setTopics}

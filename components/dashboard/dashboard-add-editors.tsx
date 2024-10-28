@@ -131,7 +131,7 @@ const DashboardAddEditors: React.FC<DashboardAddEditorsProps> = (props) => {
   }
 
   return (
-    <div className="my-2 flex max-w-xl flex-col space-y-2">
+    <div className="space-y-2">
       <FormLabel>{t("editors")}</FormLabel>
       <div className="rounded-md border bg-muted/100">
         <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 p-2">

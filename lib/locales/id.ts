@@ -178,6 +178,7 @@ export default {
   "production_company.delete_success": "Rumah Produksi berhasil dihapus",
   "production_company.edit": "Perbaharui Rumah Produksi",
   "production_company.enter": "Masukan Rumah Produksi",
+  "production_company.find": "Cari Rumah Produksi",
   "production_company.finding": "Mencari Rumah Produksi ...",
   "production_company.not_found": "Rumah Produksi tidak ditemukan",
   "production_company.update_failed":

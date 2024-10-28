@@ -178,6 +178,7 @@ export default {
   "production_company.edit": "Edit Production Company",
   "production_company.enter": "Enter Production Companies",
   "production_company.finding": "Finding Production Company ...",
+  "production_company.find": "Find Production Companies",
   "production_company.not_found": "Production Company not found",
   "production_company.update_failed":
     "Failed to update production company! Please try again later",

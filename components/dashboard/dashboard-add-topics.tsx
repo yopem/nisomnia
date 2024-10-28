@@ -3,7 +3,7 @@
 "use client"
 
 import * as React from "react"
-import { useController, type Control, type FieldValues } from "react-hook-form"
+import { useController, type Control } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { FormLabel, FormMessage } from "@/components/ui/form"
@@ -16,9 +16,7 @@ import { useI18n, useScopedI18n } from "@/lib/locales/client"
 import { api } from "@/lib/trpc/react"
 import type { LanguageType } from "@/lib/validation/language"
 
-interface DashboardAddTopicsProps<
-  TFieldValues extends FieldValues = FieldValues,
-> {
+interface DashboardAddTopicsProps {
   topics: string[]
   locale: LanguageType
   addTopics: React.Dispatch<React.SetStateAction<string[]>>
@@ -35,7 +33,8 @@ interface DashboardAddTopicsProps<
       }[]
     >
   >
-  control: Control<TFieldValues>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>
   fieldName: string
 }
 

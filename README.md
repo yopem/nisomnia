@@ -5,7 +5,7 @@
 - [x] add count by language dashboard
 - [x] add save as draft to all data type
 - [x] analytics and adsense not working
-- [ ] fix dashboard add production companies search problem
+- [x] fix dashboard add production companies search problem
 - [x] change all movie meta description to overview value
 - [x] update pulic api movie meta description default value to overview
 - [x] add default image type when uploading image while creating article, topic, etc

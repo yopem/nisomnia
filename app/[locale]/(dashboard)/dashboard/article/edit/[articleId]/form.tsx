@@ -400,7 +400,6 @@ const EditArticleForm: React.FC<EditArticleFormProps> = (props) => {
                             mode="edit"
                             fieldName="topics"
                             locale={valueLanguage}
-                            //@ts-expect-error FIX: later
                             control={form.control}
                             topics={topics}
                             addTopics={setTopics}

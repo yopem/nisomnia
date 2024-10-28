@@ -76,11 +76,11 @@ export default function CreateMovieForm() {
     { id: string; title: string }[] | []
   >([])
   const [productionCompanies, setProductionCompanies] = React.useState<
-    string[] | null
-  >(null)
+    string[]
+  >([])
 
   const [selectedProductionCompanies, setSelectedProductionCompanies] =
-    React.useState<{ id: string; name: string }[] | null>(null)
+    React.useState<{ id: string; name: string }[]>([])
 
   const [showMetaData, setShowMetaData] = React.useState<boolean>(false)
 
@@ -476,7 +476,6 @@ export default function CreateMovieForm() {
                 <DashboardAddGenres
                   mode="edit"
                   fieldName="genres"
-                  //@ts-expect-error FIX: later
                   control={form.control}
                   genres={genres}
                   addGenres={setGenres}
@@ -486,14 +485,11 @@ export default function CreateMovieForm() {
               </div>
               <div className="my-2">
                 <DashboardAddProductionCompanies
-                  fieldName="productionCompanies"
-                  //@ts-expect-error FIX: later
-                  control={form.control}
-                  productionCompanies={productionCompanies}
-                  addProductionCompanies={setProductionCompanies}
-                  selectedProductionCompanies={selectedProductionCompanies}
-                  addSelectedProdcutionCompanies={
-                    setSelectedProductionCompanies
+                  productionCompanies={productionCompanies!}
+                  addProductionCompanies={setProductionCompanies!}
+                  selectedProductionCompanies={selectedProductionCompanies!}
+                  addSelectedProductionCompanies={
+                    setSelectedProductionCompanies!
                   }
                 />
               </div>

@@ -105,22 +105,22 @@ export default function EditMovieForm(props: EditMovieFormProps) {
       : [],
   )
   const [productionCompanies, setProductionCompanies] = React.useState<
-    string[] | null
+    string[] | []
   >(
     movie.productionCompanies
       ? movie.productionCompanies.map((productionCompany) => {
           return productionCompany.id
         })
-      : null,
+      : [],
   )
 
   const [selectedProductionCompanies, setSelectedProductionCompanies] =
-    React.useState<{ id: string; name: string }[] | null>(
+    React.useState<{ id: string; name: string }[] | []>(
       movie.productionCompanies && movie.productionCompanies.length > 0
         ? movie.productionCompanies.map((productionCompany) => {
             return { id: productionCompany.id, name: productionCompany.name }
           })
-        : null,
+        : [],
     )
 
   const [showMetaData, setShowMetaData] = React.useState<boolean>(false)
@@ -544,7 +544,6 @@ export default function EditMovieForm(props: EditMovieFormProps) {
               <div className="my-2">
                 <DashboardAddGenres
                   fieldName="genres"
-                  //@ts-expect-error FIX: later
                   control={form.control}
                   genres={genres}
                   addGenres={setGenres}
@@ -554,14 +553,11 @@ export default function EditMovieForm(props: EditMovieFormProps) {
               </div>
               <div className="my-2">
                 <DashboardAddProductionCompanies
-                  fieldName="productionCompanies"
-                  //@ts-expect-error FIX: later
-                  control={form.control}
-                  productionCompanies={productionCompanies}
-                  addProductionCompanies={setProductionCompanies}
-                  selectedProductionCompanies={selectedProductionCompanies}
-                  addSelectedProdcutionCompanies={
-                    setSelectedProductionCompanies
+                  productionCompanies={productionCompanies!}
+                  addProductionCompanies={setProductionCompanies!}
+                  selectedProductionCompanies={selectedProductionCompanies!}
+                  addSelectedProductionCompanies={
+                    setSelectedProductionCompanies!
                   }
                 />
               </div>
