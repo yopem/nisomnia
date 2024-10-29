@@ -15,7 +15,7 @@ export async function generateMetadata(props: {
     title: "Production Company",
     description: "Production Company",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/production-company/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/production-company`,
     },
     openGraph: {
       title: "Production Company",

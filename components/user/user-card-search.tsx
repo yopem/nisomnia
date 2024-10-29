@@ -10,10 +10,11 @@ type UserDataProps = Pick<SelectUser, "id" | "name" | "username" | "image">
 interface UserCardSearchProps {
   user: UserDataProps
   isDashboard?: boolean
+  onClick?: () => void
 }
 
 const UserCardSearch: React.FC<UserCardSearchProps> = (props) => {
-  const { user, isDashboard } = props
+  const { user, isDashboard, onClick } = props
 
   const { id, name, username, image } = user
 
@@ -22,6 +23,7 @@ const UserCardSearch: React.FC<UserCardSearchProps> = (props) => {
       aria-label={username!}
       href={isDashboard ? `/dashboard/user/edit/${id}` : `/user/${username}`}
       className="mb-2 w-full"
+      onClick={onClick}
     >
       <div className="flex flex-row rounded-xl p-3 hover:bg-accent">
         <div className="relative aspect-[1/1] h-[50px] w-auto max-w-[unset] overflow-hidden">

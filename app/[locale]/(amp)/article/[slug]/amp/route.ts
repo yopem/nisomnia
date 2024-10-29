@@ -221,7 +221,7 @@ darkButton.addEventListener('click', () => {
         <title>${article.title}</title>
         <link
           rel="canonical"
-          href="${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}/"
+          href="${env.NEXT_PUBLIC_SITE_URL}/article/${article.slug}"
         />
         <meta
           name="viewport"

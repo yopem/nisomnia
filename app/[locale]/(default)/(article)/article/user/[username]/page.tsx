@@ -40,14 +40,14 @@ export async function generateMetadata(props: {
   const user = await api.user.byUsername(username)
 
   return {
-    title: `${user?.name ?? user?.username} Articles`,
-    description: `${user?.name ?? user?.username} Articles Page`,
+    title: `${user?.name ?? user?.username}`,
+    description: `${user?.name ?? user?.username} Profile Page`,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${user?.username}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${user?.username}`,
     },
     openGraph: {
-      title: `${user?.name ?? user?.username} Articles`,
-      description: `${user?.name ?? user?.username} Articles Page`,
+      title: `${user?.name ?? user?.username}`,
+      description: `${user?.name ?? user?.username} Profile Page`,
       url: `${env.NEXT_PUBLIC_SITE_URL}/article/user/${user?.username}`,
       locale: locale,
     },

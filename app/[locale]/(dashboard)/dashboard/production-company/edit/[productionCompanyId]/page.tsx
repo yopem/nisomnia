@@ -24,7 +24,7 @@ export async function generateMetadata(props: {
     title: "Edit Production Company Dashboard",
     description: "Edit Production Company Dashboard",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/production-company/edit/${productionCompany?.id}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/production-company/edit/${productionCompany?.id}`,
     },
     openGraph: {
       title: "Edit Production Company Dashboard",

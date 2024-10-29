@@ -23,7 +23,7 @@ export async function generateMetadata(props: {
     title: "Edit Ad Dashboard",
     description: "Edit Ad Dashboard",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/ad/edit/${ad?.id}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/ad/edit/${ad?.id}`,
     },
     openGraph: {
       title: "Edit Ad Dashboard",

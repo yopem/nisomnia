@@ -20,12 +20,12 @@ export async function generateMetadata(props: {
     title: "Production Company Dashboard",
     description: "Production Company Dashboard",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/prodcution-company/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/prodcution-company`,
     },
     openGraph: {
       title: "Production Company Dashboard",
       description: "Production Company Dashboard",
-      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/prodcution-company/`,
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/prodcution-company`,
       locale: locale,
     },
   }

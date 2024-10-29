@@ -27,7 +27,7 @@ export async function generateMetadata(props: {
     },
     description: env.NEXT_PUBLIC_SITE_DESCRIPTION,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/`,
+      canonical: env.NEXT_PUBLIC_SITE_URL,
     },
     openGraph: {
       title: env.NEXT_PUBLIC_SITE_TITLE,

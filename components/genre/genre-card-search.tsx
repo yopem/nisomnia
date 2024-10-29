@@ -3,28 +3,28 @@ import NextLink from "next/link"
 
 import Image from "@/components/image"
 import { Icon } from "@/components/ui/icon"
-import type { SelectTopic } from "@/lib/db/schema"
+import type { SelectGenre } from "@/lib/db/schema"
 
-type TopicDataProps = Pick<
-  SelectTopic,
+type GenreDataProps = Pick<
+  SelectGenre,
   "id" | "title" | "slug" | "featuredImage"
 >
 
-interface TopicCardSearchProps {
-  topic: TopicDataProps
+interface GenreCardSearchProps {
+  genre: GenreDataProps
   isDashboard?: boolean
   onClick?: () => void
 }
 
-const TopicCardSearch: React.FC<TopicCardSearchProps> = (props) => {
-  const { topic, isDashboard, onClick } = props
+const GenreCardSearch: React.FC<GenreCardSearchProps> = (props) => {
+  const { genre, isDashboard, onClick } = props
 
-  const { id, title, slug, featuredImage } = topic
+  const { id, title, slug, featuredImage } = genre
 
   return (
     <NextLink
       aria-label={title}
-      href={isDashboard ? `/dashboard/topic/edit/${id}` : `/topic/${slug}`}
+      href={isDashboard ? `/dashboard/genre/edit/${id}` : `/genre/${slug}`}
       className="mb-2 w-full"
       onClick={onClick}
     >
@@ -37,7 +37,7 @@ const TopicCardSearch: React.FC<TopicCardSearchProps> = (props) => {
               alt={title}
             />
           ) : (
-            <Icon.Topic className="size-4" />
+            <Icon.Genre className="size-4" />
           )}
         </div>
         <div className="ml-1 w-3/4">
@@ -48,4 +48,4 @@ const TopicCardSearch: React.FC<TopicCardSearchProps> = (props) => {
   )
 }
 
-export default TopicCardSearch
+export default GenreCardSearch

@@ -1,5 +1,3 @@
-// TODO: add falback image
-
 import * as React from "react"
 import NextLink from "next/link"
 
@@ -9,10 +7,11 @@ import type { SelectArticle } from "@/lib/db/schema"
 interface ArticleCardSearchProps {
   article: Pick<SelectArticle, "id" | "title" | "featuredImage" | "slug">
   isDashboard?: boolean
+  onClick?: () => void
 }
 
 const ArticleCardSearch: React.FC<ArticleCardSearchProps> = (props) => {
-  const { article, isDashboard } = props
+  const { article, isDashboard, onClick } = props
 
   const { id, title, slug, featuredImage } = article
 
@@ -20,6 +19,7 @@ const ArticleCardSearch: React.FC<ArticleCardSearchProps> = (props) => {
     <NextLink
       aria-label={title}
       href={isDashboard ? `/dashboard/article/edit/${id}` : `/article/${slug}`}
+      onClick={onClick}
       className="mb-2 w-full"
     >
       <div className="flex flex-row rounded-xl p-3 hover:bg-accent">

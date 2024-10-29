@@ -3,10 +3,24 @@ import { redirect } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
+import env from "@/env"
 import { getCurrentSession } from "@/lib/auth/session"
 import { getScopedI18n } from "@/lib/locales/server"
 
-export default async function Page() {
+export const metadata = {
+  title: "Login",
+  description: "Login",
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_SITE_URL}/auth/login`,
+  },
+  openGraph: {
+    title: "Login",
+    description: "Login",
+    url: `${env.NEXT_PUBLIC_SITE_URL}/auth/login`,
+  },
+}
+
+export default async function LoginPage() {
   const ts = await getScopedI18n("user")
 
   const { session } = await getCurrentSession()

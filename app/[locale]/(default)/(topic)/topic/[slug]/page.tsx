@@ -39,7 +39,7 @@ export async function generateMetadata(props: {
     title: topic?.metaTitle ?? topic?.title,
     description: topic?.metaDescription ?? topic?.description,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/topic/${topic?.slug}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/topic/${topic?.slug}`,
     },
     openGraph: {
       title: topic?.title,

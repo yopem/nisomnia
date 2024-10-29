@@ -23,15 +23,14 @@ export async function generateMetadata(props: {
   return {
     title: "Edit Article Dashboard",
     description: "Edit Article Dashboard",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/article/edit/${article?.id}`,
+    },
     openGraph: {
       title: "Edit Article Dashboard",
       description: "Edit Article Dashboard",
       url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/article/edit/${article?.id}`,
-
       locale: locale,
-    },
-    alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/article/edit/${article?.id}/`,
     },
   }
 }

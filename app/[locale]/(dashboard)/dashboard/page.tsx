@@ -1,3 +1,5 @@
+import type { Metadata } from "next"
+
 import {
   DashboardBox,
   DashboardBoxCount,
@@ -5,8 +7,31 @@ import {
   DashboardBoxIconWrapper,
 } from "@/components/dashboard/dashboard-box"
 import { Icon } from "@/components/ui/icon"
+import env from "@/env"
 import { getI18n } from "@/lib/locales/server"
 import { api } from "@/lib/trpc/server"
+import type { LanguageType } from "@/lib/validation/language"
+
+export async function generateMetadata(props: {
+  params: Promise<{ adId: string; locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
+  const { locale } = params
+
+  return {
+    title: "Dashboard",
+    description: "Dashboard",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard`,
+    },
+    openGraph: {
+      title: "Dashboard",
+      description: "Dashboard",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard`,
+      locale: locale,
+    },
+  }
+}
 
 export default async function DashboardPage() {
   const t = await getI18n()

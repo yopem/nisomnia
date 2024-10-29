@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogContent,
   DialogPortal,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Icon } from "@/components/ui/icon"
@@ -26,6 +27,7 @@ interface GlobalSearchSidebarProps {
 const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
   const { locale } = props
 
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false)
   const [searchQuery, setSearchQuery] = React.useState<string>("")
   const [searched, setSearched] = React.useState<boolean>(false)
 
@@ -66,71 +68,97 @@ const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
   }
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <SidebarItem icon={<Icon.Search />}>{t("search")}</SidebarItem>
       </DialogTrigger>
       <DialogPortal>
         <DialogContent className="min-h-full w-full min-w-full">
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            autoComplete="off"
-            className="my-5"
-          >
-            <Input
-              type="search"
-              name="q"
-              onChange={handleSearchChange}
+          <div>
+            <DialogTitle>{t("search")}</DialogTitle>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+              }}
               autoComplete="off"
-              placeholder={ts("placeholder")}
-              required
-              ref={inputRef}
-            />
-          </form>
-          {searched && searchQuery && (
-            <div className="space-y-4 bg-background">
-              <ScrollArea className="h-[80vh]">
-                {articles && articles.length > 0 && (
-                  <>
-                    <h4>{t("article")}</h4>
-                    <div className="flex flex-col">
-                      {articles.map((article) => (
-                        <ArticleCardSearch
-                          key={article.slug}
-                          article={article}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-                {topics && topics.length > 0 && (
-                  <>
-                    <h4>{t("topic")}</h4>
-                    <div className="flex flex-col">
-                      {topics.map((topic) => (
-                        <TopicCardSearch key={topic.slug} topic={topic} />
-                      ))}
-                    </div>
-                  </>
-                )}
-                {users && users.length > 0 && (
-                  <>
-                    <h4>{t("user")}</h4>
-                    <div className="flex flex-col">
-                      {users.map((user) => (
-                        <UserCardSearch key={user.username} user={user} />
-                      ))}
-                    </div>
-                  </>
-                )}
-                {(!articles || articles.length === 0) &&
-                  (!topics || topics.length === 0) &&
-                  (!users || users.length === 0) && (
-                    <p className="text-lg font-semibold">{ts("not_found")}</p>
+              className="my-5"
+            >
+              <Input
+                type="search"
+                name="q"
+                onChange={handleSearchChange}
+                autoComplete="off"
+                placeholder={ts("placeholder")}
+                required
+                ref={inputRef}
+              />
+            </form>
+            {searched && searchQuery && (
+              <div className="space-y-4 bg-background">
+                <ScrollArea className="h-[80vh]">
+                  {articles && articles.length > 0 && (
+                    <>
+                      <h4>{t("article")}</h4>
+                      <div className="flex flex-col">
+                        {articles.map((article) => (
+                          <ArticleCardSearch
+                            key={article.id}
+                            article={article}
+                            onClick={() => {
+                              setOpenDialog(false)
+                              setSearched(false)
+                              setSearchQuery("")
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
                   )}
-              </ScrollArea>
-            </div>
-          )}
+                  {topics && topics.length > 0 && (
+                    <>
+                      <h4>{t("topic")}</h4>
+                      <div className="flex flex-col">
+                        {topics.map((topic) => (
+                          <TopicCardSearch
+                            key={topic.id}
+                            topic={topic}
+                            onClick={() => {
+                              setOpenDialog(false)
+                              setSearched(false)
+                              setSearchQuery("")
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {users && users.length > 0 && (
+                    <>
+                      <h4>{t("user")}</h4>
+                      <div className="flex flex-col">
+                        {users.map((user) => (
+                          <UserCardSearch
+                            key={user.id}
+                            user={user}
+                            onClick={() => {
+                              setOpenDialog(false)
+                              setSearched(false)
+                              setSearchQuery("")
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {(!articles || articles.length === 0) &&
+                    (!topics || topics.length === 0) &&
+                    (!users || users.length === 0) && (
+                      <p className="text-lg font-semibold">{ts("not_found")}</p>
+                    )}
+                </ScrollArea>
+              </div>
+            )}
+          </div>
         </DialogContent>
       </DialogPortal>
     </Dialog>

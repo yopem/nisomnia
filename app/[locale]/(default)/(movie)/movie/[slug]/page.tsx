@@ -20,7 +20,7 @@ export async function generateMetadata(props: {
     title: movie?.metaTitle ?? movie?.title,
     description: movie?.metaDescription ?? movie?.overview,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}`,
     },
     openGraph: {
       title: movie?.metaTitle ?? movie?.title,

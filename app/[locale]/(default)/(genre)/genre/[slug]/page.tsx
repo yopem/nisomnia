@@ -20,7 +20,7 @@ export async function generateMetadata(props: {
     title: genre?.metaTitle ?? genre?.title,
     description: genre?.metaDescription ?? genre?.description,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/genre/${genre?.slug}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/genre/${genre?.slug}`,
     },
     openGraph: {
       title: genre?.title,

@@ -25,7 +25,7 @@ export async function generateMetadata(props: {
     title: user?.name,
     description: user?.about ?? `${user?.name} Profile Page`,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/user/${user?.username}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/user/${user?.username}`,
     },
     openGraph: {
       title: user?.name!,

@@ -23,7 +23,7 @@ export async function generateMetadata(props: {
     description:
       productionCompany?.metaDescription ?? productionCompany?.description,
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/production-company/${productionCompany?.slug}/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/production-company/${productionCompany?.slug}`,
     },
     openGraph: {
       title: productionCompany?.name,

@@ -1,12 +1,34 @@
-// TODO: add seo for user profile
-
+import type { Metadata } from "next"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
+import env from "@/env"
 import { logout } from "@/lib/auth/logout"
 import { getCurrentSession } from "@/lib/auth/session"
 import { getI18n, getScopedI18n } from "@/lib/locales/server"
+import type { LanguageType } from "@/lib/validation/language"
+
+export async function generateMetadata(props: {
+  params: Promise<{ adId: string; locale: LanguageType }>
+}): Promise<Metadata> {
+  const params = await props.params
+  const { locale } = params
+
+  return {
+    title: "Profile",
+    description: "Profile",
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/user/profile`,
+    },
+    openGraph: {
+      title: "Profile",
+      description: "Profile",
+      url: `${env.NEXT_PUBLIC_SITE_URL}/user/profile`,
+      locale: locale,
+    },
+  }
+}
 
 export default async function UserProfilePage() {
   const { session, user } = await getCurrentSession()

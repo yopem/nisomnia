@@ -26,7 +26,7 @@ export async function generateMetadata(props: {
       locale: locale,
     },
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/media/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/media`,
     },
   }
 }

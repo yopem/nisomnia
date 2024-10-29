@@ -20,12 +20,12 @@ export async function generateMetadata(props: {
     title: "Genre Dashboard",
     description: "Genre Dashboard",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/genre/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/genre`,
     },
     openGraph: {
       title: "Genre Dashboard",
       description: "Genre Dashboard",
-      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/genre/`,
+      url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/genre`,
       locale: locale,
     },
   }

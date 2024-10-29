@@ -20,7 +20,7 @@ export async function generateMetadata(props: {
     title: "Create Feed Dashboard",
     description: "Create Feed Dashboard",
     alternates: {
-      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/feed/new/`,
+      canonical: `${env.NEXT_PUBLIC_SITE_URL}/dashboard/feed/new`,
     },
     openGraph: {
       title: "Create Feed Dashboard",
