@@ -37,6 +37,7 @@
 - [ ] for now review schema on article, movie will use random data but if review feature is available we will change it
 - [ ] add carousel json ld
 - [ ] add video json ld for trailer
+- [ ] add video json ld for articles that has youtube embeded
 
 # FIX: 
 - [ ] close global search and dashboard search dialog after result clicked
