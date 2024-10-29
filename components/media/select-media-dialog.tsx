@@ -47,9 +47,13 @@ const SelectMediaDialog: React.FC<SelectMediaDialogProps> = (props) => {
   const t = useI18n()
   const ts = useScopedI18n("media")
 
-  const { data: resultMedias } = api.media.search.useQuery(searchQuery, {
-    enabled: searched && !selectedMediaCategory,
-  })
+  const { data: resultMedias } = api.media.search.useQuery(
+    { searchQuery: searchQuery, limit: 24 },
+    {
+      enabled: searched && !selectedMediaCategory,
+    },
+  )
+
   const { data: resultMediasByCategory } = api.media.searchByCategory.useQuery(
     {
       category: selectedMediaCategory!,

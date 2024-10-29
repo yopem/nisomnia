@@ -44,6 +44,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   byArticleId: publicProcedure
     .input(
       z.object({
@@ -81,18 +82,17 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   byArticleIdInfinite: publicProcedure
     .input(
       z.object({
         articleId: z.string(),
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().nullable().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.articleComments.findMany({
           where: (articleComments, { eq, and, lt }) =>
             and(
@@ -102,7 +102,7 @@ export const articleCommentRouter = createTRPCRouter({
                 ? lt(articleComments.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (articleComments, { desc }) => [
             desc(articleComments.createdAt),
           ],
@@ -118,7 +118,7 @@ export const articleCommentRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.createdAt) {
             nextCursor = nextItem.createdAt
@@ -141,6 +141,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
       const data = await ctx.db.query.articleComments.findMany({
@@ -167,6 +168,7 @@ export const articleCommentRouter = createTRPCRouter({
       }
     }
   }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(articleComments)
@@ -184,6 +186,7 @@ export const articleCommentRouter = createTRPCRouter({
       }
     }
   }),
+
   countByArticleId: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -211,6 +214,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   create: protectedProcedure
     .input(createArticleCommentSchema)
     .mutation(async ({ ctx, input }) => {
@@ -236,6 +240,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   update: protectedProcedure
     .input(updateArticleCommentSchema)
     .mutation(async ({ ctx, input }) => {
@@ -278,6 +283,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   updateByAdmin: adminProtectedProcedure
     .input(updateArticleCommentSchema)
     .mutation(async ({ ctx, input }) => {
@@ -303,6 +309,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -341,6 +348,7 @@ export const articleCommentRouter = createTRPCRouter({
         }
       }
     }),
+
   deleteByAdmin: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

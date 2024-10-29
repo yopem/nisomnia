@@ -35,6 +35,7 @@ export const adRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -56,6 +57,7 @@ export const adRouter = createTRPCRouter({
         }
       }
     }),
+
   byPosition: publicProcedure
     .input(adPosition)
     .query(async ({ ctx, input }) => {
@@ -73,6 +75,7 @@ export const adRouter = createTRPCRouter({
         })
       }
     }),
+
   count: adminProtectedProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(ads)
@@ -90,6 +93,35 @@ export const adRouter = createTRPCRouter({
       }
     }
   }),
+
+  search: adminProtectedProcedure
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.ads.findMany({
+          where: (ads, { ilike }) => ilike(ads.title, `%${input.searchQuery}%`),
+          limit: input.limit,
+        })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
+      }
+    }),
+
   create: adminProtectedProcedure
     .input(createAdSchema)
     .mutation(async ({ ctx, input }) => {
@@ -112,6 +144,7 @@ export const adRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateAdSchema)
     .mutation(async ({ ctx, input }) => {
@@ -137,6 +170,7 @@ export const adRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

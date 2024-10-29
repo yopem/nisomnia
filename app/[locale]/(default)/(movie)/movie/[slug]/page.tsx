@@ -18,13 +18,15 @@ export async function generateMetadata(props: {
 
   return {
     title: movie?.metaTitle ?? movie?.title,
-    description: movie?.metaDescription ?? movie?.overview,
+    description:
+      movie?.metaDescription ?? movie?.overview ?? `Overview ${movie?.title}`,
     alternates: {
       canonical: `${env.NEXT_PUBLIC_SITE_URL}/movie/${movie?.slug}`,
     },
     openGraph: {
       title: movie?.metaTitle ?? movie?.title,
-      description: movie?.metaDescription ?? movie?.overview!,
+      description:
+        movie?.metaDescription ?? movie?.overview ?? `Overview ${movie?.title}`,
       images: [
         {
           url: movie?.poster!,
@@ -150,7 +152,7 @@ export default async function MovieSlugPage(props: MovieSlugPageProps) {
             className="!relative h-auto !w-[200px] rounded-xl"
           />
         )}
-        <p>{movie.overview}</p>
+        {movie.overview && <p>{movie.overview}</p>}
       </div>
     </>
   )

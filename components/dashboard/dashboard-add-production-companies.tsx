@@ -55,7 +55,7 @@ const DashboardAddProductionCompanies: React.FC<
   const ts = useScopedI18n("production_company")
 
   const { data: searchResults } = api.productionCompany.search.useQuery(
-    searchQuery,
+    { searchQuery: searchQuery, limit: 10 },
     {
       enabled: !!searchQuery,
     },

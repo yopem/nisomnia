@@ -14,9 +14,10 @@
 - [x] add movie amp page
 - [x] ads.txt
 - [x] movie dashboard
-- [ ] add dashboard search
+- [x] add dashboard search
+- [x] add more content type to search
+- [ ] complete search dashboard (production company, genre, feed)
 - [ ] add auto generate feed thumbnail
-- [ ] add more content type to search
 - [ ] right sidebar
 - [ ] view counter
 - [ ] auto fetch featured image for feed dashboard

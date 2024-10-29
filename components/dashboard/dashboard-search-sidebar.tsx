@@ -4,6 +4,7 @@ import * as React from "react"
 
 import ArticleCardSearch from "@/components/article/article-card-search"
 import SidebarItem from "@/components/layout/sidebar-item"
+import MovieCardSearch from "@/components/movie/movie-card-search"
 import TopicCardSearch from "@/components/topic/topic-card-search"
 import {
   Dialog,
@@ -29,17 +30,36 @@ const DashboardSearchSidebar: React.FC = () => {
   const t = useI18n()
   const ts = useScopedI18n("search")
 
-  const { data: articles } = api.article.searchDashboard.useQuery(searchQuery, {
-    enabled: !!searched,
-  })
+  const { data: articles } = api.article.searchDashboard.useQuery(
+    { searchQuery: searchQuery, limit: 10 },
+    {
+      enabled: !!searched,
+    },
+  )
 
-  const { data: topics } = api.topic.searchDashboard.useQuery(searchQuery, {
-    enabled: !!searched,
-  })
+  const { data: movies } = api.movie.searchDashboard.useQuery(
+    {
+      searchQuery: searchQuery,
+      limit: 10,
+    },
+    {
+      enabled: !!searched,
+    },
+  )
 
-  const { data: users } = api.user.search.useQuery(searchQuery, {
-    enabled: !!searched,
-  })
+  const { data: topics } = api.topic.searchDashboard.useQuery(
+    { searchQuery: searchQuery, limit: 10 },
+    {
+      enabled: !!searched,
+    },
+  )
+
+  const { data: users } = api.user.search.useQuery(
+    { searchQuery: searchQuery, limit: 10 },
+    {
+      enabled: !!searched,
+    },
+  )
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -90,6 +110,25 @@ const DashboardSearchSidebar: React.FC = () => {
                             isDashboard
                             key={article.id}
                             article={article}
+                            onClick={() => {
+                              setOpenDialog(false)
+                              setSearched(false)
+                              setSearchQuery("")
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {movies && movies.length > 0 && (
+                    <>
+                      <h4>{t("movie")}</h4>
+                      <div className="flex flex-col">
+                        {movies.map((movie) => (
+                          <MovieCardSearch
+                            isDashboard
+                            key={movie.id}
+                            movie={movie}
                             onClick={() => {
                               setOpenDialog(false)
                               setSearched(false)

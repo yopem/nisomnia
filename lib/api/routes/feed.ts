@@ -18,25 +18,25 @@ export const feedRouter = createTRPCRouter({
     .input(z.string())
     .query(async ({ ctx, input }) => {
       try {
-        const feedData = await ctx.db
-          .select()
-          .from(feeds)
-          .where(eq(feeds.id, input))
-          .limit(1)
+        const feedData = await ctx.db.query.feeds.findFirst({
+          where: (feed, { eq }) => eq(feed.id, input),
+        })
 
-        const feedTopicsData = await ctx.db
-          .select({ id: topics.id, title: topics.title })
-          .from(feedTopics)
-          .leftJoin(feeds, eq(feedTopics.feedId, feeds.id))
-          .leftJoin(topics, eq(feedTopics.topicId, topics.id))
-          .where(eq(feeds.id, input))
+        if (feedData) {
+          const feedTopicsData = await ctx.db
+            .select({ id: topics.id, title: topics.title })
+            .from(feedTopics)
+            .leftJoin(feeds, eq(feedTopics.feedId, feeds.id))
+            .leftJoin(topics, eq(feedTopics.topicId, topics.id))
+            .where(eq(feeds.id, input))
 
-        const data = feedData.map((item) => ({
-          ...item,
-          topics: feedTopicsData,
-        }))
+          const data = {
+            ...feedData,
+            topics: feedTopicsData,
+          }
 
-        return data[0]
+          return data
+        }
       } catch (error) {
         if (error instanceof TRPCError) {
           throw error
@@ -48,6 +48,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byLanguage: publicProcedure
     .input(
       z.object({
@@ -60,7 +61,6 @@ export const feedRouter = createTRPCRouter({
       try {
         const data = await ctx.db.query.feeds.findMany({
           where: (feeds, { eq }) => eq(feeds.language, input.language),
-
           limit: input.perPage,
           offset: (input.page - 1) * input.perPage,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
@@ -79,18 +79,17 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byLanguageInfinite: publicProcedure
     .input(
       z.object({
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.feeds.findMany({
           where: (feeds, { eq, and, lt }) =>
             and(
@@ -99,13 +98,13 @@ export const feedRouter = createTRPCRouter({
                 ? lt(feeds.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
         })
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -128,6 +127,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byTopicId: publicProcedure
     .input(
       z.object({
@@ -166,19 +166,18 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byTopicIdInfinite: publicProcedure
     .input(
       z.object({
         topicId: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const feeds = await ctx.db.query.feeds.findMany({
           where: (feeds, { eq, and, lt }) =>
             and(
@@ -187,7 +186,7 @@ export const feedRouter = createTRPCRouter({
                 ? lt(feeds.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
           with: {
             topics: true,
@@ -200,7 +199,7 @@ export const feedRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -223,6 +222,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byOwner: publicProcedure
     .input(
       z.object({
@@ -258,19 +258,18 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   byOwnerInfinite: publicProcedure
     .input(
       z.object({
         owner: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.feeds.findMany({
           where: (feeds, { eq, and, lt }) =>
             and(
@@ -280,13 +279,13 @@ export const feedRouter = createTRPCRouter({
                 ? lt(feeds.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
         })
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -309,20 +308,19 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   relatedInfinite: publicProcedure
     .input(
       z.object({
         topicId: z.string(),
         currentFeedId: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const feeds = await ctx.db.query.feeds.findMany({
           where: (feeds, { eq, and, not, lt }) =>
             and(
@@ -332,7 +330,7 @@ export const feedRouter = createTRPCRouter({
                 : undefined,
               not(eq(feeds.id, input.currentFeedId)),
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
           with: {
             topics: true,
@@ -345,7 +343,7 @@ export const feedRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -368,6 +366,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   dashboard: adminProtectedProcedure
     .input(
       z.object({
@@ -396,6 +395,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   sitemap: publicProcedure
     .input(
       z.object({
@@ -431,6 +431,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(feeds)
@@ -448,6 +449,7 @@ export const feedRouter = createTRPCRouter({
       }
     }
   }),
+
   countDashboard: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(feeds)
@@ -465,6 +467,7 @@ export const feedRouter = createTRPCRouter({
       }
     }
   }),
+
   countByLanguage: publicProcedure
     .input(languageType)
     .query(async ({ ctx, input }) => {
@@ -487,8 +490,15 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   search: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        language: languageType,
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.feeds.findMany({
@@ -500,7 +510,7 @@ export const feedRouter = createTRPCRouter({
                 ilike(feeds.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -516,8 +526,15 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   searchDashboard: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        language: languageType,
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.feeds.findMany({
@@ -529,7 +546,7 @@ export const feedRouter = createTRPCRouter({
                 ilike(feeds.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -545,6 +562,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   create: adminProtectedProcedure
     .input(createFeedSchema)
     .mutation(async ({ ctx, input }) => {
@@ -580,6 +598,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateFeedSchema)
     .mutation(async ({ ctx, input }) => {
@@ -615,6 +634,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   updateWithoutChangeUpdatedDate: adminProtectedProcedure
     .input(updateFeedSchema)
     .mutation(async ({ ctx, input }) => {
@@ -649,6 +669,7 @@ export const feedRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

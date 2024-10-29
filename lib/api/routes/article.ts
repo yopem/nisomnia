@@ -226,14 +226,12 @@ export const articleRouter = createTRPCRouter({
     .input(
       z.object({
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.articles.findMany({
           where: (articles, { eq, and, lt }) =>
             and(
@@ -243,13 +241,13 @@ export const articleRouter = createTRPCRouter({
                 ? lt(articles.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
         })
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -321,14 +319,12 @@ export const articleRouter = createTRPCRouter({
       z.object({
         topicId: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const articles = await ctx.db.query.articles.findMany({
           where: (articles, { eq, and, lt }) =>
             and(
@@ -338,7 +334,7 @@ export const articleRouter = createTRPCRouter({
                 ? lt(articles.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
           with: {
             topics: true,
@@ -351,7 +347,7 @@ export const articleRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -423,14 +419,12 @@ export const articleRouter = createTRPCRouter({
       z.object({
         authorId: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const articles = await ctx.db.query.articles.findMany({
           where: (articles, { eq, and, lt }) =>
             and(
@@ -440,7 +434,7 @@ export const articleRouter = createTRPCRouter({
                 ? lt(articles.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
           with: {
             authors: true,
@@ -453,7 +447,7 @@ export const articleRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -483,14 +477,12 @@ export const articleRouter = createTRPCRouter({
         topicId: z.string(),
         currentArticleId: z.string(),
         language: languageType,
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const articles = await ctx.db.query.articles.findMany({
           where: (articles, { eq, and, not, lt }) =>
             and(
@@ -501,7 +493,7 @@ export const articleRouter = createTRPCRouter({
                 : undefined,
               not(eq(articles.id, input.currentArticleId)),
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
           with: {
             topics: true,
@@ -514,7 +506,7 @@ export const articleRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -703,7 +695,13 @@ export const articleRouter = createTRPCRouter({
     }),
 
   search: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        language: languageType,
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.articles.findMany({
@@ -716,7 +714,7 @@ export const articleRouter = createTRPCRouter({
                 ilike(articles.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -734,14 +732,19 @@ export const articleRouter = createTRPCRouter({
     }),
 
   searchDashboard: publicProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.articles.findMany({
           where: (articles, { or, ilike }) =>
             or(
-              ilike(articles.title, `%${input}%`),
-              ilike(articles.slug, `%${input}%`),
+              ilike(articles.title, `%${input.searchQuery}%`),
+              ilike(articles.slug, `%${input.searchQuery}%`),
             ),
           with: {
             articleTranslation: {
@@ -750,7 +753,7 @@ export const articleRouter = createTRPCRouter({
               },
             },
           },
-          limit: 10,
+          limit: input.limit,
         })
 
         return data

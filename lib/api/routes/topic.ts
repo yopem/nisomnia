@@ -43,6 +43,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   dashboard: adminProtectedProcedure
     .input(
       z.object({
@@ -80,6 +81,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -101,6 +103,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   byLanguage: publicProcedure
     .input(
       z.object({
@@ -135,6 +138,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   byArticleCount: publicProcedure
     .input(
       z.object({
@@ -182,6 +186,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   sitemap: publicProcedure
     .input(
       z.object({
@@ -220,6 +225,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   byVisibility: publicProcedure
     .input(
       z.object({
@@ -256,6 +262,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
       const data = await ctx.db.query.topics.findFirst({
@@ -275,8 +282,15 @@ export const topicRouter = createTRPCRouter({
       }
     }
   }),
+
   search: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        language: languageType,
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.topics.findMany({
@@ -290,7 +304,7 @@ export const topicRouter = createTRPCRouter({
                 ilike(topics.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -306,15 +320,21 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   searchDashboard: publicProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.topics.findMany({
           where: (topics, { or, ilike }) =>
             or(
-              ilike(topics.title, `%${input}%`),
-              ilike(topics.slug, `%${input}%`),
+              ilike(topics.title, `%${input.searchQuery}%`),
+              ilike(topics.slug, `%${input.searchQuery}%`),
             ),
           with: {
             topicTranslation: {
@@ -323,7 +343,7 @@ export const topicRouter = createTRPCRouter({
               },
             },
           },
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -339,6 +359,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
@@ -359,6 +380,7 @@ export const topicRouter = createTRPCRouter({
       }
     }
   }),
+
   countDashboard: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(topics)
@@ -376,6 +398,7 @@ export const topicRouter = createTRPCRouter({
       }
     }
   }),
+
   countByLanguage: publicProcedure
     .input(languageType)
     .query(async ({ ctx, input }) => {
@@ -400,6 +423,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   countByLanguageDashboard: publicProcedure
     .input(languageType)
     .query(async ({ ctx, input }) => {
@@ -422,6 +446,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   create: adminProtectedProcedure
     .input(createTopicSchema)
     .mutation(async ({ ctx, input }) => {
@@ -469,6 +494,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateTopicSchema)
     .mutation(async ({ ctx, input }) => {
@@ -494,6 +520,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   translate: adminProtectedProcedure
     .input(translateTopicSchema)
     .mutation(async ({ ctx, input }) => {
@@ -527,6 +554,7 @@ export const topicRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

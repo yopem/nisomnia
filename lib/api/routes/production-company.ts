@@ -46,6 +46,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -67,6 +68,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
       const data = await ctx.db.query.productionCompanies.findFirst({
@@ -86,6 +88,7 @@ export const productionCompanyRouter = createTRPCRouter({
       }
     }
   }),
+
   sitemap: publicProcedure
     .input(
       z.object({
@@ -122,6 +125,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
@@ -142,6 +146,7 @@ export const productionCompanyRouter = createTRPCRouter({
       }
     }
   }),
+
   countDashboard: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
@@ -161,8 +166,14 @@ export const productionCompanyRouter = createTRPCRouter({
       }
     }
   }),
+
   search: adminProtectedProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ input, ctx }) => {
       try {
         const data = await ctx.db.query.productionCompanies.findMany({
@@ -170,10 +181,11 @@ export const productionCompanyRouter = createTRPCRouter({
             and(
               eq(productionCompanies.status, "published"),
               or(
-                ilike(productionCompanies.name, `%${input}%`),
-                ilike(productionCompanies.slug, `%${input}%`),
+                ilike(productionCompanies.name, `%${input.searchQuery}%`),
+                ilike(productionCompanies.slug, `%${input.searchQuery}%`),
               ),
             ),
+          limit: input.limit,
         })
 
         return data
@@ -189,16 +201,23 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   searchDashboard: adminProtectedProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ input, ctx }) => {
       try {
         const data = await ctx.db.query.productionCompanies.findMany({
           where: (productionCompanies, { or, ilike }) =>
             or(
-              ilike(productionCompanies.name, `%${input}%`),
-              ilike(productionCompanies.slug, `%${input}%`),
+              ilike(productionCompanies.name, `%${input.searchQuery}%`),
+              ilike(productionCompanies.slug, `%${input.searchQuery}%`),
             ),
+          limit: input.limit,
         })
 
         return data
@@ -214,6 +233,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   create: adminProtectedProcedure
     .input(createProductionCompanySchema)
     .mutation(async ({ ctx, input }) => {
@@ -236,6 +256,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateProductionCompanySchema)
     .mutation(async ({ ctx, input }) => {
@@ -262,6 +283,7 @@ export const productionCompanyRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

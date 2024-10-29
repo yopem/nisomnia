@@ -41,6 +41,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -62,6 +63,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   byMovieCount: publicProcedure
     .input(
       z.object({
@@ -99,6 +101,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   sitemap: publicProcedure
     .input(
       z.object({
@@ -132,6 +135,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   bySlug: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
       const data = await ctx.db.query.genres.findFirst({
@@ -151,6 +155,7 @@ export const genreRouter = createTRPCRouter({
       }
     }
   }),
+
   search: publicProcedure
     .input(
       z.object({
@@ -185,6 +190,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   searchDashboard: publicProcedure
     .input(
       z.object({
@@ -216,6 +222,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   count: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db
@@ -236,6 +243,7 @@ export const genreRouter = createTRPCRouter({
       }
     }
   }),
+
   countDashboard: publicProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(genres)
@@ -253,6 +261,7 @@ export const genreRouter = createTRPCRouter({
       }
     }
   }),
+
   create: adminProtectedProcedure
     .input(createGenreSchema)
     .mutation(async ({ ctx, input }) => {
@@ -289,6 +298,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   update: adminProtectedProcedure
     .input(updateGenreSchema)
     .mutation(async ({ ctx, input }) => {
@@ -314,6 +324,7 @@ export const genreRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

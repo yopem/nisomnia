@@ -39,6 +39,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   byId: adminProtectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -60,6 +61,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   byUsername: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -81,6 +83,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   byEmail: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
       const data = await ctx.db.query.users.findFirst({
@@ -100,6 +103,7 @@ export const userRouter = createTRPCRouter({
       }
     }
   }),
+
   byRole: adminProtectedProcedure
     .input(
       z.object({
@@ -130,6 +134,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   count: adminProtectedProcedure.query(async ({ ctx }) => {
     try {
       const data = await ctx.db.select({ value: count() }).from(users)
@@ -147,32 +152,41 @@ export const userRouter = createTRPCRouter({
       }
     }
   }),
-  search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    try {
-      const data = await ctx.db.query.users.findMany({
-        where: (users, { and, or, ilike }) =>
-          and(
-            or(
-              ilike(users.name, `%${input}%`),
-              ilike(users.username, `%${input}%`),
-            ),
-          ),
-        limit: 10,
-      })
 
-      return data
-    } catch (error) {
-      console.error("Error:", error)
-      if (error instanceof TRPCError) {
-        throw error
-      } else {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "An internal error occurred",
+  search: publicProcedure
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const data = await ctx.db.query.users.findMany({
+          where: (users, { and, or, ilike }) =>
+            and(
+              or(
+                ilike(users.name, `%${input.searchQuery}%`),
+                ilike(users.username, `%${input.searchQuery}%`),
+              ),
+            ),
+          limit: input.limit,
         })
+
+        return data
+      } catch (error) {
+        console.error("Error:", error)
+        if (error instanceof TRPCError) {
+          throw error
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An internal error occurred",
+          })
+        }
       }
-    }
-  }),
+    }),
+
   update: protectedProcedure
     .input(updateUserSchema)
     .mutation(async ({ ctx, input }) => {
@@ -224,6 +238,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   updateByAdmin: adminProtectedProcedure
     .input(updateUserByAdminSchema)
     .mutation(async ({ ctx, input }) => {
@@ -249,6 +264,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   delete: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -279,6 +295,7 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+
   deleteByAdmin: adminProtectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

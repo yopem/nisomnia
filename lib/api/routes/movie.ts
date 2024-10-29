@@ -18,7 +18,6 @@ import {
 } from "@/lib/db/schema"
 import { cuid } from "@/lib/utils"
 import { generateUniqueMovieSlug } from "@/lib/utils/slug"
-import { languageType } from "@/lib/validation/language"
 import { createMovieSchema, updateMovieSchema } from "@/lib/validation/movie"
 
 export const movieRouter = createTRPCRouter({
@@ -68,7 +67,7 @@ export const movieRouter = createTRPCRouter({
 
           const data = {
             ...movieData,
-            overview: movieOverviewsData[0].content,
+            overview: movieOverviewsData?.[0]?.content ?? null,
             genres: movieGenresData,
             productionCompanies: movieProductionCompaniesData,
           }
@@ -131,7 +130,7 @@ export const movieRouter = createTRPCRouter({
 
         const data = {
           ...movieData,
-          overview: movieOverviewsData[0].content,
+          overview: movieOverviewsData?.[0]?.content ?? null,
           genres: movieGenresData,
           productionCompanies: movieProductionCompaniesData,
         }
@@ -183,14 +182,12 @@ export const movieRouter = createTRPCRouter({
   latestInfinite: publicProcedure
     .input(
       z.object({
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const data = await ctx.db.query.movies.findMany({
           where: (movies, { and, eq, lt }) =>
             and(
@@ -199,13 +196,13 @@ export const movieRouter = createTRPCRouter({
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
         })
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -271,14 +268,12 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         genreId: z.string(),
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const movies = await ctx.db.query.movies.findMany({
           where: (movies, { and, eq, lt }) =>
             and(
@@ -287,7 +282,7 @@ export const movieRouter = createTRPCRouter({
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
           with: {
             genres: true,
@@ -300,7 +295,7 @@ export const movieRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -370,14 +365,12 @@ export const movieRouter = createTRPCRouter({
     .input(
       z.object({
         productionCompanyId: z.string(),
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const movies = await ctx.db.query.movies.findMany({
           where: (movies, { and, eq, lt }) =>
             and(
@@ -386,7 +379,7 @@ export const movieRouter = createTRPCRouter({
                 ? lt(movies.updatedAt, new Date(input.cursor))
                 : undefined,
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
           with: {
             productionCompanies: true,
@@ -403,7 +396,7 @@ export const movieRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -432,14 +425,12 @@ export const movieRouter = createTRPCRouter({
       z.object({
         genreId: z.string(),
         currentMovieId: z.string(),
-        limit: z.number().min(1).max(100).nullable(),
+        limit: z.number().optional().default(50),
         cursor: z.date().optional().nullable(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const limit = input.limit ?? 50
-
         const movies = await ctx.db.query.movies.findMany({
           where: (movies, { eq, and, not, lt }) =>
             and(
@@ -449,7 +440,7 @@ export const movieRouter = createTRPCRouter({
                 : undefined,
               not(eq(movies.id, input.currentMovieId)),
             ),
-          limit: limit + 1,
+          limit: input.limit + 1,
           orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
           with: {
             genres: true,
@@ -462,7 +453,7 @@ export const movieRouter = createTRPCRouter({
 
         let nextCursor: Date | undefined = undefined
 
-        if (data.length > limit) {
+        if (data.length > input.limit) {
           const nextItem = data.pop()
           if (nextItem?.updatedAt) {
             nextCursor = nextItem.updatedAt
@@ -589,7 +580,12 @@ export const movieRouter = createTRPCRouter({
   }),
 
   search: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
@@ -601,7 +597,7 @@ export const movieRouter = createTRPCRouter({
                 ilike(movies.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data
@@ -619,7 +615,12 @@ export const movieRouter = createTRPCRouter({
     }),
 
   searchDashboard: publicProcedure
-    .input(z.object({ language: languageType, searchQuery: z.string() }))
+    .input(
+      z.object({
+        searchQuery: z.string(),
+        limit: z.number().optional().default(10),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.query.movies.findMany({
@@ -631,7 +632,7 @@ export const movieRouter = createTRPCRouter({
                 ilike(movies.slug, `%${input.searchQuery}%`),
               ),
             ),
-          limit: 10,
+          limit: input.limit,
         })
 
         return data

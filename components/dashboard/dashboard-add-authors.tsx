@@ -47,9 +47,12 @@ const DashboardAddAuthors: React.FC<DashboardAddAuthorsProps> = (props) => {
   const t = useI18n()
   const ts = useScopedI18n("user")
 
-  const { data: searchResults } = api.user.search.useQuery(searchQuery, {
-    enabled: !!searchQuery,
-  })
+  const { data: searchResults } = api.user.search.useQuery(
+    { searchQuery: searchQuery, limit: 10 },
+    {
+      enabled: !!searchQuery,
+    },
+  )
 
   const form = useForm<FormValues>({ mode: "all", reValidateMode: "onChange" })
 

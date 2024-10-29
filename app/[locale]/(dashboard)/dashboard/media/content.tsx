@@ -32,9 +32,13 @@ export default function DashboardMediaContent() {
   const ts = useScopedI18n("media")
 
   const { data: resultMedias, refetch: updateMedias } =
-    api.media.search.useQuery(searchQuery, {
-      enabled: searched && !selectedMediaCategory,
-    })
+    api.media.search.useQuery(
+      { searchQuery: searchQuery, limit: 24 },
+      {
+        enabled: searched && !selectedMediaCategory,
+      },
+    )
+
   const { data: resultsByCategory } = api.media.searchByCategory.useQuery(
     {
       category: selectedMediaCategory!,
