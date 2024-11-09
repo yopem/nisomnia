@@ -1,6 +1,7 @@
 ## TODO: 
-- [ ] test movie dashboard
+- [x] test movie dashboard
 - [ ] upgrade to eslint 9
+- [ ] use setValue on select media instead of using useState
 - [x] check and make all count on dashboard use countDashboard
 - [x] add count by language dashboard
 - [x] add save as draft to all data type
