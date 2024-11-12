@@ -25,9 +25,9 @@ const movieInput = {
     required_error: "Title is required",
     invalid_type_error: "Title must be a string",
   }),
-  otherTitle: z
+  originalTitle: z
     .string({
-      invalid_type_error: "Other Title must be a string",
+      invalid_type_error: "Original Title must be a string",
     })
     .optional(),
   tagline: z

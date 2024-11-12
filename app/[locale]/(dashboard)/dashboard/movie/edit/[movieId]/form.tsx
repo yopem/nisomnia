@@ -44,7 +44,7 @@ interface FormValues {
   imdbId: string
   tmdbId: string
   title: string
-  otherTitle: string
+  originalTitle: string
   tagline: string
   overview: string
   slug: string
@@ -171,7 +171,7 @@ export default function EditMovieForm(props: EditMovieFormProps) {
       imdbId: movie.imdbId ?? "",
       tmdbId: movie.tmdbId ?? "",
       title: movie.title,
-      otherTitle: movie.otherTitle ?? "",
+      originalTitle: movie.originalTitle ?? "",
       tagline: movie.tagline ?? "",
       overview: movie.overview ?? "",
       slug: movie.slug,
@@ -276,13 +276,13 @@ export default function EditMovieForm(props: EditMovieFormProps) {
               />
               <FormField
                 control={form.control}
-                name="otherTitle"
+                name="originalTitle"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{ts("other_title")}</FormLabel>
+                    <FormLabel>{ts("original_title")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={ts("other_title_placeholder")}
+                        placeholder={ts("original_title_placeholder")}
                         {...field}
                       />
                     </FormControl>

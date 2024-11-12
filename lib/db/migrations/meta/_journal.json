@@ -43,6 +43,13 @@
       "when": 1730133863622,
       "tag": "0005_clever_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1731389076125,
+      "tag": "0006_graceful_payback",
+      "breakpoints": true
     }
   ]
 }

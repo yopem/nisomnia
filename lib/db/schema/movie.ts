@@ -24,7 +24,7 @@ export const movies = pgTable("movies", {
   imdbId: text("imdb_id"),
   tmdbId: text("tmdb_id").notNull().unique(),
   title: text("title").notNull(),
-  otherTitle: text("other_title"),
+  originalTitle: text("original_title"),
   tagline: text("tagline"),
   slug: text("slug").notNull().unique(),
   airingStatus: movieAiringStatusEnum("airing_status")
