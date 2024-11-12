@@ -86,7 +86,7 @@ const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
         <SidebarItem icon={<Icon.Search />}>{t("search")}</SidebarItem>
       </DialogTrigger>
       <DialogPortal>
-        <DialogContent className="min-h-full w-full min-w-full">
+        <DialogContent className="min-h-[80vh]">
           <div>
             <DialogTitle>{t("search")}</DialogTitle>
             <form
@@ -108,7 +108,7 @@ const GlobalSearchSidebar: React.FC<GlobalSearchSidebarProps> = (props) => {
             </form>
             {searched && searchQuery && (
               <div className="space-y-4 bg-background">
-                <ScrollArea className="h-[80vh]">
+                <ScrollArea className="h-[70vh]">
                   {articles && articles.length > 0 && (
                     <>
                       <h4>{t("article")}</h4>

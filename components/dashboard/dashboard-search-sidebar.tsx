@@ -79,7 +79,7 @@ const DashboardSearchSidebar: React.FC = () => {
         </SidebarItem>
       </DialogTrigger>
       <DialogPortal>
-        <DialogContent className="min-h-full w-full min-w-full bg-slate-100 dark:bg-slate-950">
+        <DialogContent className="min-h-[80vh] bg-slate-100 dark:bg-slate-950">
           <div>
             <DialogTitle>{t("search")}</DialogTitle>
             <form
@@ -100,7 +100,7 @@ const DashboardSearchSidebar: React.FC = () => {
             </form>
             {searched && searchQuery && (
               <div className="space-y-4 bg-slate-100 dark:bg-slate-950">
-                <ScrollArea className="h-[80vh]">
+                <ScrollArea className="h-[70vh]">
                   {articles && articles.length > 0 && (
                     <>
                       <h4>{t("article")}</h4>
