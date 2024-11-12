@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { BreadcrumbJsonLd, SiteLinksSearchBoxJsonLd } from "next-seo"
 
+import MovieList from "@/components/movie/movie-list"
 import env from "@/env"
 import { getI18n } from "@/lib/locales/server"
 import type { LanguageType } from "@/lib/validation/language"
@@ -57,6 +58,7 @@ export default async function Movie() {
         ]}
       />
       <h1>{t("movies")}</h1>
+      <MovieList />
     </>
   )
 }
