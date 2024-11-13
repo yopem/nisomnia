@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         category: category,
         type: type,
         fileType: defaultFileType,
-        authorId: "1QVv0d2sgonwKWXafbVrOH4rK4sElZmVbZUOWTV2"
+        authorId: "7FSCr6GB5La92MzjpBl3jTAjrlsLBrwpHpB3uQo7"
       })
 
       uploadedFiles.push(data)
