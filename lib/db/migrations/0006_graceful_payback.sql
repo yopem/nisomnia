@@ -1,1 +1,0 @@
-ALTER TABLE "movies" RENAME COLUMN "other_title" TO "original_title";

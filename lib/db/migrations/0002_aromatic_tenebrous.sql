@@ -1,1 +1,0 @@
-ALTER TABLE "_movie_overviews" DROP COLUMN IF EXISTS "content";
