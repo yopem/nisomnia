@@ -1,8 +1,9 @@
 /** @typedef  {import("prettier").Config} PrettierConfig */
-/** @typedef {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
+/** @typedef  {import("prettier-plugin-astro").PluginOptions} AstroConfig */
+/** @typedef  {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
 /** @typedef  {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
 
-/** @type { PrettierConfig | SortImportsConfig | TailwindConfig } */
+/** @type { PrettierConfig | AstroConfig | SortImportsConfig | TailwindConfig } */
 const config = {
   bracketSpacing: true,
   jsxSingleQuote: false,
@@ -13,13 +14,20 @@ const config = {
   tabWidth: 2,
   trailingComma: "all",
   plugins: [
+    "prettier-plugin-astro",
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],
+  overrides: [
+    {
+      files: "*.astro",
+      options: {
+        parser: "astro",
+      },
+    },
+  ],
   importOrder: [
-    "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
-    "^(next/(.*)$)|^(next$)",
-    "^(expo(.*)$)|^(expo$)",
+    "^(astro/(.*)$)|^(astro$)",
     "<THIRD_PARTY_MODULES>",
     "",
     "",
@@ -28,7 +36,6 @@ const config = {
     "^[./]",
   ],
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
-  importOrderTypeScriptVersion: "5.2.2",
-};
+}
 
-export default config;
+export default config
