@@ -34,7 +34,7 @@ const buttonVariants = cva(
 
 type Props = HTMLAttributes<"button"> & VariantProps<typeof buttonVariants>
 
-const { className, variant, size, ...attrs } = Astro.props
+const { class: className, variant, size, ...attrs } = Astro.props
 ---
 
 <button class={cn(buttonVariants({ variant, size, className }))} {...attrs}>
