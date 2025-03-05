@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types"
+import { cn } from "@yopem-ui/utils"
+
+type Props = HTMLAttributes<"div">
+
+const { class: className, ...attrs } = Astro.props
+---
+
+<div
+  className={cn("leading-none font-semibold tracking-tight", className)}
+  {...attrs}
+>
+  <slot />
+</div>
