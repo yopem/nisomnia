@@ -1,5 +1,9 @@
 ---
 import "@/styles/global.css"
+
+import Sidebar from "@/components/layout/sidebar.astro"
+
+import "@fontsource/inter"
 ---
 
 <!doctype html>
@@ -11,7 +15,12 @@ import "@/styles/global.css"
     <meta name="generator" content={Astro.generator} />
     <title>Nisomnia</title>
   </head>
-  <body>
-    <slot />
+  <body
+    class="mx-4 mt-8 mb-40 flex max-w-4xl flex-col gap-4 font-sans antialiased md:mt-20 md:flex-row md:gap-8 lg:mx-auto lg:mt-32"
+  >
+    <Sidebar />
+    <main className="mt-6 flex min-w-0 flex-auto flex-col px-2 md:mt-0 md:px-0">
+      <slot />
+    </main>
   </body>
 </html>
