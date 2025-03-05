@@ -7,3 +7,6 @@
 - [ ] redirect amp
 - [ ] movie
 - [ ] author
+- [ ] analytics with partytown
+- [ ] adsense with lazyload
+- [ ] comment to social media
