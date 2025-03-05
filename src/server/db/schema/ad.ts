@@ -38,10 +38,9 @@ export const adsTable = pgTable("ads", {
   updatedAt: timestamp("updated_at").defaultNow(),
 })
 
-export const createAdSchema = createInsertSchema(adsTable)
+export const insertAdSchema = createInsertSchema(adsTable)
 export const updateAdSchema = createUpdateSchema(adsTable)
 
-export type InsertAd = typeof adsTable.$inferInsert
 export type SelectAd = typeof adsTable.$inferSelect
 
 export type AdPosition = z.infer<typeof adPosition>
