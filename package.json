@@ -7,6 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "lint": "eslint --ext .astro,.ts,.tsx,.js,.mjs .",
+    "lint:fix": "eslint --ext .astro,.ts,.tsx,.js,.mjs . --fix",
     "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,md}\"",
     "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md}\""
   },
