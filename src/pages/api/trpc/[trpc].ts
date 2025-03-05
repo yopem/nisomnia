@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
-import { createContext } from "@/server/api/context"
 import { appRouter } from "@/server/api/root"
+import { createContext } from "@/trpc/server"
 
 export const ALL: APIRoute = (opts) => {
   return fetchRequestHandler({

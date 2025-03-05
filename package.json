@@ -10,7 +10,8 @@
     "lint": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src",
     "lint:fix": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src --fix",
     "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,md}\"",
-    "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md}\""
+    "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md}\"",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/ts-plugin": "^1.10.4",
