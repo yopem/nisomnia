@@ -11,7 +11,7 @@
     "db:check": "drizzle-kit check",
     "db:drop": "drizzle-kit drop",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx tsx -r dotenv/config ./server/db/migrate.ts",
+    "db:migrate": "npx tsx -r dotenv/config ./src/server/db/migrate.ts",
     "db:pull": "drizzle-kit introspect",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
