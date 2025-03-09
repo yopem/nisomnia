@@ -42,7 +42,7 @@ const pathname = Astro.url.pathname
         {
           Object.entries(navItems).map(([path, { name, hideOnMobile }]) => {
             const isActive = path === pathname
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
             return (
               <a
                 href={path}
@@ -59,10 +59,9 @@ const pathname = Astro.url.pathname
                 <span class="relative px-[10px] py-[5px]">
                   {name}
                   {isActive && (
-                    <div
-                      class="bg-secondary absolute inset-0 z-[-1] rounded-md"
-                      layout="position"
-                    />
+                    <div class="bg-secondary absolute inset-0 z-[-1] rounded-md">
+                      <slot />
+                    </div>
                   )}
                 </span>
               </a>
