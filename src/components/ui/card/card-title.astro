@@ -8,7 +8,7 @@ const { class: className, ...attrs } = Astro.props
 ---
 
 <div
-  className={cn("leading-none font-semibold tracking-tight", className)}
+  class={cn("leading-none font-semibold tracking-tight", className)}
   {...attrs}
 >
   <slot />
