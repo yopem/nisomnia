@@ -28,6 +28,9 @@ const articles = await api.article.byLanguage({
               formats={["avif", "webp"]}
               alt={article.title}
               inferSize
+              quality={50}
+              loading="lazy"
+              sizes="(min-width: 640px) 176px, 246px"
               class="aspect-video w-full rounded object-cover sm:aspect-square sm:size-44"
             />
           </div>

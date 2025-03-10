@@ -11,6 +11,9 @@ export default defineConfig({
   experimental: {
     svg: true,
   },
+  image: {
+    domains: ["assets.nisomnia.com"],
+  },
   adapter: node({
     mode: "standalone",
   }),
