@@ -5,13 +5,30 @@ import CardContent from "@/components/ui/card/card-content.astro"
 import CardHeader from "@/components/ui/card/card-header.astro"
 import CardTitle from "@/components/ui/card/card-title.astro"
 import Card from "@/components/ui/card/card.astro"
+import PaginationContent from "@/components/ui/pagination/pagination-content.astro"
+import PaginationItem from "@/components/ui/pagination/pagination-item.astro"
+import PaginationNext from "@/components/ui/pagination/pagination-next.astro"
+import PaginationPrevious from "@/components/ui/pagination/pagination-previous.astro"
+import Pagination from "@/components/ui/pagination/pagination.astro"
 import { api } from "@/trpc/server"
+
+interface Props {
+  page?: number
+  perPage?: number
+}
+
+const { page = 1, perPage = 10 } = Astro.props
 
 const articles = await api.article.byLanguage({
   language: "id",
-  page: 1,
-  perPage: 10,
+  page,
+  perPage,
 })
+
+const totalArticles = await api.article.countByLanguage("id")
+
+const totalPages = Math.ceil(totalArticles / perPage)
+const currentPage = page
 ---
 
 <div class="space-y-3">
@@ -47,3 +64,25 @@ const articles = await api.article.byLanguage({
     ))
   }
 </div>
+
+{
+  totalPages > 1 && (
+    <div class="mt-6">
+      <Pagination>
+        <PaginationContent>
+          {currentPage > 1 && (
+            <PaginationItem>
+              <PaginationPrevious href={`/article?page=${currentPage - 1}`} />
+            </PaginationItem>
+          )}
+
+          {currentPage < totalPages && (
+            <PaginationItem>
+              <PaginationNext href={`/article?page=${currentPage + 1}`} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
+    </div>
+  )
+}
