@@ -16,8 +16,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:up": "drizzle-kit up",
-    "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,md}\"",
-    "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md}\"",
+    "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,md,json}\"",
+    "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md,json}\"",
     "lint": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src",
     "lint:fix": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src --fix",
     "typecheck": "tsc --noEmit"

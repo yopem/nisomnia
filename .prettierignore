@@ -47,8 +47,11 @@ public
 # turbo
 .turbo
 
-#service worker
+# service worker
 ~partytown/
 
-#contentlayer
+# contentlayer
 .contentlayer/
+
+# drizzle 
+migration/
