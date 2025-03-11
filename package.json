@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "check": "bunx --bun astro check",
     "dev": "bunx --bun astro dev",
     "build": "bunx --bun astro build",
     "preview": "bunx --bun astro preview",
@@ -16,13 +17,14 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:up": "drizzle-kit up",
-    "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,md,json}\"",
-    "format:write": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,md,json}\"",
+    "format:check": "prettier --check \"**/*.{astro,ts,tsx,mts,js,jsx,mjs,json,md}\"",
+    "format:write": "prettier --write \"**/*.{astro,ts,tsx,mts,js,jsx,mjs,json,md}\"",
     "lint": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src",
     "lint:fix": "eslint --ext .astro,.ts,.tsx,.js,.mjs ./src --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/node": "^9.1.2",
     "@astrojs/ts-plugin": "^1.10.4",
     "@fontsource/inter": "^5.2.5",
