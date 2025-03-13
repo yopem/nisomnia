@@ -75,7 +75,6 @@ const currentPage = page
               <PaginationPrevious href={`/article?page=${currentPage - 1}`} />
             </PaginationItem>
           )}
-
           {currentPage < totalPages && (
             <PaginationItem>
               <PaginationNext href={`/article?page=${currentPage + 1}`} />
