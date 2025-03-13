@@ -25,14 +25,12 @@ export const feedRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getFeedsByLanguage(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 
@@ -47,14 +45,12 @@ export const feedRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getFeedsByTopicId(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 
@@ -69,14 +65,12 @@ export const feedRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getFeedsByOwner(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 
@@ -90,27 +84,23 @@ export const feedRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getFeedsSitemap(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 
   count: publicProcedure.query(async () => {
     const { data, error } = await tryCatch(getFeedsCount())
-
     if (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching ads",
+        message: "Error fetching feeds",
       })
     }
-
     return data
   }),
 
@@ -118,14 +108,12 @@ export const feedRouter = createTRPCRouter({
     .input(languageType)
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getFeedsCountByLanguage(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 
@@ -139,14 +127,12 @@ export const feedRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(searchFeeds(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching feeds",
         })
       }
-
       return data
     }),
 })

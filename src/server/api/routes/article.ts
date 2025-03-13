@@ -19,14 +19,12 @@ import {
 export const articleRouter = createTRPCRouter({
   bySlug: publicProcedure.input(z.string()).query(async ({ input }) => {
     const { data, error } = await tryCatch(getArticleBySlug(input))
-
     if (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching ads",
+        message: "Error fetching articles",
       })
     }
-
     return data
   }),
 
@@ -40,14 +38,12 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getArticlesByLanguage(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
@@ -63,14 +59,12 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getRelatedArticles(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
@@ -85,14 +79,12 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getArticlesByTopicId(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
@@ -107,14 +99,12 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getArticlesByAuthorId(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
@@ -128,27 +118,23 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getArticlesSitemap(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
   count: publicProcedure.query(async () => {
     const { data, error } = await tryCatch(getArticlesCount())
-
     if (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching ads",
+        message: "Error fetching articles",
       })
     }
-
     return data
   }),
 
@@ -156,14 +142,12 @@ export const articleRouter = createTRPCRouter({
     .input(languageType)
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(getArticlesCountByLanguage(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 
@@ -177,14 +161,12 @@ export const articleRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { data, error } = await tryCatch(searchArticles(input))
-
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error fetching ads",
+          message: "Error fetching articles",
         })
       }
-
       return data
     }),
 })
