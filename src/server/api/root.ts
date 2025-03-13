@@ -3,6 +3,7 @@ import { articleRouter } from "./routes/article"
 import { feedRouter } from "./routes/feed"
 import { genreRouter } from "./routes/genre"
 import { mediaRouter } from "./routes/media"
+import { movieRouter } from "./routes/movie"
 import { createCallerFactory, createTRPCRouter } from "./trpc"
 
 export const appRouter = createTRPCRouter({
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   feed: feedRouter,
   genre: genreRouter,
   media: mediaRouter,
+  movie: movieRouter,
 })
 
 export type AppRouter = typeof appRouter
