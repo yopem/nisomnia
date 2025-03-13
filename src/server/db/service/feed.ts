@@ -86,7 +86,7 @@ export const getFeedsSitemap = async ({
     },
     limit: perPage,
     offset: (page - 1) * perPage,
-    orderBy: (feeds, { desc }) => [desc(feeds.id)],
+    orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
   })
 }
 
@@ -132,6 +132,7 @@ export const searchFeeds = async ({
           ilike(feeds.slug, `%${searchQuery}%`),
         ),
       ),
+    orderBy: (feeds, { desc }) => [desc(feeds.updatedAt)],
     limit: limit,
   })
 }

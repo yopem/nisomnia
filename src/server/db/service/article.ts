@@ -189,7 +189,7 @@ export const getArticlesSitemap = async ({
     },
     limit: perPage,
     offset: (page - 1) * perPage,
-    orderBy: (articles, { desc }) => [desc(articles.id)],
+    orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
   })
 }
 
@@ -235,6 +235,7 @@ export const searchArticles = async ({
           ilike(articles.slug, `%${searchQuery}%`),
         ),
       ),
+    orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
     limit: limit,
   })
 }
