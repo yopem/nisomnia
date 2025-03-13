@@ -9,7 +9,7 @@ export const getGenreBySlug = async (slug: string) => {
   })
 }
 
-export const getGenresByMovieCount = async ({
+export const getGenresByMoviesCount = async ({
   page,
   perPage,
 }: {
