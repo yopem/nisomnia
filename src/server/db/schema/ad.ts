@@ -1,6 +1,6 @@
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod"
-import * as z from "zod"
+import { z } from "zod"
 
 import { createId } from "@/utils/cuid"
 
