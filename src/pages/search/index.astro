@@ -1,7 +1,105 @@
 ---
+import SearchForm from "@/components/search/search-form.astro"
 import MainLayout from "@/layouts/main-layout.astro"
+import { api } from "@/trpc/server"
+
+const searchQuery = Astro.url.searchParams.get("searchQuery") ?? ""
+
+const articles = await api.article.search({
+  language: "id",
+  searchQuery,
+  limit: 10,
+})
+
+const movies = await api.movie.search({
+  searchQuery,
+  limit: 10,
+})
+
+const topics = await api.topic.search({
+  language: "id",
+  searchQuery,
+  limit: 10,
+})
 ---
 
 <MainLayout>
-  <h1>Cari</h1>
+  <div class="space-y-4">
+    <h1 class="mb-6 text-2xl font-bold md:text-3xl">
+      Hasil Pencarian: {searchQuery}
+    </h1>
+    <SearchForm searchQuery={searchQuery} />
+    <div class="space-y-8">
+      {
+        articles.length > 0 && (
+          <div>
+            <h2 class="mb-4 text-xl font-semibold">Artikel</h2>
+            <ul class="space-y-4">
+              {articles.map((article) => (
+                <li class="rounded-lg border p-4 hover:bg-gray-50">
+                  <a href={`/article/${article.slug}`}>
+                    <h3 class="font-medium">{article.title}</h3>
+                    {article.excerpt && (
+                      <p class="mt-2 text-sm text-gray-600">
+                        {article.excerpt}
+                      </p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        movies.length > 0 && (
+          <div>
+            <h2 class="mb-4 text-xl font-semibold">Film</h2>
+            <ul class="space-y-4">
+              {movies.map((movie) => (
+                <li class="rounded-lg border p-4 hover:bg-gray-50">
+                  <a href={`/movie/${movie.slug}`}>
+                    <h3 class="font-medium">{movie.title}</h3>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        topics.length > 0 && (
+          <div>
+            <h2 class="mb-4 text-xl font-semibold">Topik</h2>
+            <ul class="space-y-4">
+              {topics.map((topic) => (
+                <li class="rounded-lg border p-4 hover:bg-gray-50">
+                  <a href={`/topic/${topic.slug}`}>
+                    <h3 class="font-medium">{topic.title}</h3>
+                    {topic.description && (
+                      <p class="mt-2 text-sm text-gray-600">
+                        {topic.description}
+                      </p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        articles.length === 0 && movies.length === 0 && topics.length === 0 && (
+          <div class="py-10 text-center">
+            <p class="text-lg text-gray-600">
+              Tidak ada hasil pencarian untuk "{searchQuery}"
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </div>
 </MainLayout>
