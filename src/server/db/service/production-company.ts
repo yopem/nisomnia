@@ -3,7 +3,7 @@ import { count, eq } from "drizzle-orm"
 import { db } from "@/server/db"
 import { productionCompaniesTable } from "@/server/db/schema"
 
-export const getProductionCompnayBySlug = async (slug: string) => {
+export const getProductionCompanyBySlug = async (slug: string) => {
   return await db.query.productionCompaniesTable.findFirst({
     where: (productionCompany, { eq }) => eq(productionCompany.slug, slug),
   })
