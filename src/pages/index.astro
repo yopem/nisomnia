@@ -1,8 +1,12 @@
 ---
 import RecentArticles from "@/components/article/recent-articles.astro"
+import RecentMovies from "@/components/movie/recent-movies.astro"
 import MainLayout from "@/layouts/main-layout.astro"
 ---
 
 <MainLayout>
-  <RecentArticles />
+  <div class="space-y-8">
+    <RecentArticles />
+    <RecentMovies />
+  </div>
 </MainLayout>
