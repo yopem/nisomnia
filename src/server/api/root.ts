@@ -5,6 +5,7 @@ import { genreRouter } from "./routes/genre"
 import { mediaRouter } from "./routes/media"
 import { movieRouter } from "./routes/movie"
 import { productionCompanyRouter } from "./routes/production-company"
+import { topicRouter } from "./routes/topic"
 import { createCallerFactory, createTRPCRouter } from "./trpc"
 
 export const appRouter = createTRPCRouter({
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   media: mediaRouter,
   movie: movieRouter,
   productionCompany: productionCompanyRouter,
+  topic: topicRouter,
 })
 
 export type AppRouter = typeof appRouter
