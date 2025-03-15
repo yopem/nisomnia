@@ -1,18 +1,18 @@
 ---
 import { Schema } from "astro-seo-schema"
 
-const { PUBLIC_SITE_DOMAIN } = import.meta.env
+const { PUBLIC_DOMAIN } = import.meta.env
 ---
 
 <Schema
   item={{
     "@context": "https://schema.org",
     "@type": "WebSite",
-    url: `https://${PUBLIC_SITE_DOMAIN}`,
+    url: `https://${PUBLIC_DOMAIN}`,
     potentialAction: [
       {
         "@type": "SearchAction",
-        target: `https://${PUBLIC_SITE_DOMAIN}/search?query={search_term_string}`,
+        target: `https://${PUBLIC_DOMAIN}/search?query={search_term_string}`,
         "query-input": "required name=search_term_string",
       },
     ],
