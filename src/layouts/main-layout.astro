@@ -1,9 +1,33 @@
 ---
 import "@/styles/global.css"
 
+import { Seo } from "astro-seo-meta"
+
 import Sidebar from "@/components/layout/sidebar.astro"
 
 import "@fontsource/inter"
+
+interface Props {
+  title?: string
+  description?: string
+  themeColor?: string
+  robots?: string
+}
+
+const { title, description, themeColor, robots } = Astro.props
+
+const {
+  PUBLIC_DOMAIN,
+  PUBLIC_LOGO_OG_URL,
+  PUBLIC_ROBOTS,
+  PUBLIC_SITE_DESCRIPTION,
+  PUBLIC_SITE_TITLE,
+  PUBLIC_X_USERNAME,
+} = import.meta.env
+
+const pageTitle = title ? `${title} | ${PUBLIC_SITE_TITLE}` : PUBLIC_SITE_TITLE
+const pageDescription = description ?? PUBLIC_SITE_DESCRIPTION
+const pageRobots = robots ?? PUBLIC_ROBOTS
 ---
 
 <!doctype html>
@@ -11,9 +35,24 @@ import "@fontsource/inter"
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>Nisomnia</title>
+    <Seo
+      title={pageTitle}
+      description={pageDescription}
+      icon="/favicon.ico"
+      themeColor={themeColor}
+      robots={pageRobots}
+      facebook={{
+        image: PUBLIC_LOGO_OG_URL,
+        url: `https://${PUBLIC_DOMAIN}`,
+        type: "website",
+      }}
+      twitter={{
+        image: PUBLIC_LOGO_OG_URL,
+        site: `@${PUBLIC_X_USERNAME}`,
+        card: "summary",
+      }}
+    />
   </head>
   <body
     class="mx-4 mt-8 mb-40 flex max-w-4xl flex-col gap-4 font-sans antialiased md:mt-20 md:flex-row md:gap-8 lg:mx-auto lg:mt-32"

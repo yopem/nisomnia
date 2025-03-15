@@ -26,7 +26,11 @@ const topics = await api.topic.search({
 })
 ---
 
-<MainLayout>
+<MainLayout
+  title={searchQuery ? `Hasil pencarian untuk ${searchQuery}` : "Cari"}
+  robots="noindex, follow"
+  description={`Hasil pencarian untuk ${searchQuery}`}
+>
   <div class="space-y-4">
     <h1 class="mb-6 text-2xl font-bold md:text-3xl">
       Hasil Pencarian: {searchQuery}
