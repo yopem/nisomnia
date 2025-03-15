@@ -33,11 +33,15 @@ const topics = await api.topic.search({
   description={`Hasil pencarian untuk ${searchQuery}`}
 >
   <div class="space-y-4">
-    <h1 class="mb-6 text-2xl font-bold md:text-3xl">
-      Hasil Pencarian: {searchQuery}
-    </h1>
-    <SearchForm searchQuery={searchQuery} />
     <div class="space-y-8">
+      <SearchForm searchQuery={searchQuery} />
+      {
+        searchQuery && (
+          <h1 class="mb-6 text-2xl font-bold md:text-3xl">
+            {`Hasil pencarian: ${searchQuery}`}
+          </h1>
+        )
+      }
       {
         articles.length > 0 && (
           <div>
