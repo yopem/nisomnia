@@ -1,9 +1,12 @@
 ---
+import ArticleCard from "@/components/article/article-card.astro"
+import MovieCard from "@/components/movie/movie-card.astro"
 import SearchForm from "@/components/search/search-form.astro"
+import TopicCard from "@/components/topic/topic-card.astro"
 import MainLayout from "@/layouts/main-layout.astro"
 import { api } from "@/trpc/server"
 
-const searchQuery = Astro.url.searchParams.get("searchQuery") ?? ""
+const searchQuery = Astro.url.searchParams.get("query") ?? ""
 
 const articles = await api.article.search({
   language: "id",
@@ -13,13 +16,13 @@ const articles = await api.article.search({
 
 const movies = await api.movie.search({
   searchQuery,
-  limit: 10,
+  limit: 12,
 })
 
 const topics = await api.topic.search({
   language: "id",
   searchQuery,
-  limit: 10,
+  limit: 5,
 })
 ---
 
@@ -34,20 +37,11 @@ const topics = await api.topic.search({
         articles.length > 0 && (
           <div>
             <h2 class="mb-4 text-xl font-semibold">Artikel</h2>
-            <ul class="space-y-4">
+            <div class="space-y-3">
               {articles.map((article) => (
-                <li class="rounded-lg border p-4 hover:bg-gray-50">
-                  <a href={`/article/${article.slug}`}>
-                    <h3 class="font-medium">{article.title}</h3>
-                    {article.excerpt && (
-                      <p class="mt-2 text-sm text-gray-600">
-                        {article.excerpt}
-                      </p>
-                    )}
-                  </a>
-                </li>
+                <ArticleCard article={article} />
               ))}
-            </ul>
+            </div>
           </div>
         )
       }
@@ -56,15 +50,11 @@ const topics = await api.topic.search({
         movies.length > 0 && (
           <div>
             <h2 class="mb-4 text-xl font-semibold">Film</h2>
-            <ul class="space-y-4">
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
               {movies.map((movie) => (
-                <li class="rounded-lg border p-4 hover:bg-gray-50">
-                  <a href={`/movie/${movie.slug}`}>
-                    <h3 class="font-medium">{movie.title}</h3>
-                  </a>
-                </li>
+                <MovieCard movie={movie} />
               ))}
-            </ul>
+            </div>
           </div>
         )
       }
@@ -73,20 +63,11 @@ const topics = await api.topic.search({
         topics.length > 0 && (
           <div>
             <h2 class="mb-4 text-xl font-semibold">Topik</h2>
-            <ul class="space-y-4">
+            <div class="space-y-4">
               {topics.map((topic) => (
-                <li class="rounded-lg border p-4 hover:bg-gray-50">
-                  <a href={`/topic/${topic.slug}`}>
-                    <h3 class="font-medium">{topic.title}</h3>
-                    {topic.description && (
-                      <p class="mt-2 text-sm text-gray-600">
-                        {topic.description}
-                      </p>
-                    )}
-                  </a>
-                </li>
+                <TopicCard topic={topic} />
               ))}
-            </ul>
+            </div>
           </div>
         )
       }
