@@ -1,16 +1,11 @@
 ---
-import { Picture } from "astro:assets"
-
-import CardContent from "@/components/ui/card/card-content.astro"
-import CardHeader from "@/components/ui/card/card-header.astro"
-import CardTitle from "@/components/ui/card/card-title.astro"
-import Card from "@/components/ui/card/card.astro"
 import PaginationContent from "@/components/ui/pagination/pagination-content.astro"
 import PaginationItem from "@/components/ui/pagination/pagination-item.astro"
 import PaginationNext from "@/components/ui/pagination/pagination-next.astro"
 import PaginationPrevious from "@/components/ui/pagination/pagination-previous.astro"
 import Pagination from "@/components/ui/pagination/pagination.astro"
 import { api } from "@/trpc/server"
+import ArticleCard from "./article-card.astro"
 
 interface Props {
   page?: number
@@ -32,37 +27,7 @@ const currentPage = page
 ---
 
 <div class="space-y-3">
-  {
-    articles.map((article) => (
-      <Card>
-        <a
-          href={`/article/${article.slug}`}
-          class="flex flex-col gap-4 sm:flex-row"
-        >
-          <div class="w-full p-3 sm:w-auto sm:shrink-0 sm:pr-0">
-            <Picture
-              src={article.featuredImage}
-              formats={["avif", "webp"]}
-              alt={article.title}
-              inferSize
-              quality={50}
-              loading="lazy"
-              sizes="(min-width: 640px) 176px, 246px"
-              class="aspect-video w-full rounded object-cover sm:aspect-square sm:size-44"
-            />
-          </div>
-          <div class="flex-1">
-            <CardHeader>
-              <CardTitle class="text-lg md:text-xl">{article.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="line-clamp-3">{article.excerpt}</p>
-            </CardContent>
-          </div>
-        </a>
-      </Card>
-    ))
-  }
+  {articles.map((article) => <ArticleCard article={article} />)}
 </div>
 
 {
