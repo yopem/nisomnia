@@ -88,21 +88,20 @@ const topics = await api.topic.search({
       }
     </div>
   </div>
+  <BreadcrumbSchema
+    listItems={[
+      {
+        name: "Cari",
+        url: "/search",
+      },
+      ...(searchQuery
+        ? [
+            {
+              name: `Hasil pencarian untuk ${searchQuery}`,
+              url: `/search?query=${searchQuery}`,
+            },
+          ]
+        : []),
+    ]}
+  />
 </MainLayout>
-
-<BreadcrumbSchema
-  listItems={[
-    {
-      name: "Cari",
-      url: "/search",
-    },
-    ...(searchQuery
-      ? [
-          {
-            name: `Hasil pencarian untuk ${searchQuery}`,
-            url: `/search?query=${searchQuery}`,
-          },
-        ]
-      : []),
-  ]}
-/>

@@ -20,21 +20,20 @@ const pageDescription =
 <MainLayout title={pageTitle} description={pageDescription}>
   <h1 class="mb-6 text-2xl font-bold md:text-3xl">Artikel</h1>
   <ArticleList page={currentPage} perPage={10} />
+  <BreadcrumbSchema
+    listItems={[
+      {
+        name: "Artikel",
+        url: "/article",
+      },
+      ...(currentPage > 1
+        ? [
+            {
+              name: `Halaman ${currentPage}`,
+              url: `/article?page=${currentPage}`,
+            },
+          ]
+        : []),
+    ]}
+  />
 </MainLayout>
-
-<BreadcrumbSchema
-  listItems={[
-    {
-      name: "Artikel",
-      url: "/article",
-    },
-    ...(currentPage > 1
-      ? [
-          {
-            name: `Halaman ${currentPage}`,
-            url: `/article?page=${currentPage}`,
-          },
-        ]
-      : []),
-  ]}
-/>

@@ -4,6 +4,7 @@ import "@/styles/global.css"
 import { Seo } from "astro-seo-meta"
 
 import Sidebar from "@/components/layout/sidebar.astro"
+import WebsiteSchema from "@/components/seo/website-schema.astro"
 
 import "@fontsource/inter"
 
@@ -61,5 +62,7 @@ const pageRobots = robots ?? PUBLIC_ROBOTS
     <main class="mt-6 flex min-w-0 flex-auto flex-col px-2 md:mt-0 md:px-0">
       <slot />
     </main>
+
+    <WebsiteSchema />
   </body>
 </html>
