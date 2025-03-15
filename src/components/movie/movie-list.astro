@@ -1,16 +1,11 @@
 ---
-import { Picture } from "astro:assets"
-
-import ImageOffIcon from "@/assets/icons/image-off.svg"
-import CardHeader from "@/components/ui/card/card-header.astro"
-import CardTitle from "@/components/ui/card/card-title.astro"
-import Card from "@/components/ui/card/card.astro"
 import PaginationContent from "@/components/ui/pagination/pagination-content.astro"
 import PaginationItem from "@/components/ui/pagination/pagination-item.astro"
 import PaginationNext from "@/components/ui/pagination/pagination-next.astro"
 import PaginationPrevious from "@/components/ui/pagination/pagination-previous.astro"
 import Pagination from "@/components/ui/pagination/pagination.astro"
 import { api } from "@/trpc/server"
+import MovieCard from "./movie-card.astro"
 
 interface Props {
   page?: number
@@ -30,36 +25,7 @@ const currentPage = page
 ---
 
 <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
-  {
-    movies.map((movie) => (
-      <Card class="h-full">
-        <a href={`/movie/${movie.slug}`} class="flex h-full flex-col">
-          <div class="w-full p-2">
-            {movie.poster ? (
-              <Picture
-                src={movie.poster}
-                formats={["avif", "webp"]}
-                alt={movie.title}
-                inferSize
-                quality={50}
-                loading="lazy"
-                sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 120px"
-                class="aspect-[2/3] h-auto w-full rounded object-cover"
-              />
-            ) : (
-              // @ts-expect-error TODO: svg import is still experimental and not yet support typescript
-              <ImageOffIcon class="aspect-[2/3] h-auto w-full" />
-            )}
-          </div>
-          <div class="flex-1 pt-0">
-            <CardHeader class="p-3">
-              <CardTitle class="text-sm md:text-base">{movie.title}</CardTitle>
-            </CardHeader>
-          </div>
-        </a>
-      </Card>
-    ))
-  }
+  {movies.map((movie) => <MovieCard movie={movie} />)}
 </div>
 
 {
