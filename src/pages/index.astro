@@ -1,6 +1,7 @@
 ---
 import RecentArticles from "@/components/article/recent-articles.astro"
 import RecentMovies from "@/components/movie/recent-movies.astro"
+import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
 import MainLayout from "@/layouts/main-layout.astro"
 ---
 
@@ -10,3 +11,5 @@ import MainLayout from "@/layouts/main-layout.astro"
     <RecentMovies />
   </div>
 </MainLayout>
+
+<BreadcrumbSchema />

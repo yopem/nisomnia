@@ -2,6 +2,7 @@
 import ArticleCard from "@/components/article/article-card.astro"
 import MovieCard from "@/components/movie/movie-card.astro"
 import SearchForm from "@/components/search/search-form.astro"
+import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
 import TopicCard from "@/components/topic/topic-card.astro"
 import MainLayout from "@/layouts/main-layout.astro"
 import { api } from "@/trpc/server"
@@ -88,3 +89,20 @@ const topics = await api.topic.search({
     </div>
   </div>
 </MainLayout>
+
+<BreadcrumbSchema
+  listItems={[
+    {
+      name: "Cari",
+      url: "/search",
+    },
+    ...(searchQuery
+      ? [
+          {
+            name: `Hasil pencarian untuk ${searchQuery}`,
+            url: `/search?query=${searchQuery}`,
+          },
+        ]
+      : []),
+  ]}
+/>
