@@ -1,17 +1,14 @@
 import { SQL } from "bun"
-
-import "dotenv/config"
-
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js"
 import { migrate } from "drizzle-orm/postgres-js/migrator"
 
-const DATABASE_URL = process.env.DATABASE_URL
+import { databaseUrl } from "@/utils/constant"
 
-if (!DATABASE_URL) {
+if (!databaseUrl) {
   throw new Error("DATABASE_URL is not set")
 }
 
-const migrationClient = new SQL(process.env.DATABASE_URL!, { max: 1 })
+const migrationClient = new SQL(databaseUrl, { max: 1 })
 
 const db: PostgresJsDatabase = drizzle(migrationClient)
 

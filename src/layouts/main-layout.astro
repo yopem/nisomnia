@@ -9,6 +9,15 @@ import Theme from "@/components/theme.astro"
 
 import "@fontsource/inter"
 
+import {
+  publicLogoOgUrl,
+  publicRobots,
+  publicSiteDescription,
+  publicSiteTitle,
+  publicSiteUrl,
+  publicXUsername,
+} from "@/utils/constant"
+
 interface Props {
   title?: string
   description?: string
@@ -18,18 +27,9 @@ interface Props {
 
 const { title, description, themeColor, robots } = Astro.props
 
-const {
-  PUBLIC_DOMAIN,
-  PUBLIC_LOGO_OG_URL,
-  PUBLIC_ROBOTS,
-  PUBLIC_SITE_DESCRIPTION,
-  PUBLIC_SITE_TITLE,
-  PUBLIC_X_USERNAME,
-} = import.meta.env
-
-const pageTitle = title ? `${title} | ${PUBLIC_SITE_TITLE}` : PUBLIC_SITE_TITLE
-const pageDescription = description ?? PUBLIC_SITE_DESCRIPTION
-const pageRobots = robots ?? PUBLIC_ROBOTS
+const pageTitle = title ? `${title} | ${publicSiteTitle}` : publicSiteTitle
+const pageDescription = description ?? publicSiteDescription
+const pageRobots = robots ?? publicRobots
 ---
 
 <!doctype html>
@@ -45,13 +45,13 @@ const pageRobots = robots ?? PUBLIC_ROBOTS
       themeColor={themeColor}
       robots={pageRobots}
       facebook={{
-        image: PUBLIC_LOGO_OG_URL,
-        url: `https://${PUBLIC_DOMAIN}`,
+        image: publicLogoOgUrl,
+        url: publicSiteUrl,
         type: "website",
       }}
       twitter={{
-        image: PUBLIC_LOGO_OG_URL,
-        site: `@${PUBLIC_X_USERNAME}`,
+        image: publicLogoOgUrl,
+        site: `@${publicXUsername}`,
         card: "summary",
       }}
     />

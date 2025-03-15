@@ -1,6 +1,8 @@
 ---
 import { Schema } from "astro-seo-schema"
 
+import { publicSiteTitle, publicSiteUrl } from "@/utils/constant"
+
 interface Props {
   listItems?: {
     name: string
@@ -8,15 +10,13 @@ interface Props {
   }[]
 }
 
-const { PUBLIC_DOMAIN, PUBLIC_SITE_TITLE } = import.meta.env
-
 const { listItems } = Astro.props
 
 const listItem = listItems?.map((item, index) => ({
   "@type": "ListItem",
   position: index + 2,
   item: {
-    "@id": `https://${PUBLIC_DOMAIN}${item.url}`,
+    "@id": `${publicSiteUrl}${item.url}`,
     name: item.name,
   },
 }))
@@ -30,7 +30,7 @@ const listItem = listItems?.map((item, index) => ({
       {
         "@type": "ListItem",
         position: 1,
-        item: { "@id": `https://${PUBLIC_DOMAIN}`, name: PUBLIC_SITE_TITLE },
+        item: { "@id": publicSiteUrl, name: publicSiteTitle },
         ...(listItems && listItem),
       },
     ],

@@ -3,14 +3,12 @@ import { defineConfig } from "astro/config"
 import node from "@astrojs/node"
 import tailwindcss from "@tailwindcss/vite"
 
-const { PORT, PUBLIC_SITE_DOMAIN } = import.meta.env
+import { port, publicSiteDomain, publicSiteUrl } from "@/utils/constant"
 
 export default defineConfig({
-  site: PUBLIC_SITE_DOMAIN
-    ? `https://${PUBLIC_SITE_DOMAIN}`
-    : "http://localhost:4321",
+  site: publicSiteUrl ? publicSiteUrl : "http://localhost:4321",
   server: {
-    port: PORT ? parseInt(PORT) : 4321,
+    port: port ? parseInt(port) : 4321,
     host: true,
   },
   output: "server",
@@ -23,7 +21,7 @@ export default defineConfig({
       noExternal: ["path-to-regexp"],
     },
     preview: {
-      port: PORT ? parseInt(PORT) : 4321,
+      port: port ? parseInt(port) : 4321,
       host: true,
     },
   },
@@ -34,7 +32,7 @@ export default defineConfig({
     remotePatterns: [
       {
         protocol: "https",
-        hostname: `**.${PUBLIC_SITE_DOMAIN}`,
+        hostname: `**.${publicSiteDomain}`,
       },
     ],
   },
