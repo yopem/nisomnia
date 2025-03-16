@@ -92,16 +92,16 @@ export const getTopicsSitemap = async ({
 
 export const getTopicsCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(topicsTable)
     .where(and(eq(topicsTable.status, "published")))
 
-  return data[0].value
+  return data[0].count
 }
 
 export const getTopicsCountByLanguage = async (language: LanguageType) => {
   const data = await db
-    .select({ values: count() })
+    .select({ count: count() })
     .from(topicsTable)
     .where(
       and(
@@ -110,7 +110,7 @@ export const getTopicsCountByLanguage = async (language: LanguageType) => {
       ),
     )
 
-  return data[0].values
+  return data[0].count
 }
 
 export const searchTopics = async ({

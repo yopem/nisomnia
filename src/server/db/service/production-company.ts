@@ -33,9 +33,9 @@ export const getProductionCompaniesSitemap = async ({
 
 export const getProductionCompaniesCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(productionCompaniesTable)
     .where(eq(productionCompaniesTable.status, "published"))
 
-  return data[0].value
+  return data[0].count
 }

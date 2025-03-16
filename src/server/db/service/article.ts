@@ -209,16 +209,16 @@ export const getArticlesSitemap = async ({
 
 export const getArticlesCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(articlesTable)
     .where(and(eq(articlesTable.status, "published")))
 
-  return data[0].value
+  return data[0].count
 }
 
 export const getArticlesCountByLanguage = async (language: LanguageType) => {
   const data = await db
-    .select({ values: count() })
+    .select({ count: count() })
     .from(articlesTable)
     .where(
       and(
@@ -227,7 +227,7 @@ export const getArticlesCountByLanguage = async (language: LanguageType) => {
       ),
     )
 
-  return data[0].values
+  return data[0].count
 }
 
 export const getArticlesCountByTopicId = async (topicId: string) => {

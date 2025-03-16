@@ -92,16 +92,16 @@ export const getFeedsSitemap = async ({
 
 export const getFeedsCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(feedsTable)
     .where(and(eq(feedsTable.status, "published")))
 
-  return data[0].value
+  return data[0].count
 }
 
 export const getFeedsCountByLanguage = async (language: LanguageType) => {
   const data = await db
-    .select({ values: count() })
+    .select({ count: count() })
     .from(feedsTable)
     .where(
       and(
@@ -110,7 +110,7 @@ export const getFeedsCountByLanguage = async (language: LanguageType) => {
       ),
     )
 
-  return data[0].values
+  return data[0].count
 }
 
 export const searchFeeds = async ({

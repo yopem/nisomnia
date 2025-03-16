@@ -29,9 +29,9 @@ export const getMediaSitemap = async ({
 }
 
 export const getMediasCount = async () => {
-  const data = await db.select({ value: count() }).from(mediasTable)
+  const data = await db.select({ count: count() }).from(mediasTable)
 
-  return data[0].value
+  return data[0].count
 }
 
 export const searchMedias = async ({
