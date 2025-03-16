@@ -12,3 +12,6 @@
 - [x] comment to social media
 - [x] add option for no index for preview deployment
 - [ ] add tmdb integration
+- [ ] add redirect
+- [ ] add popular topic list
+- [ ] add genre list
