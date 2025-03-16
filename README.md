@@ -2,12 +2,13 @@
 
 ## Todo
 
-- [ ] manage nested seo
+- [x] manage nested seo
 - [ ] sitemap
 - [ ] redirect amp
-- [ ] movie
+- [x] movie
 - [ ] author
-- [ ] analytics with partytown
+- [x] analytics with partytown
 - [ ] adsense with lazyload
-- [ ] comment to social media
-- [ ] add option for no index for preview deployment
+- [x] comment to social media
+- [x] add option for no index for preview deployment
+- [ ] add tmdb integration
