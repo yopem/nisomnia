@@ -6,6 +6,8 @@ import { Seo } from "astro-seo-meta"
 
 import AdsenseScript from "@/components/ad/adsense-script.astro"
 import Adsense from "@/components/ad/adsense.astro"
+import GoogleAnalytics from "@/components/analytics/google-analytics.astro"
+import Umami from "@/components/analytics/umami.astro"
 import Sidebar from "@/components/layout/sidebar.astro"
 import WebsiteSchema from "@/components/seo/website-schema.astro"
 import Theme from "@/components/theme.astro"
@@ -68,6 +70,14 @@ const pageRobots = robots ?? publicRobots
       {appEnv === "production" && <Adsense adSlot="3318398095" />}
     </main>
     <WebsiteSchema />
-    {appEnv === "production" && <AdsenseScript />}
+    {
+      appEnv === "production" && (
+        <Fragment>
+          <GoogleAnalytics measurementId="G-1234567890" />
+          <Umami websiteId="fce06352-f464-4337-a716-b78f9f0b46c3" />
+          <AdsenseScript />
+        </Fragment>
+      )
+    }
   </body>
 </html>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  measurementId: string
+}
+
+const { measurementId } = Astro.props
+---
+
+<script
+  is:inline
+  type="text/partytown"
+  src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
+<script
+  is:inline
+  type="text/partytown"
+  data-ga-measurement-id={measurementId}
+  id="ga-init"
+>
+  const measurementId = document
+    .getElementById("ga-init")
+    .getAttribute("data-ga-measurement-id")
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag("js", new Date())
+  gtag("config", measurementId)
+</script>

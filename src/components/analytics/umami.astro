@@ -1,0 +1,13 @@
+---
+interface Props {
+  websiteId: string
+}
+
+const { websiteId } = Astro.props
+---
+
+<script
+  is:inline
+  type="text/partytown"
+  src="https://analytic.nisomnia.com/script.js"
+  data-website-id={websiteId}></script>
