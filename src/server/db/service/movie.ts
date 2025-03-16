@@ -132,7 +132,17 @@ export const getMoviesByGenreId = async ({
   perPage: number
 }) => {
   const movies = await db.query.moviesTable.findMany({
-    where: (movies, { eq }) => eq(movies.status, "published"),
+    where: (movies, { eq, and, inArray }) =>
+      and(
+        eq(movies.status, "published"),
+        inArray(
+          movies.id,
+          db
+            .select({ id: movieGenresTable.movieId })
+            .from(movieGenresTable)
+            .where(eq(movieGenresTable.genreId, genreId)),
+        ),
+      ),
     limit: perPage,
     offset: (page - 1) * perPage,
     orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
@@ -194,11 +204,26 @@ export const getMoviesSitemap = async ({
 
 export const getMoviesCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(moviesTable)
     .where(and(eq(moviesTable.status, "published")))
 
-  return data[0].value
+  return data[0].count
+}
+
+export const getMoviesCountByGenreId = async (genreId: string) => {
+  const data = await db
+    .select({ count: count() })
+    .from(moviesTable)
+    .innerJoin(movieGenresTable, eq(moviesTable.id, movieGenresTable.movieId))
+    .where(
+      and(
+        eq(moviesTable.status, "published"),
+        eq(movieGenresTable.genreId, genreId),
+      ),
+    )
+
+  return data[0].count
 }
 
 export const searchMovies = async ({

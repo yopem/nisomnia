@@ -53,11 +53,11 @@ export const getGenresSitemap = async ({
 
 export const getGenresCount = async () => {
   const data = await db
-    .select({ value: count() })
+    .select({ count: count() })
     .from(genresTable)
     .where(and(eq(genresTable.status, "published")))
 
-  return data[0].value
+  return data[0].count
 }
 
 export const searchGenres = async ({

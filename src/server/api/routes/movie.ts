@@ -9,6 +9,7 @@ import {
   getMoviesByGenreId,
   getMoviesByProductionCompanyId,
   getMoviesCount,
+  getMoviesCountByGenreId,
   getMoviesSitemap,
   getRelatedMovies,
   searchMovies,
@@ -109,6 +110,17 @@ export const movieRouter = createTRPCRouter({
 
   count: publicProcedure.query(async () => {
     const { data, error } = await tryCatch(getMoviesCount())
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error fetching movies",
+      })
+    }
+    return data
+  }),
+
+  countByGenreId: publicProcedure.input(z.string()).query(async ({ input }) => {
+    const { data, error } = await tryCatch(getMoviesCountByGenreId(input))
     if (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
