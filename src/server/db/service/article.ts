@@ -88,14 +88,12 @@ export const getRelatedArticles = async ({
   currentArticleId,
   topicId,
   language,
-  page,
-  perPage,
+  limit,
 }: {
   currentArticleId: string
   topicId: string
   language: LanguageType
-  page: number
-  perPage: number
+  limit: number
 }) => {
   const articles = await db.query.articlesTable.findMany({
     where: (articles, { eq, and, not }) =>
@@ -104,8 +102,7 @@ export const getRelatedArticles = async ({
         eq(articles.status, "published"),
         not(eq(articles.id, currentArticleId)),
       ),
-    limit: perPage,
-    offset: (page - 1) * perPage,
+    limit: limit,
     orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
     with: {
       topics: true,
@@ -169,6 +166,17 @@ export const getArticlesByAuthorId = async ({
   return articles.filter((article) =>
     article.authors.some((author) => author.userId === authorId),
   )
+}
+
+export const getAllArticlesSlugs = async (language: LanguageType) => {
+  return await db.query.articlesTable.findMany({
+    where: (articles, { eq, and }) =>
+      and(eq(articles.language, language), eq(articles.status, "published")),
+    columns: {
+      slug: true,
+    },
+    orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
+  })
 }
 
 export const getArticlesSitemap = async ({

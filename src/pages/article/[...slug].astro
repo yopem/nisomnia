@@ -1,0 +1,76 @@
+---
+import { Picture } from "astro:assets"
+
+import ArticleComment from "@/components/article/article-comment.astro"
+import ArticleContent from "@/components/article/article-content.astro"
+import RelatedArticles from "@/components/article/related-articles.astro"
+import ArticleSchema from "@/components/seo/article-schema.astro"
+import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
+import TopicListSingleArticle from "@/components/topic/topic-list-single-article.astro"
+import MainLayout from "@/layouts/main-layout.astro"
+import type { SelectTopic } from "@/server/db/schema"
+import { api } from "@/trpc/server"
+
+export async function getStaticPaths() {
+  const articlesSlugs = await api.article.allSlugs("id")
+  return articlesSlugs.map((article) => ({
+    params: { slug: article.slug },
+  }))
+}
+
+const { slug } = Astro.params
+
+const article = await api.article.bySlug(slug)
+
+if (!article) {
+  return Astro.redirect("/404")
+}
+
+const topics = article.topics as Pick<SelectTopic, "id" | "slug" | "title">[]
+
+const relatedArticles = await api.article.related({
+  currentArticleId: article.id,
+  language: "id",
+  topicId: topics[0].id,
+  limit: 5,
+})
+
+export const prerender = true
+---
+
+<MainLayout title={article.title} description={article.excerpt}>
+  <div class="space-y-6">
+    <h1 class="text-2xl font-bold md:text-3xl">{article.title}</h1>
+    <Picture
+      src={article.featuredImage}
+      formats={["avif", "webp"]}
+      alt={article.title}
+      inferSize
+      quality={70}
+      loading="lazy"
+      sizes="(min-width: 640px) 720px, 250px"
+      class="aspect-video w-full rounded object-cover"
+    />
+    <ArticleContent article={article} />
+    <TopicListSingleArticle topics={topics} />
+    <ArticleComment article={article} />
+    <RelatedArticles articles={relatedArticles} />
+  </div>
+  <ArticleSchema article={article} />
+  <BreadcrumbSchema
+    listItems={[
+      {
+        name: "Artikel",
+        url: "/article",
+      },
+      {
+        name: topics[0].title,
+        url: `/topic/${topics[0].slug}`,
+      },
+      {
+        name: article.title,
+        url: `/article/${article.slug}`,
+      },
+    ]}
+  />
+</MainLayout>

@@ -1,0 +1,60 @@
+---
+import { Schema } from "astro-seo-schema"
+
+import type { SelectArticle } from "@/server/db/schema"
+import {
+  publicLogoOgUrl,
+  publicSiteTitle,
+  publicSiteUrl,
+} from "@/utils/constant"
+
+interface Props {
+  article: Pick<
+    SelectArticle,
+    "createdAt" | "updatedAt" | "title" | "excerpt" | "featuredImage" | "slug"
+  > & {
+    authors: { username: string | null }[]
+  }
+}
+
+const { article } = Astro.props
+const { createdAt, updatedAt, title, excerpt, featuredImage, slug, authors } =
+  article
+---
+
+<Schema
+  item={{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    datePublished: createdAt?.toISOString(),
+    description: excerpt,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${publicSiteUrl}/article/${slug}`,
+    },
+    headline: title,
+    image: [
+      {
+        "@type": "ImageObject",
+        url: featuredImage,
+      },
+    ],
+    dateModified: updatedAt?.toISOString(),
+    author: [
+      {
+        "@type": "Person",
+        name: publicSiteTitle,
+        url: `${publicSiteUrl}/user/${authors[0].username}`,
+      },
+    ],
+    publisher: {
+      "@type": "Organization",
+      name: publicSiteTitle,
+      logo: {
+        "@type": "ImageObject",
+        url: publicLogoOgUrl,
+      },
+    },
+    isAccessibleForFree: true,
+  }}
+/>

@@ -5,6 +5,7 @@ import { z } from "zod"
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 import { languageType } from "@/server/db/schema"
 import {
+  getAllArticlesSlugs,
   getArticleBySlug,
   getArticlesByAuthorId,
   getArticlesByLanguage,
@@ -53,8 +54,7 @@ export const articleRouter = createTRPCRouter({
         currentArticleId: z.string(),
         topicId: z.string(),
         language: languageType,
-        page: z.number(),
-        perPage: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input }) => {
@@ -107,6 +107,17 @@ export const articleRouter = createTRPCRouter({
       }
       return data
     }),
+
+  allSlugs: publicProcedure.input(languageType).query(async ({ input }) => {
+    const { data, error } = await tryCatch(getAllArticlesSlugs(input))
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error fetching articles",
+      })
+    }
+    return data
+  }),
 
   sitemap: publicProcedure
     .input(
