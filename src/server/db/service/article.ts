@@ -133,8 +133,18 @@ export const getArticlesByTopicId = async ({
   perPage: number
 }) => {
   const articles = await db.query.articlesTable.findMany({
-    where: (articles, { eq, and }) =>
-      and(eq(articles.language, language), eq(articles.status, "published")),
+    where: (articles, { eq, and, inArray }) =>
+      and(
+        eq(articles.language, language),
+        eq(articles.status, "published"),
+        inArray(
+          articles.id,
+          db
+            .select({ id: articleTopicsTable.articleId })
+            .from(articleTopicsTable)
+            .where(eq(articleTopicsTable.topicId, topicId)),
+        ),
+      ),
     limit: perPage,
     offset: (page - 1) * perPage,
     orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
@@ -218,6 +228,24 @@ export const getArticlesCountByLanguage = async (language: LanguageType) => {
     )
 
   return data[0].values
+}
+
+export const getArticlesCountByTopicId = async (topicId: string) => {
+  const data = await db
+    .select({ count: count() })
+    .from(articlesTable)
+    .innerJoin(
+      articleTopicsTable,
+      eq(articlesTable.id, articleTopicsTable.articleId),
+    )
+    .where(
+      and(
+        eq(articlesTable.status, "published"),
+        eq(articleTopicsTable.topicId, topicId),
+      ),
+    )
+
+  return data[0].count
 }
 
 export const searchArticles = async ({

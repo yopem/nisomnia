@@ -11,6 +11,7 @@ import {
   getArticlesByTopicId,
   getArticlesCount,
   getArticlesCountByLanguage,
+  getArticlesCountByTopicId,
   getArticlesSitemap,
   getRelatedArticles,
   searchArticles,
@@ -149,6 +150,17 @@ export const articleRouter = createTRPCRouter({
       }
       return data
     }),
+
+  countByTopicId: publicProcedure.input(z.string()).query(async ({ input }) => {
+    const { data, error } = await tryCatch(getArticlesCountByTopicId(input))
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error fetching articles",
+      })
+    }
+    return data
+  }),
 
   search: publicProcedure
     .input(
