@@ -96,11 +96,18 @@ export const getRelatedArticles = async ({
   limit: number
 }) => {
   const articles = await db.query.articlesTable.findMany({
-    where: (articles, { eq, and, not }) =>
+    where: (articles, { eq, and, not, inArray }) =>
       and(
         eq(articles.language, language),
         eq(articles.status, "published"),
         not(eq(articles.id, currentArticleId)),
+        inArray(
+          articles.id,
+          db
+            .select({ id: articleTopicsTable.articleId })
+            .from(articleTopicsTable)
+            .where(eq(articleTopicsTable.topicId, topicId)),
+        ),
       ),
     limit: limit,
     orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
