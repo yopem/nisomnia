@@ -168,17 +168,6 @@ export const getArticlesByAuthorId = async ({
   )
 }
 
-export const getAllArticlesSlugs = async (language: LanguageType) => {
-  return await db.query.articlesTable.findMany({
-    where: (articles, { eq, and }) =>
-      and(eq(articles.language, language), eq(articles.status, "published")),
-    columns: {
-      slug: true,
-    },
-    orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
-  })
-}
-
 export const getArticlesSitemap = async ({
   language,
   page,

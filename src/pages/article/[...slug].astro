@@ -11,16 +11,9 @@ import MainLayout from "@/layouts/main-layout.astro"
 import type { SelectTopic } from "@/server/db/schema"
 import { api } from "@/trpc/server"
 
-export async function getStaticPaths() {
-  const articlesSlugs = await api.article.allSlugs("id")
-  return articlesSlugs.map((article) => ({
-    params: { slug: article.slug },
-  }))
-}
-
 const { slug } = Astro.params
 
-const article = await api.article.bySlug(slug)
+const article = await api.article.bySlug(slug!)
 
 if (!article) {
   return Astro.redirect("/404")
@@ -34,8 +27,6 @@ const relatedArticles = await api.article.related({
   topicId: topics[0].id,
   limit: 5,
 })
-
-export const prerender = true
 ---
 
 <MainLayout title={article.title} description={article.excerpt}>
