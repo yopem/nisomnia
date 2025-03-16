@@ -24,12 +24,12 @@ const pageTitle =
 
 const pageDescription =
   currentPage > 1
-    ? `Artikel terbaru pada halaman ${currentPage} dari berbagai topik ${topic.title}.`
-    : `Artikel terbaru dari berbagai topik ${topic.title}.`
+    ? `Artikel terbaru pada halaman ${currentPage} dari topik ${topic.title}.`
+    : `Artikel terbaru dari topik ${topic.title}.`
 ---
 
 <MainLayout title={pageTitle} description={pageDescription}>
-  <h1 class="mb-6 text-2xl font-bold md:text-3xl">Artikel</h1>
+  <h1 class="mb-6 text-2xl font-bold md:text-3xl">Artikel {topic.title}</h1>
   <ArticleListTopic topic={topic} page={currentPage} perPage={10} />
   <BreadcrumbSchema
     listItems={[
