@@ -1,0 +1,17 @@
+---
+import { publicAdsenseClientId } from "@/utils/constant"
+
+interface Props {
+  adSlot: string
+}
+
+const { adSlot } = Astro.props
+---
+
+<ins
+  class="adsbygoogle manual-adsense h-auto w-screen min-w-full sm:w-full"
+  style="display:block"
+  data-ad-client={`ca-${publicAdsenseClientId}`}
+  data-ad-slot={adSlot}
+  data-ad-format="auto"
+  data-full-width-responsive="true"></ins>

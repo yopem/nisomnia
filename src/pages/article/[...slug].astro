@@ -1,6 +1,7 @@
 ---
 import { Picture } from "astro:assets"
 
+import Adsense from "@/components/ad/adsense.astro"
 import ArticleComment from "@/components/article/article-comment.astro"
 import ArticleContent from "@/components/article/article-content.astro"
 import RelatedArticles from "@/components/article/related-articles.astro"
@@ -10,6 +11,7 @@ import TopicListSingleArticle from "@/components/topic/topic-list-single-article
 import MainLayout from "@/layouts/main-layout.astro"
 import type { SelectTopic } from "@/server/db/schema"
 import { api } from "@/trpc/server"
+import { appEnv } from "@/utils/constant"
 
 const { slug } = Astro.params
 
@@ -42,7 +44,9 @@ const relatedArticles = await api.article.related({
       sizes="(min-width: 640px) 720px, 250px"
       class="aspect-video w-full rounded object-cover"
     />
+    {appEnv === "production" && <Adsense adSlot="3324761599" />}
     <ArticleContent article={article} />
+    {appEnv === "production" && <Adsense adSlot="6577062158" />}
     <TopicListSingleArticle topics={topics} />
     <ArticleComment article={article} />
     <RelatedArticles articles={relatedArticles} />

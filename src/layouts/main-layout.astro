@@ -4,10 +4,13 @@ import "@/styles/global.css"
 
 import { Seo } from "astro-seo-meta"
 
+import AdsenseScript from "@/components/ad/adsense-script.astro"
+import Adsense from "@/components/ad/adsense.astro"
 import Sidebar from "@/components/layout/sidebar.astro"
 import WebsiteSchema from "@/components/seo/website-schema.astro"
 import Theme from "@/components/theme.astro"
 import {
+  appEnv,
   publicLogoOgUrl,
   publicRobots,
   publicSiteDescription,
@@ -60,8 +63,11 @@ const pageRobots = robots ?? publicRobots
   >
     <Sidebar />
     <main class="mt-6 flex min-w-0 flex-auto flex-col px-2 md:mt-0 md:px-0">
+      {appEnv === "production" && <Adsense adSlot="7317629882" />}
       <slot />
+      {appEnv === "production" && <Adsense adSlot="3318398095" />}
     </main>
     <WebsiteSchema />
+    {appEnv === "production" && <AdsenseScript />}
   </body>
 </html>
