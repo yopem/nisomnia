@@ -1,0 +1,80 @@
+---
+import { Picture } from "astro:assets"
+
+import ImageOffIcon from "@/assets/icons/image-off.svg"
+import Adsense from "@/components/ad/adsense.astro"
+import GenreListSingleMovie from "@/components/genre/genre-list-single-movie.astro"
+import RelatedMovies from "@/components/movie/related-movies.astro"
+import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
+import MovieSchema from "@/components/seo/movie-schema.astro"
+import MainLayout from "@/layouts/main-layout.astro"
+import type { SelectGenre } from "@/server/db/schema"
+import { api } from "@/trpc/server"
+import { appEnv } from "@/utils/constant"
+
+const { slug } = Astro.params
+
+const movie = await api.movie.bySlug(slug!)
+
+if (!movie) {
+  return Astro.redirect("/404")
+}
+
+const genres = movie.genres as Pick<SelectGenre, "id" | "slug" | "title">[]
+
+const relatedMovies = await api.movie.related({
+  currentMovieId: movie.id,
+  genreId: movie.genres[0].id!,
+  limit: 6,
+})
+---
+
+<MainLayout title={movie.title} description={movie.overview ?? movie.title}>
+  <div class="space-y-6">
+    <h1 class="text-2xl font-bold md:text-3xl">{movie.title}</h1>
+    {
+      movie.poster ? (
+        <div class="flex items-center justify-center">
+          <Picture
+            src={movie.poster}
+            formats={["avif", "webp"]}
+            alt={movie.title}
+            quality={70}
+            width={300}
+            height={450}
+            loading="lazy"
+            sizes="(min-width: 640px) 300px, 150px"
+            class="aspect-[2/3] rounded object-cover"
+          />
+        </div>
+      ) : (
+        // @ts-expect-error TODO: svg import is still experimental and not yet support typescript
+        <ImageOffIcon class="aspect-[2/3] h-auto w-full" />
+      )
+    }
+    {appEnv === "production" && <Adsense adSlot="2718001982" />}
+    <p>
+      {movie.overview}
+    </p>
+    {appEnv === "production" && <Adsense adSlot="3924401743" />}
+    <GenreListSingleMovie genres={genres} />
+    <RelatedMovies movies={relatedMovies} />
+  </div>
+  <MovieSchema movie={movie} />
+  <BreadcrumbSchema
+    listItems={[
+      {
+        name: "Film",
+        url: "/movie",
+      },
+      {
+        name: genres[0].title,
+        url: `/genre/${genres[0].slug}`,
+      },
+      {
+        name: movie.title,
+        url: `/movie/${movie.slug}`,
+      },
+    ]}
+  />
+</MainLayout>

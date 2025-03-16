@@ -44,8 +44,7 @@ export const movieRouter = createTRPCRouter({
       z.object({
         currentMovieId: z.string(),
         genreId: z.string(),
-        page: z.number(),
-        perPage: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input }) => {

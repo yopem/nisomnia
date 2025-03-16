@@ -91,19 +91,26 @@ export const getLatestMovies = async ({
 export const getRelatedMovies = async ({
   currentMovieId,
   genreId,
-  page,
-  perPage,
+  limit,
 }: {
   currentMovieId: string
   genreId: string
-  page: number
-  perPage: number
+  limit: number
 }) => {
   const movies = await db.query.moviesTable.findMany({
-    where: (movies, { eq, and, not }) =>
-      and(eq(movies.status, "published"), not(eq(movies.id, currentMovieId))),
-    limit: perPage,
-    offset: (page - 1) * perPage,
+    where: (movies, { eq, and, not, inArray }) =>
+      and(
+        eq(movies.status, "published"),
+        not(eq(movies.id, currentMovieId)),
+        inArray(
+          movies.id,
+          db
+            .select({ id: movieGenresTable.movieId })
+            .from(movieGenresTable)
+            .where(eq(movieGenresTable.genreId, genreId)),
+        ),
+      ),
+    limit: limit,
     orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
     with: {
       genres: true,

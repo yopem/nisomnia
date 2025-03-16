@@ -1,0 +1,24 @@
+---
+import Button from "@/components/ui/button.astro"
+import type { SelectGenre } from "@/server/db/schema"
+
+interface Props {
+  genres: Pick<SelectGenre, "id" | "slug" | "title">[]
+}
+
+const { genres } = Astro.props
+---
+
+<div class="space-x-2">
+  {
+    genres.map((genre) => {
+      return (
+        <a aria-label={genre.title} href={`/genre/${genre.slug}`}>
+          <Button size="sm" variant="outline" class="rounded-full uppercase">
+            {genre.title}
+          </Button>
+        </a>
+      )
+    })
+  }
+</div>
