@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config"
 import node from "@astrojs/node"
 import partytown from "@astrojs/partytown"
 import tailwindcss from "@tailwindcss/vite"
+import { redirects } from "redirects.mjs"
 
 import { port, publicSiteDomain, publicSiteUrl } from "@/utils/constant"
 
@@ -30,6 +31,9 @@ export default defineConfig({
       host: true,
     },
   },
+
+  // @ts-expect-error - we need to define the type of the redirects if astro support config in typescript
+  redirects: redirects,
 
   experimental: {
     svg: true,

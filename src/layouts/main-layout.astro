@@ -20,6 +20,7 @@ import {
   publicSiteUrl,
   publicXUsername,
 } from "@/utils/constant"
+import { removeTrailingSlash } from "@/utils/url"
 
 interface Props {
   title?: string
@@ -33,6 +34,9 @@ const { title, description, themeColor, robots } = Astro.props
 const pageTitle = title ? `${title} | ${publicSiteTitle}` : publicSiteTitle
 const pageDescription = description ?? publicSiteDescription
 const pageRobots = robots ?? publicRobots
+const canonicalUrl = removeTrailingSlash(
+  new URL(Astro.url.pathname, Astro.site).toString(),
+)
 ---
 
 <!doctype html>
@@ -41,6 +45,7 @@ const pageRobots = robots ?? publicRobots
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
     <Seo
       title={pageTitle}
       description={pageDescription}
