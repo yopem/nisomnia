@@ -35,6 +35,7 @@
     "@yopem-ui/utils": "^0.0.1",
     "@yopem/try-catch": "^0.0.1",
     "astro": "^5.4.2",
+    "astro-embed": "^0.9.0",
     "astro-seo-meta": "^5.1.0",
     "astro-seo-schema": "^5.0.0",
     "dayjs": "^1.11.13",
