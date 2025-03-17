@@ -45,6 +45,10 @@ export default defineConfig({
         protocol: "https",
         hostname: `**.${publicSiteDomain}`,
       },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
+      },
     ],
   },
 

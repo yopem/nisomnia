@@ -158,20 +158,30 @@ export const getArticlesByTopicId = async ({
   )
 }
 
-export const getArticlesByAuthorId = async ({
-  authorId,
+export const getArticlesByUserId = async ({
+  userId,
   language,
   page,
   perPage,
 }: {
-  authorId: string
+  userId: string
   language: LanguageType
   page: number
   perPage: number
 }) => {
   const articles = await db.query.articlesTable.findMany({
-    where: (articles, { eq, and }) =>
-      and(eq(articles.language, language), eq(articles.status, "published")),
+    where: (articles, { eq, and, inArray }) =>
+      and(
+        eq(articles.language, language),
+        eq(articles.status, "published"),
+        inArray(
+          articles.id,
+          db
+            .select({ id: articleAuthorsTable.articleId })
+            .from(articleAuthorsTable)
+            .where(eq(articleAuthorsTable.userId, userId)),
+        ),
+      ),
     limit: perPage,
     offset: (page - 1) * perPage,
     orderBy: (articles, { desc }) => [desc(articles.updatedAt)],
@@ -181,7 +191,7 @@ export const getArticlesByAuthorId = async ({
   })
 
   return articles.filter((article) =>
-    article.authors.some((author) => author.userId === authorId),
+    article.authors.some((author) => author.userId === userId),
   )
 }
 
@@ -242,6 +252,24 @@ export const getArticlesCountByTopicId = async (topicId: string) => {
       and(
         eq(articlesTable.status, "published"),
         eq(articleTopicsTable.topicId, topicId),
+      ),
+    )
+
+  return data[0].count
+}
+
+export const getArticlesCountByUserId = async (userId: string) => {
+  const data = await db
+    .select({ count: count() })
+    .from(articlesTable)
+    .innerJoin(
+      articleAuthorsTable,
+      eq(articlesTable.id, articleAuthorsTable.articleId),
+    )
+    .where(
+      and(
+        eq(articlesTable.status, "published"),
+        eq(articleAuthorsTable.userId, userId),
       ),
     )
 

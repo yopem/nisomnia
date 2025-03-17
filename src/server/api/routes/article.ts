@@ -6,12 +6,13 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 import { languageType } from "@/server/db/schema"
 import {
   getArticleBySlug,
-  getArticlesByAuthorId,
   getArticlesByLanguage,
   getArticlesByTopicId,
+  getArticlesByUserId,
   getArticlesCount,
   getArticlesCountByLanguage,
   getArticlesCountByTopicId,
+  getArticlesCountByUserId,
   getArticlesSitemap,
   getRelatedArticles,
   searchArticles,
@@ -88,17 +89,17 @@ export const articleRouter = createTRPCRouter({
       return data
     }),
 
-  byAuthorId: publicProcedure
+  byUserId: publicProcedure
     .input(
       z.object({
-        authorId: z.string(),
+        userId: z.string(),
         language: languageType,
         page: z.number(),
         perPage: z.number(),
       }),
     )
     .query(async ({ input }) => {
-      const { data, error } = await tryCatch(getArticlesByAuthorId(input))
+      const { data, error } = await tryCatch(getArticlesByUserId(input))
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -153,6 +154,17 @@ export const articleRouter = createTRPCRouter({
 
   countByTopicId: publicProcedure.input(z.string()).query(async ({ input }) => {
     const { data, error } = await tryCatch(getArticlesCountByTopicId(input))
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error fetching articles",
+      })
+    }
+    return data
+  }),
+
+  countByUserId: publicProcedure.input(z.string()).query(async ({ input }) => {
+    const { data, error } = await tryCatch(getArticlesCountByUserId(input))
     if (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
