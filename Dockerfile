@@ -1,4 +1,6 @@
 FROM oven/bun:alpine AS base
+RUN apk add --no-cache libc6-compat
+RUN apk update
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -25,4 +27,4 @@ COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 4321
 
-CMD ["bun", "./dist/server/entry.mjs", "--host 0.0.0.0"]
+CMD ["bun", "./dist/server/entry.mjs", "--host", "0.0.0.0"]
