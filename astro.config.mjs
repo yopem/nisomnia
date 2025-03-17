@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, passthroughImageService } from "astro/config"
+import { defineConfig } from "astro/config"
 import node from "@astrojs/node"
 import partytown from "@astrojs/partytown"
 import tailwindcss from "@tailwindcss/vite"
@@ -39,21 +39,6 @@ export default defineConfig({
 
   experimental: {
     svg: true,
-  },
-
-  image: {
-    service: passthroughImageService(),
-    // FIX: image not generated during build
-    // remotePatterns: [
-    //   {
-    //     protocol: "https",
-    //     hostname: `**.${publicSiteDomain}`,
-    //   },
-    //   {
-    //     protocol: "https",
-    //     hostname: "**.googleusercontent.com",
-    //   },
-    // ],
   },
 
   integrations: [partytown()],

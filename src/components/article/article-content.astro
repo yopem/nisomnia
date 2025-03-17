@@ -1,6 +1,4 @@
 ---
-import { Image } from "astro:assets"
-
 import { parseContent, type ContentPart } from "@/utils/content-parser"
 
 interface Props {
@@ -22,11 +20,9 @@ const contentParts: ContentPart[] = parseContent(content, title)
       part.type === "html" ? (
         <Fragment set:html={part.content} />
       ) : (
-        <Image
+        <img
           src={part.src}
           alt={part.alt}
-          inferSize
-          quality={70}
           loading="lazy"
           sizes="(min-width: 640px) 720px, 250px"
           class="aspect-video w-full rounded object-cover"
