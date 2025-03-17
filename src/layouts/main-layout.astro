@@ -13,7 +13,6 @@ import Sidebar from "@/components/layout/sidebar.astro"
 import WebsiteSchema from "@/components/seo/website-schema.astro"
 import Theme from "@/components/theme.astro"
 import {
-  appEnv,
   publicLogoOgUrl,
   publicRobots,
   publicSiteDescription,
@@ -80,21 +79,17 @@ const canonicalUrl = removeTrailingSlash(
       <main
         class="mt-6 flex min-h-screen min-w-0 flex-auto flex-col px-2 md:mt-0 md:px-0"
       >
-        {appEnv === "production" && <Adsense adSlot="7317629882" />}
+        <Adsense adSlot="7317629882" />
         <slot />
-        {appEnv === "production" && <Adsense adSlot="3318398095" />}
+        <Adsense adSlot="3318398095" />
       </main>
     </div>
     <Footer />
     <WebsiteSchema />
-    {
-      appEnv === "production" && (
-        <Fragment>
-          <GoogleAnalytics measurementId="G-1234567890" />
-          <Umami websiteId="fce06352-f464-4337-a716-b78f9f0b46c3" />
-          <AdsenseScript />
-        </Fragment>
-      )
-    }
+    <Fragment>
+      <GoogleAnalytics measurementId="G-1234567890" />
+      <Umami websiteId="fce06352-f464-4337-a716-b78f9f0b46c3" />
+      <AdsenseScript />
+    </Fragment>
   </body>
 </html>
