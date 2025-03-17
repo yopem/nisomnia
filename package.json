@@ -69,8 +69,5 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0"
   },
-  "packageManager": "bun@1.2.5",
-  "trustedDependencies": [
-    "sharp"
-  ]
+  "packageManager": "bun@1.2.5"
 }

@@ -43,16 +43,17 @@ export default defineConfig({
 
   image: {
     service: passthroughImageService(),
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: `**.${publicSiteDomain}`,
-      },
-      {
-        protocol: "https",
-        hostname: "**.googleusercontent.com",
-      },
-    ],
+    // FIX: image not generated during build
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: `**.${publicSiteDomain}`,
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "**.googleusercontent.com",
+    //   },
+    // ],
   },
 
   integrations: [partytown()],
