@@ -6,7 +6,7 @@
 - [ ] sitemap
 - [x] redirect amp
 - [x] movie
-- [ ] author
+- [x] author
 - [x] analytics with partytown
 - [ ] adsense with lazyload
 - [x] comment to social media
