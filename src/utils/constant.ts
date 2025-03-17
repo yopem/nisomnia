@@ -31,5 +31,5 @@ export const {
   R2_DOMAIN: r2Domain,
 } = import.meta.env
 
-export const publicSiteUrl = `https://${publicSiteDomain}`
-export const publicApiUrl = `https://${publicSiteDomain}/api`
+export const publicSiteUrl = `https://${publicSiteDomain || "nisomnia.com"}`
+export const publicApiUrl = `https://${publicSiteDomain || "nisomnia.com"}/api`
