@@ -13,6 +13,19 @@ export default defineConfig({
   server: {
     port: port ? parseInt(port) : 4321,
     host: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+        "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+      "Referrer-Policy": "origin-when-cross-origin",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-Content-Type-Options": "nosniff",
+      "X-DNS-Prefetch-Control": "on",
+      "Strict-Transport-Security":
+        "max-age=31536000; includeSubDomains; preload",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+      "Accept-Encoding": "gzip, compress, br",
+    },
   },
 
   output: "server",
