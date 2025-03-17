@@ -4,7 +4,7 @@
 
 - [x] manage nested seo
 - [ ] sitemap
-- [ ] redirect amp
+- [x] redirect amp
 - [x] movie
 - [ ] author
 - [x] analytics with partytown
@@ -12,7 +12,7 @@
 - [x] comment to social media
 - [x] add option for no index for preview deployment
 - [ ] add tmdb integration
-- [ ] add redirect
+- [x] add redirect
 - [ ] add popular topic list
 - [ ] add genre list
 - [ ] add link rel prev and next for pagination
