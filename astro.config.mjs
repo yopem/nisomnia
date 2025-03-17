@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config"
+import { defineConfig, passthroughImageService } from "astro/config"
 import node from "@astrojs/node"
 import partytown from "@astrojs/partytown"
 import tailwindcss from "@tailwindcss/vite"
@@ -42,6 +42,7 @@ export default defineConfig({
   },
 
   image: {
+    service: passthroughImageService(),
     remotePatterns: [
       {
         protocol: "https",
