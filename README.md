@@ -16,3 +16,5 @@
 - [ ] add popular topic list
 - [ ] add genre list
 - [ ] add link rel prev and next for pagination
+- [ ] fix image lazyload
+- [ ] use astro safe env

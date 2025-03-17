@@ -32,9 +32,14 @@ interface Props {
 
 const { title, description, themeColor, robots } = Astro.props
 
-const pageTitle = title ? `${title} | ${publicSiteTitle}` : publicSiteTitle
-const pageDescription = description ?? publicSiteDescription
-const pageRobots = robots ?? publicRobots
+const pageTitle = title
+  ? `${title} | ${publicSiteTitle || "Nisomnia"}`
+  : publicSiteTitle || "Nisomnia"
+const pageDescription = description!
+  ? description
+  : publicSiteDescription ||
+    "Nisomnia adalah media pop culture yang mengulas seputar geek culture, game, anime, manga, film, musik, tv, komik dan topik anti mainstream lainya."
+const pageRobots = robots! ? robots : publicRobots || "index, follow"
 const canonicalUrl = removeTrailingSlash(
   new URL(Astro.url.pathname, Astro.site).toString(),
 )
@@ -55,13 +60,13 @@ const canonicalUrl = removeTrailingSlash(
       themeColor={themeColor ?? "#18181a"}
       robots={pageRobots}
       facebook={{
-        image: publicLogoOgUrl,
+        image: publicLogoOgUrl || "https://assets.nisomnia.com/cover.png",
         url: publicSiteUrl,
         type: "website",
       }}
       twitter={{
-        image: publicLogoOgUrl,
-        site: `@${publicXUsername}`,
+        image: publicLogoOgUrl || "https://assets.nisomnia.com/cover.png",
+        site: `@${publicXUsername || "nisomniadotcom"}`,
         card: "summary",
       }}
     />
