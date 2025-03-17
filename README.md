@@ -15,3 +15,4 @@
 - [ ] add redirect
 - [ ] add popular topic list
 - [ ] add genre list
+- [ ] add link rel prev and next for pagination
