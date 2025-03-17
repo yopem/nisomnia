@@ -3,7 +3,7 @@
 ## Todo
 
 - [x] manage nested seo
-- [ ] sitemap
+- [x] sitemap
 - [x] redirect amp
 - [x] movie
 - [x] author
