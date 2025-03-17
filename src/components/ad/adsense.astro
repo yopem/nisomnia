@@ -18,30 +18,31 @@ const { adSlot } = Astro.props
 <script is:inline>
   ;(function () {
     let interacted = false
-    const handleInteraction = () => {
-      interacted = true
+    function loadAd() {
+      ;(adsbygoogle = window.adsbygoogle || []).push({})
     }
+
+    function handleInteraction() {
+      if (!interacted) {
+        interacted = true
+        loadAd()
+        ;["click", "scroll", "keypress", "touchstart"].forEach((event) => {
+          document.removeEventListener(event, handleInteraction)
+        })
+      }
+    }
+
     ;["click", "scroll", "keypress", "touchstart"].forEach((event) => {
-      document.addEventListener(event, handleInteraction, { once: true })
+      document.addEventListener(event, handleInteraction)
     })
 
     setTimeout(() => {
       if (!interacted) {
-        ;(adsbygoogle = window.adsbygoogle || []).push({})
+        loadAd()
+        ;["click", "scroll", "keypress", "touchstart"].forEach((event) => {
+          document.removeEventListener(event, handleInteraction)
+        })
       }
     }, 8000)
-
-    if (interacted) {
-      ;(adsbygoogle = window.adsbygoogle || []).push({})
-    } else {
-      document.addEventListener(
-        "click",
-        function loadAd() {
-          ;(adsbygoogle = window.adsbygoogle || []).push({})
-          document.removeEventListener("click", loadAd)
-        },
-        { once: true },
-      )
-    }
   })()
 </script>
