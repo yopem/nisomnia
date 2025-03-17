@@ -54,5 +54,11 @@ export default defineConfig({
     svg: true,
   },
 
-  integrations: [partytown()],
+  integrations: [
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
+  ],
 })
