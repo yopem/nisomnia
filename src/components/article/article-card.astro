@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import CardContent from "@/components/ui/card/card-content.astro"
 import CardHeader from "@/components/ui/card/card-header.astro"
@@ -17,9 +17,8 @@ const { article } = Astro.props
 <Card>
   <a href={`/article/${article.slug}`} class="flex flex-col gap-4 sm:flex-row">
     <div class="w-full p-3 sm:w-auto sm:shrink-0 sm:pr-0">
-      <Picture
+      <Image
         src={article.featuredImage}
-        formats={["avif", "webp"]}
         alt={article.title}
         inferSize
         quality={50}

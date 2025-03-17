@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import ImageOffIcon from "@/assets/icons/image-off.svg"
 import CardHeader from "@/components/ui/card/card-header.astro"
@@ -19,9 +19,8 @@ const { movie } = Astro.props
     <div class="w-full p-2">
       {
         movie.poster ? (
-          <Picture
+          <Image
             src={movie.poster}
-            formats={["avif", "webp"]}
             alt={movie.title}
             inferSize
             quality={50}

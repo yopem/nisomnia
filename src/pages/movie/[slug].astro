@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import ImageOffIcon from "@/assets/icons/image-off.svg"
 import Adsense from "@/components/ad/adsense.astro"
@@ -40,9 +40,8 @@ const relatedMovies = await api.movie.related({
     {
       movie.poster ? (
         <div class="flex items-center justify-center">
-          <Picture
+          <Image
             src={movie.poster}
-            formats={["avif", "webp"]}
             alt={movie.title}
             quality={70}
             width={300}

@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import ImageOffIcon from "@/assets/icons/image-off.svg"
 import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
@@ -25,9 +25,8 @@ if (!user) {
     {
       user.image ? (
         <div class="flex items-center justify-center">
-          <Picture
+          <Image
             src={user.image}
-            formats={["avif", "webp"]}
             alt={user.image}
             quality={70}
             width={150}

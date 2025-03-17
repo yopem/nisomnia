@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import { parseContent, type ContentPart } from "@/utils/content-parser"
 
@@ -22,9 +22,8 @@ const contentParts: ContentPart[] = parseContent(content, title)
       part.type === "html" ? (
         <Fragment set:html={part.content} />
       ) : (
-        <Picture
+        <Image
           src={part.src}
-          formats={["avif", "webp"]}
           alt={part.alt}
           inferSize
           quality={70}

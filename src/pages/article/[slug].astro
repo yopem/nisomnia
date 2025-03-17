@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets"
+import { Image } from "astro:assets"
 
 import Adsense from "@/components/ad/adsense.astro"
 import ArticleComment from "@/components/article/article-comment.astro"
@@ -34,9 +34,8 @@ const relatedArticles = await api.article.related({
 <MainLayout title={article.title} description={article.excerpt}>
   <div class="space-y-6">
     <h1 class="text-2xl font-bold md:text-3xl">{article.title}</h1>
-    <Picture
+    <Image
       src={article.featuredImage}
-      formats={["avif", "webp"]}
       alt={article.title}
       inferSize
       quality={70}
