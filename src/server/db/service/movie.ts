@@ -47,6 +47,7 @@ export const getMovieBySlug = async (slug: string) => {
         id: productionCompaniesTable.id,
         name: productionCompaniesTable.name,
         logo: productionCompaniesTable.logo,
+        slug: productionCompaniesTable.slug,
       })
       .from(movieProductionCompaniesTable)
       .leftJoin(
@@ -166,7 +167,22 @@ export const getMoviesByProductionCompanyId = async ({
   perPage: number
 }) => {
   const movies = await db.query.moviesTable.findMany({
-    where: (movies, { eq }) => eq(movies.status, "published"),
+    where: (movies, { eq, and, inArray }) =>
+      and(
+        eq(movies.status, "published"),
+        inArray(
+          movies.id,
+          db
+            .select({ id: movieProductionCompaniesTable.movieId })
+            .from(movieProductionCompaniesTable)
+            .where(
+              eq(
+                movieProductionCompaniesTable.productionCompanyId,
+                productionCompanyId,
+              ),
+            ),
+        ),
+      ),
     limit: perPage,
     offset: (page - 1) * perPage,
     orderBy: (movies, { desc }) => [desc(movies.updatedAt)],
@@ -223,6 +239,28 @@ export const getMoviesCountByGenreId = async (genreId: string) => {
       ),
     )
 
+  return data[0].count
+}
+
+export const getMoviesCountByProductionCompanyId = async (
+  productionCompanyId: string,
+) => {
+  const data = await db
+    .select({ count: count() })
+    .from(moviesTable)
+    .innerJoin(
+      movieProductionCompaniesTable,
+      eq(moviesTable.id, movieProductionCompaniesTable.movieId),
+    )
+    .where(
+      and(
+        eq(moviesTable.status, "published"),
+        eq(
+          movieProductionCompaniesTable.productionCompanyId,
+          productionCompanyId,
+        ),
+      ),
+    )
   return data[0].count
 }
 

@@ -18,7 +18,7 @@ function generateSiteMap(
          ?.map((genre) => {
            return `
        <url>
-           <loc>${`${publicSiteUrl}/genre/${genre.slug}`}</loc>
+           <loc>${`${publicSiteUrl}/movie/genre/${genre.slug}`}</loc>
            <lastmod>${
              new Date(genre.updatedAt ?? new Date()).toISOString().split("T")[0]
            }</lastmod>

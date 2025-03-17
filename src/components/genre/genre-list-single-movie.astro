@@ -9,16 +9,29 @@ interface Props {
 const { genres } = Astro.props
 ---
 
-<div class="space-x-2">
+<Fragment>
   {
-    genres.map((genre) => {
-      return (
-        <a aria-label={genre.title} href={`/genre/${genre.slug}`}>
-          <Button size="sm" variant="outline" class="rounded-full uppercase">
-            {genre.title}
-          </Button>
-        </a>
-      )
-    })
+    genres.length > 0 && (
+      <div class="flex items-center justify-start space-x-2">
+        <div>
+          <span>Genre:</span>
+        </div>
+        <div class="space-x-2">
+          {genres.map((genre) => {
+            return (
+              <a aria-label={genre.title} href={`/movie/genre/${genre.slug}`}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  class="rounded-full uppercase"
+                >
+                  {genre.title}
+                </Button>
+              </a>
+            )
+          })}
+        </div>
+      </div>
+    )
   }
-</div>
+</Fragment>

@@ -142,14 +142,7 @@ export const GET: APIRoute = async () => {
     }
   }
 
-  const routes = [
-    "",
-    "/article",
-    "/topic",
-    "/movie",
-    "/genre",
-    "/production-company",
-  ].map((route) => ({
+  const routes = ["", "/article", "/movie"].map((route) => ({
     url: `${publicSiteUrl}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))

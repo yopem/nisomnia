@@ -18,7 +18,7 @@ function generateSiteMap(
          ?.map((productionCompany) => {
            return `
        <url>
-           <loc>${`${publicSiteUrl}/production-company/${productionCompany.slug}`}</loc>
+           <loc>${`${publicSiteUrl}/movie/production-company/${productionCompany.slug}`}</loc>
            <lastmod>${
              new Date(productionCompany.updatedAt ?? new Date())
                .toISOString()

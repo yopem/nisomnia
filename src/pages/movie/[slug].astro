@@ -5,10 +5,11 @@ import ImageOffIcon from "@/assets/icons/image-off.svg"
 import Adsense from "@/components/ad/adsense.astro"
 import GenreListSingleMovie from "@/components/genre/genre-list-single-movie.astro"
 import RelatedMovies from "@/components/movie/related-movies.astro"
+import ProductionCompanyListSingleMovie from "@/components/production-company/production-company-list-single-movie.astro"
 import BreadcrumbSchema from "@/components/seo/breadcrumb-schema.astro"
 import MovieSchema from "@/components/seo/movie-schema.astro"
 import MainLayout from "@/layouts/main-layout.astro"
-import type { SelectGenre } from "@/server/db/schema"
+import type { SelectGenre, SelectProductionCompany } from "@/server/db/schema"
 import { api } from "@/trpc/server"
 import { appEnv } from "@/utils/constant"
 
@@ -21,6 +22,10 @@ if (!movie) {
 }
 
 const genres = movie.genres as Pick<SelectGenre, "id" | "slug" | "title">[]
+const productionCompanies = movie.productionCompanies as Pick<
+  SelectProductionCompany,
+  "id" | "slug" | "name"
+>[]
 
 const relatedMovies = await api.movie.related({
   currentMovieId: movie.id,
@@ -57,6 +62,9 @@ const relatedMovies = await api.movie.related({
       {movie.overview}
     </p>
     {appEnv === "production" && <Adsense adSlot="3924401743" />}
+    <ProductionCompanyListSingleMovie
+      productionCompanies={productionCompanies}
+    />
     <GenreListSingleMovie genres={genres} />
     <RelatedMovies movies={relatedMovies} />
   </div>

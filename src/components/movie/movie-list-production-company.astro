@@ -8,7 +8,7 @@ import { api } from "@/trpc/server"
 import MovieCard from "./movie-card.astro"
 
 interface Props {
-  genre: {
+  productionCompany: {
     id: string
     slug: string
   }
@@ -16,17 +16,17 @@ interface Props {
   perPage?: number
 }
 
-const { genre, page = 1, perPage = 10 } = Astro.props
+const { productionCompany, page = 1, perPage = 10 } = Astro.props
 
-const { id, slug } = genre
+const { id, slug } = productionCompany
 
-const movies = await api.movie.byGenreId({
-  genreId: id,
+const movies = await api.movie.byProductionCompanyId({
+  productionCompanyId: id,
   page,
   perPage,
 })
 
-const totalMovies = await api.movie.countByGenreId(id)
+const totalMovies = await api.movie.countByProductionCompanyId(id)
 
 const totalPages = Math.ceil(totalMovies / perPage)
 const currentPage = page
@@ -56,14 +56,14 @@ const currentPage = page
           {currentPage > 1 && (
             <PaginationItem>
               <PaginationPrevious
-                href={`/movie/genre/${slug}?page=${currentPage - 1}`}
+                href={`/movie/production-company/${slug}?page=${currentPage - 1}`}
               />
             </PaginationItem>
           )}
           {currentPage < totalPages && (
             <PaginationItem>
               <PaginationNext
-                href={`/movie/genre/${slug}?page=${currentPage + 1}`}
+                href={`/movie/production-company/${slug}?page=${currentPage + 1}`}
               />
             </PaginationItem>
           )}
