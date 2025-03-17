@@ -4,7 +4,7 @@ import node from "@astrojs/node"
 import partytown from "@astrojs/partytown"
 import tailwindcss from "@tailwindcss/vite"
 
-import { port, publicSiteDomain, publicSiteUrl } from "@/utils/constant"
+import { port, publicSiteUrl } from "@/utils/constant"
 import { redirects } from "./redirects.mjs"
 
 export default defineConfig({
