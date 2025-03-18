@@ -26,7 +26,7 @@ const contentParts: ContentPart[] = parseContent(content, title)
           return (
             <img
               src={part.src}
-              alt={part.alt}
+              alt={article.title}
               loading="lazy"
               sizes="(min-width: 640px) 720px, 250px"
               class="aspect-video w-full rounded object-cover"
