@@ -34,7 +34,7 @@
     "@trpc/client": "^11.0.0-rc.824",
     "@trpc/server": "^11.0.0-rc.824",
     "@yopem-ui/utils": "^0.0.1",
-    "@yopem/try-catch": "^0.0.1",
+    "@yopem/try-catch": "^0.0.2",
     "astro": "^5.4.2",
     "astro-embed": "^0.9.0",
     "astro-seo-meta": "^5.1.0",
