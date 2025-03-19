@@ -13,7 +13,7 @@
         "@trpc/client": "^11.0.0-rc.824",
         "@trpc/server": "^11.0.0-rc.824",
         "@yopem-ui/utils": "^0.0.1",
-        "@yopem/try-catch": "^0.0.1",
+        "@yopem/try-catch": "^0.0.2",
         "astro": "^5.4.2",
         "astro-embed": "^0.9.0",
         "astro-seo-meta": "^5.1.0",
@@ -432,7 +432,7 @@
 
     "@yopem-ui/utils": ["@yopem-ui/utils@0.0.1", "", { "dependencies": { "class-variance-authority": "0.7.1", "clsx": "2.1.1", "tailwind-merge": "3.0.1" } }, "sha512-fJJ7XfswAAAq5iGwtRwpPNiMzht9I1djR2q52ftcW0IFpY9eu3/zRaIy1j7376EVOxF+5QVe7EKUt+dR1MihJQ=="],
 
-    "@yopem/try-catch": ["@yopem/try-catch@0.0.1", "", {}, "sha512-wEaiMsJXrWTUiZK1eGIpWgetfeySNQhQT6eC3cu9GhdcmqSM3ALajScSofbA4V598tZBD+F67MvW2UeCD18VbA=="],
+    "@yopem/try-catch": ["@yopem/try-catch@0.0.2", "", {}, "sha512-llMSwocw3ke/kwu4ZRgmiMfTiX1mYy5lAEkXcJG7cZdQgaoaxS9IcSagswhRZC2YY1ckKylpOMkUKccFsmFPGw=="],
 
     "acorn": ["acorn@8.14.1", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg=="],
 
