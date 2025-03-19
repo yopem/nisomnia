@@ -3,7 +3,7 @@
   "extends": [
     "config:base",
     ":semanticCommitTypeAll(chore)",
-    "schedule:earlyTuesdays"
+    "schedule:earlyMondays"
   ],
   "labels": ["dependencies"],
   "automergeType": "pr",
