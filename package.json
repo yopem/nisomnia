@@ -2,6 +2,7 @@
   "name": "nisomnia",
   "type": "module",
   "version": "0.0.1",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "check": "bunx --bun astro check",
     "dev": "bunx --bun astro dev",
