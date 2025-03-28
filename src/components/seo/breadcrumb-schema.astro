@@ -12,27 +12,33 @@ interface Props {
 
 const { listItems } = Astro.props
 
-const listItem = listItems?.map((item, index) => ({
+const homeItem = {
   "@type": "ListItem",
-  position: index + 2,
-  item: {
-    "@id": `${publicSiteUrl}${item.url}`,
+  position: 1,
+  name: publicSiteTitle,
+  item: publicSiteUrl,
+}
+
+const additionalItems =
+  listItems?.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 2,
     name: item.name,
-  },
-}))
+    item: `${publicSiteUrl}${item.url}`,
+  })) ?? []
+
+const itemListElements = [homeItem, ...additionalItems]
 ---
 
 <Schema
   item={{
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        item: { "@id": publicSiteUrl, name: publicSiteTitle },
-        ...(listItems && listItem),
-      },
-    ],
+    itemListElement: itemListElements.map((item) => ({
+      "@type": "ListItem",
+      position: item.position,
+      name: item.name,
+      item: item.item,
+    })),
   }}
 />
