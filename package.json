@@ -40,7 +40,7 @@
     "astro-seo-meta": "^5.1.0",
     "astro-seo-schema": "^5.0.0",
     "dayjs": "^1.11.13",
-    "drizzle-orm": "^0.40.0",
+    "drizzle-orm": "^0.41.0",
     "drizzle-zod": "^0.7.0",
     "nanoid": "^5.1.2",
     "node-html-parser": "^7.0.1",
