@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config"
 import node from "@astrojs/node"
-import partytown from "@astrojs/partytown"
 import tailwindcss from "@tailwindcss/vite"
 
 import { port, publicSiteUrl } from "@/utils/constant"
@@ -54,11 +53,5 @@ export default defineConfig({
     svg: true,
   },
 
-  integrations: [
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
-  ],
+  integrations: [],
 })
