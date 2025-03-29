@@ -15,8 +15,8 @@ const { listItems } = Astro.props
 const homeItem = {
   "@type": "ListItem",
   position: 1,
-  name: publicSiteTitle,
-  item: publicSiteUrl,
+  name: publicSiteTitle || "Nisomnia",
+  item: publicSiteUrl || "https://nisomnia.com",
 }
 
 const additionalItems =
