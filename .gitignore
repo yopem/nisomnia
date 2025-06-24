@@ -45,6 +45,7 @@ next-env.d.ts
 
 # wrangler
 .wrangler
+worker-configuration.d.ts
 
 # partytown
 ~partytown

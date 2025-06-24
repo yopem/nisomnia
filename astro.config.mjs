@@ -1,17 +1,13 @@
 // @ts-check
+
 import { defineConfig } from "astro/config"
-import node from "@astrojs/node"
+import cloudflare from "@astrojs/cloudflare"
 import tailwindcss from "@tailwindcss/vite"
 
-import { port, publicSiteUrl } from "@/utils/constant"
 import { redirects } from "./redirects.mjs"
 
 export default defineConfig({
-  site: publicSiteUrl ? publicSiteUrl : "http://localhost:4321",
-
   server: {
-    port: port ? parseInt(port) : 4321,
-    host: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
@@ -29,18 +25,25 @@ export default defineConfig({
 
   output: "server",
 
-  adapter: node({
-    mode: "standalone",
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
   }),
 
   vite: {
     plugins: [tailwindcss()],
+  },
+
+  environments: {
     ssr: {
-      noExternal: ["path-to-regexp"],
-    },
-    preview: {
-      port: port ? parseInt(port) : 4321,
-      host: true,
+      external: [
+        "node:events",
+        "node:stream",
+        "node:util",
+        "node:url",
+        "node:buffer",
+      ],
     },
   },
 
@@ -48,10 +51,6 @@ export default defineConfig({
   redirects: redirects,
 
   trailingSlash: "never",
-
-  experimental: {
-    svg: true,
-  },
 
   integrations: [],
 })
