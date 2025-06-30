@@ -32,7 +32,28 @@
    * Environment Variables
    * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
    */
-  // "vars": { "MY_VARIABLE": "production_value" },
+  "vars": {
+    "PUBLIC_SITE_DOMAIN": "nisomnia.com",
+    "PUBLIC_SITE_TITLE": "Nisomnia",
+    "PUBLIC_SITE_DESCRIPTION": "Nisomnia adalah media pop culture yang mengulas seputar geek culture, game, anime, manga, film, musik, tv, komik dan topik anti mainstream lainya.",
+
+    "PUBLIC_FACEBOOK_USERNAME": "nisomniadotcom",
+    "PUBLIC_X_USERNAME": "nisomniadotcom",
+    "PUBLIC_INSTAGRAM_USERNAME": "nisomniadotcom",
+    "PUBLIC_TIKTOK_USERNAME": "nisomniadotcom",
+    "PUBLIC_WHATSAPP_CHANNEL_USERNAME": "nisomniadotcom",
+    "PUBLIC_YOUTUBE_USERNAME": "@nisomniadotcom",
+
+    "PUBLIC_ADSENSE_CLIENT_ID": "pub-4946821479056257",
+    "PUBLIC_GA_ID": "G-0JB3NXP0QW",
+
+    "PUBLIC_SUPPORT_EMAIL": "support@nisomnia.com",
+    "PUBLIC_WHATSAPP_NUMBER": "6283822727338",
+    "PUBLIC_ADDRESS": "Cisuren, RT 03 RW 20, Desa Lebakmuncang, Kecamatan Ciwidey, Kab. Bandung, 40973",
+    "PUBLIC_LOGO_OG_URL": "https://assets.nisomnia.com/cover.png",
+    "PUBLIC_LOGO_OG_WIDTH": 1592,
+    "PUBLIC_LOGO_OG_HEIGHT": 655,
+  },
   /**
    * Note: Use secrets to store sensitive data.
    * https://developers.cloudflare.com/workers/configuration/secrets/
